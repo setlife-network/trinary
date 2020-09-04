@@ -26,7 +26,6 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-
 app.use(bodyParser.json());
 
 app.get('*', function(req, res, next){
@@ -43,8 +42,6 @@ app.get('*', function(req, res, next){
 app.get('/', (req, res) => {
     res.send('Hello World')
 })
-
-
 
 app.listen(port, () => {
     console.log(`Trinary project app listening at http://localhost:${port}`)
