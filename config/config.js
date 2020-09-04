@@ -1,15 +1,5 @@
 var config = require('./config');
 
-module.exports = {
-  database: config.database.name,
-  username: config.database.user,
-  password: config.database.pass,
-  dialect: 'postgres',
-  dialectModulePath: 'pg.js',
-  host: config.database.host,
-  port: config.database.port,
-  pool: config.database.pool
-};
 {
   "development": {
     "username": "root",

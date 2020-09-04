@@ -1,7 +1,7 @@
 const express = require('express')
-const bodyParser = require('body-parser')
-const fs = require('fs')
-var cors = require('cors');
+const bodyParser = require('body-parser') //transform req into JSON format
+const fs = require('fs') //module to read files
+var cors = require('cors'); //handle CORS issues
 const app = express()
 
 var isProduction = process.env.NODE_ENV === 'production';

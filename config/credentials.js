@@ -7,6 +7,5 @@ module.exports = {
         DB_USERNAME: process.env.MYSQL_DB_USERNAME,
         DB_PASSWORD: process.env.MYSQL_DB_PASSWORD,
         DB_NAME: process.env.MYSQL_DB_NAME,
-
     }
 };
