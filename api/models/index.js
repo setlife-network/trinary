@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const mysql2 = require('mysql2')
-const { MYSQL } = require('../../config/credentials');
+const { MYSQL } = require('../config/credentials');
 
 const {
     DB_HOST,
@@ -31,7 +31,7 @@ sequelize
         console.log('Connection has been established successfully.');
     })
     .catch(function (err) {
-      console.log('Unable to connect to the database:', err);
+        console.log('Unable to connect to the database:', err);
     });
 
 const db = {
@@ -40,4 +40,4 @@ const db = {
     }
 };
 
- module.exports = db;
+module.exports = db;
