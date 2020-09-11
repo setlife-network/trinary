@@ -35,7 +35,7 @@ npm run ui
 npm run server
 ```
 
-5. UI should open in the browser at `localhost:3000`
+5. UI should open in the browser at `localhost:6002`
 
 
 ## Reference
