@@ -1,5 +1,24 @@
 # project-trinary
 
+Development
+
+1. Clone the repo
+
+git clone https://github.com/setlife-network/project-trinary
+
+2.Install packages
+
+cd project-trinary
+npm install
+
+3. Run the UI server
+
+npm start
+
+/_4.Open a new Terminal tab and run the web server_/
+
+5.UI should open in the browser at localhost:3000
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
