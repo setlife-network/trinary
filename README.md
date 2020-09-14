@@ -1,23 +1,47 @@
 # project-trinary
 
-Development
+## Development
+
+### Overview
+
+#### Frontend
+
+The `/src` folder contains core source code needed for frontend development.
+
+#### Backend
+
+The `server.js` file is responsible for initial set up of the backend and the `/api` folder contains core source code needed for API/backend development.
+
+### Setup
 
 1. Clone the repo
 
+```
 git clone https://github.com/setlife-network/project-trinary
+```
 
-2.Install packages
+2. Install packages
 
+```
 cd project-trinary
 npm install
+```
 
 3. Run the UI server
 
-npm start
+```
+npm run ui
+```
 
-/_4.Open a new Terminal tab and run the web server_/
+4. Open a new Terminal tab and run the web server
 
-5.UI should open in the browser at localhost:3000
+```
+npm run server
+```
+
+5. UI should open in the browser at `localhost:6002`
+
+## Reference
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
