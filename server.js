@@ -4,8 +4,10 @@ const fs = require('fs')
 var cors = require('cors');
 const app = express()
 
+const apiModules = require('./api/handlers/toggl');
+
 var isProduction = process.env.NODE_ENV === 'production';
-var port = isProduction ? process.env.PORT : 4000;
+var port = isProduction ? process.env.PORT : 4001;
 
 var whitelist = [
     'http://localhost:8080',
