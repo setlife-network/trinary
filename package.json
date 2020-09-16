@@ -25,10 +25,10 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "toggl-api": "^1.0.1",
-    "xmlhttprequest": "^1.8.0",
     "sequelize": "^6.3.5",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "toggl-api": "^1.0.1",
+    "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
     "ui": "PORT=6002 react-scripts start",
