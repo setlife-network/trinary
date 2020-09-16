@@ -26,11 +26,12 @@ module.exports = (sequelize) => {
         },
         client_id: { //FK
             type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
                 model: Client,
                 key: 'id',
             }
-        },
+        }
     },
     {
         // Model options go here
