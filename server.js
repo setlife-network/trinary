@@ -1,13 +1,14 @@
 const express = require('express')
-const bodyParser = require('body-parser')
-const fs = require('fs')
-var cors = require('cors');
+const bodyParser = require('body-parser') //transform req into JSON format
+const fs = require('fs') //module to read files
+const cors = require('cors'); //handle CORS issues
+
 const app = express()
 
 const apiModules = require('./api/handlers/toggl');
 
 var isProduction = process.env.NODE_ENV === 'production';
-var port = isProduction ? process.env.PORT : 4001;
+var port = isProduction ? process.env.PORT : 5001;
 
 var whitelist = [
     'http://localhost:8080',
@@ -30,15 +31,14 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 
-app.get('*', function(req, res, next){
-    if (req.path.indexOf('/api/') != -1){
+app.get('*', function(req, res, next) {
+    if (req.path.indexOf('/api/') != -1) {
         //route to the next middleware function
         return next()
     }
     fs.readFile(__dirname + '/build/index.html', 'utf8', function (err, text) {
         res.send(text);
     });
-
 })
 
 app.get('/', (req, res) => {
