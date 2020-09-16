@@ -16,12 +16,12 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        start_time: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },
         toggl_id: {
             type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        start_time: {
+            type: DataTypes.DATE,
             allowNull: false
         },
         contributor_id: { //FK

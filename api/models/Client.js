@@ -12,20 +12,20 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             allowNull: false,
         },
+        is_active: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
         name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        currency: {
             type: DataTypes.STRING,
             allowNull: false
         },
         date_created: {
             type: DataTypes.DATE,
-            allowNull: false
-        },
-        is_active: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false
-        },
-        currency: {
-            type: DataTypes.STRING,
             allowNull: false
         }
     },

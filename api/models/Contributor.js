@@ -12,14 +12,6 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             allowNull: false,
         },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        date_created: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },
         hourly_rate: {
             type: DataTypes.INTEGER,
             allowNull: false
@@ -30,6 +22,14 @@ module.exports = (sequelize) => {
         },
         monthly_rate: {
             type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        date_created: {
+            type: DataTypes.DATE,
             allowNull: false
         }
     },

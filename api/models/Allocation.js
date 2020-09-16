@@ -16,20 +16,20 @@ module.exports = (sequelize) => {
             type: Squelize.INTEGER,
             allowNull: false,
         },
-        date_created: {
-            type: Squelize.DATE,
-            allowNull: false,
-        },
-        date_paid: {
-            type: Squelize.DATE,
-            allowNull: false,
-        },
         rate_type: { //?
             type: Squelize.INTEGER,
             allowNull: false,
         },
         active: {
             type: Squelize.BOOLEAN,
+            allowNull: false,
+        },
+        date_created: {
+            type: Squelize.DATE,
+            allowNull: false,
+        },
+        date_paid: {
+            type: Squelize.DATE,
             allowNull: false,
         },
         payment_id: { //FK
