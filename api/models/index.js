@@ -37,6 +37,14 @@ sequelize
 const db = {
     sequelize,
     models: {
+        Allocation: require('./Allocation')(sequelize),
+        Client: require('./Client')(sequelize),
+        Contributor: require('./Contributor')(sequelize),
+        Issue: require('./Issue')(sequelize),
+        Payment: require('./Payment')(sequelize),
+        Project: require('./Project')(sequelize),
+        TimeEntry: require('./TimeEntry')(sequelize),
+
     }
 };
 
