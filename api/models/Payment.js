@@ -2,9 +2,9 @@ const Sequelize = require('sequelize')
 
 module.exports = (sequelize) => {
 
-    class Client extends Sequelize.Model {}
+    class Payment extends Sequelize.Model {}
 
-    Client.init({
+    Payment.init({
         // Model attributes are defined here
         id: {
             type: Sequelize.INTEGER,
@@ -12,27 +12,32 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             allowNull: false,
         },
-        name: {
-            type: DataTypes.STRING,
+        amount: {
+            type: DataTypes.INTEGER,
             allowNull: false
         },
-        date_created: {
+        date_incurred: {
             type: DataTypes.DATE,
             allowNull: false
-        }, is_active: {
-            type: DataTypes.BOOLEAN,
+        },
+        date_paid: {
+            type: DataTypes.DATE,
             allowNull: false
-        }, currency: {
-            type: DataTypes.STRING,
-            allowNull: false
-        }
+        },
+        client_id: { //FK
+            type: DataTypes.INTEGER,
+            references: {
+                model: Client,
+                key: 'id',
+            }
+        },
     },
     {
         // Model options go here
         sequelize,
-        modelName: 'Client'
+        modelName: 'Payment'
     });
 
-    return Client
+    return Payment
 
 }
