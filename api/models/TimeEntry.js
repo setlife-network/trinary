@@ -1,10 +1,13 @@
 const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
+const { Contributor } = require('./')
+const { Project } = require('./')
 
 module.exports = (sequelize) => {
 
     class TimeEntry extends Sequelize.Model {}
 
-    Payment.init({
+    TimeEntry.init({
         // Model attributes are defined here
         id: {
             type: Sequelize.INTEGER,

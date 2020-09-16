@@ -1,4 +1,7 @@
 const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
+
+const { Client } = require('./')
 
 module.exports = (sequelize) => {
 
@@ -7,7 +10,7 @@ module.exports = (sequelize) => {
     Project.init({
         // Model attributes are defined here
         id: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false,

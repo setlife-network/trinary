@@ -1,4 +1,6 @@
 const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
+
 const mysql2 = require('mysql2')
 const { MYSQL } = require('../config/credentials');
 

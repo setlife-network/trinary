@@ -1,35 +1,38 @@
 const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
+
+const { Contributor, Payment, Project } = require('./')
 
 module.exports = (sequelize) => {
 
-    class Allocations extends Sequelize.Model {}
+    class Allocation extends Sequelize.Model {}
 
-    Allocations.init({
+    Allocation.init({
         // Model attributes are defined here
         id: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false,
         },
         amount: {
-            type: Squelize.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         rate_type: { //?
-            type: Squelize.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         active: {
-            type: Squelize.BOOLEAN,
+            type: DataTypes.BOOLEAN,
             allowNull: false,
         },
         date_created: {
-            type: Squelize.DATE,
+            type: DataTypes.DATE,
             allowNull: false,
         },
         date_paid: {
-            type: Squelize.DATE,
+            type: Sequelize.DATE,
             allowNull: false,
         },
         payment_id: { //FK
@@ -60,9 +63,9 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'Allocations'
+        modelName: 'Allocation'
     });
 
-    return Allocations
+    return Allocation
 
 }
