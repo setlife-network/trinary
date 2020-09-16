@@ -2,9 +2,9 @@ const Sequelize = require('sequelize')
 
 module.exports = (sequelize) => {
 
-    class Client extends Sequelize.Model {}
+    class Contributor extends Sequelize.Model {}
 
-    Client.init({
+    Contributor.init({
         // Model attributes are defined here
         id: {
             type: Sequelize.INTEGER,
@@ -20,21 +20,25 @@ module.exports = (sequelize) => {
             type: DataTypes.DATE,
             allowNull: false
         },
-        is_active: {
-            type: DataTypes.BOOLEAN,
+        hourly_rate: {
+            type: DataTypes.INTEGER,
             allowNull: false
         },
-        currency: {
-            type: DataTypes.STRING,
+        weekly_rate: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        monthly_rate: {
+            type: DataTypes.INTEGER,
             allowNull: false
         }
     },
     {
         // Model options go here
         sequelize,
-        modelName: 'Client'
+        modelName: 'Contributor'
     });
 
-    return Client
+    return Contributor
 
 }
