@@ -1,16 +1,15 @@
 const Sequelize = require('sequelize')
-const { Client } = require('../models/index')
-const { insertQuery } = require('./sequelizeDb')
+const  db  = require('../models/')
 
-module.exports = (sequelize) => {
+const sequelize = module.exports = (sequelize => {
 
     const insertQuery = () => {
-        const client = Client.create(
+        const client = db.models.Client.create(
             {
-                name: 'SetLife',
                 is_active: 'true',
+                name: 'SetLife',
                 currency: '$',
-                dtae_created: new Date()
+                date_created: new Date()
             }
         );
         console.log('client\'s auto-generated ID:', client.id);
@@ -19,7 +18,7 @@ module.exports = (sequelize) => {
     return {
         insertQuery
     }
-}
-// 
-// console.log('this.insertQuery()');
-// console.log(insertQuery());
+})();
+//
+console.log('this.insertQuery()');
+console.log(sequelize.insertQuery());
