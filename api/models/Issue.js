@@ -22,10 +22,10 @@ module.exports = (sequelize) => {
         project_id: { //FK
             type: DataTypes.INTEGER,
             allowNull: false,
-            references: {
-                model: Project,
-                key: 'id',
-            }
+            // references: {
+            //     model: module.Project,
+            //     key: 'id',
+            // }
         }
     },
     {

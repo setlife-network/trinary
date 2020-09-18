@@ -21,4 +21,4 @@ const sequelize = module.exports = (sequelize => {
 })();
 //
 console.log('this.insertQuery()');
-console.log(sequelize.insertQuery());
+// console.log(sequelize.insertQuery());
