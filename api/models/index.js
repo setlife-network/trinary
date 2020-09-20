@@ -29,9 +29,9 @@ const sequelize = new Sequelize(
 
 sequelize
     .authenticate()
-    .then(function(err) {
+    .then(async function(err) {
         console.log('Connection has been established successfully.');
-        sequelize.sync({ force: true })
+        await db.sequelize.sync();
     })
     .catch(function (err) {
         console.log('Unable to connect to the database:', err);
