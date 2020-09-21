@@ -3,11 +3,12 @@ const {
     TOGGL
 } = require('../../config/credentials')
 
-var togglClient = new TogglClient({apiToken: `3502210cbe890bdb7c42c1d5ede87713`});
+var togglClient = new TogglClient({apiToken: TOGGL.API_KEY});
 
 
 const toggl = module.exports = (() => {
-
+    console.log('TOGGL.API_KEY');
+    console.log(TOGGL.API_KEY);
     const fetchTimeEntries = new Promise((resolve, reject) => {
         togglClient.getTimeEntries((err, timeEntries) => {
             if (err){
