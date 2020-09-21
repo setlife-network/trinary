@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 module.exports = {
+    GITHUB: process.env.GITHUB,
     // MYSQL Access Keys
     MYSQL: {
         DB_HOST: process.env.MYSQL_DB_HOST,

@@ -1,38 +1,54 @@
 const { Octokit } = require('@octokit/rest');
 
+const { GITHUB } = require('../config/credentials')
+const { GITHUB_OAUTH_URL } = require('../config/constants')
+
 const github = module.exports = (() => {
 
-    const fetchTeamData = async (params) => {
-
-        const octokit = new Octokit({
-            auth: params.auth_key,
-        });
-        const teamInfo = await octokit.users.getAuthenticated();
-        if (teamInfo.status == 200) {
-            //request was made succesfully
-            return teamInfo.data
-        } else {
-            return ('An error ocurred')
-        }
-
+    const fetchRepos = async (params) => {
+        return new Promise((resolve, reject) => {
+            const octokit = new Octokit({
+                auth: params.auth_key,
+            });
+            octokit.repos.listForAuthenticatedUser()
+                .then(result => {
+                    if (result.status == 200) {
+                        resolve(result)
+                    } else {
+                        throw (result.status)
+                    }
+                })
+                .catch(error => {
+                    reject(new Error('An error ocurred ' + error))
+                })
+        })
     }
 
-    //TODO: modify for organizations
-    const fetchTeamRepos = async (params) => {
-        const octokit = new Octokit({
-            auth: params.auth_key,
-        });
-        const repoList = await octokit.repos.listForAuthenticatedUser();
-
-        return repoList
-    }
-
-    const fetchUserIssues = async (params) => {
-        const octokit = new Octokit({
-            auth: params.auth_key,
-        });
-
-        return octokit.issues.list();
+    const fetchUserData = async (params) => {
+        return new Promise((resolve, reject) => {
+            const octokit = new Octokit({
+                auth: params.auth_key,
+            });
+            octokit.users.getAuthenticated({})
+                .then(result => {
+                    if (result.status == 200) {
+                        console.log('results')
+                        console.log(result)
+                        const { html_url, id, name, email } = result.data
+                        resolve({
+                            id,
+                            name,
+                            email,
+                            githubUrl: html_url
+                        })
+                    } else {
+                        reject(new Error('An error occurred' + result.status))
+                    }
+                })
+                .catch(error => {
+                    reject(new Error('An error ocurred ' + error))
+                })
+        })
     }
 
     const fetchRepoIssues = async (params) => {
@@ -43,12 +59,22 @@ const github = module.exports = (() => {
             owner: params.auth_key,
             repo: params.repo_id,
         });
-
     }
 
+    const fetchAccessToken = (params) => {
+        return new Promise((resolve, reject) => {
+            json({
+                method: 'POST',
+                url: `${GITHUB_OAUTH_URL}?client_id=${GITHUB.CLIENT_ID}&client_secret=${GITHUB.CLIENT_SECRET}&code=${params.code}`
+            })
+                .then(response => {
+                    resolve(response.access_token)
+                })
+        });
+    };
+
     return {
-        fetchTeamData,
-        fetchUserIssues,
-        fetchTeamRepos
+        fetchUserData,
+        fetchUserIssues
     }
 })()
