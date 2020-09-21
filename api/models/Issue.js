@@ -22,10 +22,11 @@ module.exports = (sequelize) => {
         project_id: { //FK
             type: DataTypes.INTEGER,
             allowNull: false,
-            // references: {
-            //     model: module.Project,
-            //     key: 'id',
-            // }
+            references: {
+                model: 'Projects',
+                //deferrable: Sequelize.Deferrable.INITIALLY_DEFERRED,
+                key: 'id',
+            }
         }
     },
     {
@@ -33,6 +34,9 @@ module.exports = (sequelize) => {
         sequelize,
         modelName: 'Issue'
     });
+    // Issue.associate = (models) => {
+    //     Issue.hasOne(Sequelize.models.Project);
+    // };
 
     return Issue
 

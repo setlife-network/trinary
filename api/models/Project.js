@@ -1,13 +1,13 @@
 const Sequelize = require('sequelize')
-const { DataTypes } = require('sequelize')
+const { DataTypes, Deferrable } = require('sequelize')
 
-const { Client } = require('./')
+const Client = require('./Client')
 
 module.exports = (sequelize) => {
 
     class Project extends Sequelize.Model {}
 
-    Project.init({
+    Project.init ({
         // Model attributes are defined here
         id: {
             type: DataTypes.INTEGER,
@@ -36,12 +36,12 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         client_id: { //FK
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            // references: {
-            //     model: module.Client,
-            //     key: 'id',
-            // }
+            type: DataTypes.INTEGER(11),
+            references: {
+                model: 'Clients',
+                key: 'id',
+                deferrable: Deferrable.INITIALLY_IMMEDIATE
+            }
         }
     },
     {
@@ -49,6 +49,8 @@ module.exports = (sequelize) => {
         sequelize,
         modelName: 'Project'
     });
+
+
 
     return Project
 

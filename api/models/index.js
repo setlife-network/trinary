@@ -33,6 +33,10 @@ sequelize
         console.log('Connection has been established successfully.');
         await db.sequelize.sync();
     })
+    // .then(() => {
+    //     console.log('adding FK');
+    //     db.sequelize.models.Project.hasOne(db.sequelize.models.Client);
+    // })
     .catch(function (err) {
         console.log('Unable to connect to the database:', err);
     });

@@ -29,10 +29,10 @@ module.exports = (sequelize) => {
         client_id: { //FK
             type: DataTypes.INTEGER,
             allowNull: false,
-            // references: {
-            //     model: module.Client,
-            //     key: 'id',
-            // }
+            references: {
+                model: 'Clients',
+                key: 'id',
+            }
         }
     },
     {

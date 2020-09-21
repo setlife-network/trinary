@@ -38,28 +38,29 @@ module.exports = (sequelize) => {
         payment_id: { //FK
             type: DataTypes.INTEGER,
             allowNull: false,
-            // references: {
-            //     model: module.Payment,
-            //     key: 'id',
-            // }
+            references: {
+                model: 'Payments',
+                key: 'id',
+            }
         },
         project_id: { //FK
             type: DataTypes.INTEGER,
             allowNull: false,
-            // references: {
-            //     model: module.Project,
-            //     key: 'id',
-            // }
+            references: {
+                model: 'Projects',
+                key: 'id',
+            }
         },
         contributor_id: { //FK
             type: DataTypes.INTEGER,
             allowNull: false,
-            // references: {
-            //     model: module.Contributor,
-            //     key: 'id',
-            // }
-        },
+            references: {
+                model: 'Contributors',
+                key: 'id',
+            }
+        }
     },
+
     {
         // Model options go here
         sequelize,

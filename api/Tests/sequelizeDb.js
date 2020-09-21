@@ -16,15 +16,18 @@ const sequelize = module.exports = (sequelize => {
     //     });
 
     const insertQuery = async () => {
-        const client = await db.models.Client.create({
-            is_active: true,
-            name: 'SetLife',
+        const project = await db.models.Client.create({
             currency: '$',
-            date_created: new Date()
+            is_active: true,
+            name: 'Tech Education',
+            date_created:new Date()
         })
 
-        console.log('client\'s auto-generated ID:', client.id);
-        console.log(client.toJSON());
+        console.log('project\'s auto-generated ID:', project.id);
+        console.log(project.toJSON());
+        console.log('Project');
+        console.log(db.models.Project);
+
     }
 
     return {
