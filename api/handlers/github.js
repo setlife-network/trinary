@@ -5,6 +5,18 @@ const { GITHUB_OAUTH_URL } = require('../config/constants')
 
 const github = module.exports = (() => {
 
+    const fetchAccessToken = (params) => {
+        return new Promise((resolve, reject) => {
+            json({
+                method: 'POST',
+                url: `${GITHUB_OAUTH_URL}?client_id=${GITHUB.CLIENT_ID}&client_secret=${GITHUB.CLIENT_SECRET}&code=${params.code}`
+            })
+                .then(response => {
+                    resolve(response.access_token)
+                })
+        });
+    };
+
     const fetchRepos = async (params) => {
         return new Promise((resolve, reject) => {
             const octokit = new Octokit({
@@ -22,6 +34,16 @@ const github = module.exports = (() => {
                     reject(new Error('An error ocurred ' + error))
                 })
         })
+    }
+
+    const fetchRepoIssues = async (params) => {
+        const octokit = new Octokit({
+            auth: params.auth_key,
+        });
+        return octokit.issues.listForRepo({
+            owner: params.auth_key,
+            repo: params.repo_id,
+        });
     }
 
     const fetchUserData = async (params) => {
@@ -51,30 +73,10 @@ const github = module.exports = (() => {
         })
     }
 
-    const fetchRepoIssues = async (params) => {
-        const octokit = new Octokit({
-            auth: params.auth_key,
-        });
-        return octokit.issues.listForRepo({
-            owner: params.auth_key,
-            repo: params.repo_id,
-        });
-    }
-
-    const fetchAccessToken = (params) => {
-        return new Promise((resolve, reject) => {
-            json({
-                method: 'POST',
-                url: `${GITHUB_OAUTH_URL}?client_id=${GITHUB.CLIENT_ID}&client_secret=${GITHUB.CLIENT_SECRET}&code=${params.code}`
-            })
-                .then(response => {
-                    resolve(response.access_token)
-                })
-        });
-    };
-
     return {
         fetchUserData,
-        fetchUserIssues
+        fetchRepos,
+        fetchRepoIssues,
+        fetchAccessToken
     }
 })()
