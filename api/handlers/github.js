@@ -17,7 +17,7 @@ const github = module.exports = (() => {
         });
     };
 
-    const fetchRepos = async (params) => {
+    const fetchRepos = (params) => {
         return new Promise((resolve, reject) => {
             const octokit = new Octokit({
                 auth: params.auth_key,
@@ -36,7 +36,7 @@ const github = module.exports = (() => {
         })
     }
 
-    const fetchRepoIssues = async (params) => {
+    const fetchRepoIssues = (params) => {
         const octokit = new Octokit({
             auth: params.auth_key,
         });
@@ -46,7 +46,7 @@ const github = module.exports = (() => {
         });
     }
 
-    const fetchUserData = async (params) => {
+    const fetchUserData = (params) => {
         return new Promise((resolve, reject) => {
             const octokit = new Octokit({
                 auth: params.auth_key,
