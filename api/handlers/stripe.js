@@ -1,10 +1,15 @@
-const stripeAPI = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+const stripeAPI = require('stripe');
+
+const {
+    STRIPE
+} = require('../../config/credentials')
 
 const stripe = module.exports = (() => {
 
     const requestPaymentIntent = (params) => {
         const paymentIntent = new Promise((resolve, reject) => {
-            stripeAPI.paymentIntents.create({
+            const stripeClient = stripeAPI(STRIPE.API_KEY)
+            stripeClient.paymentIntents.create({
                 amount: 1000,
                 currency: 'usd',
                 payment_method_types: ['card'],
@@ -21,4 +26,5 @@ const stripe = module.exports = (() => {
     return {
         requestPaymentIntent
     }
+    
 })();
