@@ -1,5 +1,9 @@
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 module.exports = {
-    STRIPE = {
+    STRIPE: {
         API_KEY: process.env.SRIPE_API_KEY
     }
 }
