@@ -13,7 +13,7 @@ const stripe = module.exports = (() => {
                 amount: 1000,
                 currency: 'usd',
                 payment_method_types: ['card'],
-                receipt_email: 'jenny.rosen@example.com',
+                receipt_email: 'test@example.com',
             })
                 .then(response => {
                     resolve(response)
@@ -26,5 +26,5 @@ const stripe = module.exports = (() => {
     return {
         requestPaymentIntent
     }
-    
+
 })();
