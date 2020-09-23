@@ -1,5 +1,4 @@
-const Sequelize = require('sequelize')
-const  db  = require('../models/')
+const db = require('../models')
 
 const sequelize = module.exports = (sequelize => {
 
@@ -20,7 +19,7 @@ const sequelize = module.exports = (sequelize => {
             currency: '$',
             is_active: true,
             name: 'Tech Education',
-            date_created:new Date()
+            date_created: new Date()
         })
 
         console.log('project\'s auto-generated ID:', project.id);

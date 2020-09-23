@@ -1,9 +1,11 @@
-
 require('dotenv').config()
-console.log('process.env.MYSQL_DB_HOST');
-console.log(process.env);
+
 module.exports = {
+    // 3rd Party App Access Keys
     GITHUB: process.env.GITHUB,
+    TOGGL: {
+        API_KEY: process.env.TOGGL_API_KEY,
+    },
     // MYSQL Access Keys
     MYSQL: {
         DB_HOST: 'nwhazdrp7hdpd4a4.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
