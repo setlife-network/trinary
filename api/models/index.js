@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const mysql2 = require('mysql2')
+
 const { MYSQL } = require('../config/credentials');
 
 const {
@@ -27,8 +27,9 @@ const sequelize = new Sequelize(
 
 sequelize
     .authenticate()
-    .then(function(err) {
+    .then(async function(err) {
         console.log('Connection has been established successfully.');
+        await db.sequelize.sync();
     })
     .catch(function (err) {
         console.log('Unable to connect to the database:', err);
@@ -37,6 +38,13 @@ sequelize
 const db = {
     sequelize,
     models: {
+        Allocation: require('./Allocation')(sequelize),
+        Client: require('./Client')(sequelize),
+        Contributor: require('./Contributor')(sequelize),
+        Issue: require('./Issue')(sequelize),
+        Payment: require('./Payment')(sequelize),
+        Project: require('./Project')(sequelize),
+        TimeEntry: require('./TimeEntry')(sequelize),
     }
 };
 
