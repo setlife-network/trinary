@@ -1,11 +1,11 @@
 const Sequelize = require('sequelize')
-const { DataTypes, Deferrable} = require('sequelize')
+const { DataTypes, Deferrable } = require('sequelize')
 
 module.exports = (sequelize) => {
 
     class Client extends Sequelize.Model {}
 
-    Client .init({
+    Client.init({
         // Model attributes are defined here
         id: {
             type: DataTypes.INTEGER(11),
