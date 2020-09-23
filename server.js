@@ -43,6 +43,11 @@ app.get('/', (req, res) => {
     res.send('Hello World')
 })
 
+// app.get('/api/fetchInvoice', (req, res) => {
+//     const file = fs.readFile('./docs/invoicely/invoices/payments-2019.csv')
+//     res.send(file)
+// })
+
 app.listen(port, () => {
     console.log(`Trinary project app listening at http://localhost:${port}`)
 })
