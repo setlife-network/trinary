@@ -39,14 +39,18 @@ module.exports = (() => {
 
         //Iterate object collection and create the data object into the db
         dataObject.map(d => {
+
             //TODO: call function create from db functions
-            //Example:
             //client_id = dbFunctions.findClient(name:d.Client)
-            //dbFunctions.addUser({
-            //amount:d[Total]
-            //date_incurred: d['date issued']
-            //client_id: client_id
-            //})
+            /*Example:
+                dbFunctions.addInvoice({
+                    amount:d[Total]
+                    date_incurred: d['date issued']
+                    date_paid: d['date paid']
+                    client_id: client_id
+                })
+            */
+
         })
 
         console.log('dataObject');
