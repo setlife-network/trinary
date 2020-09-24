@@ -5,6 +5,8 @@ const cors = require('cors'); //handle CORS issues
 
 const app = express()
 
+const apiModules = require('./api/handlers/toggl');
+
 var isProduction = process.env.NODE_ENV === 'production';
 var port = isProduction ? process.env.PORT : 5001;
 
