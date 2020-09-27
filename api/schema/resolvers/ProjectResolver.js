@@ -3,10 +3,11 @@ const Date = require('../helpers/DateScalar')
 module.exports = (() => {
     return {
         Project: {
-            async client (payment) {
+            async client (project) {
                 return project.getClients()
             }
         },
+
         Query: {
             getProject(root, { id }, { models }) {
                 return models.Project.findBy(id)
@@ -15,6 +16,7 @@ module.exports = (() => {
                 return models.Client.findOne({ where: { project_id: projectId } })
             }
         },
+        
         Mutation: {
             createProject: async(root, {
                 expected_budget,

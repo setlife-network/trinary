@@ -27,7 +27,7 @@ module.exports = gql`
             github_url: String!
             date: Date!
             clientId: Int!
-        )
+        ): Project
     }
 
 `
