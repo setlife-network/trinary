@@ -1,4 +1,5 @@
 const { makeExecutableSchema, mergeResolvers, mergeTypes } = require('graphql-tools');
+
 //import resolvers
 
 //import types
@@ -28,5 +29,5 @@ const resolvers = mergeResolvers([
 
 export const schema = makeExecutableSchema({
     typeDefs,
-    resolvers,
+    resolvers
 });
