@@ -1,4 +1,4 @@
-const Date = requires('../helpers/DateScalar')
+const Date = require('../helpers/DateScalar')
 
 module.exports = (() => {
 
