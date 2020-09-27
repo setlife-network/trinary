@@ -1,6 +1,13 @@
 const { makeExecutableSchema, mergeResolvers, mergeTypes } = require('graphql-tools');
 
 //import resolvers
+const AllocationResolver = require('./resolvers/AllocationResolver')
+const ClientResolver = require('./resolvers/ClientResolver')
+const ContributorResolver = require('./resolvers/ContributorResolver')
+const IssueResolver = require('./resolvers/IssueResolver')
+const PaymentResolver = require('./resolvers/PaymentResolver')
+const ProjectResolver = require('./resolvers/ProjectResolver')
+const TimeEntryResolver = require('./resolvers/TimeEntryResolver')
 
 //import types
 const AllocationType = require('./types/AllocationType')
@@ -24,7 +31,13 @@ const typeDefs = mergeTpes[(
 
 //merge resolvers
 const resolvers = mergeResolvers([
-
+    AllocationResolver,
+    ClientResolver,
+    ContributorResolver,
+    IssueResolver,
+    PaymentResolver,
+    ProjectResolver,
+    TimeEntryResolver
 ])
 
 export const schema = makeExecutableSchema({
