@@ -7,7 +7,7 @@ module.exports = (sequelize) => {
 
     class Project extends Sequelize.Model {}
 
-    Project.init ({
+    Project.init({
         // Model attributes are defined here
         id: {
             type: DataTypes.INTEGER,
@@ -49,8 +49,6 @@ module.exports = (sequelize) => {
         sequelize,
         modelName: 'Project'
     });
-
-
 
     return Project
 
