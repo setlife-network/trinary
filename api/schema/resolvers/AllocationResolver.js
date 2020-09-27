@@ -1,3 +1,5 @@
+const Date = requires('../helpers/DateScalar')
+
 module.exports = (() => {
     return {
         Allocation: {
