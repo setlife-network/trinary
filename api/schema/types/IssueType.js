@@ -1,6 +1,7 @@
-const gql = require('apollo-server')
+const { gql } = require('apollo-server')
 
 module.exports = gql`
+
     type Issue {
         id: Int!
         github_url: String!
