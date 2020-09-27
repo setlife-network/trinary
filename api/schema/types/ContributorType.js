@@ -19,10 +19,10 @@ module.exports = gql`
 
     type Mutation {
         createContributor(
-            hourly_rate: Int
-            weekly_rate: Int
-            monthly_rate: Int
-            name: String!
+            hourly_rate: Int,
+            weekly_rate: Int,
+            monthly_rate: Int,
+            name: String!,
             date_created: Date!
         ): Contributor
     }

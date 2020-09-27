@@ -15,7 +15,7 @@ module.exports = gql`
     type Mutation {
         createIssue(
             github_url: String!
-            project: Project!
+            projectId: Int!
         ): Issue
     }
 `

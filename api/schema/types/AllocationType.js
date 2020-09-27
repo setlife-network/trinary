@@ -30,8 +30,8 @@ module.exports = gql`
             active: Boolean!,
             date_created: Date!,
             date_paid: Date!,
-            payment: Payment,
-            proyect: Proyect,
+            paymentId: Int!,
+            proyectId: Int!,
             contributorId: Int!
         ): Allocation
     }

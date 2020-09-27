@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const { DataTypes } = require('sequelize')
-const { Client } = require('./')
+const { Client } = require('.')
 
 module.exports = (sequelize) => {
 
@@ -23,8 +23,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         date_paid: {
-            type: DataTypes.DATE,
-            allowNull: false
+            type: DataTypes.DATE
         },
         client_id: { //FK
             type: DataTypes.INTEGER,

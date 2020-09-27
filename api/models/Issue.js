@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const { DataTypes } = require('sequelize')
 
-const { Project } = require('./')
+const { Project } = require('.')
 
 module.exports = (sequelize) => {
 
