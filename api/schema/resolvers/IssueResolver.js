@@ -2,47 +2,33 @@ const sequelize = require('sequelize')
 
 const Date = require('../helpers/DateScalar')
 
-module.exports = (() => {
-    return {
-        Issue: {
-            async project (issue) {
-                return issue.getProjects()
-            }
+module.exports = {
+
+    Issue: {
+        async project (issue, args, { models }) {
+            return models.Project.findByPk(issue.project_id)
+        }
+    },
+
+    Query: {
+        issue(root, { id }, { models }) {
+            return models.Issue.findByPk(id)
         },
-        Query: {
-            getIssue(root, { id }, { models }) {
-                return models.Issue.findBy(id)
-            },
-            getProjectIssues(root, { projectId }, { models }) {
-                //A good replacement for this might be findByPK
-                //Consider moving this to client resolver
-                return sequelize.query(
-                    `
-                        SELECT *
-                            FROM Issue
-                            WHERE Issue.id = (
-                                SELECT Project.issueId
-                                    FROM  project
-                                    WHERE Project.id = :project_id
-                            )
-                    `,
-                    {
-                        replacements: { projectId: project_id },
-                        type: sequelize.QueryTypes.SELECT
-                    }
-                )
-            }
-        },
-        Mutation: {
-            createIssue: async(root, {
+        projectIssues(root, { projectId }, { models }) {
+            return models.Issue.findAll({ where: { project_id: projectId } })
+        }
+    },
+
+    Mutation: {
+        createIssue: async(root, {
+            github_url,
+            project_id
+        }, { models }) => {
+            return models.Issue.create({
                 github_url,
-                projectId
-            }) => {
-                return models.Issue.create({
-                    github_url,
-                    projectId
-                })
-            }
+                project_id
+            })
         }
     }
-})
+
+}

@@ -1,43 +1,44 @@
 const Date = require('../helpers/DateScalar')
 
-module.exports = (() => {
-    return {
+module.exports = {
 
-        TimeEntry: {
-            async contributor (timeEntry) {
-                return timeEntry.getContributors()
-            },
-            async project (timeEntry) {
-                return timeEntry.getProjects()
-            }
+    TimeEntry: {
+        async contributor (timeEntry, args, { models }) {
+            return models.Contributor.findByPk(timeEntry.contributor_id)
         },
-
-        Query: {
-            getTimeEntry(root, { id }, { models }) {
-                return models.TimeEntry.findBy(id)
-            },
-            getProjectTimeEntries(root, { models }) {
-                return models.TimeEntry.findAll()
-            }
-        },
-
-        Mutations: {
-            createTimeEntry({
-                seconds,
-                togglId,
-                startTime,
-                contributorId,
-                projectId
-            }) {
-                return models.TimeEntry.create({
-                    seconds,
-                    togglId,
-                    startTime,
-                    contributorId,
-                    projectId
-                })
-            }
+        async project (timeEntry, args, { models }) {
+            return models.Project.findByPk(timeEntry.project_id)
         }
+    },
 
+    Query: {
+        timeEntry(root, { id }, { models }) {
+            return models.TimeEntry.findByPk(id)
+        },
+        timeEntries(root, args, { models }) {
+            return models.TimeEntry.findAll()
+        },
+        projectTimeEntries(root, { projectId }, { models }) {
+            return models.TimeEntry.findAll({ where: { project_id: projectId } })
+        }
+    },
+
+    Mutation: {
+        createTimeEntry: async (root, {
+            seconds,
+            toggl_id,
+            start_time,
+            contributor_id,
+            project_id
+        }, { models }) => {
+            return models.TimeEntry.create({
+                seconds,
+                toggl_id,
+                start_time,
+                contributor_id,
+                project_id
+            })
+        }
     }
-})
+
+}

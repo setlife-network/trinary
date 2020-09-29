@@ -1,40 +1,43 @@
 const Date = require('../helpers/DateScalar')
 
-module.exports = (() => {
-    return {
-        Project: {
-            async client (project) {
-                return project.getClients()
-            }
-        },
+module.exports = {
 
-        Query: {
-            getProject(root, { id }, { models }) {
-                return models.Project.findBy(id)
-            },
-            getProjectClient(root, { projectId }, { models }) {
-                return models.Client.findOne({ where: { project_id: projectId } })
-            }
+    Project: {
+        async client (project, args, { models }) {
+            return models.Client.findByPk(project.client_id)
         },
-        
-        Mutation: {
-            createProject: async(root, {
+        async issues (project, args, { models }) {
+            return models.Issue.findAll({ where: { project_id: project.id } })
+        }
+    },
+
+    Query: {
+        project(root, { id }, { models }) {
+            return models.Project.findByPk(id)
+        },
+        projects(root, args, { models }) {
+            return models.Project.findAll()
+        }
+    },
+
+    Mutation: {
+        createProject: async(root, {
+            expected_budget,
+            is_active,
+            name,
+            github_url,
+            date,
+            client_id
+        }, { models }) => {
+            return models.Project.create({
                 expected_budget,
                 is_active,
                 name,
                 github_url,
                 date,
-                clientId
-            }) => {
-                return models.Issue.create({
-                    expected_budget,
-                    is_active,
-                    name,
-                    github_url,
-                    date,
-                    clientId
-                })
-            }
+                client_id
+            })
         }
     }
-})
+
+}

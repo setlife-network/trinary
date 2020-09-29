@@ -1,4 +1,5 @@
-const { makeExecutableSchema, mergeResolvers, mergeTypes } = require('graphql-tools');
+const { makeExecutableSchema } = require('apollo-server');
+const { mergeTypeDefs, mergeResolvers } = require('@graphql-tools/merge');
 
 //import resolvers
 const AllocationResolver = require('./resolvers/AllocationResolver')
@@ -19,7 +20,7 @@ const ProjectType = require('./types/ProjectType')
 const TimeEntry = require('./types/TimeEntryType')
 
 //merge types
-const typeDefs = mergeTpes[(
+const typeDefs = mergeTypeDefs([
     AllocationType,
     ClientType,
     ContributorType,
@@ -27,7 +28,7 @@ const typeDefs = mergeTpes[(
     PaymentType,
     ProjectType,
     TimeEntry
-)]
+])
 
 //merge resolvers
 const resolvers = mergeResolvers([
@@ -40,7 +41,8 @@ const resolvers = mergeResolvers([
     TimeEntryResolver
 ])
 
-export const schema = makeExecutableSchema({
+// Export generated schema
+module.exports = makeExecutableSchema({
     typeDefs,
     resolvers
 });

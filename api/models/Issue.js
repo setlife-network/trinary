@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         github_url: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false
         },
         project_id: { //FK
@@ -24,7 +24,6 @@ module.exports = (sequelize) => {
             allowNull: false,
             references: {
                 model: 'Projects',
-                //deferrable: Sequelize.Deferrable.INITIALLY_DEFERRED,
                 key: 'id',
             }
         }
@@ -34,9 +33,6 @@ module.exports = (sequelize) => {
         sequelize,
         modelName: 'Issue'
     });
-    // Issue.associate = (models) => {
-    //     Issue.hasOne(Sequelize.models.Project);
-    // };
 
     return Issue
 

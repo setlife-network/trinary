@@ -1,41 +1,37 @@
 const Date = require('../helpers/DateScalar')
 
-module.exports = (() => {
+module.exports = {
 
-    return {
-        Client: {
-            async payment (client) {
-                return client.getPayments()
-            },
-            async proyect (client) {
-                return client.getProyects()
-            },
-            async contributor (client) {
-                return client.getContributors()
-            }
+    Client: {
+        async payments (client, args, { models }) {
+            return models.Payment.findAll({ where: { client_id: client.id } })
         },
-        Query: {
-            getClient: async (root, { id }, { models }) => {
-                return models.Client.findBy(id)
-            },
-            getClients: async (root, { models }) => {
-                return models.Client.findAll()
-            }
+        async projects (client, args, { models }) {
+            return models.Project.findAll({ where: { client_id: client.id } })
+        }
+    },
+    Query: {
+        client: async (root, { id }, { models }) => {
+            return models.Client.findByPk(id)
         },
-        Mutations: {
-            createClient: async (root, {
+        clients: async (parent, args, { models }) => {
+            return models.Client.findAll()
+        }
+    },
+    Mutation: {
+        createClient: async (root, {
+            is_active,
+            name,
+            currency,
+            date_created
+        }, { models }) => {
+            return models.Client.create({
                 is_active,
                 name,
                 currency,
                 date_created
-            }) => {
-                return models.Allocation.create({
-                    is_active,
-                    name,
-                    currency,
-                    date_created
-                })
-            }
+            })
         }
     }
-})
+
+}

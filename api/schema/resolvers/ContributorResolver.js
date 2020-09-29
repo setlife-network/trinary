@@ -1,31 +1,31 @@
 const Date = require('../helpers/DateScalar')
 
-module.exports = (() => {
-    return {
-        Query: {
-            getContributors(_, { models }) {
-                return models.Contributor.findAll()
-            },
-            getContributor(_, { id }, { models }) {
-                return models.Contributor.findBy(id)
-            }
+module.exports = {
+
+    Query: {
+        contributors(root, args, { models }) {
+            return models.Contributor.findAll()
         },
-        Mutation: {
-            createContributor: async (root, {
+        contributor(root, { id }, { models }) {
+            return models.Contributor.findByPk(id)
+        }
+    },
+    Mutation: {
+        createContributor: async (root, {
+            hourly_rate,
+            weekly_rate,
+            monthly_rate,
+            name,
+            date_created
+        }, { models }) => {
+            return models.Contributor.create({
                 hourly_rate,
                 weekly_rate,
                 monthly_rate,
                 name,
                 date_created
-            }) => {
-                return models.Contributor.create({
-                    hourly_rate,
-                    weekly_rate,
-                    monthly_rate,
-                    name,
-                    date_created
-                })
-            }
+            })
         }
     }
-})
+
+}

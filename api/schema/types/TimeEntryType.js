@@ -14,17 +14,18 @@ module.exports = gql`
     }
 
     type Query {
-        getTimeEntry(id: Int!): TimeEntry
-        getProjectTimeEntries(projectId: Int!): [TimeEntry]
+        timeEntry(id: Int!): TimeEntry
+        timeEntries: [TimeEntry]
+        projectTimeEntries(projectId: Int!): [TimeEntry]
     }
 
     type Mutation {
         createTimeEntry(
             seconds: Int!,
-            togglId: Int!,
-            startTime: Date!,
-            contributorId: Int!,
-            projectId: Project
+            toggl_id: Int!,
+            start_time: Date!,
+            contributor_id: Int!,
+            project_id: Int!
         ): TimeEntry
     }
 

@@ -54,8 +54,6 @@ const github = module.exports = (() => {
             octokit.users.getAuthenticated({})
                 .then(result => {
                     if (result.status == 200) {
-                        console.log('results')
-                        console.log(result)
                         const { html_url, id, name, email } = result.data
                         resolve({
                             id,

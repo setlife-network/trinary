@@ -9,18 +9,18 @@ module.exports = gql`
     type Allocation {
         id: Int!
         amount: Int!
-        rate_type: Int!
+        rateType: Int!
         active: Boolean!
-        date_created: Date!
-        date_paid: Date!
+        dateCreated: Date!
+        datePaid: Date!
         payment: Payment
-        proyect: Proyect
+        project: Project
         contributor: Contributor
     }
 
     type Query {
-        getAllocations: [Allocation]
-        getAllocation(id: Int!): Allocation
+        allocation(id: Int!): Allocation
+        allocations: [Allocation]
     }
 
     type Mutation {
@@ -30,9 +30,9 @@ module.exports = gql`
             active: Boolean!,
             date_created: Date!,
             date_paid: Date!,
-            paymentId: Int!,
-            proyectId: Int!,
-            contributorId: Int!
+            payment_id: Int!,
+            project_id: Int!,
+            contributor_id: Int!
         ): Allocation
     }
 

@@ -10,12 +10,13 @@ module.exports = gql`
         name: String!
         currency: String!
         date_created: Date!
-
+        payments: [Payment]
+        projects: [Project]
     }
 
     type Query {
-        getClients: [Client]
-        getClient(id: Int!): Client
+        client(id: Int!): Client
+        clients: [Client]
     }
 
     type Mutation {

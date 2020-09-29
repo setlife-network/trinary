@@ -5,22 +5,23 @@ module.exports = gql`
     type Payment {
         id: Int!
         amount: Int!
-        date_incurred: Date!
-        date_paid: Date
+        dateIncurred: Date!
+        datePaid: Date
         client: Client
     }
 
     type Query {
-        getPayment(id: Int!): Payment
-        getClientPayments(clientid: int!): [Payemnt]
+        payment(id: Int!): Payment
+        payments: [Payment]
+        clientPayments(clientId: Int!): [Payment]
     }
 
     type Mutation {
         createPayment(
             amount: Int!,
-            dateIncurred: Date!,
-            datePaid: Date,
-            clientId: Int!
+            date_incurred: Date,
+            date_paid: Date,
+            client_id: Int!
         ): Payment
     }
 

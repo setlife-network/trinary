@@ -9,14 +9,14 @@ module.exports = gql`
     }
 
     type Query {
-        getIssue(id: Int!): Issue,
-        getProjectIssues(projectId: Int!): [Issue]
+        issue(id: Int!): Issue
+        projectIssues(projectId: Int!): [Issue]
     }
 
     type Mutation {
         createIssue(
-            github_url: String!
-            projectId: Int!
+            github_url: String!,
+            project_id: Int!
         ): Issue
     }
 `
