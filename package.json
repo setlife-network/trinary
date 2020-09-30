@@ -29,6 +29,7 @@
     "react-scripts": "3.4.3",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
+    "stripe": "^8.97.0",
     "toggl-api": "^1.0.1",
     "xmlhttprequest": "^1.8.0"
   },
