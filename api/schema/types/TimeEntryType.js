@@ -2,13 +2,11 @@ const { gql } = require('apollo-server')
 
 module.exports = gql`
 
-    scalar Date
-
     type TimeEntry {
         id: Int!
         seconds: Int!
         togglId: Int!
-        startTime: Date!
+        startTime: String!
         contributor: Contributor!
         project: Project!
     }
@@ -23,7 +21,7 @@ module.exports = gql`
         createTimeEntry(
             seconds: Int!,
             toggl_id: Int!,
-            start_time: Date!,
+            start_time: String!,
             contributor_id: Int!,
             project_id: Int!
         ): TimeEntry

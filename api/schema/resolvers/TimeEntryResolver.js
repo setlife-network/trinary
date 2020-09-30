@@ -1,4 +1,4 @@
-const Date = require('../helpers/DateScalar')
+const moment = require('moment')
 
 module.exports = {
 
@@ -34,7 +34,7 @@ module.exports = {
             return models.TimeEntry.create({
                 seconds,
                 toggl_id,
-                start_time,
+                start_time: moment(start_time, 'YYYY-MM-DD'),
                 contributor_id,
                 project_id
             })

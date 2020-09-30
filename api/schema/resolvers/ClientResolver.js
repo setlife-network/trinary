@@ -1,4 +1,4 @@
-const Date = require('../helpers/DateScalar')
+const moment = require('moment')
 
 module.exports = {
 
@@ -29,7 +29,7 @@ module.exports = {
                 is_active,
                 name,
                 currency,
-                date_created
+                date_created: moment(date_created, 'YYYY-MM-DD')
             })
         }
     }

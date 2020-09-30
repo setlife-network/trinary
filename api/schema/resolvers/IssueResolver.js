@@ -1,7 +1,3 @@
-const sequelize = require('sequelize')
-
-const Date = require('../helpers/DateScalar')
-
 module.exports = {
 
     Issue: {

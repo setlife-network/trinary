@@ -2,8 +2,6 @@ const { gql } = require('apollo-server')
 
 module.exports = gql`
 
-    scalar Date
-
     "Define description"
 
     type Allocation {
@@ -11,8 +9,8 @@ module.exports = gql`
         amount: Int!
         rateType: Int!
         active: Boolean!
-        dateCreated: Date!
-        datePaid: Date!
+        dateCreated: String!
+        datePaid: String
         payment: Payment
         project: Project
         contributor: Contributor
@@ -28,8 +26,8 @@ module.exports = gql`
             amount: Int!,
             rate_type: Int,
             active: Boolean!,
-            date_created: Date!,
-            date_paid: Date!,
+            date_created: String!,
+            date_paid: String,
             payment_id: Int!,
             project_id: Int!,
             contributor_id: Int!

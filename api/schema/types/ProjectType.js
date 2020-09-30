@@ -2,15 +2,13 @@ const { gql } = require('apollo-server')
 
 module.exports = gql`
 
-    scalar Date
-
     type Project {
         id: Int!
         expected_budget: Int!
         is_active: Boolean!
         name: String!
         github_url: String!
-        date: Date!
+        date: String!
         client: Client
         issues: [Issue]
     }
@@ -26,7 +24,7 @@ module.exports = gql`
             is_active: Boolean!
             name: String!
             github_url: String!
-            date: Date!
+            date: String!
             client_id: Int!
         ): Project
     }

@@ -5,8 +5,8 @@ module.exports = gql`
     type Payment {
         id: Int!
         amount: Int!
-        dateIncurred: Date!
-        datePaid: Date
+        dateIncurred: String!
+        datePaid: String
         client: Client
     }
 
@@ -19,8 +19,8 @@ module.exports = gql`
     type Mutation {
         createPayment(
             amount: Int!,
-            date_incurred: Date,
-            date_paid: Date,
+            date_incurred: String,
+            date_paid: String,
             client_id: Int!
         ): Payment
     }

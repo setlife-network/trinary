@@ -1,4 +1,4 @@
-const Date = require('../helpers/DateScalar')
+const moment = require('moment')
 
 module.exports = {
 
@@ -27,8 +27,8 @@ module.exports = {
         }, { models }) => {
             return models.Payment.create({
                 amount,
-                date_incurred,
-                date_paid,
+                date_incurred: moment(date_incurred, 'YYYY-MM-DD'),
+                date_paid: moment(date_paid, 'YYYY-MM-DD'),
                 client_id
             })
         }
