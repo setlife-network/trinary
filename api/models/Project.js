@@ -48,7 +48,9 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'Project'
+        modelName: 'Project',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
 
     return Project

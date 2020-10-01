@@ -29,7 +29,9 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'Client'
+        modelName: 'Client',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
 
     return Client

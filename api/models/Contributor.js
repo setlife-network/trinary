@@ -33,7 +33,9 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'Contributor'
+        modelName: 'Contributor',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
 
     return Contributor

@@ -33,7 +33,9 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'Issue'
+        modelName: 'Issue',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
     // Issue.associate = (models) => {
     //     Issue.hasOne(Sequelize.models.Project);
