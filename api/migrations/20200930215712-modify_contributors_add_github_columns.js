@@ -2,7 +2,7 @@ module.exports = {
     up: async (queryInterface, Sequelize) => {
         return Promise.all([
             queryInterface.addColumn(
-                'Contributor',
+                'Contributors',
                 'github_url',
                 {
                     type: Sequelize.STRING,
@@ -10,19 +10,21 @@ module.exports = {
                 }
             ),
             queryInterface.addColumn(
-                'Contributor',
+                'Contributors',
                 'github_id',
                 {
                     type: Sequelize.STRING,
-                    allowNull: false
+                    allowNull: false,
+                    unique: true
                 }
             ),
             queryInterface.addColumn(
-                'Contributor',
+                'Contributors',
                 'github_handle',
                 {
                     type: Sequelize.STRING,
-                    allowNull: false
+                    allowNull: false,
+                    unique: true
                 }
             )
         ])
