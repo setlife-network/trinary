@@ -28,6 +28,20 @@ module.exports = (sequelize) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        github_url: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        github_id: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
+        },
+        github_handle: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
         }
     },
     {
