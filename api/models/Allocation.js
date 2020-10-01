@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const { DataTypes } = require('sequelize')
 
-const { Contributor, Payment, Project } = require('./')
+const { Contributor, Payment, Project } = require('.')
 
 module.exports = (sequelize) => {
 
@@ -25,10 +25,6 @@ module.exports = (sequelize) => {
         },
         active: {
             type: DataTypes.BOOLEAN,
-            allowNull: false,
-        },
-        date_created: {
-            type: DataTypes.DATE,
             allowNull: false,
         },
         date_paid: {

@@ -24,10 +24,6 @@ module.exports = (sequelize) => {
         currency: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        date_created: {
-            type: DataTypes.DATE,
-            allowNull: false
         }
     },
     {
