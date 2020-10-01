@@ -20,7 +20,8 @@ module.exports = (sequelize) => {
         },
         toggl_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         start_time: {
             type: DataTypes.DATE,

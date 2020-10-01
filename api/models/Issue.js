@@ -17,7 +17,8 @@ module.exports = (sequelize) => {
         },
         github_url: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         project_id: { //FK
             type: DataTypes.INTEGER,
