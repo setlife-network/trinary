@@ -36,7 +36,7 @@
     "scripts": {
         "ui": "PORT=6002 react-scripts start",
         "server": "PORT=6001 node server",
-        "start": "react-scripts start",
+        "start": "npm run server",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
