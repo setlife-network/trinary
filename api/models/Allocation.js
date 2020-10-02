@@ -61,7 +61,6 @@ module.exports = (sequelize) => {
         // Model options go here
         sequelize,
         modelName: 'Allocation',
-        timestamps: true,
         createdAt: 'created_at',
         updatedAt: 'updated_at'
     });
