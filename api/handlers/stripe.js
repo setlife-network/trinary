@@ -2,7 +2,7 @@ const stripeAPI = require('stripe');
 
 const {
     STRIPE
-} = require('../../config/credentials')
+} = require('../config/credentials')
 
 const stripe = module.exports = (() => {
 
