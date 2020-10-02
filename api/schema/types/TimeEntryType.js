@@ -12,9 +12,9 @@ module.exports = gql`
     }
 
     type Query {
-        timeEntry(id: Int!): TimeEntry
-        timeEntries: [TimeEntry]
-        projectTimeEntries(projectId: Int!): [TimeEntry]
+        getTimeEntryById(id: Int!): TimeEntry
+        getTimeEntries: [TimeEntry]
+        getProjectTimeEntriesByProjectId(projectId: Int!): [TimeEntry]
     }
 
     type Mutation {

@@ -10,19 +10,17 @@ module.exports = {
             return models.Project.findByPk(timeEntry.project_id)
         }
     },
-
     Query: {
-        timeEntry(root, { id }, { models }) {
+        getTimeEntryById(root, { id }, { models }) {
             return models.TimeEntry.findByPk(id)
         },
-        timeEntries(root, args, { models }) {
+        getTimeEntries(root, args, { models }) {
             return models.TimeEntry.findAll()
         },
-        projectTimeEntries(root, { projectId }, { models }) {
+        getProjectTimeEntriesByProjectId(root, { projectId }, { models }) {
             return models.TimeEntry.findAll({ where: { project_id: projectId } })
         }
     },
-
     Mutation: {
         createTimeEntry: async (root, {
             seconds,

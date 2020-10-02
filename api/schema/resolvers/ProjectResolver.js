@@ -12,10 +12,10 @@ module.exports = {
     },
 
     Query: {
-        project(root, { id }, { models }) {
+        getProjectById(root, { id }, { models }) {
             return models.Project.findByPk(id)
         },
-        projects(root, args, { models }) {
+        getProjects(root, args, { models }) {
             return models.Project.findAll()
         }
     },

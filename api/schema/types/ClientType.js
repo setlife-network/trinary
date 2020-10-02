@@ -13,8 +13,8 @@ module.exports = gql`
     }
 
     type Query {
-        client(id: Int!): Client
-        clients: [Client]
+        getClientById(id: Int!): Client
+        getClients: [Client]
     }
 
     type Mutation {

@@ -3,11 +3,11 @@ const moment = require('moment')
 module.exports = {
 
     Query: {
-        contributors(root, args, { models }) {
-            return models.Contributor.findAll()
-        },
-        contributor(root, { id }, { models }) {
+        getContributorById(root, { id }, { models }) {
             return models.Contributor.findByPk(id)
+        },
+        getContributors(root, args, { models }) {
+            return models.Contributor.findAll()
         }
     },
     Mutation: {

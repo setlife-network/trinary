@@ -5,16 +5,14 @@ module.exports = {
             return models.Project.findByPk(issue.project_id)
         }
     },
-
     Query: {
-        issue(root, { id }, { models }) {
+        getIssueById(root, { id }, { models }) {
             return models.Issue.findByPk(id)
         },
-        projectIssues(root, { projectId }, { models }) {
+        getProjectIssuesByProjectId(root, { projectId }, { models }) {
             return models.Issue.findAll({ where: { project_id: projectId } })
         }
     },
-
     Mutation: {
         createIssue: async(root, {
             github_url,

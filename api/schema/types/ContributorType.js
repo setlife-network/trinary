@@ -12,8 +12,8 @@ module.exports = gql`
     }
 
     type Query {
-        contributor(id: Int!): Contributor
-        contributors: [Contributor]
+        getContributorById(id: Int!): Contributor
+        getContributors: [Contributor]
     }
 
     type Mutation {

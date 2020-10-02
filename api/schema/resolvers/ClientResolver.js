@@ -11,10 +11,10 @@ module.exports = {
         }
     },
     Query: {
-        client: async (root, { id }, { models }) => {
+        getClientById: async (root, { id }, { models }) => {
             return models.Client.findByPk(id)
         },
-        clients: async (parent, args, { models }) => {
+        getClients: async (parent, args, { models }) => {
             return models.Client.findAll()
         }
     },

@@ -14,13 +14,13 @@ module.exports = {
         }
     },
     Query: {
-        allocation: async (root, { id }, { models }) => {
+        getAllocationById: async (root, { id }, { models }) => {
             return models.Allocation.findByPk(id)
         },
-        allocations: async (root, args, { models }) => {
+        getAllocations: async (root, args, { models }) => {
             return models.Allocation.findAll()
         }
-    },
+    },    
     Mutation: {
         createAllocation: async (root, {
             id,

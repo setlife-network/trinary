@@ -8,13 +8,13 @@ module.exports = {
         }
     },
     Query: {
-        payment(root, { id }, { models }) {
+        getPaymentById(root, { id }, { models }) {
             return models.Payment.findBy(id)
         },
-        payments(root, args, { models }) {
+        getPayments(root, args, { models }) {
             return models.Payment.findAll()
         },
-        clientPayments(root, { clientId }, { models }) {
+        getClientPaymentsByClientId(root, { clientId }, { models }) {
             return models.Payment.findAll({ where: { client_id: clientId } })
         }
     },

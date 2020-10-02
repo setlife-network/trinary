@@ -17,8 +17,8 @@ module.exports = gql`
     }
 
     type Query {
-        allocation(id: Int!): Allocation
-        allocations: [Allocation]
+        getAllocationById(id: Int!): Allocation
+        getAllocations: [Allocation]
     }
 
     type Mutation {

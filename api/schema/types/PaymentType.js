@@ -11,9 +11,9 @@ module.exports = gql`
     }
 
     type Query {
-        payment(id: Int!): Payment
-        payments: [Payment]
-        clientPayments(clientId: Int!): [Payment]
+        getPaymentById(id: Int!): Payment
+        getPayments: [Payment]
+        getClientPaymentsByClientId(clientId: Int!): [Payment]
     }
 
     type Mutation {
