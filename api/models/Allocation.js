@@ -44,7 +44,6 @@ module.exports = (sequelize) => {
         },
         payment_id: { //FK
             type: DataTypes.INTEGER,
-            allowNull: false,
             references: {
                 model: 'Payments',
                 key: 'id',
@@ -52,7 +51,7 @@ module.exports = (sequelize) => {
         },
         project_id: { //FK
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: false, //TODO: Think if this is necesary to be set to false
             references: {
                 model: 'Projects',
                 key: 'id',
