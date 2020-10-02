@@ -19,13 +19,24 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        rate_type: { //?
-            type: DataTypes.INTEGER,
+        rate_unit: {
+            type: DataTypes.INTEGER
+        },
+        rate_type: {
+            type: DataTypes.STRING,
             allowNull: false,
         },
         active: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
+            defaultValue: true
+        },
+        start_date: {
+            type: Sequelize.DATE,
+            allowNull: false,
+        },
+        end_date: {
+            type: Sequelize.DATE
         },
         date_paid: {
             type: Sequelize.DATE,
@@ -56,7 +67,6 @@ module.exports = (sequelize) => {
             }
         }
     },
-
     {
         // Model options go here
         sequelize,
