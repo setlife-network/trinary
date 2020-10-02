@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import GitHubIcon from '@material-ui/icons/GitHub'
 import Button from '@material-ui/core/Button'
+
 import { ReactComponent as ReactImg } from '../images/sample.svg'
-import '../styles/App.scss'
 
 function LoginPage() {
     const [loggedInUser, setLoggedInUser] = useState({
@@ -18,7 +18,7 @@ function LoginPage() {
     }
 
     return (
-        <div className='appLogin'>
+        <div className='LoginPage'>
             <ReactImg className='image' />
             <span>
                 <h2>Welcome to Trinary</h2>
