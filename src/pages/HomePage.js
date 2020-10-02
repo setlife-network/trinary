@@ -4,7 +4,11 @@ class HomePage extends React.Component {
     componentDidMount() {}
 
     render() {
-        return <div className='HomePage'>Home Page</div>
+        return (
+            <div className='HomePage'>
+                Home Page
+            </div>
+        )
     }
 }
 
