@@ -10,6 +10,19 @@ const apiModules = require('./api/handlers/toggl');
 var isProduction = process.env.NODE_ENV === 'production';
 var port = isProduction ? process.env.PORT : 5001;
 
+// Serve static assets
+app.use(express.static(__dirname + '/build'));
+
+app.get('*', function(req, res, next) {
+    if (req.path.indexOf('/api/') != -1) {
+        //route to the next middleware function
+        return next()
+    }
+    fs.readFile(__dirname + '/build/index.html', 'utf8', function (err, text) {
+        res.send(text);
+    });
+})
+
 var whitelist = [
     'http://localhost:8080',
     'http://localhost:3000',
@@ -31,17 +44,7 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 
-app.get('*', function(req, res, next) {
-    if (req.path.indexOf('/api/') != -1) {
-        //route to the next middleware function
-        return next()
-    }
-    fs.readFile(__dirname + '/build/index.html', 'utf8', function (err, text) {
-        res.send(text);
-    });
-})
-
-app.get('/', (req, res) => {
+app.get('/api/v/:vid/ping', (req, res) => {
     res.send('Hello World')
 })
 
