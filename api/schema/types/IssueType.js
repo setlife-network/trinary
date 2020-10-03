@@ -18,5 +18,13 @@ module.exports = gql`
             github_url: String!,
             project_id: Int!
         ): Issue
+
+        deleteIssueById(id: Int!): Int
+
+        updateIssueById(
+            id: Int!,
+            github_url: String!,
+            project_id: Int!
+        ): [Int]
     }
 `

@@ -45,7 +45,7 @@ module.exports = gql`
             payment_id: Int!,
             project_id: Int!,
             contributor_id: Int!
-        )
+        ): [Int]
     }
 
 `

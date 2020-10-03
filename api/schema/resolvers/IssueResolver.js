@@ -14,13 +14,30 @@ module.exports = {
         }
     },
     Mutation: {
-        createIssue: async(root, {
+        createIssue: async (root, {
             github_url,
             project_id
         }, { models }) => {
             return models.Issue.create({
                 github_url,
                 project_id
+            })
+        },
+        deleteIssueById: async (root, { id }, { models }) => {
+            return models.Issue.destroy({ where: { id } })
+        },
+        updateIssueById: async(root, {
+            id,
+            github_url,
+            project_id
+        }, { models }) => {
+            return models.Issue.update({
+                github_url,
+                project_id
+            }, {
+                where: {
+                    id
+                }
             })
         }
     }

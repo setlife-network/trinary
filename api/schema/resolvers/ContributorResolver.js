@@ -25,6 +25,29 @@ module.exports = {
                 name,
                 date_created: moment(date_created, 'YYYY-MM-DD')
             })
+        },
+        deleteContributorById: async (root, { id }, { models }) => {
+            return models.Contributor.destroy({ where: { id } })
+        },
+        updateContributorById: async(root, {
+            id,
+            hourly_rate,
+            weekly_rate,
+            monthly_rate,
+            name,
+            date_created
+        }, { models }) => {
+            return models.Contributor.update({
+                hourly_rate,
+                weekly_rate,
+                monthly_rate,
+                name,
+                date_created: moment(date_created, 'YYYY-MM-DD')
+            }, {
+                where: {
+                    id
+                }
+            })
         }
     }
 

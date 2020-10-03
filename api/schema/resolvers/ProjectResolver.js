@@ -21,7 +21,7 @@ module.exports = {
     },
 
     Mutation: {
-        createProject: async(root, {
+        createProject: async (root, {
             expected_budget,
             is_active,
             name,
@@ -36,6 +36,31 @@ module.exports = {
                 github_url,
                 date: moment(date, 'YYYY-MM-DD'),
                 client_id
+            })
+        },
+        deleteProjectById: async (root, { id }, { models }) => {
+            return models.Project.destroy({ where: { id } })
+        },
+        updateProjectById: async (root, {
+            id,
+            expected_budget,
+            is_active,
+            name,
+            github_url,
+            date,
+            client_id
+        }, { models }) => {
+            return models.Project.update({
+                expected_budget,
+                is_active,
+                name,
+                github_url,
+                date,
+                client_id
+            }, {
+                where: {
+                    id
+                }
             })
         }
     }

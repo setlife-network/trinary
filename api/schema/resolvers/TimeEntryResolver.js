@@ -36,6 +36,29 @@ module.exports = {
                 contributor_id,
                 project_id
             })
+        },
+        deleteTimeEntryById: async (root, { id }, { models }) => {
+            return models.TimeEntry.destroy({ where: { id } })
+        },
+        upateTimeEntryById: async(root, {
+            id,
+            seconds,
+            toggl_id,
+            start_time,
+            contributor_id,
+            project_id
+        }, { models }) => {
+            return models.TimeEntry.update({
+                seconds,
+                toggl_id,
+                start_time,
+                contributor_id,
+                project_id
+            }, {
+                where: {
+                    id
+                }
+            })
         }
     }
 

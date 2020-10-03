@@ -31,7 +31,27 @@ module.exports = {
                 currency,
                 date_created: moment(date_created, 'YYYY-MM-DD')
             })
+        },
+        deleteClientById: async (root, { id }, { models }) => {
+            return models.Client.destroy({ where: { id } })
+        },
+        updateClientById: async(root, {
+            id,
+            is_active,
+            name,
+            currency,
+            date_created
+        }, { models }) => {
+            return models.Client.update({
+                is_active,
+                name,
+                currency,
+                date_created
+            }, {
+                where: {
+                    id
+                }
+            })
         }
     }
-
 }

@@ -25,6 +25,17 @@ module.exports = gql`
             contributor_id: Int!,
             project_id: Int!
         ): TimeEntry
+
+        deleteTimeEntryById(id: Int!): String
+
+        upateTimeEntryById(
+            id: Int!,
+            seconds: Int!,
+            toggl_id: Int!,
+            start_time: String!,
+            contributor_id: Int!,
+            project_id: Int!
+        ): [Int]
     }
 
 `

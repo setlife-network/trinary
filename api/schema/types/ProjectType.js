@@ -27,6 +27,18 @@ module.exports = gql`
             date: String!
             client_id: Int!
         ): Project
+
+        deleteProjectById(id: Int!): String
+
+        updateProjectById(
+            id: Int!,
+            expected_budget: Int!
+            is_active: Boolean!
+            name: String!
+            github_url: String!
+            date: String!
+            client_id: Int!
+        ): [Int]
     }
 
 `

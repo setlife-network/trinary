@@ -24,6 +24,16 @@ module.exports = gql`
             currency: String!,
             date_created: String!
         ): Client!
+
+        deleteClientById(id: Int!): String
+
+        updateClientById(
+            id: Int!,
+            is_active: Boolean!,
+            name: String!,
+            currency: String!,
+            date_created: String!
+        ): [Int]
     }
 
 `

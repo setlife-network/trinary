@@ -24,5 +24,16 @@ module.exports = gql`
             name: String!,
             date_created: String!
         ): Contributor
+
+        deleteContributorById(id: Int!): String
+
+        updateContributorById(
+            id: Int!,
+            hourly_rate: Int,
+            weekly_rate: Int,
+            monthly_rate: Int,
+            name: String!,
+            date_created: String!
+        ):[Int]
     }
 `

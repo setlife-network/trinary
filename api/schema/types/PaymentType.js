@@ -23,6 +23,16 @@ module.exports = gql`
             date_paid: String,
             client_id: Int!
         ): Payment
+
+        deletePaymentById(id: Int!): String
+
+        updatePaymentById(
+            id:Int!,
+            amount: Int!,
+            date_incurred: String,
+            date_paid: String,
+            client_id: Int!
+        ): [Int]
     }
 
 `

@@ -31,7 +31,28 @@ module.exports = {
                 date_paid: moment(date_paid, 'YYYY-MM-DD'),
                 client_id
             })
-        }
+        },
+        deletePaymentById: async (root, { id }, { models }) => {
+            return models.Payment.destroy({ where: { id } })
+        },
+        updatePaymentById: async(root, {
+            id,
+            amount,
+            date_incurred,
+            date_paid,
+            client_id
+        }, { models }) => {
+            return models.Payment.update({
+                amount,
+                date_incurred,
+                date_paid,
+                client_id
+            }, {
+                where: {
+                    id
+                }
+            })
+        }    
     }
 
 }
