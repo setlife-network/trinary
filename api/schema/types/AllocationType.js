@@ -32,6 +32,20 @@ module.exports = gql`
             project_id: Int!,
             contributor_id: Int!
         ): Allocation
+
+        deleteAllocationById(id: Int!): String
+
+        updateAllocationById(
+            id:Int!,
+            amount: Int!,
+            rate_type: Int,
+            active: Boolean!,
+            date_created: String!,
+            date_paid: String,
+            payment_id: Int!,
+            project_id: Int!,
+            contributor_id: Int!
+        )
     }
 
 `
