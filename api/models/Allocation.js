@@ -19,17 +19,24 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        rate_type: { //?
-            type: DataTypes.INTEGER,
+        rate_unit: {
+            type: DataTypes.INTEGER
+        },
+        rate_type: {
+            type: DataTypes.STRING,
             allowNull: false,
         },
         active: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
+            defaultValue: true
         },
-        date_created: {
-            type: DataTypes.DATE,
+        start_date: {
+            type: Sequelize.DATE,
             allowNull: false,
+        },
+        end_date: {
+            type: Sequelize.DATE
         },
         date_paid: {
             type: Sequelize.DATE,
@@ -37,7 +44,6 @@ module.exports = (sequelize) => {
         },
         payment_id: { //FK
             type: DataTypes.INTEGER,
-            allowNull: false,
             references: {
                 model: 'Payments',
                 key: 'id',
@@ -45,7 +51,7 @@ module.exports = (sequelize) => {
         },
         project_id: { //FK
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: false, //TODO: Think if this is necesary to be set to false
             references: {
                 model: 'Projects',
                 key: 'id',
@@ -60,11 +66,12 @@ module.exports = (sequelize) => {
             }
         }
     },
-
     {
         // Model options go here
         sequelize,
-        modelName: 'Allocation'
+        modelName: 'Allocation',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
 
     return Allocation

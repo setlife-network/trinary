@@ -1,10 +1,15 @@
-import React from 'react';
+import React from 'react'
 
 class HomePage extends React.Component {
-  componentDidMount() {}
-  render() {
-    return <div className='HomePage'>Home Page</div>;
-  }
+    componentDidMount() {}
+
+    render() {
+        return (
+            <div className='HomePage'>
+                Home Page
+            </div>
+        )
+    }
 }
 
-export default HomePage;
+export default HomePage
