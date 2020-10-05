@@ -1,5 +1,7 @@
 const moment = require('moment')
 
+const attributesMapping = require('../helpers/attributesMapping')
+
 module.exports = {
 
     Allocation: {
@@ -10,7 +12,12 @@ module.exports = {
             return models.Project.findByPk(allocation.project_id)
         },
         async contributor (allocation, args, { models }) {
-            return models.Contributor.findByPk(allocation.contributor_id)
+            return (
+                models.Contributor.findByPk(allocation.contributor_id)
+                    .then(res => {
+                        return attributesMapping.allocationMap(res)
+                    })
+            )
         }
     },
     Query: {
@@ -18,7 +25,16 @@ module.exports = {
             return models.Allocation.findByPk(id)
         },
         getAllocations: async (root, args, { models }) => {
-            return models.Allocation.findAll()
+            return (
+                models.Allocation.findAll()
+                    .then(res => {
+                        const allocations = []
+                        res.map(a => {
+                            allocations.push(attributesMapping.allocationMap(i))
+                        })
+                        return allocations
+                    })
+            )
         }
     },
     Mutation: {

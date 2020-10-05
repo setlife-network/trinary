@@ -4,10 +4,10 @@ module.exports = gql`
 
     type Project {
         id: Int!
-        expected_budget: Int!
-        is_active: Boolean!
+        expectedBudget: Int!
+        isActive: Boolean!
         name: String!
-        github_url: String!
+        githubUrl: String!
         date: String!
         client: Client
         issues: [Issue]

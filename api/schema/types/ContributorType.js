@@ -4,10 +4,14 @@ module.exports = gql`
 
     type Contributor {
         id: Int!
-        hourly_rate: Int
-        weekly_rate: Int
-        monthly_rate: Int
+        hourlyRate: Int
+        weeklyRate: Int
+        monthlyRate: Int
         name: String!
+        externalDataUrl: String
+        githubId: String!,
+        githubHandle: String!
+
     }
 
     type Query {
@@ -20,7 +24,10 @@ module.exports = gql`
             hourly_rate: Int,
             weekly_rate: Int,
             monthly_rate: Int,
-            name: String!
+            name: String!,
+            external_data_url: String,
+            github_id: String!,
+            github_handle: String!
         ): Contributor
     }
 `

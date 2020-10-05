@@ -1,16 +1,32 @@
+const attributesMapping = require('../helpers/attributesMapping')
+
 module.exports = {
 
     Issue: {
         async project (issue, args, { models }) {
-            return models.Project.findByPk(issue.project_id)
+            return models.Project.findByPk(issue.projectId)
         }
     },
     Query: {
         getIssueById(root, { id }, { models }) {
-            return models.Issue.findByPk(id)
+            return (
+                models.Issue.findByPk(id)
+                    .then(res => {
+                        return attributesMapping.issueMap(res)
+                    })
+            )
         },
         getProjectIssuesByProjectId(root, { projectId }, { models }) {
-            return models.Issue.findAll({ where: { project_id: projectId } })
+            return (
+                models.Issue.findAll({ where: { project_id: projectId } })
+                    .then(res => {
+                        const issues = []
+                        res.map(i => {
+                            issues.push(attributesMapping.issueMap(i))
+                        })
+                        return issues
+                    })
+            )
         }
     },
     Mutation: {

@@ -9,7 +9,6 @@ module.exports = gql`
         currency: String!
         payments: [Payment]
         projects: [Project]
-        createdAt: String!
     }
 
     type Query {

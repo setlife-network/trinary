@@ -1,5 +1,7 @@
 const moment = require('moment')
 
+const attributesMapping = require('../helpers/attributesMapping')
+
 module.exports = {
 
     TimeEntry: {
@@ -12,13 +14,36 @@ module.exports = {
     },
     Query: {
         getTimeEntryById(root, { id }, { models }) {
-            return models.TimeEntry.findByPk(id)
+            return (
+                models.TimeEntry.findByPk(timeEntry.project_id)
+                    .then(res => {
+                        return attributesMapping.timeEntryMap(res)
+                    })
+            )
         },
         getTimeEntries(root, args, { models }) {
-            return models.TimeEntry.findAll()
+            return (
+                models.TimeEntry.findAll()
+                    .then(res => {
+                        const timeEntries = []
+                        res.map(t => {
+                            timeEntries.push(attributesMapping.timeEntryMap(t))
+                        })
+                        return timeEntries
+                    })
+            )
         },
         getProjectTimeEntriesByProjectId(root, { projectId }, { models }) {
-            return models.TimeEntry.findAll({ where: { project_id: projectId } })
+            return (
+                models.TimeEntry.findAll({ where: { project_id: projectId } })
+                    .then(res => {
+                        const timeEntries = []
+                        res.map(t => {
+                            timeEntries.push(attributesMapping.timeEntryMap(t))
+                        })
+                        return timeEntries
+                    })
+            )
         }
     },
     Mutation: {

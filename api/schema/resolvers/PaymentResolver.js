@@ -1,5 +1,7 @@
 const moment = require('moment')
 
+const attributesMapping = require('../helpers/attributesMapping')
+
 module.exports = {
 
     Payment: {
@@ -9,13 +11,36 @@ module.exports = {
     },
     Query: {
         getPaymentById(root, { id }, { models }) {
-            return models.Payment.findBy(id)
+            return (
+                models.Payment.findBy(id)
+                    .then(res => {
+                        return attributesMapping.paymentMap(res)
+                    })
+            )
         },
         getPayments(root, args, { models }) {
-            return models.Payment.findAll()
+            return (
+                models.Payment.findAll()
+                    .then(res => {
+                        const payments = []
+                        res.map(p => {
+                            payments.push(attributesMapping.paymentMap(p))
+                        })
+                        return payments
+                    })
+            )
         },
         getClientPaymentsByClientId(root, { clientId }, { models }) {
-            return models.Payment.findAll({ where: { client_id: clientId } })
+            return (
+                models.Payment.findAll({ where: { client_id: clientId } })
+                    .then(res => {
+                        const payments = []
+                        res.map(p => {
+                            payments.push(attributesMapping.paymentMap(p))
+                        })
+                        return payments
+                    })
+            )
         }
     },
     Mutation: {

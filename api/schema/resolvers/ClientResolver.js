@@ -1,5 +1,7 @@
 const moment = require('moment')
 
+const attributesMapping = require('../helpers/attributesMapping')
+
 module.exports = {
 
     Client: {
@@ -12,10 +14,26 @@ module.exports = {
     },
     Query: {
         getClientById: async (root, { id }, { models }) => {
-            return models.Client.findByPk(id)
+            return (
+                models.Client.findByPk(id)
+                    .then(res => {
+                        return attributesMapping.clientMap(res)
+                    })
+            )
         },
         getClients: async (parent, args, { models }) => {
-            return models.Client.findAll()
+            return (
+                models.Client.findAll()
+                    .then(res => {
+                        const clients = []
+                        res.map(c => {
+                            clients.push(
+                                attributesMapping.clientMap(c)
+                            )
+                        })
+                        return clients
+                    })
+            )
         }
     },
     Mutation: {
