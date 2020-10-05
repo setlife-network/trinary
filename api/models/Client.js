@@ -24,16 +24,14 @@ module.exports = (sequelize) => {
         currency: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        date_created: {
-            type: DataTypes.DATE,
-            allowNull: false
         }
     },
     {
         // Model options go here
         sequelize,
-        modelName: 'Client'
+        modelName: 'Client',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
 
     return Client
