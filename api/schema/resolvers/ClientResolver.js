@@ -23,13 +23,11 @@ module.exports = {
             is_active,
             name,
             currency,
-            date_created
         }, { models }) => {
             return models.Client.create({
                 is_active,
                 name,
-                currency,
-                date_created: moment(date_created, 'YYYY-MM-DD')
+                currency
             })
         }
     }

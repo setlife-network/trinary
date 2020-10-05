@@ -20,14 +20,13 @@ module.exports = {
         getAllocations: async (root, args, { models }) => {
             return models.Allocation.findAll()
         }
-    },    
+    },
     Mutation: {
         createAllocation: async (root, {
             id,
             amount,
             rate_type,
             active,
-            date_created,
             date_paid,
             payment_id,
             project_id,
@@ -37,7 +36,6 @@ module.exports = {
                 amount,
                 rate_type,
                 active,
-                date_created: moment(date_created, 'YYYY-MM-DD'),
                 date_paid: moment(date_paid, 'YYYY-MM-DD'),
                 payment_id,
                 project_id,

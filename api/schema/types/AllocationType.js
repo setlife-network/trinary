@@ -9,7 +9,7 @@ module.exports = gql`
         amount: Int!
         rateType: Int!
         active: Boolean!
-        dateCreated: String!
+        createdAt: String!
         datePaid: String
         payment: Payment
         project: Project
@@ -26,7 +26,6 @@ module.exports = gql`
             amount: Int!,
             rate_type: Int,
             active: Boolean!,
-            date_created: String!,
             date_paid: String,
             payment_id: Int!,
             project_id: Int!,

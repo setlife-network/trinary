@@ -8,7 +8,6 @@ module.exports = gql`
         weekly_rate: Int
         monthly_rate: Int
         name: String!
-        date_created: String!
     }
 
     type Query {
@@ -21,8 +20,7 @@ module.exports = gql`
             hourly_rate: Int,
             weekly_rate: Int,
             monthly_rate: Int,
-            name: String!,
-            date_created: String!
+            name: String!
         ): Contributor
     }
 `

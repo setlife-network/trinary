@@ -34,7 +34,7 @@ module.exports = {
                 is_active,
                 name,
                 github_url,
-                date: moment(date, 'YYYY-MM-DD'),
+                date: moment.utc(date, 'MM-DD-YYYY hh:mm:ss'),
                 client_id
             })
         }
