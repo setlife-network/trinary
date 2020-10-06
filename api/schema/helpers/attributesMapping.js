@@ -57,7 +57,7 @@ const attributesMapping = module.exports = (() => {
                 amount: payment.amount,
                 dateIncurred: payment.date_incurred,
                 datePaid: payment.date_paid,
-                client: payment.client
+                clientId: payment.client_id,
             }
         )
     }
@@ -70,7 +70,8 @@ const attributesMapping = module.exports = (() => {
                 isActive: project.is_active,
                 name: project.name,
                 githubUrl: project.github_url,
-                date: project.date
+                date: project.date,
+                clientId: project.client_id
             }
         )
     }
@@ -82,8 +83,8 @@ const attributesMapping = module.exports = (() => {
                 seconds: timeEntry.seconds,
                 togglId: timeEntry.togglId,
                 startTime: timeEntry.startTime,
-                contributor: timeEntry.contributor,
-                project: timeEntry.project
+                contributorId: timeEntry.contributor_id,
+                projectId: timeEntry.project_id
             }
         )
     }

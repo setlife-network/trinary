@@ -6,10 +6,20 @@ module.exports = {
 
     TimeEntry: {
         async contributor (timeEntry, args, { models }) {
-            return models.Contributor.findByPk(timeEntry.contributor_id)
+            return (
+                models.Contributor.findByPk(timeEntry.contributorId)
+                    .then(res => {
+                        return attributesMapping.contributorMap(res)
+                    })
+            )
         },
         async project (timeEntry, args, { models }) {
-            return models.Project.findByPk(timeEntry.project_id)
+            return (
+                models.Project.findByPk(timeEntry.projectId)
+                    .then(res => {
+                        return attributesMapping.projectMap(res)
+                    })
+            )
         }
     },
     Query: {

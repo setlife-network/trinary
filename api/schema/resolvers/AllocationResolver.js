@@ -6,10 +6,20 @@ module.exports = {
 
     Allocation: {
         async payment (allocation, args, { models }) {
-            return models.Payment.findByPk(allocation.payment_id)
+            return (
+                models.Payment.findByPk(allocation.payment_id)
+                    .then(res => {
+                        return attributesMapping.paymentMap(res)
+                    })
+            )
         },
         async project (allocation, args, { models }) {
-            return models.Project.findByPk(allocation.project_id)
+            return (
+                models.Project.findByPk(allocation.project_id)
+                    .then(res => {
+                        return attributesMapping.projectMap(res)
+                    })
+            )
         },
         async contributor (allocation, args, { models }) {
             return (

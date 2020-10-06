@@ -4,7 +4,12 @@ module.exports = {
 
     Issue: {
         async project (issue, args, { models }) {
-            return models.Project.findByPk(issue.projectId)
+            return (
+                models.Project.findByPk(issue.projectId)
+                    .then(res => {
+                        return attributesMapping.projectMap(res)
+                    })
+            )
         }
     },
     Query: {

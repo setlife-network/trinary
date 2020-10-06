@@ -7,6 +7,8 @@ module.exports = gql`
         seconds: Int!
         togglId: Int!
         startTime: String!
+        contributorId: Int!
+        projectId: Int!
         contributor: Contributor!
         project: Project!
     }

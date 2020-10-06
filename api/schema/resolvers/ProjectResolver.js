@@ -6,10 +6,24 @@ module.exports = {
 
     Project: {
         async client (project, args, { models }) {
-            return models.Client.findByPk(project.client_id)
+            return (
+                models.Client.findByPk(project.clientId)
+                    .then(res => {
+                        return attributesMapping.clientMap(res)
+                    })
+            )
         },
         async issues (project, args, { models }) {
-            return models.Issue.findAll({ where: { project_id: project.id } })
+            return (
+                models.Issue.findAll({ where: { project_id: project.id } })
+                    .then(res => {
+                        const issues = []
+                        res.map(i => {
+                            issues.push(attributesMapping.issueMap(i))
+                        })
+                        return issues
+                    })
+            )
         }
     },
 

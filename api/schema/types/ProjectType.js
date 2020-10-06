@@ -9,6 +9,7 @@ module.exports = gql`
         name: String!
         githubUrl: String!
         date: String!
+        clientId:Int!
         client: Client
         issues: [Issue]
     }

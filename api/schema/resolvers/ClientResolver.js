@@ -6,10 +6,28 @@ module.exports = {
 
     Client: {
         async payments (client, args, { models }) {
-            return models.Payment.findAll({ where: { client_id: client.id } })
+            return (
+                models.Payment.findAll({ where: { client_id: client.id } })
+                    .then(res => {
+                        const payments = []
+                        res.map(p => {
+                            payments.push(attributesMapping.paymentMap(p))
+                        })
+                        return payments
+                    })
+            )
         },
         async projects (client, args, { models }) {
-            return models.Project.findAll({ where: { client_id: client.id } })
+            return (
+                models.Project.findAll({ where: { client_id: client.id } })
+                    .then(res => {
+                        const projects = []
+                        res.map(p => {
+                            projects.push(attributesMapping.projectMap(p))
+                        })
+                        return projects
+                    })
+            )
         }
     },
     Query: {

@@ -6,13 +6,19 @@ module.exports = {
 
     Payment: {
         async client (payment, args, { models }) {
-            return models.Client.findByPk(payment.client_id)
+            return (
+
+                models.Client.findByPk(payment.clientId)
+                    .then(res => {
+                        return attributesMapping.clientMap(res)
+                    })
+            )
         }
     },
     Query: {
         getPaymentById(root, { id }, { models }) {
             return (
-                models.Payment.findBy(id)
+                models.Payment.findByPk(id)
                     .then(res => {
                         return attributesMapping.paymentMap(res)
                     })
