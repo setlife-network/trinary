@@ -5,8 +5,7 @@ const cors = require('cors'); //handle CORS issues
 
 const app = express()
 
-const apiModules = require('./api/handlers/toggl');
-const amazon = require('./api/handlers/amazon') //Connects to aws to read payments bucket
+const apiModules = require('./api/modules');
 
 var isProduction = process.env.NODE_ENV === 'production';
 var port = isProduction ? process.env.PORT : 5001;
@@ -45,9 +44,7 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 
-app.get('api/readPaymments', (req, res) => {
-
-})
+app.get('/api/readPaymments', apiModules.paymentFiles.fetchCSV)
 
 app.get('/api/v/:vid/ping', (req, res) => {
     res.send('Hello World')
