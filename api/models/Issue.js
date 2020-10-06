@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const { DataTypes } = require('sequelize')
 
-const { Project } = require('./')
+const { Project } = require('.')
 
 module.exports = (sequelize) => {
 
@@ -17,7 +17,8 @@ module.exports = (sequelize) => {
         },
         github_url: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         project_id: { //FK
             type: DataTypes.INTEGER,
@@ -32,7 +33,9 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'Issue'
+        modelName: 'Issue',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
     // Issue.associate = (models) => {
     //     Issue.hasOne(Sequelize.models.Project);

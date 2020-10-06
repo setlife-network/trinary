@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const { DataTypes } = require('sequelize')
-const { Client } = require('./')
+const { Client } = require('.')
 
 module.exports = (sequelize) => {
 
@@ -38,7 +38,9 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'Payment'
+        modelName: 'Payment',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
 
     return Payment

@@ -20,7 +20,8 @@ module.exports = (sequelize) => {
         },
         toggl_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         start_time: {
             type: DataTypes.DATE,
@@ -46,7 +47,9 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'TimeEntry'
+        modelName: 'TimeEntry',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
 
     return TimeEntry
