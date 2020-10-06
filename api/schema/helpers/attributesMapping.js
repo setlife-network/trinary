@@ -1,3 +1,5 @@
+const moment = require('moment')
+
 const attributesMapping = module.exports = (() => {
 
     const allocationMap = (allocation ) => {
@@ -55,8 +57,8 @@ const attributesMapping = module.exports = (() => {
             {
                 id: payment.id,
                 amount: payment.amount,
-                dateIncurred: payment.date_incurred,
-                datePaid: payment.date_paid,
+                dateIncurred: moment(payment.date_incurred).format('MM/DD/YYYY HH:mm:ss'),
+                datePaid: moment(payment.date_paid).format('MM/DD/YYYY HH:mm:ss'),
                 clientId: payment.client_id,
             }
         )
@@ -70,7 +72,7 @@ const attributesMapping = module.exports = (() => {
                 isActive: project.is_active,
                 name: project.name,
                 githubUrl: project.github_url,
-                date: project.date,
+                date: moment(project.date).format('MM/DD/YYYY HH:mm:ss'),
                 clientId: project.client_id
             }
         )
@@ -82,7 +84,7 @@ const attributesMapping = module.exports = (() => {
                 id: timeEntry.id,
                 seconds: timeEntry.seconds,
                 togglId: timeEntry.togglId,
-                startTime: timeEntry.startTime,
+                startTime: moment(timeEntry.startTime).format('MM/DD/YYYY HH:mm:ss'),
                 contributorId: timeEntry.contributor_id,
                 projectId: timeEntry.project_id
             }

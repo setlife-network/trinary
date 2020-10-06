@@ -67,7 +67,7 @@ module.exports = {
             return models.TimeEntry.create({
                 seconds,
                 toggl_id,
-                start_time: moment(start_time, 'YYYY-MM-DD'),
+                start_time: new moment(date, 'MM-DD-YYYY HH:mm:ss').utc(),
                 contributor_id,
                 project_id
             })

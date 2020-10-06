@@ -58,8 +58,8 @@ module.exports = {
         }, { models }) => {
             return models.Payment.create({
                 amount,
-                date_incurred: moment(date_incurred, 'YYYY-MM-DD'),
-                date_paid: moment(date_paid, 'YYYY-MM-DD'),
+                date_incurred: new moment(date, 'MM-DD-YYYY HH:mm:ss').utc(),
+                date_paid: new moment(date, 'MM-DD-YYYY HH:mm:ss').utc(),
                 client_id
             })
         }
