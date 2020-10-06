@@ -4,18 +4,18 @@ const { slice, indexOf, replace, split, join } = require('lodash')
 
 module.exports = (() => {
 
-    readCsv = (csvFilePath) => {
+    // readCsv = (csvFilePath) => {
+    //
+    //     const csvFile = fs.readFile(csvFilePath, 'utf-8', (err, data) => {
+    //         if (err) {
+    //             throw err;
+    //         } else {
+    //             return modelData(data)
+    //         }
+    //     })
+    // }
 
-        const csvFile = fs.readFile(csvFilePath, 'utf-8', (err, data) => {
-            if (err) {
-                throw err;
-            } else {
-                return modelData(data)
-            }
-        })
-    }
-
-    modelData = async (data) => {
+    modelCSV = async (data) => {
 
         //create an array with the keys of the file
         var keysLine = data.slice(0, data.indexOf('\n'))
@@ -52,18 +52,7 @@ module.exports = (() => {
             */
 
         })
-
-        console.log('dataObject');
-        console.log(dataObject);
-
         return dataObject
-
     }
 
-    console.log('readCsv');
-    readCsv('../../docs/invoicely/invoices/invoices-2019.csv');
-
-    return {
-
-    }
 })();
