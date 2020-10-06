@@ -11,22 +11,9 @@ console.log(
 const file = amazon.cred()
     .then(res => {
         console.log('res');
-        console.log(res);
-        return res
-    })
-    .then(buff => {
-        console.log('buff');
-        console.log(buff);
-        console.log('buff.Body');
-
-        console.log(buff.Body);
-        fs.readFile(buff.Body, 'utf8', (err, data) => {
-
-            console.log('data');
-            console.log(data);
-            if (err) throw err;
-        });
+        console.log(res.Body.toString('utf8'));
+        return res.Body.toString('utf8')
     })
     .catch(err => {
-        console.log('ERROR', err);
+        console.log('error', err);
     })
