@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import GitHubIcon from '@material-ui/icons/GitHub'
 import Button from '@material-ui/core/Button'
+import { Redirect } from 'react-router-dom';
 
 import { ReactComponent as ReactImg } from '../images/sample.svg'
 
@@ -11,10 +12,12 @@ function LoginPage() {
     })
 
     const handleGithubLogin = () => {
-        setLoggedInUser({
-            id: 100,
-            email: 'vclafarga@gmail.com',
-        })
+        window.open(`http://localhost:6001/api/login`, '_self')
+
+        // setLoggedInUser({
+        //     id: 100,
+        //     email: 'vclafarga@gmail.com',
+        // })
     }
 
     return (

@@ -30,6 +30,9 @@ var whitelist = [
     'http://localhost:8080',
     'http://localhost:3000',
     'http://localhost:4000',
+    'http://localhost:6001',
+    'http://localhost:6002',
+    'http://github.com/',
     'https://project-trinary.herokuapp.com/'
 ];
 
@@ -52,10 +55,12 @@ app.get('/api/v/:vid/ping', (req, res) => {
 })
 
 app.get('/api/login', (req, res) => {
+    console.log('login with github');
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.CLIENT_ID}`)
 })
 
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in te Github App
+    console.log('user logged');
     github.fetchAccessToken({ code: req.query.code })
         .then(accesToken => {
             console.log('accesToken');
