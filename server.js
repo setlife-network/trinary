@@ -8,7 +8,7 @@ const app = express()
 const apiModules = require('./api/modules');
 
 var isProduction = process.env.NODE_ENV === 'production';
-var port = isProduction ? process.env.PORT : 5001;
+var port = isProduction ? process.env.PORT : 6001;
 
 // Serve static assets
 app.use(express.static(__dirname + '/build'));
@@ -48,6 +48,15 @@ app.get('/api/readPaymments', apiModules.paymentFiles.fetchCSV)
 
 app.get('/api/v/:vid/ping', (req, res) => {
     res.send('Hello World')
+})
+
+app.get('/api/fetcPayments', (req, res) => {
+    const invoices = fs.readdirSync('./docs/invoicely/invoices/', 'utf-8')
+    const payments = fs.readdirSync('./docs/invoicely/payments/', 'utf - 8')
+
+    //TODO: map invoices and payments and call invoicely script with each file path
+
+    res.send(file)
 })
 
 app.listen(port, () => {
