@@ -1,4 +1,5 @@
 const { Octokit } = require('@octokit/rest');
+const axios = require('axios')
 
 const { GITHUB } = require('../config/credentials')
 const { GITHUB_OAUTH_URL } = require('../config/constants')
@@ -6,13 +7,15 @@ const { GITHUB_OAUTH_URL } = require('../config/constants')
 const github = module.exports = (() => {
 
     const fetchAccessToken = (params) => {
-        return new Promise((resolve, reject) => {
-            json({
-                method: 'POST',
-                url: `${GITHUB_OAUTH_URL}?client_id=${GITHUB.CLIENT_ID}&client_secret=${GITHUB.CLIENT_SECRET}&code=${params.code}`
-            })
-                .then(response => {
-                    resolve(response.access_token)
+        const opts = { headers: { accept: 'application/json' } };
+        return new Promise((resolve, reject ) => {
+            axios
+                .post(`${GITHUB_OAUTH_URL}?client_id=${GITHUB.CLIENT_ID}&client_secret=${GITHUB.CLIENT_SECRET}&code=${params.code}`, null, opts)
+                .then((res) => {
+                    resolve(res.data['access_token'])
+                })
+                .catch((error) => {
+                    console.error(error)
                 })
         });
     };
