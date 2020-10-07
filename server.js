@@ -66,6 +66,12 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
             console.log('accesToken');
             console.log(accesToken);
         })
+        .then(
+            res.redirect('http://localhost:6002')
+        )
+        .catch(err => {
+            console.log('An error ocurred' + err);
+        })
 })
 
 app.get('/api/fetcPayments', (req, res) => {
