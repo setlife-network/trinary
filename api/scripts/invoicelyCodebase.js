@@ -36,7 +36,6 @@ module.exports = (() => {
             const matchClients = await db.models.Client.findAll({ where: {
                 name: d['Client']
             } })
-
             if (matchClients) {
                 await db.models.Payment.create({
                     amount: parseFloat(d['Total'].split(',').join('')),
