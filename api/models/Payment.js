@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         amount: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.DOUBLE,
             allowNull: false
         },
         date_incurred: {

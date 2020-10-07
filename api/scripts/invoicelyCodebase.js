@@ -3,21 +3,9 @@ const moment = require('moment')
 
 const db = require('../models')
 
-const { slice, indexOf, replace, split, join } = require('lodash')
+const { slice, indexOf, split, join } = require('lodash')
 
 module.exports = (() => {
-
-    // readCsv = (csvFilePath) => {
-    //
-    //     const csvFile = fs.readFile(csvFilePath, 'utf-8', (err, data) => {
-    //         if (err) {
-    //             throw err;
-    //         } else {
-    //             return modelData(data)
-    //         }
-    //     })
-    // }
-
     modelCSV = async (data) => {
         //create an array with the keys of the file
         var keysLine = data.slice(0, data.indexOf('\n'))
@@ -41,36 +29,22 @@ module.exports = (() => {
             })
             if (Object.keys(object).length) dataObject.push(object)
         })
-        // console.log('dataObject');
-        // console.log(dataObject);
-
         //Iterate object collection and create the data object into the db
         dataObject.map( async d => {
+            //Look for the id of the client based on the name
+            //TODO: Consider make the name of the client in the DB Unique
+            const matchClients = await db.models.Client.findAll({ where: {
+                name: d['Client']
+            } })
 
-            // console.log('d');
-            // console.log(d);
-            // console.log(`d['Date Issued']`);
-            // console.log(d['Date Issued']);
-            //
-            // console.log(Object.keys(d))
-
-            //TODO: call function create from db functions
-            //client_id = dbFunctions.findClient(name:d.Client)
-            /*Example:
-                dbFunctions.addInvoice({
-                    amount:d[Total]
-                    date_incurred: d['date issued']
-                    date_paid: d['date paid']
-                    client_id: client_id
+            if (matchClients) {
+                await db.models.Payment.create({
+                    amount: parseFloat(d['Total'].split(',').join('')),
+                    date_incurred: new moment(d['Date Issued']),
+                    date_paid: new moment.utc(d['Date Paid']),
+                    client_id: matchClients[0].id
                 })
-            */
-
-            const payment = await db.models.Payment.create({
-                amount: d['Total'],
-                date_incurred: moment.utc(d['Date Issued']),
-                date_paid: moment.utc(d['Date Paid']),
-                client_id: 1
-            })
+            }
 
         })
         return dataObject
