@@ -50,7 +50,7 @@ app.get('/api/v/:vid/ping', (req, res) => {
     res.send('Hello World')
 })
 
-app.get('/api/fetcPayments', (req, res) => {
+app.get('/api/fetchPayments', (req, res) => {
     const invoices = fs.readdirSync('./docs/invoicely/invoices/', 'utf-8')
     const payments = fs.readdirSync('./docs/invoicely/payments/', 'utf - 8')
 

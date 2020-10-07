@@ -1,4 +1,5 @@
 const amazon = require('../handlers/amazon')
+const invoicelyCodebase = require('../scripts/invoicelyCodebase')
 
 const paymentFiles = module.exports = (() => {
 
@@ -16,6 +17,11 @@ const paymentFiles = module.exports = (() => {
                 console.log('res');
                 console.log(res.Body.toString('utf8'));
                 return res.Body.toString('utf8')
+            })
+            .then(json => {
+                console.log('json');
+                console.log(json);
+                invoicelyCodebase.modelCSV(json)
             })
             .catch(err => {
                 console.log('error', err);
