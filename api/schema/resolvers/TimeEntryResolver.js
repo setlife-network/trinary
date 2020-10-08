@@ -5,71 +5,33 @@ const attributesMapping = require('../helpers/attributesMapping')
 module.exports = {
 
     TimeEntry: {
-        async contributor (timeEntry, args, { models }) {
-            return (
-                models.Contributor.findByPk(timeEntry.contributorId)
-                    .then(res => {
-                        return attributesMapping.contributorMap(res)
-                    })
-            )
+        contributor: (timeEntry, args, { models }) => {
+            return models.Contributor.findByPk(timeEntry.contributor_id)
+
         },
-        async project (timeEntry, args, { models }) {
-            return (
-                models.Project.findByPk(timeEntry.projectId)
-                    .then(res => {
-                        return attributesMapping.projectMap(res)
-                    })
-            )
+        project: (timeEntry, args, { models }) => {
+            return models.Project.findByPk(timeEntry.project_id)
         }
     },
     Query: {
-        getTimeEntryById(root, { id }, { models }) {
-            return (
-                models.TimeEntry.findByPk(timeEntry.project_id)
-                    .then(res => {
-                        return attributesMapping.timeEntryMap(res)
-                    })
-            )
+        getTimeEntryById: (root, { id }, { models }) => {
+            return models.TimeEntry.findByPk(timeEntry.project_id)
         },
-        getTimeEntries(root, args, { models }) {
-            return (
-                models.TimeEntry.findAll()
-                    .then(res => {
-                        const timeEntries = []
-                        res.map(t => {
-                            timeEntries.push(attributesMapping.timeEntryMap(t))
-                        })
-                        return timeEntries
-                    })
-            )
+        getTimeEntries: (root, args, { models }) => {
+            return models.TimeEntry.findAll()
         },
-        getProjectTimeEntriesByProjectId(root, { projectId }, { models }) {
-            return (
-                models.TimeEntry.findAll({ where: { project_id: projectId } })
-                    .then(res => {
-                        const timeEntries = []
-                        res.map(t => {
-                            timeEntries.push(attributesMapping.timeEntryMap(t))
-                        })
-                        return timeEntries
-                    })
-            )
+        getProjectTimeEntriesByProjectId: (root, { projectId }, { models }) => {
+            return models.TimeEntry.findAll({ where: { project_id: project_id } })
         }
     },
     Mutation: {
         createTimeEntry: async (root, {
-            seconds,
-            toggl_id,
-            start_time,
-            contributor_id,
-            project_id
+            createFields,
+            start_time
         }, { models }) => {
             return models.TimeEntry.create({
-                seconds,
-                toggl_id,
-                start_time: new moment(date, 'MM-DD-YYYY HH:mm:ss').utc(),
-                contributor_id,
-                project_id
+                createFields,
+                start_time: moment(start_time, 'MM-DD-YYYY HH:mm:ss').utc()
             })
         }
     }

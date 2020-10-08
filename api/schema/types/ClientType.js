@@ -4,11 +4,17 @@ module.exports = gql`
 
     type Client {
         id: Int!
-        isActive: Boolean!
+        is_active: Boolean!
         name: String!
         currency: String!
         payments: [Payment]
         projects: [Project]
+    }
+
+    input ClientInput {
+        is_active: Boolean!,
+        name: String!,
+        currency: String!,
     }
 
     type Query {
@@ -18,9 +24,7 @@ module.exports = gql`
 
     type Mutation {
         createClient(
-            is_active: Boolean!,
-            name: String!,
-            currency: String!,
+            createFields: ClientInput
         ): Client!
     }
 

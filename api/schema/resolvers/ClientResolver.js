@@ -5,65 +5,27 @@ const attributesMapping = require('../helpers/attributesMapping')
 module.exports = {
 
     Client: {
-        async payments (client, args, { models }) {
-            return (
-                models.Payment.findAll({ where: { client_id: client.id } })
-                    .then(res => {
-                        const payments = []
-                        res.map(p => {
-                            payments.push(attributesMapping.paymentMap(p))
-                        })
-                        return payments
-                    })
-            )
+        payments: (client, args, { models }) => {
+            return models.Payment.findAll({ where: { client_id: client.id } })
         },
-        async projects (client, args, { models }) {
-            return (
-                models.Project.findAll({ where: { client_id: client.id } })
-                    .then(res => {
-                        const projects = []
-                        res.map(p => {
-                            projects.push(attributesMapping.projectMap(p))
-                        })
-                        return projects
-                    })
-            )
+        projects: (client, args, { models }) => {
+            return models.Project.findAll({ where: { client_id: client.id } })
         }
     },
     Query: {
-        getClientById: async (root, { id }, { models }) => {
-            return (
-                models.Client.findByPk(id)
-                    .then(res => {
-                        return attributesMapping.clientMap(res)
-                    })
-            )
+        getClientById: (root, { id }, { models }) => {
+            return models.Client.findByPk(id)
         },
-        getClients: async (parent, args, { models }) => {
-            return (
-                models.Client.findAll()
-                    .then(res => {
-                        const clients = []
-                        res.map(c => {
-                            clients.push(
-                                attributesMapping.clientMap(c)
-                            )
-                        })
-                        return clients
-                    })
-            )
+        getClients: (parent, args, { models }) => {
+            return models.Client.findAll()
         }
     },
     Mutation: {
-        createClient: async (root, {
-            is_active,
-            name,
-            currency,
+        createClient: (root, {
+            createFields
         }, { models }) => {
             return models.Client.create({
-                is_active,
-                name,
-                currency
+                ...createFields
             })
         }
     }

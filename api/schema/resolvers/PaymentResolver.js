@@ -5,62 +5,31 @@ const attributesMapping = require('../helpers/attributesMapping')
 module.exports = {
 
     Payment: {
-        async client (payment, args, { models }) {
-            return (
-
-                models.Client.findByPk(payment.clientId)
-                    .then(res => {
-                        return attributesMapping.clientMap(res)
-                    })
-            )
+        client: (payment, args, { models }) => {
+            return models.Client.findByPk(payment.client_id)
         }
     },
     Query: {
-        getPaymentById(root, { id }, { models }) {
-            return (
-                models.Payment.findByPk(id)
-                    .then(res => {
-                        return attributesMapping.paymentMap(res)
-                    })
-            )
+        getPaymentById: (root, { id }, { models }) => {
+            return models.Payment.findByPk(id)
         },
-        getPayments(root, args, { models }) {
-            return (
-                models.Payment.findAll()
-                    .then(res => {
-                        const payments = []
-                        res.map(p => {
-                            payments.push(attributesMapping.paymentMap(p))
-                        })
-                        return payments
-                    })
-            )
+        getPayments: (root, args, { models }) => {
+            return models.Payment.findAll()
         },
-        getClientPaymentsByClientId(root, { clientId }, { models }) {
-            return (
-                models.Payment.findAll({ where: { client_id: clientId } })
-                    .then(res => {
-                        const payments = []
-                        res.map(p => {
-                            payments.push(attributesMapping.paymentMap(p))
-                        })
-                        return payments
-                    })
-            )
+        getClientPaymentsByClientId: (root, { clientId }, { models }) => {
+            return models.Payment.findAll({ where: { client_id: client_id } })
         }
     },
     Mutation: {
-        createPayment: async(root, {
-            amount,
+        createPayment: (root, {
+            createFields,
             date_incurred,
-            date_paid,
-            client_id
+            date_paid
         }, { models }) => {
             return models.Payment.create({
-                amount,
-                date_incurred: new moment(date, 'MM-DD-YYYY HH:mm:ss').utc(),
-                date_paid: new moment(date, 'MM-DD-YYYY HH:mm:ss').utc(),
-                client_id
+                date_incurred: moment(date_incurred, 'MM-DD-YYYY HH:mm:ss').utc(),
+                date_paid: moment(date_paid, 'MM-DD-YYYY HH:mm:ss').utc(),
+                ...createFields
             })
         }
     }

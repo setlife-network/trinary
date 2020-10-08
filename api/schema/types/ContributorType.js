@@ -4,14 +4,23 @@ module.exports = gql`
 
     type Contributor {
         id: Int!
-        hourlyRate: Int
-        weeklyRate: Int
+        hourly_rate: Int
+        weekly_rate: Int
         monthlyRate: Int
         name: String!
-        externalDataUrl: String
-        githubId: String!,
-        githubHandle: String!
+        external_data_url: String
+        github_id: String!
+        github_handle: String!
+    }
 
+    input ContributorInput {
+        hourly_rate: Int,
+        weekly_rate: Int,
+        monthly_rate: Int,
+        name: String!,
+        external_data_url: String,
+        github_id: String!,
+        github_handle: String!
     }
 
     type Query {
@@ -21,13 +30,7 @@ module.exports = gql`
 
     type Mutation {
         createContributor(
-            hourly_rate: Int,
-            weekly_rate: Int,
-            monthly_rate: Int,
-            name: String!,
-            external_data_url: String,
-            github_id: String!,
-            github_handle: String!
+            createFields: ContributorInput
         ): Contributor
     }
 `

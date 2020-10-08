@@ -5,46 +5,20 @@ const attributesMapping = require('../helpers/attributesMapping')
 module.exports = {
 
     Query: {
-        getContributorById(root, { id }, { models }) {
-            return (
-                models.Contributor.findByPk(id)
-                    .then(res => {
-                        return attributesMapping.contributorMap(res)
-                    })
-            )
-
+        getContributorById: (root, { id }, { models }) => {
+            return models.Contributor.findByPk(id)
         },
-        getContributors(root, args, { models }) {
-            return (
-                models.Contributor.findAll()
-                    .then(res => {
-                        const contributors = []
-                        res.map(c => {
-                            contributors.push(attributesMapping.contributorMap(c))
-                        })
-                        return contributors
-                    })
-            )
+        getContributors: (root, args, { models }) => {
+            return models.Contributor.findAll()
+
         }
     },
     Mutation: {
-        createContributor: async (root, {
-            hourly_rate,
-            weekly_rate,
-            monthly_rate,
-            name,
-            external_data_url,
-            github_id,
-            github_handle
+        createContributor: (root, {
+            createFields
         }, { models }) => {
             return models.Contributor.create({
-                hourly_rate,
-                weekly_rate,
-                monthly_rate,
-                name,
-                external_data_url,
-                github_id,
-                github_handle
+                ...createFields
             })
         }
     }
