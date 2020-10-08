@@ -1,5 +1,3 @@
-const attributesMapping = require('../helpers/attributesMapping')
-
 module.exports = {
 
     Issue: {

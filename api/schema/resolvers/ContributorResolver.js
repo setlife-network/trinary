@@ -1,7 +1,5 @@
 const moment = require('moment')
 
-const attributesMapping = require('../helpers/attributesMapping')
-
 module.exports = {
 
     Query: {
