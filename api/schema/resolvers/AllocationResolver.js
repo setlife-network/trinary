@@ -22,7 +22,6 @@ module.exports = {
         },
         getAllocations: (root, args, { models }) => {
             return models.Allocation.findAll()
-
         }
     },
     Mutation: {
