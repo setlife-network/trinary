@@ -30,7 +30,7 @@ module.exports = {
             start_time
         }, { models }) => {
             return models.TimeEntry.create({
-                createFields,
+                ...createFields,
                 start_time: moment(start_time, 'MM-DD-YYYY HH:mm:ss').utc()
             })
         }

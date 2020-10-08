@@ -4,7 +4,7 @@ module.exports = {
 
     Issue: {
         project: async (issue, args, { models }) => {
-            return models.Project.findByPk(issue.projectId)
+            return models.Project.findByPk(issue.project_id)
 
         }
     },
@@ -14,16 +14,16 @@ module.exports = {
 
         },
         getProjectIssuesByProjectId: async (root, { projectId }, { models }) => {
-            return models.Issue.findAll({ where: { project_id: projectId } })
+            return models.Issue.findAll({ where: { project_id: project_id } })
 
         }
     },
     Mutation: {
         createIssue: (root, {
-            IssueInput
+            createFields
         }, { models }) => {
             return models.Issue.create({
-                ...IssueInput
+                ...createFields
             })
         }
     }

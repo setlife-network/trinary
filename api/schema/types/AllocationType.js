@@ -11,6 +11,8 @@ module.exports = gql`
         active: Boolean!
         created_at: String!
         date_paid: String
+        start_date: String!
+        end_date: String!
         payment: Payment
         project: Project
         contributor: Contributor
@@ -32,8 +34,10 @@ module.exports = gql`
 
     type Mutation {
         createAllocation(
+            createFields: AllocationInput,
             date_paid: String,
-            createFields: AllocationInput
+            start_date: String!,
+            end_date: String!
         ): Allocation
     }
 

@@ -29,10 +29,14 @@ module.exports = {
         createAllocation: (root, {
             id,
             createFields,
-            date_paid
+            date_paid,
+            start_date,
+            end_date
         }, { models }) => {
             return models.Allocation.create({
                 date_paid: moment(date_paid, 'YYYY-MM-DD HH:mm:ss').utc(),
+                start_date: moment(start_date, 'YYYY-MM-DD HH:mm:ss').utc(),
+                end_date: moment(end_date, 'YYYY-MM-DD HH:mm:ss').utc(),
                 ...createFields
             })
         }
