@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const { DataTypes, Deferrable } = require('sequelize')
+const { Payment } = require('.')
 
 module.exports = (sequelize) => {
 

@@ -16,16 +16,14 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         github_url: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            unique: true
+            type: DataTypes.STRING,
+            allowNull: false
         },
         project_id: { //FK
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: 'Projects',
-                //deferrable: Sequelize.Deferrable.INITIALLY_DEFERRED,
                 key: 'id',
             }
         }
@@ -37,9 +35,6 @@ module.exports = (sequelize) => {
         createdAt: 'created_at',
         updatedAt: 'updated_at'
     });
-    // Issue.associate = (models) => {
-    //     Issue.hasOne(Sequelize.models.Project);
-    // };
 
     return Issue
 
