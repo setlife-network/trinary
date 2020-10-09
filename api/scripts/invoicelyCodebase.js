@@ -7,7 +7,6 @@ const { slice, indexOf, split, join, replace } = require('lodash')
 
 module.exports = (() => {
     modelCSV = async (data) => {
-
         //deletes all the quotes in the file
         const quotes = data[0] == '"'
         var keysLine = data.slice(0, data.indexOf('\n'))

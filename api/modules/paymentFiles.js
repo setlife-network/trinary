@@ -13,12 +13,9 @@ const paymentFiles = module.exports = (() => {
     }
 
     const fetchCSV = () => {
-        amazon.fetchCSV(fileBucket)
+        amazon.fetchFile(fileBucket)
             .then(res => {
-                return res.Body.toString('utf8')
-            })
-            .then(json => {
-                invoicelyCodebase.modelCSV(json)
+                invoicelyCodebase.modelCSV(res)
             })
             .catch(err => {
                 console.log('error', err);
