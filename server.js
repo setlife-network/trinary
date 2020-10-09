@@ -44,7 +44,7 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 
-app.get('/api/readPaymments', apiModules.paymentFiles.fetchCSV)
+app.get('/api/readPayments', apiModules.paymentFiles.fetchCSV)
 
 app.get('/api/v/:vid/ping', (req, res) => {
     res.send('Hello World')

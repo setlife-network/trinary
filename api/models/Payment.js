@@ -24,7 +24,7 @@ module.exports = (sequelize) => {
         },
         date_paid: {
             type: DataTypes.DATE,
-            allowNull: false
+            defaultValue: null
         },
         client_id: { //FK
             type: DataTypes.INTEGER,

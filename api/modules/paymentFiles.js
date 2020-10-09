@@ -22,6 +22,7 @@ const paymentFiles = module.exports = (() => {
             })
             .catch(err => {
                 console.log('error', err);
+                return err.message
             })
     }
 
