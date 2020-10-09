@@ -50,15 +50,6 @@ app.get('/api/v/:vid/ping', (req, res) => {
     res.send('Hello World')
 })
 
-app.get('/api/fetchPayments', (req, res) => {
-    const invoices = fs.readdirSync('./docs/invoicely/invoices/', 'utf-8')
-    const payments = fs.readdirSync('./docs/invoicely/payments/', 'utf - 8')
-
-    //TODO: map invoices and payments and call invoicely script with each file path
-
-    res.send(file)
-})
-
 app.listen(port, () => {
     console.log(`Trinary project app listening at http://localhost:${port}`)
 })
