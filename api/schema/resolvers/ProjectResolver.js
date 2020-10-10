@@ -21,33 +21,26 @@ module.exports = {
     },
 
     Mutation: {
-        createProject: async(root, {
+        createProject: (root, {
             createFields,
             date
         }, { models }) => {
             return models.Project.create({
                 ...createFields,
-                date: new moment(date, 'MM-DD-YYYY HH:mm:ss').utc()
+                date: moment(date, 'MM-DD-YYYY HH:mm:ss').utc()
             })
         },
-        deleteProjectById: async (root, { id }, { models }) => {
+        deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
         },
-        updateProjectById: async (root, {
+        updateProjectById: (root, {
             id,
-            expected_budget,
-            is_active,
-            name,
-            github_url,
+            updateFields,
             date,
-            client_id
         }, { models }) => {
             return models.Project.update({
-                expected_budget,
-                is_active,
-                name,
-                github_url,
-                date,
+                ...updateFields,
+                date: moment(date, 'MM-DD-YYYY HH:mm:ss').utc(),
                 client_id
             }, {
                 where: {

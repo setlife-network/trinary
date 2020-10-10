@@ -30,27 +30,25 @@ module.exports = {
                 ...createFields
             })
         },
-        deletePaymentById: async (root, { id }, { models }) => {
+        deletePaymentById: (root, { id }, { models }) => {
             return models.Payment.destroy({ where: { id } })
         },
-        updatePaymentById: async(root, {
+        updatePaymentById: (root, {
             id,
-            amount,
+            updateFields,
             date_incurred,
             date_paid,
-            client_id
         }, { models }) => {
             return models.Payment.update({
-                amount,
-                date_incurred,
-                date_paid,
-                client_id
+                ...updateFields,
+                date_incurred: moment(date_incurred, 'MM-DD-YYYY HH:mm:ss').utc(),
+                date_paid: moment(date_paid, 'MM-DD-YYYY HH:mm:ss').utc(),
             }, {
                 where: {
                     id
                 }
             })
-        }    
+        }
     }
 
 }

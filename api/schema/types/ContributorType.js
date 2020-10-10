@@ -41,7 +41,7 @@ module.exports = gql`
             weekly_rate: Int,
             monthly_rate: Int,
             name: String!,
-            date_created: String!
+            date_created: String
         ):[Int]
     }
 `

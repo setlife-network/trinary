@@ -19,10 +19,10 @@ module.exports = {
                 ...createFields
             })
         },
-        deleteContributorById: async (root, { id }, { models }) => {
+        deleteContributorById: (root, { id }, { models }) => {
             return models.Contributor.destroy({ where: { id } })
         },
-        updateContributorById: async(root, {
+        updateContributorById: (root, {
             id,
             hourly_rate,
             weekly_rate,

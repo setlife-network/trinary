@@ -24,17 +24,15 @@ module.exports = {
                 ...createFields
             })
         },
-        deleteIssueById: async (root, { id }, { models }) => {
+        deleteIssueById: (root, { id }, { models }) => {
             return models.Issue.destroy({ where: { id } })
         },
-        updateIssueById: async(root, {
+        updateIssueById: (root, {
             id,
-            github_url,
-            project_id
+            updateFields
         }, { models }) => {
             return models.Issue.update({
-                github_url,
-                project_id
+                ...updateFields
             }, {
                 where: {
                     id

@@ -37,29 +37,21 @@ module.exports = {
                 ...createFields
             })
         },
-        deleteAllocationById: async (root, { id }, { models }) => {
+        deleteAllocationById: (root, { id }, { models }) => {
             return models.Allocation.destroy({ where: { id } })
         },
-        updateAllocationById: async (root, {
+        updateAllocationById: (root, {
             id,
-            amount,
-            rate_type,
-            active,
-            date_created,
+            updateFields,
             date_paid,
-            payment_id,
-            project_id,
-            contributor_id
+            start_date,
+            end_date
         }, { models }) => {
             return models.Allocation.update({
-                amount,
-                rate_type,
-                active,
-                date_created: moment(date_created, 'YYYY-MM-DD'),
-                date_paid: moment(date_paid, 'YYYY-MM-DD'),
-                payment_id,
-                project_id,
-                contributor_id
+                ...updateFields,
+                date_paid: moment(date_created, 'YYYY-MM-DD'),
+                start_date: moment(date_paid, 'YYYY-MM-DD'),
+                end_date: moment(date_paid, 'YYYY-MM-DD')
             }, {
                 where: {
                     id

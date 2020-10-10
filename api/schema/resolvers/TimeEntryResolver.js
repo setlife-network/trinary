@@ -23,7 +23,7 @@ module.exports = {
         }
     },
     Mutation: {
-        createTimeEntry: async (root, {
+        createTimeEntry: (root, {
             createFields,
             start_time
         }, { models }) => {
@@ -32,23 +32,17 @@ module.exports = {
                 start_time: moment(start_time, 'MM-DD-YYYY HH:mm:ss').utc()
             })
         },
-        deleteTimeEntryById: async (root, { id }, { models }) => {
+        deleteTimeEntryById: (root, { id }, { models }) => {
             return models.TimeEntry.destroy({ where: { id } })
         },
-        upateTimeEntryById: async(root, {
+        upateTimeEntryById: (root, {
             id,
-            seconds,
-            toggl_id,
-            start_time,
-            contributor_id,
-            project_id
+            updateFields,
+            start_time
         }, { models }) => {
             return models.TimeEntry.update({
-                seconds,
-                toggl_id,
-                start_time,
-                contributor_id,
-                project_id
+                ...updateFields,
+                start_time: moment(start_time, 'MM-DD-YYYY HH:mm:ss').utc()
             }, {
                 where: {
                     id

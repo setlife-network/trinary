@@ -26,21 +26,15 @@ module.exports = {
                 ...createFields
             })
         },
-        deleteClientById: async (root, { id }, { models }) => {
+        deleteClientById: (root, { id }, { models }) => {
             return models.Client.destroy({ where: { id } })
         },
-        updateClientById: async(root, {
+        updateClientById: (root, {
             id,
-            is_active,
-            name,
-            currency,
-            date_created
+            updateFields
         }, { models }) => {
             return models.Client.update({
-                is_active,
-                name,
-                currency,
-                date_created
+                ...updateFields
             }, {
                 where: {
                     id
