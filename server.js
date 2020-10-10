@@ -1,14 +1,18 @@
 const express = require('express')
 const bodyParser = require('body-parser') //transform req into JSON format
 const fs = require('fs') //module to read files
-const cors = require('cors'); //handle CORS issues
+const cors = require('cors') //handle CORS issues
+const { ApolloServer } = require('apollo-server') //Apollo server for graphql integration
+const schema = require('./api/schema')
 
-const app = express()
+const db = require('./api/models');
 
 const apiModules = require('./api/handlers/toggl');
 const github = require('./api/handlers/github')
 
 const { GITHUB } = require('./api/config/credentials')
+
+const app = express()
 
 var isProduction = process.env.NODE_ENV === 'production';
 var port = isProduction ? process.env.PORT : 6001;
@@ -82,6 +86,11 @@ app.get('/api/fetcPayments', (req, res) => {
     res.send(file)
 })
 
-app.listen(port, () => {
+const server = new ApolloServer({
+    schema,
+    context: db
+})
+
+server.listen(port, () => {
     console.log(`Trinary project app listening at http://localhost:${port}`)
 })
