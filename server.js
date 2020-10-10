@@ -10,7 +10,20 @@ const db = require('./api/models');
 const app = express()
 
 var isProduction = process.env.NODE_ENV === 'production';
-var port = isProduction ? process.env.PORT : 5001;
+var port = isProduction ? process.env.PORT : 6001;
+
+// Serve static assets
+app.use(express.static(__dirname + '/build'));
+
+app.get('*', function(req, res, next) {
+    if (req.path.indexOf('/api/') != -1) {
+        //route to the next middleware function
+        return next()
+    }
+    fs.readFile(__dirname + '/build/index.html', 'utf8', function (err, text) {
+        res.send(text);
+    });
+})
 
 var whitelist = [
     'http://localhost:8080',
@@ -33,18 +46,17 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 
-app.get('*', function(req, res, next) {
-    if (req.path.indexOf('/api/') != -1) {
-        //route to the next middleware function
-        return next()
-    }
-    fs.readFile(__dirname + '/build/index.html', 'utf8', function (err, text) {
-        res.send(text);
-    });
+app.get('/api/v/:vid/ping', (req, res) => {
+    res.send('Hello World')
 })
 
-app.get('/', (req, res) => {
-    res.send('Hello World')
+app.get('/api/fetcPayments', (req, res) => {
+    const invoices = fs.readdirSync('./docs/invoicely/invoices/', 'utf-8')
+    const payments = fs.readdirSync('./docs/invoicely/payments/', 'utf - 8')
+
+    //TODO: map invoices and payments and call invoicely script with each file path
+
+    res.send(file)
 })
 
 const server = new ApolloServer({

@@ -37,7 +37,9 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'Payment'
+        modelName: 'Payment',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
 
     return Payment

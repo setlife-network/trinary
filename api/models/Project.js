@@ -29,7 +29,8 @@ module.exports = (sequelize) => {
         },
         github_url: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         date: {
             type: DataTypes.DATE,
@@ -47,7 +48,9 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'Project'
+        modelName: 'Project',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
 
     return Project

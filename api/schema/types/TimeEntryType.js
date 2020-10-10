@@ -5,10 +5,19 @@ module.exports = gql`
     type TimeEntry {
         id: Int!
         seconds: Int!
-        togglId: Int!
-        startTime: String!
+        toggl_id: Int!
+        start_time: String!
+        contributor_id: Int!
+        project_id: Int!
         contributor: Contributor!
         project: Project!
+    }
+
+    input TimeEntryInput {
+        seconds: Int!,
+        toggl_id: Int!,
+        contributor_id: Int!,
+        project_id: Int!
     }
 
     type Query {
@@ -19,11 +28,8 @@ module.exports = gql`
 
     type Mutation {
         createTimeEntry(
-            seconds: Int!,
-            toggl_id: Int!,
-            start_time: String!,
-            contributor_id: Int!,
-            project_id: Int!
+            createFields: TimeEntryInput,
+            start_time: String!
         ): TimeEntry
 
         deleteTimeEntryById(id: Int!): String

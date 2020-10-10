@@ -1,26 +1,27 @@
 module.exports = {
 
     Issue: {
-        async project (issue, args, { models }) {
+        project: async (issue, args, { models }) => {
             return models.Project.findByPk(issue.project_id)
+
         }
     },
     Query: {
-        getIssueById(root, { id }, { models }) {
+        getIssueById: async (root, { id }, { models }) => {
             return models.Issue.findByPk(id)
+
         },
-        getProjectIssuesByProjectId(root, { projectId }, { models }) {
-            return models.Issue.findAll({ where: { project_id: projectId } })
+        getProjectIssuesByProjectId: async (root, { projectId }, { models }) => {
+            return models.Issue.findAll({ where: { project_id: project_id } })
+
         }
     },
     Mutation: {
-        createIssue: async (root, {
-            github_url,
-            project_id
+        createIssue: (root, {
+            createFields
         }, { models }) => {
             return models.Issue.create({
-                github_url,
-                project_id
+                ...createFields
             })
         },
         deleteIssueById: async (root, { id }, { models }) => {

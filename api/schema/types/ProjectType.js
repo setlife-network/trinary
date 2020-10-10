@@ -9,8 +9,17 @@ module.exports = gql`
         name: String!
         github_url: String!
         date: String!
+        client_id:Int!
         client: Client
         issues: [Issue]
+    }
+
+    input ProjectInput {
+        expected_budget: Int!
+        is_active: Boolean!
+        name: String!
+        github_url: String!
+        client_id: Int!
     }
 
     type Query {
@@ -20,12 +29,8 @@ module.exports = gql`
 
     type Mutation {
         createProject(
-            expected_budget: Int!
-            is_active: Boolean!
-            name: String!
-            github_url: String!
+            createFields: ProjectInput,
             date: String!
-            client_id: Int!
         ): Project
 
         deleteProjectById(id: Int!): String

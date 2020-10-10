@@ -41,6 +41,8 @@ npm run server
 
 5. UI should open in the browser at `localhost:6002`
 
+If using VSCode, be sure to disable the Prettier: Format on Save feature to prevent unwanted changes to the code styles.
+
 ## Reference
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

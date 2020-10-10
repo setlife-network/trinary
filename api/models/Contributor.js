@@ -29,15 +29,26 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        date_created: {
-            type: DataTypes.DATE,
-            allowNull: false
+        external_data_url: {
+            type: DataTypes.STRING
+        },
+        github_id: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
+        },
+        github_handle: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
         }
     },
     {
         // Model options go here
         sequelize,
-        modelName: 'Contributor'
+        modelName: 'Contributor',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
 
     return Contributor

@@ -46,29 +46,25 @@ const github = module.exports = (() => {
         });
     }
 
-    const fetchUserData = (params) => {
-        return new Promise((resolve, reject) => {
-            const octokit = new Octokit({
-                auth: params.auth_key,
-            });
-            octokit.users.getAuthenticated({})
-                .then(result => {
-                    if (result.status == 200) {
-                        const { html_url, id, name, email } = result.data
-                        resolve({
-                            id,
-                            name,
-                            email,
-                            githubUrl: html_url
-                        })
-                    } else {
-                        reject(new Error('An error occurred' + result.status))
-                    }
-                })
-                .catch(error => {
-                    reject(new Error('An error ocurred ' + error))
-                })
-        })
+    const fetchUserData = async (params) => {
+        const octokit = new Octokit({
+            auth: params.auth_key,
+        });
+
+        const result = await octokit.users.getAuthenticated({})
+
+        if (result.status == 200) {
+            const { html_url, id, name, email } = result.data
+
+            return {
+                id,
+                name,
+                email,
+                githubUrl: html_url
+            }
+        } else {
+            throw new Error('An error occurred' + result.status)
+        }
     }
 
     return {

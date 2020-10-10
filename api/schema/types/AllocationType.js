@@ -2,18 +2,27 @@ const { gql } = require('apollo-server')
 
 module.exports = gql`
 
-    "Define description"
-
     type Allocation {
         id: Int!
         amount: Int!
-        rateType: Int!
+        rate_type: Int!
         active: Boolean!
-        dateCreated: String!
-        datePaid: String
+        created_at: String!
+        date_paid: String
+        start_date: String! 
+        end_date: String!
         payment: Payment
         project: Project
         contributor: Contributor
+    }
+
+    input AllocationInput {
+        amount: Int!,
+        rate_type: Int,
+        active: Boolean!,
+        payment_id: Int!,
+        project_id: Int!,
+        contributor_id: Int!
     }
 
     type Query {
@@ -23,14 +32,10 @@ module.exports = gql`
 
     type Mutation {
         createAllocation(
-            amount: Int!,
-            rate_type: Int,
-            active: Boolean!,
-            date_created: String!,
+            createFields: AllocationInput,
             date_paid: String,
-            payment_id: Int!,
-            project_id: Int!,
-            contributor_id: Int!
+            start_date: String!,
+            end_date: String!
         ): Allocation
 
         deleteAllocationById(id: Int!): String
