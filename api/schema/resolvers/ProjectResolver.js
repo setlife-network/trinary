@@ -19,7 +19,6 @@ module.exports = {
             return models.Project.findAll()
         }
     },
-
     Mutation: {
         createProject: (root, {
             createFields,
