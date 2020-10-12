@@ -37,8 +37,8 @@ module.exports = gql`
 
         updateProjectById(
             id: Int!,
+            date: String,
             updateFields: ProjectInput,
-            date: String
         ): [Int]
     }
 

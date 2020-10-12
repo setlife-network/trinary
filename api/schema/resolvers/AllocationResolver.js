@@ -47,11 +47,14 @@ module.exports = {
             start_date,
             end_date
         }, { models }) => {
+            if (date_paid) date_paid = moment(date_paid, 'YYYY-MM-DD')
+            if (start_date) start_date = moment(start_date, 'YYYY-MM-DD')
+            if (end_date) end_date = moment(end_date, 'YYYY-MM-DD')
             return models.Allocation.update({
                 ...updateFields,
-                date_paid: moment(date_created, 'YYYY-MM-DD'),
-                start_date: moment(date_paid, 'YYYY-MM-DD'),
-                end_date: moment(date_paid, 'YYYY-MM-DD')
+                date_paid,
+                start_date,
+                end_date
             }, {
                 where: {
                     id

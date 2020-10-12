@@ -26,7 +26,7 @@ module.exports = {
         }, { models }) => {
             return models.Project.create({
                 ...createFields,
-                date: moment(date, 'MM-DD-YYYY HH:mm:ss').utc()
+                date: moment(date, 'YYYY-MM-DD').utc()
             })
         },
         deleteProjectById: (root, { id }, { models }) => {
@@ -37,9 +37,10 @@ module.exports = {
             updateFields,
             date,
         }, { models }) => {
+            if (date) date = moment(date, 'YYYY-MM-DD').utc()
             return models.Project.update({
+                date,
                 ...updateFields,
-                date: moment(date, 'MM-DD-YYYY HH:mm:ss').utc()
             }, {
                 where: {
                     id

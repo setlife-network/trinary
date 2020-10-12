@@ -39,10 +39,12 @@ module.exports = {
             date_incurred,
             date_paid,
         }, { models }) => {
+            if (date_incurred) date_incurred = moment(date_incurred, 'MM-DD-YYYY HH:mm:ss').utc()
+            if (date_paid) date_paid = moment(date_paid, 'MM-DD-YYYY HH:mm:ss').utc()
             return models.Payment.update({
                 ...updateFields,
-                date_incurred: moment(date_incurred, 'MM-DD-YYYY HH:mm:ss').utc(),
-                date_paid: moment(date_paid, 'MM-DD-YYYY HH:mm:ss').utc(),
+                date_incurred,
+                date_paid
             }, {
                 where: {
                     id

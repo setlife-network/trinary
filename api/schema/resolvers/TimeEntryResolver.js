@@ -40,9 +40,10 @@ module.exports = {
             updateFields,
             start_time
         }, { models }) => {
+            if (start_time) start_time = moment(start_time, 'MM-DD-YYYY HH:mm:ss').utc()
             return models.TimeEntry.update({
                 ...updateFields,
-                start_time: moment(start_time, 'MM-DD-YYYY HH:mm:ss').utc()
+                start_time: start_time
             }, {
                 where: {
                     id
