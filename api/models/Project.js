@@ -38,10 +38,10 @@ module.exports = (sequelize) => {
         },
         client_id: { //FK
             type: DataTypes.INTEGER(11),
+            allowNull: false,
             references: {
                 model: 'Clients',
-                key: 'id',
-                deferrable: Deferrable.INITIALLY_IMMEDIATE
+                key: 'id'
             }
         }
     },

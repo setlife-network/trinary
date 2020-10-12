@@ -39,8 +39,7 @@ module.exports = {
         }, { models }) => {
             return models.Project.update({
                 ...updateFields,
-                date: moment(date, 'MM-DD-YYYY HH:mm:ss').utc(),
-                client_id
+                date: moment(date, 'MM-DD-YYYY HH:mm:ss').utc()
             }, {
                 where: {
                     id
