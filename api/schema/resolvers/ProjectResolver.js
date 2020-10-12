@@ -25,13 +25,13 @@ module.exports = {
             createFields,
             date
         }, { models }) => {
-            const dateUTC = moment(date, 'YYYY-MM-DD', true).utc()
-            if (!dateUTC.isValid()) {
+            date = moment(date, 'YYYY-MM-DD', true).utc()
+            if (!date.isValid()) {
                 throw new UserInputError('Date format invalid');
             }
             return models.Project.create({
                 ...createFields,
-                date: dateUTC
+                date
             })
         },
         deleteProjectById: (root, { id }, { models }) => {
@@ -42,13 +42,13 @@ module.exports = {
             updateFields,
             date,
         }, { models }) => {
-            const dateUTC = moment(date, 'YYYY-MM-DD', true).utc()
-            if (date && !dateUTC.isValid()) {
+            if (date) date = moment(date, 'YYYY-MM-DD', true).utc()
+            if (date && !date.isValid()) {
                 throw new UserInputError('Date format invalid');
             }
             return models.Project.update({
                 ...updateFields,
-                date: dateUTC
+                date
             }, {
                 where: {
                     id

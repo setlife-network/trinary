@@ -44,13 +44,13 @@ module.exports = {
             updateFields,
             start_time
         }, { models }) => {
-            const startTimeUTC = moment(start_time, 'YYYY-MM-DD', true).utc()
-            if (start_time && !startTimeUTC.isValid()) {
+            if (start_time) start_time = moment(start_time, 'YYYY-MM-DD', true).utc()
+            if (start_time && !start_time.isValid()) {
                 throw new UserInputError('Date format invalid');
             }
             return models.TimeEntry.update({
                 ...updateFields,
-                start_time: moment(start_time, 'MM-DD-YYYY HH:mm:ss').utc()
+                start_time
             }, {
                 where: {
                     id
