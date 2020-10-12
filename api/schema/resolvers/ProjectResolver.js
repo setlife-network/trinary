@@ -1,4 +1,5 @@
 const moment = require('moment')
+const { UserInputError } = require('apollo-server')
 
 module.exports = {
 
@@ -24,9 +25,12 @@ module.exports = {
             createFields,
             date
         }, { models }) => {
+            if (!moment(date, 'YYYY-MM-DD', true).utc().isValid()) {
+                throw new UserInputError('Date format invalid');
+            }
             return models.Project.create({
                 ...createFields,
-                date: moment(date, 'MM-DD-YYYY HH:mm:ss').utc()
+                date: moment(date, 'YYYY-MM-DD').utc()
             })
         },
         deleteProjectById: (root, { id }, { models }) => {
@@ -37,9 +41,12 @@ module.exports = {
             updateFields,
             date,
         }, { models }) => {
+            if (date && !moment(date, 'YYYY-MM-DD', true).utc().isValid()) {
+                throw new UserInputError('Date format invalid');
+            }
             return models.Project.update({
                 ...updateFields,
-                date: moment(date, 'MM-DD-YYYY HH:mm:ss').utc(),
+                date: moment(date, 'MM-DD-YYYY').utc(),
                 client_id
             }, {
                 where: {
