@@ -35,7 +35,7 @@ module.exports = {
                 weekly_rate,
                 monthly_rate,
                 name,
-                date_created: moment(date_created, 'YYYY-MM-DD')
+                date_created
             }, {
                 where: {
                     id
