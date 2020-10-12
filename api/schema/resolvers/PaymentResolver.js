@@ -25,8 +25,8 @@ module.exports = {
             date_paid
         }, { models }) => {
             return models.Payment.create({
-                date_incurred: moment(date_incurred, 'MM-DD-YYYY HH:mm:ss').utc(),
-                date_paid: moment(date_paid, 'MM-DD-YYYY HH:mm:ss').utc(),
+                date_incurred: moment(date_incurred, 'YYYY-MM-DD').utc(),
+                date_paid: moment(date_paid, 'YYYY-MM-DD').utc(),
                 ...createFields
             })
         },
@@ -39,10 +39,15 @@ module.exports = {
             date_incurred,
             date_paid,
         }, { models }) => {
+            const dateIncurred = moment(date_incurred, 'YYYY-MM-DD', true).utc()
+            const datePaid = moment(date_paid, 'YYYY-MM-DD', true).utc()
+            if ((date_incurred && !date_incurred.isValid()) || (datePaid && !datePaid.isValid())) {
+                throw new UserInputError('Date format invalid');
+            }
             return models.Payment.update({
                 ...updateFields,
-                date_incurred: moment(date_incurred, 'MM-DD-YYYY HH:mm:ss').utc(),
-                date_paid: moment(date_paid, 'MM-DD-YYYY HH:mm:ss').utc(),
+                date_incurred: dateIncurred,
+                date_paid: datePaid
             }, {
                 where: {
                     id

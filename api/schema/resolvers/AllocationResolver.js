@@ -30,10 +30,16 @@ module.exports = {
             start_date,
             end_date
         }, { models }) => {
+            const datePaid = moment(date_paid, 'YYYY-MM-DD', true).utc()
+            const startDate = moment(startDate, 'YYYY-MM-DD', true).utc()
+            const endDate = moment(endDate, 'YYYY-MM-DD', true).utc()
+            if ((!datePaid.isValid()) || (!startDate.isValid()) || (!endDate.isValid())) {
+                throw new UserInputError('Date format invalid');
+            }
             return models.Allocation.create({
-                date_paid: moment(date_paid, 'YYYY-MM-DD HH:mm:ss').utc(),
-                start_date: moment(start_date, 'YYYY-MM-DD HH:mm:ss').utc(),
-                end_date: moment(end_date, 'YYYY-MM-DD HH:mm:ss').utc(),
+                date_paid: datePaid,
+                start_date: startDate,
+                end_date: endDate,
                 ...createFields
             })
         },
@@ -47,11 +53,17 @@ module.exports = {
             start_date,
             end_date
         }, { models }) => {
+            const datePaid = moment(date_paid, 'YYYY-MM-DD', true).utc()
+            const startDate = moment(startDate, 'YYYY-MM-DD', true).utc()
+            const endDate = moment(endDate, 'YYYY-MM-DD', true).utc()
+            if ((datePaid && !datePaid.isValid()) || (startDate && !startDate.isValid()) || (endDate && !endDate.isValid())) {
+                throw new UserInputError('Date format invalid');
+            }
             return models.Allocation.update({
                 ...updateFields,
-                date_paid: moment(date_created, 'YYYY-MM-DD'),
-                start_date: moment(date_paid, 'YYYY-MM-DD'),
-                end_date: moment(date_paid, 'YYYY-MM-DD')
+                date_paid: datePaid,
+                start_date: startDate,
+                end_date: endDate
             }, {
                 where: {
                     id
