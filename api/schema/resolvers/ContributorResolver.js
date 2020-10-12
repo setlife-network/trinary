@@ -27,15 +27,13 @@ module.exports = {
             hourly_rate,
             weekly_rate,
             monthly_rate,
-            name,
-            date_created
+            name
         }, { models }) => {
             return models.Contributor.update({
                 hourly_rate,
                 weekly_rate,
                 monthly_rate,
-                name,
-                date_created: moment(date_created, 'YYYY-MM-DD')
+                name
             }, {
                 where: {
                     id
