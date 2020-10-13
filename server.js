@@ -2,13 +2,14 @@ const express = require('express')
 const bodyParser = require('body-parser') //transform req into JSON format
 const fs = require('fs') //module to read files
 const cors = require('cors') //handle CORS issues
-const { ApolloServer } = require('apollo-server') //Apollo server for graphql integration
+const { ApolloServer } = require('apollo-server-express') //Apollo server for graphql integration
 const schema = require('./api/schema')
 
 const db = require('./api/models');
 
-const apiModules = require('./api/handlers/toggl');
 const github = require('./api/handlers/github')
+
+const apiModules = require('./api/modules')
 
 const { GITHUB } = require('./api/config/credentials')
 
@@ -59,15 +60,13 @@ app.get('/api/v/:vid/ping', (req, res) => {
 })
 
 app.get('/api/login', (req, res) => {
-    console.log('login with github');
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.CLIENT_ID}`)
 })
 
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in te Github App
     github.fetchAccessToken({ code: req.query.code })
         .then(accesToken => {
-            console.log('accesToken');
-            console.log(accesToken);
+            apiModules.authentication.getContributor(accesToken)
         })
         .then(
             res.redirect(port)
@@ -77,20 +76,16 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         })
 })
 
-app.get('/api/fetcPayments', (req, res) => {
-    const invoices = fs.readdirSync('./docs/invoicely/invoices/', 'utf-8')
-    const payments = fs.readdirSync('./docs/invoicely/payments/', 'utf - 8')
-
-    //TODO: map invoices and payments and call invoicely script with each file path
-
-    res.send(file)
-})
-
 const server = new ApolloServer({
     schema,
     context: db
 })
 
-server.listen(port, () => {
+server.applyMiddleware({
+    app,
+    path: '/api/graph',
+});
+
+app.listen(port, () => {
     console.log(`Trinary project app listening at http://localhost:${port}`)
 })

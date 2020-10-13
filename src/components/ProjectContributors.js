@@ -14,7 +14,7 @@ const MOCKED_CONTRIBUTORS = [
 // Convert to imported component as ContributorTile.js when ready to merge
 const ContributorTile = (props) => {
     const { contributor } = props
-    
+
     // Log the `contributor` object to confirm its data structure
 
     return (
@@ -33,7 +33,7 @@ const ProjectContributors = (props) => {
         // store them in state
         // replace the mocked array
 
-        return MOCKED_CLIENTS.map(c => {
+        return MOCKED_CONTRIBUTORS.map(c => {
             return (
                 <ContributorTile
                     contributor={c}
@@ -51,7 +51,7 @@ const ProjectContributors = (props) => {
 }
 
 ProjectContributors.defaultProps = {
-    
+
 };
 
 export default ProjectContributors;

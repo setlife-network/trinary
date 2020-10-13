@@ -15,7 +15,7 @@ const MOCKED_CLIENTS = [
 // Convert to imported component as ClientTile.js when ready to merge
 const ClientTile = (props) => {
     const { client } = props
-    
+
     // Log the `client` object to confirm its data structure
 
     return (
@@ -48,7 +48,7 @@ class ClientListPage extends React.Component {
         return (
             <div className='ClientListPage'>
                 <h1>ClientListPage</h1>
-                {renderClients()}
+                {this.renderClients()}
             </div>
         )
     }
