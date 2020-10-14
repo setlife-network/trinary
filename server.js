@@ -68,9 +68,6 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         .then(accesToken => {
             res(apiModules.authentication.getContributor(accesToken))
         })
-        //.then(
-    // res.redirect(port)
-        //)
         .catch(err => {
             console.log('An error ocurred' + err);
         })
