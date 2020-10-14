@@ -66,11 +66,11 @@ app.get('/api/login', (req, res) => {
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in te Github App
     github.fetchAccessToken({ code: req.query.code })
         .then(accesToken => {
-            apiModules.authentication.getContributor(accesToken)
+            res(apiModules.authentication.getContributor(accesToken))
         })
-        .then(
-            res.redirect(port)
-        )
+        //.then(
+    // res.redirect(port)
+        //)
         .catch(err => {
             console.log('An error ocurred' + err);
         })
