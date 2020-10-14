@@ -19,13 +19,6 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        rate_unit: {
-            type: DataTypes.INTEGER
-        },
-        rate_type: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
         active: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
