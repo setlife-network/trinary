@@ -10,8 +10,8 @@ class HomePage extends React.Component {
         return (
             <Grid container className='HomePage'>
                 <Grid item xs={12}>
-                    <HeaderBanner theme={theme}/>
-                    Home Page
+                    <HeaderBanner/>
+                    
                 </Grid>
 
             </Grid>
