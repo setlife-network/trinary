@@ -48,7 +48,7 @@ class ClientListPage extends React.Component {
         return (
             <div className='ClientListPage'>
                 <h1>ClientListPage</h1>
-                {renderClients()}
+                {this.renderClients()}
             </div>
         )
     }
