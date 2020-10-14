@@ -25,7 +25,21 @@ module.exports = {
             return models.Client.create({
                 ...createFields
             })
+        },
+        deleteClientById: (root, { id }, { models }) => {
+            return models.Client.destroy({ where: { id } })
+        },
+        updateClientById: (root, {
+            id,
+            updateFields
+        }, { models }) => {
+            return models.Client.update({
+                ...updateFields
+            }, {
+                where: {
+                    id
+                }
+            })
         }
     }
-
 }
