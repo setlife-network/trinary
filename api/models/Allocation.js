@@ -57,11 +57,11 @@ module.exports = (sequelize) => {
                 key: 'id',
             }
         },
-        contributor_id: { //FK
+        rate_id: { //FK
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'Contributors',
+                model: 'Rates',
                 key: 'id',
             }
         }
