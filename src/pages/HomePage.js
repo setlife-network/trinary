@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid';
 
-import HeaderBanner from '../components/HeaderBanner'
+import Header from '../components/Header'
 
 class HomePage extends React.Component {
     componentDidMount() {}
@@ -10,8 +10,9 @@ class HomePage extends React.Component {
         return (
             <Grid container className='HomePage'>
                 <Grid item xs={12}>
-                    <HeaderBanner/>
-                    
+                    <Header
+                        title='Home'
+                    />
                 </Grid>
 
             </Grid>
