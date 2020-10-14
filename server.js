@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser') //transform req into JSON format
 const fs = require('fs') //module to read files
 const cors = require('cors') //handle CORS issues
-const { ApolloServer } = require('apollo-server') //Apollo server for graphql integration
+const { ApolloServer } = require('apollo-server-express') //Apollo server for graphql integration
 
 const schema = require('./api/schema')
 const db = require('./api/models');
@@ -84,6 +84,11 @@ const server = new ApolloServer({
     context: db
 })
 
-server.listen(port, () => {
+server.applyMiddleware({
+    app,
+    path: '/api/graph',
+});
+
+app.listen(port, () => {
     console.log(`Trinary project app listening at http://localhost:${port}`)
 })
