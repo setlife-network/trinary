@@ -64,13 +64,21 @@ app.get('/api/login', (req, res) => {
 })
 
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in te Github App
+
     github.fetchAccessToken({ code: req.query.code })
         .then(accesToken => {
-            res(apiModules.authentication.getContributor(accesToken))
+            return apiModules.authentication.getContributor(accesToken)
+        })
+        .then(contributorInfo => {
+            if (!contributorInfo.contributor) apiModules.authentication.createContributor(contributorInfo.githubContributor)
+        })
+        .then(() => {
+            res.redirect('http://localhost:6002')
         })
         .catch(err => {
-            console.log('An error ocurred' + err);
+            console.log('An error ocurred ' + err);
         })
+
 })
 
 const server = new ApolloServer({

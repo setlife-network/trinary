@@ -10,8 +10,14 @@ const authentication = module.exports = (() => {
                 github_handle: githubContributor.id
             }
         })
-        if (!contributor) createContributor(githubContributor);
+        return (
+            {
+                contributor,
+                githubContributor
+            }
+        )
     }
+
     //TODO: This has to chenge a little when we implement the Rates table
     const createContributor = async (githubContributor) => {
         await db.models.Contributor.create({
