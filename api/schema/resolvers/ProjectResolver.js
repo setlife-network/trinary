@@ -19,15 +19,32 @@ module.exports = {
             return models.Project.findAll()
         }
     },
-
     Mutation: {
-        createProject: async(root, {
+        createProject: (root, {
             createFields,
             date
         }, { models }) => {
             return models.Project.create({
                 ...createFields,
-                date: new moment(date, 'MM-DD-YYYY HH:mm:ss').utc()
+                date: moment(date, 'YYYY-MM-DD').utc()
+            })
+        },
+        deleteProjectById: (root, { id }, { models }) => {
+            return models.Project.destroy({ where: { id } })
+        },
+        updateProjectById: (root, {
+            id,
+            updateFields,
+            date,
+        }, { models }) => {
+            if (date) date = moment(date, 'YYYY-MM-DD').utc()
+            return models.Project.update({
+                date,
+                ...updateFields,
+            }, {
+                where: {
+                    id
+                }
             })
         }
     }

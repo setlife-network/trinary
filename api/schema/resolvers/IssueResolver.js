@@ -23,6 +23,21 @@ module.exports = {
             return models.Issue.create({
                 ...createFields
             })
+        },
+        deleteIssueById: (root, { id }, { models }) => {
+            return models.Issue.destroy({ where: { id } })
+        },
+        updateIssueById: (root, {
+            id,
+            updateFields
+        }, { models }) => {
+            return models.Issue.update({
+                ...updateFields
+            }, {
+                where: {
+                    id
+                }
+            })
         }
     }
 

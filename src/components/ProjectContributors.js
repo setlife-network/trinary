@@ -33,7 +33,7 @@ const ProjectContributors = (props) => {
         // store them in state
         // replace the mocked array
 
-        return MOCKED_CLIENTS.map(c => {
+        return MOCKED_CONTRIBUTORS.map(c => {
             return (
                 <ContributorTile
                     contributor={c}
