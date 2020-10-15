@@ -35,6 +35,14 @@ module.exports = (sequelize) => {
             type: Sequelize.DATE,
             allowNull: false,
         },
+        contributor_id: { //FK
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Contributors',
+                key: 'id',
+            }
+        },
         payment_id: { //FK
             type: DataTypes.INTEGER,
             references: {
