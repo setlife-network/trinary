@@ -8,17 +8,14 @@ const { slice, indexOf, split, join, replace } = require('lodash')
 module.exports = (() => {
 
     formatTotal = (total) => {
-        console.log('format total');
         return parseFloat(total.split(',').join(''))
     }
 
     formatTotalWithQuotes = (total) => {
-        console.log('formatTotalWithQuotes');
         return total.slice(1, total.length).concat(split(total, '.', 1)[0])
     }
 
     totalToCents = (total) => {
-        console.log('totalToCents');
         return total * 100
     }
 
