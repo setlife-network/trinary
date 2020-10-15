@@ -7,19 +7,19 @@ const { slice, indexOf, split, join, replace } = require('lodash')
 
 module.exports = (() => {
 
-    formatTotal = (total) => {
+    const formatTotal = (total) => {
         return parseFloat(total.split(',').join(''))
     }
 
-    formatTotalWithQuotes = (total) => {
+    const formatTotalWithQuotes = (total) => {
         return total.slice(1, total.length).concat(split(total, '.', 1)[0])
     }
 
-    totalToCents = (total) => {
+    const totalToCents = (total) => {
         return total * 100
     }
 
-    modelCSV = async (data) => {
+    const modelCSV = async (data) => {
 
         //This script does the following:
         // 1. Transform the csv that comes as a a string into a json format,
