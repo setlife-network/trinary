@@ -6,7 +6,33 @@ const db = require('../models')
 const { slice, indexOf, split, join, replace } = require('lodash')
 
 module.exports = (() => {
+
+    formatTotal = (total) => {
+        console.log('format total');
+        return parseFloat(total.split(',').join(''))
+    }
+
+    formatTotalWithQuotes = (total) => {
+        console.log('formatTotalWithQuotes');
+        return total.slice(1, total.length).concat(split(total, '.', 1)[0])
+    }
+
+    totalToCents = (total) => {
+        console.log('totalToCents');
+        return total * 100
+    }
+
     modelCSV = async (data) => {
+
+        //This script does the following:
+        // 1. Transform the csv that comes as a a string into a json format,
+        //     the json keys are the column names of the csv, and each row of data becomes an object
+        // 2. The final format is an array of objects, conformed by each of the data rows of the csv and the keys
+        // 3. We look for the objects that the company attribute matchs to a company stored in the db
+        // 4. We insert the payments into the db
+        // This scripts supports both csv format, the one that comes with double quotes in each word,
+        // and the one who doesent
+
         //deletes all the quotes in the file
         const quotes = data[0] == '"'
         var keysLine = data.slice(0, data.indexOf('\n'))
@@ -41,26 +67,28 @@ module.exports = (() => {
             if (Object.keys(object).length) dataObject.push(object)
         })
         //Iterate object collection and create the data object into the db
-        dataObject.map( async d => {
+        dataObject.map(async d => {
 
             //Look for the id of the client based on the name
             //TODO: Consider make the name of the client in the DB Unique
             const matchClients = await db.models.Client.findAll({ where: {
                 name: d['Client']
             } })
+            //if the csv contains a client that is stored in Trinary Clients table then insert the paymanet on the Payment table
             if (matchClients[0]) {
+                //the way to format the total to be stores in the db it's different depending on the csv file format
                 const total = (
                     !quotes && d['Payments'][0] == '"'
-                        ? (
-                            d['Payments'].slice(1, d['Payments'].length).concat(split(d['Total'], '.', 1)[0])
-                        )
-                        : null
+                        ? formatTotalWithQuotes(d['Payments'])
+                        : formatTotal(d['Total'])
                 )
 
                 await db.models.Payment.create({
-                    amount: total ? total : parseFloat(d['Total'].split(',').join('')),
+                    amount: totalToCents(total),
                     date_incurred: moment.utc(d['Date Issued'], 'MMM D YYYY'),
-                    date_paid: d['Date Paid'] ? moment.utc(d['Date Paid'], 'MMM D YYYY') : null,
+                    date_paid: d['Date Paid']
+                        ? moment.utc(d['Date Paid'], 'MMM D YYYY')
+                        : null,
                     client_id: matchClients[0].id
                 })
             }
