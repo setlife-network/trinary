@@ -25,21 +25,15 @@ module.exports = {
     Mutation: {
         createAllocation: (root, {
             id,
-            createFields,
-            date_paid,
-            start_date,
-            end_date
+            createFields
         }, { models }) => {
-            const datePaid = moment(date_paid, 'YYYY-MM-DD', true).utc()
-            const startDate = moment(startDate, 'YYYY-MM-DD', true).utc()
-            const endDate = moment(endDate, 'YYYY-MM-DD', true).utc()
+            createFields[date_paid] = moment(createFields[date_paid], 'YYYY-MM-DD', true).utc()
+            createFields[start_date] = moment(createFields[start_date], 'YYYY-MM-DD', true).utc()
+            createFields[end_date] = moment(createFields[end_date], 'YYYY-MM-DD', true).utc()
             if ((!datePaid.isValid()) || (!startDate.isValid()) || (!endDate.isValid())) {
                 throw new UserInputError('Date format invalid');
             }
             return models.Allocation.create({
-                date_paid: datePaid,
-                start_date: startDate,
-                end_date: endDate,
                 ...createFields
             })
         },

@@ -22,38 +22,35 @@ module.exports = {
     },
     Mutation: {
         createProject: (root, {
-            createFields,
-            date
+            createFields
         }, { models }) => {
-            date = moment(date, 'YYYY-MM-DD', true).utc()
-            if (!date.isValid()) {
+            if (createFields['date']) createFields['date'] = moment(createFields['date'], 'YYYY-MM-DD', true).utc()
+            if (createFields['date'] && !createFields['date'].isValid()) {
                 throw new UserInputError('Date format invalid');
             }
             return models.Project.create({
-                ...createFields,
-                date
+                ...createFields
             })
         },
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
         },
-        updateProjectById: (root, {
+        updateProjectById: async (root, {
             id,
-            updateFields,
-            date,
+            updateFields
         }, { models }) => {
+            var date = updateFields['date']
             if (date) date = moment(date, 'YYYY-MM-DD', true).utc()
-            if (date && !date.isValid()) {
-                throw new UserInputError('Date format invalid');
-            }
-            return models.Project.update({
-                ...updateFields,
-                date
+            if (date && date.isValid()) throw new UserInputError('Date format invalid');
+            updateFields['date'] = date
+            await models.Project.update({
+                ...updateFields
             }, {
                 where: {
                     id
                 }
             })
+            return models.Project.findByPk(id)
         }
     }
 
