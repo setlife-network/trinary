@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^7.1.2",
     "apollo-server": "^2.18.2",
     "apollo-server-express": "^2.18.2",
+    "aws-sdk": "^2.771.0",
     "axios": "^0.20.0",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -39,7 +40,7 @@
     "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
-    "ui": "PORT=6002 react-scripts start",
+    "ui": "cross-env PORT=6002 react-scripts start",
     "server": "PORT=6001 node server",
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -60,5 +61,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2"
   }
 }

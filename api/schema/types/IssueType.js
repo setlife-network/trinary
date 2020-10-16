@@ -10,8 +10,8 @@ module.exports = gql`
     }
 
     input IssueInput {
-        github_url: String!,
-        project_id: Int!
+        github_url: String,
+        project_id: Int
     }
 
     type Query {
@@ -21,7 +21,14 @@ module.exports = gql`
 
     type Mutation {
         createIssue(
-            createFields: IssueInput
+            createFields: IssueInput!
         ): Issue
+
+        deleteIssueById(id: Int!): Int
+
+        updateIssueById(
+            id: Int!,
+            updateFields: IssueInput
+        ): [Int]
     }
 `

@@ -32,7 +32,7 @@ module.exports = {
         'jsx-quotes': ['error', 'prefer-single'],
         'keyword-spacing': ['error', { 'after': true }],
         'lines-between-class-members': 'off',
-        'linebreak-style': ['error', 'unix'],
+        'linebreak-style': ['error', 'off'],
         'max-len': 'off',
         'new-cap': 'off',
         'no-bitwise': 'off',

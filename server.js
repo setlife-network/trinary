@@ -3,13 +3,11 @@ const bodyParser = require('body-parser') //transform req into JSON format
 const fs = require('fs') //module to read files
 const cors = require('cors') //handle CORS issues
 const { ApolloServer } = require('apollo-server-express') //Apollo server for graphql integration
+
 const schema = require('./api/schema')
-
 const db = require('./api/models');
-
+const apiModules = require('./api/modules');
 const github = require('./api/handlers/github')
-
-const apiModules = require('./api/modules')
 
 const { GITHUB } = require('./api/config/credentials')
 
@@ -55,6 +53,8 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 
+app.get('/api/readPayments', apiModules.dataSyncs.syncInvoicelyCSV)
+
 app.get('/api/v/:vid/ping', (req, res) => {
     res.send('Hello World')
 })
@@ -78,7 +78,6 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         .catch(err => {
             console.log('An error ocurred ' + err);
         })
-
 })
 
 const server = new ApolloServer({

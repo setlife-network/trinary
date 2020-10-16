@@ -18,6 +18,29 @@ module.exports = {
             return models.Contributor.create({
                 ...createFields
             })
+        },
+        deleteContributorById: (root, { id }, { models }) => {
+            return models.Contributor.destroy({ where: { id } })
+        },
+        updateContributorById: (root, {
+            id,
+            hourly_rate,
+            weekly_rate,
+            monthly_rate,
+            name,
+            date_created
+        }, { models }) => {
+            return models.Contributor.update({
+                hourly_rate,
+                weekly_rate,
+                monthly_rate,
+                name,
+                date_created
+            }, {
+                where: {
+                    id
+                }
+            })
         }
     }
 
