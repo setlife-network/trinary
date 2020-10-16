@@ -43,6 +43,16 @@ npm run server
 
 If using VSCode, be sure to disable the Prettier: Format on Save feature to prevent unwanted changes to the code styles.
 
+## Troubleshooting
+
+If you are encountering an error that says: "react scripts start is not recognized as an internal or external command," or any related error with dependencies, upon running "npm start" or "npm ui" within terminal, run the following command:
+
+```
+npm update
+```
+
+Wait for the update, and it should be back to normal.
+
 ## Reference
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
