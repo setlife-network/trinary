@@ -1,11 +1,11 @@
 const moment = require('moment')
+const { validateDateFormat } = require('../helpers/inputValidation')
 
 module.exports = {
 
     TimeEntry: {
         contributor: (timeEntry, args, { models }) => {
             return models.Contributor.findByPk(timeEntry.contributor_id)
-
         },
         project: (timeEntry, args, { models }) => {
             return models.Project.findByPk(timeEntry.project_id)
@@ -18,44 +18,30 @@ module.exports = {
         getTimeEntries: (root, args, { models }) => {
             return models.TimeEntry.findAll()
         },
-        getProjectTimeEntriesByProjectId: (root, { projectId }, { models }) => {
-            return models.TimeEntry.findAll({ where: { project_id: project_id } })
+        getProjectTimeEntriesByProjectId: (root, { project_id }, { models }) => {
+            return models.TimeEntry.findAll({ where: { project_id } })
         }
     },
     Mutation: {
-        createTimeEntry: (root, {
-            createFields,
-            start_time
-        }, { models }) => {
-            const startTimeUTC = moment(start_time, 'YYYY-MM-DD', true).utc()
-            if (!startTimeUTC.isValid()) {
-                throw new UserInputError('Date format invalid');
-            }
+        createTimeEntry: (root, { createFields }, { models }) => {
+            createFields['start_time'] = validateDateFormat(createFields['start_time'])
             return models.TimeEntry.create({
-                ...createFields,
-                start_time: moment(start_time, 'MM-DD-YYYY HH:mm:ss').utc()
+                ...createFields
             })
         },
         deleteTimeEntryById: (root, { id }, { models }) => {
             return models.TimeEntry.destroy({ where: { id } })
         },
-        upateTimeEntryById: (root, {
-            id,
-            updateFields,
-            start_time
-        }, { models }) => {
-            if (start_time) start_time = moment(start_time, 'YYYY-MM-DD', true).utc()
-            if (start_time && !start_time.isValid()) {
-                throw new UserInputError('Date format invalid');
-            }
-            return models.TimeEntry.update({
-                ...updateFields,
-                start_time
+        upateTimeEntryById: async (root, { id, updateFields }, { models }) => {
+            updateFields['start_time'] = validateDateFormat(updateFields['start_time'])
+            await models.TimeEntry.update({
+                ...updateFields
             }, {
                 where: {
                     id
                 }
             })
+            return models.TimeEntry.findByPk(id)
         }
     }
 

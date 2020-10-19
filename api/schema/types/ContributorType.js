@@ -13,7 +13,7 @@ module.exports = gql`
         github_handle: String!
     }
 
-    input ContributorInput {
+    input CreateContributorInput {
         hourly_rate: Int,
         weekly_rate: Int,
         monthly_rate: Int,
@@ -23,6 +23,16 @@ module.exports = gql`
         github_handle: String!
     }
 
+    input UpdateContributorInput {
+        hourly_rate: Int,
+        weekly_rate: Int,
+        monthly_rate: Int,
+        name: String,
+        external_data_url: String,
+        github_id: String,
+        github_handle: String
+    }
+
     type Query {
         getContributorById(id: Int!): Contributor
         getContributors: [Contributor]
@@ -30,18 +40,14 @@ module.exports = gql`
 
     type Mutation {
         createContributor(
-            createFields: ContributorInput
+            createFields: CreateContributorInput
         ): Contributor
 
         deleteContributorById(id: Int!): String
 
         updateContributorById(
             id: Int!,
-            hourly_rate: Int,
-            weekly_rate: Int,
-            monthly_rate: Int,
-            name: String,
-            date_created: String
-        ):[Int]
+            updateFields: UpdateContributorInput
+        ):Contributor
     }
 `

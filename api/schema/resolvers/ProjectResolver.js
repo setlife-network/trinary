@@ -1,5 +1,5 @@
 const moment = require('moment')
-const { UserInputError } = require('apollo-server')
+const { validateDateFormat } = require('../helpers/inputValidation')
 
 module.exports = {
 
@@ -24,10 +24,7 @@ module.exports = {
         createProject: (root, {
             createFields
         }, { models }) => {
-            if (createFields['date']) createFields['date'] = moment(createFields['date'], 'YYYY-MM-DD', true).utc()
-            if (createFields['date'] && !createFields['date'].isValid()) {
-                throw new UserInputError('Date format invalid');
-            }
+            createFields['date'] = validateDateFormat(createFields['date'])
             return models.Project.create({
                 ...createFields
             })
@@ -35,14 +32,8 @@ module.exports = {
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
         },
-        updateProjectById: async (root, {
-            id,
-            updateFields
-        }, { models }) => {
-            var date = updateFields['date']
-            if (date) date = moment(date, 'YYYY-MM-DD', true).utc()
-            if (date && date.isValid()) throw new UserInputError('Date format invalid');
-            updateFields['date'] = date
+        updateProjectById: async (root, { id, updateFields }, { models }) => {
+            updateFields['date'] = validateDateFormat(updateFields['date'])
             await models.Project.update({
                 ...updateFields
             }, {

@@ -1,4 +1,5 @@
 const moment = require('moment')
+const { validateDateFormat } = require('../helpers/inputValidation')
 
 module.exports = {
 
@@ -27,12 +28,9 @@ module.exports = {
             id,
             createFields
         }, { models }) => {
-            createFields[date_paid] = moment(createFields[date_paid], 'YYYY-MM-DD', true).utc()
-            createFields[start_date] = moment(createFields[start_date], 'YYYY-MM-DD', true).utc()
-            createFields[end_date] = moment(createFields[end_date], 'YYYY-MM-DD', true).utc()
-            if ((!datePaid.isValid()) || (!startDate.isValid()) || (!endDate.isValid())) {
-                throw new UserInputError('Date format invalid');
-            }
+            createFields['date_paid'] = validateDateFormat(createFields['date_paid'])
+            createFields['start_date'] = validateDateFormat(createFields['start_date'])
+            createFields['end_date'] = validateDateFormat(createFields['end_date'])
             return models.Allocation.create({
                 ...createFields
             })
@@ -40,30 +38,18 @@ module.exports = {
         deleteAllocationById: (root, { id }, { models }) => {
             return models.Allocation.destroy({ where: { id } })
         },
-        updateAllocationById: (root, {
-            id,
-            updateFields,
-            date_paid,
-            start_date,
-            end_date
-        }, { models }) => {
-
-            if (date_paid) date_paid = moment(date_paid, 'YYYY-MM-DD', true).utc()
-            if (start_date) start_date = moment(date_paid, 'YYYY-MM-DD', true).utc()
-            if (end_date) end_date = moment(end_date, 'YYYY-MM-DD', true).utc()
-            if ((date_paid && !date_paid.isValid()) || (start_date && !start_date.isValid()) || (end_date && !end_date.isValid())) {
-                throw new UserInputError('Date format invalid');
-            }
-            return models.Allocation.update({
+        updateAllocationById: async (root, { id, updateFields }, { models }) => {
+            updateFields['date_paid'] = validateDateFormat(updateFields['date_paid'])
+            updateFields['start_date'] = validateDateFormat(updateFields['start_date'])
+            updateFields['end_date'] = validateDateFormat(updateFields['end_date'])
+            await models.Allocation.update({
                 ...updateFields,
-                date_paid,
-                start_date,
-                end_date
             }, {
                 where: {
                     id
                 }
             })
+            return models.Allocation.findByPk(id)
         }
     }
 }

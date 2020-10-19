@@ -19,6 +19,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        //TODO: Change this when rates table added
         rate_unit: {
             type: DataTypes.INTEGER
         },
@@ -36,11 +37,11 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         end_date: {
-            type: Sequelize.DATE
-        },
-        date_paid: {
             type: Sequelize.DATE,
             allowNull: false,
+        },
+        date_paid: {
+            type: Sequelize.DATE
         },
         payment_id: { //FK
             type: DataTypes.INTEGER,

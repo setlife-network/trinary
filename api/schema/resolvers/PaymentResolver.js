@@ -1,4 +1,5 @@
 const moment = require('moment')
+const { validateDateFormat } = require('../helpers/inputValidation')
 
 module.exports = {
 
@@ -19,40 +20,27 @@ module.exports = {
         }
     },
     Mutation: {
-        createPayment: (root, {
-            createFields,
-            date_incurred,
-            date_paid
-        }, { models }) => {
+        createPayment: (root, { createFields }, { models }) => {
+            createFields['date_incurred'] = validateDateFormat(createFields['date_incurred'])
+            createFields['date_paid'] = validateDateFormat(createFields['date_paid'])
             return models.Payment.create({
-                date_incurred: moment(date_incurred, 'YYYY-MM-DD').utc(),
-                date_paid: moment(date_paid, 'YYYY-MM-DD').utc(),
                 ...createFields
             })
         },
         deletePaymentById: (root, { id }, { models }) => {
             return models.Payment.destroy({ where: { id } })
         },
-        updatePaymentById: (root, {
-            id,
-            updateFields,
-            date_incurred,
-            date_paid,
-        }, { models }) => {
-            if (date_incurred) date_incurred = moment(date_incurred, 'YYYY-MM-DD', true).utc()
-            if (date_paid) date_paid = moment(date_paid, 'YYYY-MM-DD', true).utc()
-            if ((date_incurred && !date_incurred.isValid()) || (date_paid && !date_paid.isValid())) {
-                throw new UserInputError('Date format invalid');
-            }
-            return models.Payment.update({
-                ...updateFields,
-                date_incurred,
-                date_paid
+        updatePaymentById: async (root, { id, updateFields }, { models }) => {
+            updateFields['date_incurred'] = validateDateFormat(updateFields['date_incurred'])
+            updateFields['date_paid'] = validateDateFormat(updateFields['date_paid'])
+            await models.Payment.update({
+                ...updateFields
             }, {
                 where: {
                     id
                 }
             })
+            return models.Payment.findByPk(id)
         }
     }
 
