@@ -1,15 +1,17 @@
 const { UserInputError } = require('apollo-server')
 const moment = require('moment')
+const { mapKeys } = require('lodash')
 
 module.exports = (() => {
     return {
-        validateDateFormat: (date) => {
-            if (date) date = moment(date, 'YYYY-MM-DD', true).utc()
-            if (date && !date.isValid()) {
-                throw new UserInputError('Date format invalid');
-            } else {
-                return date
-            }
+        validateDateFormat: ( date ) => {
+            mapKeys(date, (value, key) => {
+                if (value) value = moment(value, 'YYYY-MM-DD', true).utc()
+                if (value && !value.isValid()) {
+                    throw new UserInputError('Date format invalid');
+                }
+            })
+            return date
         }
     }
 })()

@@ -1,4 +1,3 @@
-const moment = require('moment')
 const { validateDateFormat } = require('../helpers/inputValidation')
 
 module.exports = {
@@ -24,7 +23,9 @@ module.exports = {
     },
     Mutation: {
         createTimeEntry: (root, { createFields }, { models }) => {
-            createFields['start_time'] = validateDateFormat(createFields['start_time'])
+            validateDateFormat({
+                start_time: createFields['start_time']
+            })
             return models.TimeEntry.create({
                 ...createFields
             })
@@ -33,7 +34,9 @@ module.exports = {
             return models.TimeEntry.destroy({ where: { id } })
         },
         upateTimeEntryById: async (root, { id, updateFields }, { models }) => {
-            updateFields['start_time'] = validateDateFormat(updateFields['start_time'])
+            validateDateFormat({
+                start_time: updateFields['start_time']
+            })
             await models.TimeEntry.update({
                 ...updateFields
             }, {

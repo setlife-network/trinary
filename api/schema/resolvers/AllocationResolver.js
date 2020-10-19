@@ -1,4 +1,3 @@
-const moment = require('moment')
 const { validateDateFormat } = require('../helpers/inputValidation')
 
 module.exports = {
@@ -28,9 +27,11 @@ module.exports = {
             id,
             createFields
         }, { models }) => {
-            createFields['date_paid'] = validateDateFormat(createFields['date_paid'])
-            createFields['start_date'] = validateDateFormat(createFields['start_date'])
-            createFields['end_date'] = validateDateFormat(createFields['end_date'])
+            validateDateFormat({
+                date_paid: createFields['date_paid'],
+                start_date: createFields['start_date'],
+                end_date: createFields['end_date']
+            })
             return models.Allocation.create({
                 ...createFields
             })
@@ -39,9 +40,11 @@ module.exports = {
             return models.Allocation.destroy({ where: { id } })
         },
         updateAllocationById: async (root, { id, updateFields }, { models }) => {
-            updateFields['date_paid'] = validateDateFormat(updateFields['date_paid'])
-            updateFields['start_date'] = validateDateFormat(updateFields['start_date'])
-            updateFields['end_date'] = validateDateFormat(updateFields['end_date'])
+            validateDateFormat({
+                date_paid: updateFields['date_paid'],
+                start_date: updateFields['start_date'],
+                end_date: updateFields['end_date']
+            })
             await models.Allocation.update({
                 ...updateFields,
             }, {
