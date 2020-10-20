@@ -1,4 +1,8 @@
+const { UserInputError } = require('apollo-server');
+
 const moment = require('moment')
+
+const apiModules = require('../../modules');
 
 module.exports = {
 
@@ -32,6 +36,10 @@ module.exports = {
         },
         deletePaymentById: (root, { id }, { models }) => {
             return models.Payment.destroy({ where: { id } })
+        },
+        syncPayments: async (root, { source }, { models }) => {
+            if (source.toUpperCase() == 'INVOICELY') return apiModules.dataSyncs.syncInvoicelyCSV()
+            else throw new UserInputError(`There's not source that matchs the input`);
         },
         updatePaymentById: (root, {
             id,

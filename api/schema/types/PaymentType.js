@@ -29,6 +29,10 @@ module.exports = gql`
             date_paid: String,
         ): Payment
 
+        syncPayments(
+            source: String!
+        ): String
+
         deletePaymentById(id: Int!): String
 
         updatePaymentById(
