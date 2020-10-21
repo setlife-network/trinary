@@ -4,7 +4,7 @@ const { INVOICELY_CSV_PATH } = require('../config/constants')
 
 const dataSyncs = module.exports = (() => {
 
-    const syncInvoicelyCSV = async (resolve, reject) => {
+    const syncInvoicelyCSV = async () => {
         const invoiceFile = INVOICELY_CSV_PATH
         return (
             amazon.fetchFile({ file: invoiceFile })
