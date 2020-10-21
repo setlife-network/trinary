@@ -68,10 +68,16 @@ module.exports = (() => {
 
             //Look for the id of the client based on the name
             //TODO: Consider make the name of the client in the DB Unique
-            const matchClients = await db.models.Client.findAll({ where: {
-                name: d['Client']
-            } })
-            //if the csv contains a client that is stored in Trinary Clients table then insert the paymanet on the Payment table
+            const matchClients = await db.models.Client.findAll(
+                {
+                    where: {
+                        name: d['Client']
+                    }
+                }
+            )
+            //if the csv contains a client that is stored in Trinary Clients table
+            //then look if its not repeated, and if not
+            //insert the payment on the Payment table
             if (matchClients[0]) {
                 //the way to format the total to be stores in the db it's different depending on the csv file format
                 const total = (
@@ -79,15 +85,26 @@ module.exports = (() => {
                         ? formatTotalWithQuotes(d['Payments'])
                         : formatTotal(d['Total'])
                 )
-
-                await db.models.Payment.create({
-                    amount: totalToCents(total),
-                    date_incurred: moment.utc(d['Date Issued'], 'MMM D YYYY'),
-                    date_paid: d['Date Paid']
-                        ? moment.utc(d['Date Paid'], 'MMM D YYYY')
-                        : null,
-                    client_id: matchClients[0].id
-                })
+                //check if the payments is not already stored using clientName + amount + dateIssued as UUID
+                const paymentRepeated = await db.models.Payment.findAll(
+                    {
+                        where: {
+                            date_incurred: moment.utc(d['Date Issued']),
+                            amount: totalToCents(total)
+                        }
+                    }
+                )
+                //if the payment is not in the db create the object
+                if (!paymentRepeated.length) {
+                    await db.models.Payment.create({
+                        amount: totalToCents(total),
+                        date_incurred: moment.utc(d['Date Issued'], 'MMM D YYYY'),
+                        date_paid: d['Date Paid']
+                            ? moment.utc(d['Date Paid'], 'MMM D YYYY')
+                            : null,
+                        client_id: matchClients[0].id
+                    })
+                }
             }
 
         })
