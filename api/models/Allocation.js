@@ -19,13 +19,6 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        rate_unit: {
-            type: DataTypes.INTEGER
-        },
-        rate_type: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
         active: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
@@ -42,6 +35,14 @@ module.exports = (sequelize) => {
             type: Sequelize.DATE,
             allowNull: false,
         },
+        contributor_id: { //FK
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Contributors',
+                key: 'id',
+            }
+        },
         payment_id: { //FK
             type: DataTypes.INTEGER,
             references: {
@@ -57,11 +58,11 @@ module.exports = (sequelize) => {
                 key: 'id',
             }
         },
-        contributor_id: { //FK
+        rate_id: { //FK
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'Contributors',
+                model: 'Rates',
                 key: 'id',
             }
         }

@@ -14,6 +14,7 @@ const sequelize = module.exports = (sequelize => {
     //         console.log('Unable to connect to the database:', err);
     //     });
 
+
     const insertQuery = async () => {
         const project = await db.models.Client.create({
             currency: '$',
