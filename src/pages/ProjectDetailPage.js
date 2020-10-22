@@ -100,6 +100,7 @@ class ProjectDetailPage extends React.Component {
                         label='Overview'
                         value='overview'
                         icon={<AssessmentIcon/>}
+                        
                     />
                     <BottomNavigationAction
                         label='Payments'

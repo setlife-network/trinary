@@ -3,11 +3,15 @@ import React, { useState } from 'react';
 const MOCKED_PAYMENTS = [
     {
         id: 1,
-        amount: 100
+        amount: 100,
+        date_paid: null, 
+        date_incurred: '1602878139', 
     },
     {
         id: 2,
-        amount: 200
+        amount: 200,
+        date_paid: '1601063721', 
+        date_incurred: '1600286121', 
     }
 ]
 
@@ -19,7 +23,7 @@ const PaymentTile = (props) => {
 
     return (
         <div className='PaymentTile'>
-            PaymentTile
+            Amount
         </div>
     )
 
@@ -44,7 +48,7 @@ const ProjectPayments = (props) => {
 
     return (
         <div className='ProjectPayments'>
-            <h1>ProjectPayments</h1>
+            <h1>Payments</h1>
             {renderPayments()}
             
         </div>
