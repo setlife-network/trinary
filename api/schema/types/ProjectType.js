@@ -12,6 +12,7 @@ module.exports = gql`
         client_id:Int!
         client: Client
         issues: [Issue]
+        contributors: [Contributor]
     }
 
     input ProjectInput {

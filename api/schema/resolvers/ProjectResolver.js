@@ -8,6 +8,11 @@ module.exports = {
         },
         issues: (project, args, { models }) => {
             return models.Issue.findAll({ where: { project_id: project.id } })
+        },
+        contributors: (project, args, { models }) => {
+            models.Allocations.findAll({ where: {
+
+            } })
         }
     },
 
