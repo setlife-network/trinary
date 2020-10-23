@@ -70,15 +70,10 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         .then(githubAccessToken => {
             return apiModules.authentication.getContributor({ githubAccessToken })
         })
-        .then(contributorInfo => {
+        .then(async contributorInfo => {
             if (!contributorInfo.contributor) {
-                apiModules.authentication.createContributor(
-                    {
-                        name: contributorInfo.githubContributor.name,
-                        id: contributorInfo.githubContributor.id,
-                        githubUrl: contributorInfo.githubContributor.githubUrl
-                    }
-                )
+                const githubContributor = contributorInfo.githubContributor
+                await apiModules.authentication.createContributor({ githubContributor })
             }
         })
         .then(() => {

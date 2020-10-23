@@ -17,11 +17,11 @@ const authentication = module.exports = (() => {
     }
 
     //TODO: This has to chenge a little when we implement the Rates table
-    const createContributor = async ({ name, id, githubUrl }) => {
+    const createContributor = async ({ githubContributor }) => {
         await db.models.Contributor.create({
-            name,
-            github_id: id,
-            github_handle: githubUrl,
+            name: githubContributor.name,
+            github_id: githubContributor.id,
+            github_handle: githubContributor.githubUrl,
             weekly_rate: null,
             hourly_rate: null,
             monthly_rate: null
