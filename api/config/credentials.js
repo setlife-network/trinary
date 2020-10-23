@@ -2,7 +2,7 @@ require('dotenv').config()
 
 module.exports = {
     // 3rd Party App Access Keys
-    AWS: {
+    AMAZON_AWS: {
         ACCESS_KEY: process.env.AWS_ACCESS_KEY,
         SECRET: process.env.AWS_SECRET,
         S3_BUCKET_URL: process.env.AWS_S3_BUCKET_URL,
@@ -17,10 +17,6 @@ module.exports = {
     },
     TOGGL: {
         API_KEY: process.env.TOGGL_API_KEY,
-    },
-    AMAZON_AWS: {
-        ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
-        AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY
     },
     // MYSQL Access Keys
     MYSQL: {
