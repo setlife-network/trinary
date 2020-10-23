@@ -3,9 +3,9 @@ const { DataTypes, Deferrable } = require('sequelize')
 
 module.exports = (sequelize) => {
 
-    class Project extends Sequelize.Model {}
+    class Rate extends Sequelize.Model {}
 
-    Project.init({
+    Rate.init({
         // Model attributes are defined here
         id: {
             type: DataTypes.INTEGER,
@@ -13,32 +13,22 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             allowNull: false,
         },
-        expected_budget: {
-            type: DataTypes.INTEGER,
+        active: {
+            type: DataTypes.BOOLEAN,
             allowNull: false
         },
-        is_active: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        name: {
+        hourly_rate: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        github_url: {
+        type: {
             type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
-        },
-        date: {
-            type: DataTypes.DATE,
             allowNull: false
         },
-        client_id: { //FK
+        contributor_id: { //FK
             type: DataTypes.INTEGER(11),
-            allowNull: false,
             references: {
-                model: 'Clients',
+                model: 'Contributors',
                 key: 'id'
             }
         }
@@ -46,11 +36,11 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'Project',
+        modelName: 'Rate',
         createdAt: 'created_at',
         updatedAt: 'updated_at'
     });
 
-    return Project
+    return Rate
 
 }
