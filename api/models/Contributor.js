@@ -14,16 +14,13 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         hourly_rate: {
-            type: DataTypes.INTEGER,
-            allowNull: false
+            type: DataTypes.INTEGER
         },
         weekly_rate: {
-            type: DataTypes.INTEGER,
-            allowNull: false
+            type: DataTypes.INTEGER
         },
         monthly_rate: {
-            type: DataTypes.INTEGER,
-            allowNull: false
+            type: DataTypes.INTEGER
         },
         name: {
             type: DataTypes.STRING,

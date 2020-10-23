@@ -10,6 +10,7 @@ const apiModules = require('./api/modules');
 const github = require('./api/handlers/github')
 
 const { GITHUB } = require('./api/config/credentials')
+const { SITE_ROOT } = require('./api/config/constants')
 
 const app = express()
 
@@ -66,14 +67,22 @@ app.get('/api/login', (req, res) => {
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in te Github App
 
     github.fetchAccessToken({ code: req.query.code })
-        .then(accesToken => {
-            return apiModules.authentication.getContributor(accesToken)
+        .then(githubAccessToken => {
+            return apiModules.authentication.getContributor({ githubAccessToken })
         })
         .then(contributorInfo => {
-            if (!contributorInfo.contributor) apiModules.authentication.createContributor(contributorInfo.githubContributor)
+            if (!contributorInfo.contributor) {
+                apiModules.authentication.createContributor(
+                    {
+                        name: contributorInfo.githubContributor.name,
+                        id: contributorInfo.githubContributor.id,
+                        githubUrl: contributorInfo.githubContributor.githubUrl
+                    }
+                )
+            }
         })
         .then(() => {
-            res.redirect('http://localhost:6002')
+            res.redirect(SITE_ROOT)
         })
         .catch(err => {
             console.log('An error ocurred ' + err);

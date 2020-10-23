@@ -3,30 +3,28 @@ const db = require('../models')
 
 const authentication = module.exports = (() => {
 
-    const getContributor = async (params) => {
-        const githubContributor = await fetchUserData({ auth_key: params })
+    const getContributor = async ({ githubAccessToken }) => {
+        const githubContributor = await fetchUserData({ auth_key: githubAccessToken })
         const contributor = await db.models.Contributor.findOne({
             where: {
                 github_handle: githubContributor.id
             }
         })
-        return (
-            {
-                contributor,
-                githubContributor
-            }
-        )
+        return {
+            contributor,
+            githubContributor
+        }
     }
 
     //TODO: This has to chenge a little when we implement the Rates table
-    const createContributor = async (githubContributor) => {
+    const createContributor = async ({ name, id, githubUrl }) => {
         await db.models.Contributor.create({
-            name: githubContributor.name,
-            github_id: githubContributor.githubUrl,
-            github_handle: githubContributor.id,
-            weekly_rate: '',
-            hourly_rate: '',
-            monthly_rate: ''
+            name,
+            github_id: id,
+            github_handle: githubUrl,
+            weekly_rate: null,
+            hourly_rate: null,
+            monthly_rate: null
         })
     }
 
