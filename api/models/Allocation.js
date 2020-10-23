@@ -25,8 +25,7 @@ module.exports = (sequelize) => {
             defaultValue: true
         },
         start_date: {
-            type: Sequelize.DATE,
-            allowNull: false,
+            type: Sequelize.DATE
         },
         end_date: {
             type: Sequelize.DATE,

@@ -4,11 +4,11 @@ const { mapKeys } = require('lodash')
 
 module.exports = (() => {
     return {
-        validateDateFormat: ( date ) => {
+        validateDatesFormat: ( date ) => {
             mapKeys(date, (value, key) => {
                 if (value) value = moment(value, 'YYYY-MM-DD', true).utc()
                 if (value && !value.isValid()) {
-                    throw new UserInputError('Date format invalid');
+                    throw new UserInputError(`Invalid date format: ${key}`);
                 }
             })
             return date

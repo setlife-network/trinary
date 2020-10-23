@@ -1,4 +1,4 @@
-const { validateDateFormat } = require('../helpers/inputValidation')
+const { validateDatesFormat } = require('../helpers/inputValidation')
 
 module.exports = {
 
@@ -27,7 +27,7 @@ module.exports = {
             id,
             createFields
         }, { models }) => {
-            validateDateFormat({
+            validateDatesFormat({
                 date_paid: createFields['date_paid'],
                 start_date: createFields['start_date'],
                 end_date: createFields['end_date']
@@ -40,7 +40,7 @@ module.exports = {
             return models.Allocation.destroy({ where: { id } })
         },
         updateAllocationById: async (root, { id, updateFields }, { models }) => {
-            validateDateFormat({
+            validateDatesFormat({
                 date_paid: updateFields['date_paid'],
                 start_date: updateFields['start_date'],
                 end_date: updateFields['end_date']

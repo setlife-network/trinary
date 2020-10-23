@@ -1,4 +1,4 @@
-const { validateDateFormat } = require('../helpers/inputValidation')
+const { validateDatesFormat } = require('../helpers/inputValidation')
 
 module.exports = {
 
@@ -20,7 +20,7 @@ module.exports = {
     },
     Mutation: {
         createPayment: (root, { createFields }, { models }) => {
-            validateDateFormat({
+            validateDatesFormat({
                 date_incurred: createFields['date_incurred'],
                 date_paid: createFields['date_paid']
             })
@@ -32,7 +32,7 @@ module.exports = {
             return models.Payment.destroy({ where: { id } })
         },
         updatePaymentById: async (root, { id, updateFields }, { models }) => {
-            validateDateFormat({
+            validateDatesFormat({
                 date_incurred: updateFields['date_incurred'],
                 date_paid: updateFields['date_paid']
             })

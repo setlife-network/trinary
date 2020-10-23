@@ -1,4 +1,4 @@
-const { validateDateFormat } = require('../helpers/inputValidation')
+const { validateDatesFormat } = require('../helpers/inputValidation')
 
 module.exports = {
 
@@ -23,7 +23,7 @@ module.exports = {
         createProject: (root, {
             createFields
         }, { models }) => {
-            validateDateFormat({
+            validateDatesFormat({
                 date: createFields['date']
             })
             return models.Project.create({
@@ -34,7 +34,7 @@ module.exports = {
             return models.Project.destroy({ where: { id } })
         },
         updateProjectById: async (root, { id, updateFields }, { models }) => {
-            validateDateFormat({
+            validateDatesFormat({
                 date: updateFields['date']
             })
             await models.Project.update({
