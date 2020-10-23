@@ -14,16 +14,19 @@ module.exports = (() => {
         return total.slice(1, total.length).concat(split(total, '.', 1)[0])
     }
 
-    const totalToCents = (total) => {
+    const convertToCents = (total) => {
         return total * 100
     }
 
-    const matchingPayments = (...payment) => {
+    const matchingPayments = ({
+        dateIssued,
+        total
+    }) => {
         return db.models.Payment.findAll(
             {
                 where: {
                     date_incurred: moment.utc(dateIssued),
-                    amount: totalToCents(total)
+                    amount: convertToCents(total)
                 }
             }
         )
@@ -101,10 +104,12 @@ module.exports = (() => {
                 //check if the payments is not already stored using external UID
                 //if exists or clientName + amount + dateIssued as UUID if not
                 //then if not exists insert the object in the db
-                if (d['Statement ID'] || !matchingPayments({ total: total, dateIssued: d['Date Issued'] })) {
+                if (d['Statement ID'] ||
+                    !matchingPayments({ total: total, dateIssued: d['Date Issued'] })
+                ) {
                     //3:
                     await db.models.Payment.create({
-                        amount: totalToCents(total),
+                        amount: convertToCents(total),
                         external_uuid: d['Statement ID'],
                         date_incurred: moment.utc(d['Date Issued'], 'MMM D YYYY'),
                         date_paid: d['Date Paid']
