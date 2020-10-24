@@ -29,7 +29,6 @@ module.exports = (sequelize) => {
         },
         end_date: {
             type: Sequelize.DATE,
-            allowNull: false,
         },
         date_paid: {
             type: Sequelize.DATE
