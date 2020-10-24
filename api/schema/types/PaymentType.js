@@ -29,6 +29,10 @@ module.exports = gql`
             createFields: PaymentInput!
         ): Payment
 
+        syncPayments(
+            source: String!
+        ): String
+
         deletePaymentById(id: Int!): String
 
         updatePaymentById(

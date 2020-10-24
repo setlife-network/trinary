@@ -1,9 +1,8 @@
 const fs = require('fs')
 const moment = require('moment')
+const { slice, indexOf, split, join } = require('lodash')
 
 const db = require('../models')
-
-const { slice, indexOf, split, join, replace } = require('lodash')
 
 module.exports = (() => {
 
@@ -15,8 +14,22 @@ module.exports = (() => {
         return total.slice(1, total.length).concat(split(total, '.', 1)[0])
     }
 
-    const totalToCents = (total) => {
+    const convertToCents = (total) => {
         return total * 100
+    }
+
+    const matchingPayments = ({
+        dateIssued,
+        total
+    }) => {
+        return db.models.Payment.findAll(
+            {
+                where: {
+                    date_incurred: moment.utc(dateIssued),
+                    amount: convertToCents(total)
+                }
+            }
+        )
     }
 
     const modelCSV = async (data) => {
@@ -66,12 +79,20 @@ module.exports = (() => {
         //Iterate object collection and create the data object into the db
         dataObject.map(async d => {
 
+            //The following code does the following:
+            //1. Check if the client of the object is stored in Trinary db Clients table
+            //2. Then look if the payment is not already in the Payments table
+            //3. If not insert the payment on the Payments table
+
+            //1:
             //Look for the id of the client based on the name
-            //TODO: Consider make the name of the client in the DB Unique
-            const matchClients = await db.models.Client.findAll({ where: {
-                name: d['Client']
-            } })
-            //if the csv contains a client that is stored in Trinary Clients table then insert the paymanet on the Payment table
+            const matchClients = await db.models.Client.findAll(
+                {
+                    where: {
+                        name: d['Client']
+                    }
+                }
+            )
             if (matchClients[0]) {
                 //the way to format the total to be stores in the db it's different depending on the csv file format
                 const total = (
@@ -79,15 +100,24 @@ module.exports = (() => {
                         ? formatTotalWithQuotes(d['Payments'])
                         : formatTotal(d['Total'])
                 )
-
-                await db.models.Payment.create({
-                    amount: totalToCents(total),
-                    date_incurred: moment.utc(d['Date Issued'], 'MMM D YYYY'),
-                    date_paid: d['Date Paid']
-                        ? moment.utc(d['Date Paid'], 'MMM D YYYY')
-                        : null,
-                    client_id: matchClients[0].id
-                })
+                //2:
+                //check if the payments is not already stored using external UID
+                //if exists or clientName + amount + dateIssued as UUID if not
+                //then if not exists insert the object in the db
+                if (d['Statement ID'] ||
+                    !matchingPayments({ total: total, dateIssued: d['Date Issued'] })
+                ) {
+                    //3:
+                    await db.models.Payment.create({
+                        amount: convertToCents(total),
+                        external_uuid: d['Statement ID'],
+                        date_incurred: moment.utc(d['Date Issued'], 'MMM D YYYY'),
+                        date_paid: d['Date Paid']
+                            ? moment.utc(d['Date Paid'], 'MMM D YYYY')
+                            : null,
+                        client_id: matchClients[0].id
+                    })
+                }
             }
 
         })

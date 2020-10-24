@@ -28,7 +28,6 @@ const sequelize = new Sequelize(
 sequelize
     .authenticate()
     .then(async function(err) {
-        console.log('Connection has been established successfully.');
         await db.sequelize.sync();
     })
     .catch(function (err) {
