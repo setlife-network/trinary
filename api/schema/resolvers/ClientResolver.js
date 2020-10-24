@@ -1,5 +1,3 @@
-const moment = require('moment')
-
 module.exports = {
 
     Client: {
@@ -19,9 +17,7 @@ module.exports = {
         }
     },
     Mutation: {
-        createClient: (root, {
-            createFields
-        }, { models }) => {
+        createClient: (root, { createFields }, { models }) => {
             return models.Client.create({
                 ...createFields
             })
@@ -29,17 +25,15 @@ module.exports = {
         deleteClientById: (root, { id }, { models }) => {
             return models.Client.destroy({ where: { id } })
         },
-        updateClientById: (root, {
-            id,
-            updateFields
-        }, { models }) => {
-            return models.Client.update({
+        updateClientById: async (root, { id, updateFields }, { models }) => {
+            await models.Client.update({
                 ...updateFields
             }, {
                 where: {
                     id
                 }
             })
+            return models.Client.findByPk(id)
         }
     }
 }

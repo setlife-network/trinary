@@ -1,7 +1,7 @@
 const { UserInputError } = require('apollo-server');
-
 const moment = require('moment')
 
+const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules');
 
 module.exports = {
@@ -23,14 +23,12 @@ module.exports = {
         }
     },
     Mutation: {
-        createPayment: (root, {
-            createFields,
-            date_incurred,
-            date_paid
-        }, { models }) => {
+        createPayment: (root, { createFields }, { models }) => {
+            validateDatesFormat({
+                date_incurred: createFields['date_incurred'],
+                date_paid: createFields['date_paid']
+            })
             return models.Payment.create({
-                date_incurred: moment(date_incurred, 'MM-DD-YYYY HH:mm:ss').utc(),
-                date_paid: moment(date_paid, 'MM-DD-YYYY HH:mm:ss').utc(),
                 ...createFields
             })
         },
@@ -44,23 +42,19 @@ module.exports = {
                 throw new UserInputError(`There's not source that matchs the input`)
             }
         },
-        updatePaymentById: (root, {
-            id,
-            updateFields,
-            date_incurred,
-            date_paid,
-        }, { models }) => {
-            if (date_incurred) date_incurred = moment(date_incurred, 'MM-DD-YYYY HH:mm:ss').utc()
-            if (date_paid) date_paid = moment(date_paid, 'MM-DD-YYYY HH:mm:ss').utc()
-            return models.Payment.update({
-                ...updateFields,
-                date_incurred,
-                date_paid
+        updatePaymentById: async (root, { id, updateFields }, { models }) => {
+            validateDatesFormat({
+                date_incurred: updateFields['date_incurred'],
+                date_paid: updateFields['date_paid']
+            })
+            await models.Payment.update({
+                ...updateFields
             }, {
                 where: {
                     id
                 }
             })
+            return models.Payment.findByPk(id)
         }
     }
 

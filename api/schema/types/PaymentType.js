@@ -13,7 +13,9 @@ module.exports = gql`
 
     input PaymentInput {
         amount: Int,
-        client_id: Int
+        client_id: Int,
+        date_incurred: String,
+        date_paid: String
     }
 
     type Query {
@@ -24,9 +26,7 @@ module.exports = gql`
 
     type Mutation {
         createPayment(
-            createFields: PaymentInput!,
-            date_incurred: String,
-            date_paid: String,
+            createFields: PaymentInput!
         ): Payment
 
         syncPayments(
@@ -38,9 +38,7 @@ module.exports = gql`
         updatePaymentById(
             id:Int!,
             updateFields: PaymentInput,
-            date_incurred: String,
-            date_paid: String,
-        ): [Int]
+        ): Payment
     }
 
 `

@@ -1,27 +1,45 @@
 const { gql } = require('apollo-server')
-
+//TODO: Change this when rates table added
 module.exports = gql`
 
     type Allocation {
         id: Int!
         amount: Int!
-        rate_type: Int!
+        rate_unit: Int
+        rate_type: String!
         active: Boolean!
-        created_at: String!
-        date_paid: String
         start_date: String!
+        created_at: String!
         end_date: String!
+        date_paid: String
         payment: Payment
         project: Project
         contributor: Contributor
     }
 
-    input AllocationInput {
-        amount: Int,
-        rate_type: Int,
-        active: Boolean,
-        payment_id: Int,
-        project_id: Int,
+    input CreateAllocationInput {
+        amount: Int!
+        rate_unit: Int
+        rate_type: String!
+        active: Boolean!
+        start_date: String!
+        end_date: String
+        date_paid: String
+        payment_id: Int
+        project_id: Int!
+        contributor_id: Int!
+    }
+
+    input UpdateAllocationInput {
+        amount: Int
+        rate_unit: Int
+        rate_type: String
+        active: Boolean
+        start_date: String
+        end_date: String
+        date_paid: String
+        payment_id: Int
+        project_id: Int
         contributor_id: Int
     }
 
@@ -32,21 +50,15 @@ module.exports = gql`
 
     type Mutation {
         createAllocation(
-            createFields: AllocationInput!,
-            date_paid: String,
-            start_date: String!,
-            end_date: String!
+            createFields: CreateAllocationInput,
         ): Allocation
 
         deleteAllocationById(id: Int!): String
 
         updateAllocationById(
             id:Int!,
-            updateFields: AllocationInput,
-            date_paid: String,
-            start_date: String!,
-            end_date: String!
-        ): [Int]
+            updateFields: UpdateAllocationInput,
+        ): Allocation
     }
 
 `

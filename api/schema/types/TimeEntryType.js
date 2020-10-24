@@ -17,28 +17,27 @@ module.exports = gql`
         seconds: Int,
         toggl_id: Int,
         contributor_id: Int,
-        project_id: Int
+        project_id: Int,
+        start_time: String
     }
 
     type Query {
         getTimeEntryById(id: Int!): TimeEntry
         getTimeEntries: [TimeEntry]
-        getProjectTimeEntriesByProjectId(projectId: Int!): [TimeEntry]
+        getProjectTimeEntriesByProjectId(project_id: Int!): [TimeEntry]
     }
 
     type Mutation {
         createTimeEntry(
-            createFields: TimeEntryInput!,
-            start_time: String!
+            createFields: TimeEntryInput!
         ): TimeEntry
 
         deleteTimeEntryById(id: Int!): String
 
         upateTimeEntryById(
             id: Int!,
-            updateFields: TimeEntryInput,
-            start_time: String
-        ): [Int]
+            updateFields: TimeEntryInput
+        ): TimeEntry
     }
 
 `
