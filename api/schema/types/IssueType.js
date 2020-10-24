@@ -16,7 +16,7 @@ module.exports = gql`
 
     type Query {
         getIssueById(id: Int!): Issue
-        getProjectIssuesByProjectId(projectId: Int!): [Issue]
+        getIssuesByProjectId(project_id: Int!): [Issue]
     }
 
     type Mutation {
@@ -29,6 +29,6 @@ module.exports = gql`
         updateIssueById(
             id: Int!,
             updateFields: IssueInput
-        ): [Int]
+        ): Issue
     }
 `

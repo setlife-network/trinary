@@ -32,7 +32,7 @@ module.exports = gql`
         updateClientById(
             id: Int!,
             updateFields: ClientInput
-        ): [Int]
+        ): Client
     }
 
 `

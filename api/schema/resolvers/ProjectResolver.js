@@ -1,4 +1,4 @@
-const moment = require('moment')
+const { validateDatesFormat } = require('../helpers/inputValidation')
 
 module.exports = {
 
@@ -26,31 +26,30 @@ module.exports = {
     },
     Mutation: {
         createProject: (root, {
-            createFields,
-            date
+            createFields
         }, { models }) => {
+            validateDatesFormat({
+                date: createFields['date']
+            })
             return models.Project.create({
-                ...createFields,
-                date: moment(date, 'YYYY-MM-DD').utc()
+                ...createFields
             })
         },
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
         },
-        updateProjectById: (root, {
-            id,
-            updateFields,
-            date,
-        }, { models }) => {
-            if (date) date = moment(date, 'YYYY-MM-DD').utc()
-            return models.Project.update({
-                date,
-                ...updateFields,
+        updateProjectById: async (root, { id, updateFields }, { models }) => {
+            validateDatesFormat({
+                date: updateFields['date']
+            })
+            await models.Project.update({
+                ...updateFields
             }, {
                 where: {
                     id
                 }
             })
+            return models.Project.findByPk(id)
         }
     }
 
