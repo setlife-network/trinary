@@ -11,15 +11,13 @@ module.exports = {
             return models.Issue.findByPk(id)
 
         },
-        getProjectIssuesByProjectId: async (root, { projectId }, { models }) => {
-            return models.Issue.findAll({ where: { project_id: project_id } })
+        getIssuesByProjectId: async (root, { project_id }, { models }) => {
+            return models.Issue.findAll({ where: { project_id } })
 
         }
     },
     Mutation: {
-        createIssue: (root, {
-            createFields
-        }, { models }) => {
+        createIssue: (root, { createFields }, { models }) => {
             return models.Issue.create({
                 ...createFields
             })
@@ -27,17 +25,15 @@ module.exports = {
         deleteIssueById: (root, { id }, { models }) => {
             return models.Issue.destroy({ where: { id } })
         },
-        updateIssueById: (root, {
-            id,
-            updateFields
-        }, { models }) => {
-            return models.Issue.update({
+        updateIssueById: async (root, { id, updateFields }, { models }) => {
+            await models.Issue.update({
                 ...updateFields
             }, {
                 where: {
                     id
                 }
             })
+            return models.Issue.findByPk(id)
         }
     }
 

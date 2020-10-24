@@ -25,15 +25,13 @@ module.exports = (sequelize) => {
             defaultValue: true
         },
         start_date: {
-            type: Sequelize.DATE,
-            allowNull: false,
-        },
-        end_date: {
             type: Sequelize.DATE
         },
-        date_paid: {
+        end_date: {
             type: Sequelize.DATE,
-            allowNull: false,
+        },
+        date_paid: {
+            type: Sequelize.DATE
         },
         contributor_id: { //FK
             type: DataTypes.INTEGER,
