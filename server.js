@@ -7,10 +7,10 @@ const { ApolloServer } = require('apollo-server-express') //Apollo server for gr
 const schema = require('./api/schema')
 const db = require('./api/models');
 const apiModules = require('./api/modules');
-
 const github = require('./api/handlers/github')
 
 const { GITHUB } = require('./api/config/credentials')
+const { SITE_ROOT } = require('./api/config/constants')
 
 const app = express()
 
@@ -61,21 +61,26 @@ app.get('/api/v/:vid/ping', (req, res) => {
 })
 
 app.get('/api/login', (req, res) => {
-    console.log('login with github');
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.CLIENT_ID}`)
 })
 
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in te Github App
+
     github.fetchAccessToken({ code: req.query.code })
-        .then(accesToken => {
-            console.log('accesToken');
-            console.log(accesToken);
+        .then(githubAccessToken => {
+            return apiModules.authentication.getContributor({ githubAccessToken })
         })
-        .then(
-            res.redirect(port)
-        )
+        .then(async contributorInfo => {
+            if (!contributorInfo.contributor) {
+                const githubContributor = contributorInfo.githubContributor
+                await apiModules.authentication.createContributor({ githubContributor })
+            }
+        })
+        .then(() => {
+            res.redirect(SITE_ROOT)
+        })
         .catch(err => {
-            console.log('An error ocurred' + err);
+            console.log('An error ocurred ' + err);
         })
 })
 
