@@ -27,6 +27,7 @@ module.exports = gql`
     type Query {
         getProjectById(id: Int!): Project
         getProjects: [Project]
+        getContributorsFromProjectByProjectId(id: Int!): [Contributor]
     }
 
     type Mutation {

@@ -48,4 +48,20 @@ const db = {
     }
 };
 
+//Associations
+const associations = ({ Allocation, Client, Contributor, Issue, Payment, Project, Rate, TimeEntry }) => {
+    Client.hasMany(Payment, { foreignKey: 'client_id' });
+    Contributor.hasMany(Allocation, { foreignKey: 'contributor_id' })
+    Payment.hasMany(Allocation, { foreignKey: 'payment_id' })
+    Project.hasMany(Allocation, { foreignKey: 'project_id' })
+    Project.belongsTo(Client, { foreignKey: 'client_id' })
+    Issue.belongsTo(Project, { foreignKey: 'project_id' })
+    Rate.hasMany(Allocation, { foreignKey: 'rate_id' })
+    Rate.belongsTo(Contributor, { foreignKey: 'contributor_id' })
+    Contributor.hasMany(TimeEntry, { foreignKey: 'contributor_id' })
+    Project.hasMany(TimeEntry, { foreignKey: 'project_id' })
+}
+
+associations(db.models)
+
 module.exports = db;

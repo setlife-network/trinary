@@ -10,9 +10,16 @@ module.exports = {
             return models.Issue.findAll({ where: { project_id: project.id } })
         },
         contributors: (project, args, { models }) => {
-            models.Allocations.findAll({ where: {
-
-            } })
+            return models.Contributor.findAll({
+                include: [
+                    {
+                        model: models.Allocation,
+                        where: {
+                            'project_id': project.id
+                        }
+                    }
+                ],
+            })
         }
     },
 
@@ -22,6 +29,18 @@ module.exports = {
         },
         getProjects: (root, args, { models }) => {
             return models.Project.findAll()
+        },
+        getContributorsFromProjectByProjectId: (root, { id }, { models }) => {
+            return models.Contributor.findAll({
+                include: [
+                    {
+                        model: models.Allocation,
+                        where: {
+                            'project_id': id
+                        }
+                    }
+                ],
+            })
         }
     },
     Mutation: {
