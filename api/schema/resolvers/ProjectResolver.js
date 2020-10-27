@@ -66,18 +66,6 @@ module.exports = {
         },
         getProjects: (root, args, { models }) => {
             return models.Project.findAll()
-        },
-        getContributorsFromProjectByProjectId: (root, { id }, { models }) => {
-            return models.Contributor.findAll({
-                include: [
-                    {
-                        model: models.Allocation,
-                        where: {
-                            'project_id': id
-                        }
-                    }
-                ],
-            })
         }
     },
     Mutation: {
