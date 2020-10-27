@@ -1,5 +1,6 @@
 const moment = require('moment')
-const { Op } = require('sequelize');
+const { Op, fn } = require('sequelize');
+const sequelize = require('sequelize');
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
 
@@ -59,6 +60,20 @@ module.exports = {
                     contributor_id: args.contributor_id
                         ? args.contributor_id
                         : { [Op.ne]: null }
+                }
+            })
+        },
+        timeSpent: (project, { parameters }, { models }) => {
+            validateDatesFormat({
+                fromDate: parameters.fromDate,
+                toDate: parameters.toDate
+            })
+            return models.TimeEntry.findOne({
+                attributes: [[fn('sum', sequelize.col('seconds')), 'seconds']],
+                where: {
+                    'project_id': project.id,
+                    'contributor_id': parameters.contributor_id ? parameters.contributor_id : { [Op.ne]: null },
+                    'start_time': { [Op.between]: [parameters.fromDate, parameters.toDate] }
                 }
             })
         }

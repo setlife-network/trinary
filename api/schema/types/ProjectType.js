@@ -16,11 +16,22 @@ module.exports = gql`
         contributors: [Contributor]
         issues: [Issue]
         timeEntries(parameters: TimeEntryInput): [TimeEntry]
+        timeSpent(parameters: TimeSpentInput): TimeSpent
+    }
+
+    type TimeSpent {
+        seconds: Int
     }
 
     input TimeEntryInput {
         from_date: String
         to_date: String
+        contributor_id: Int
+    }
+
+    input TimeSpentInput {
+        fromDate: String!
+        toDate: String!
         contributor_id: Int
     }
 
