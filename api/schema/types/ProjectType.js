@@ -13,6 +13,14 @@ module.exports = gql`
         client: Client
         issues: [Issue]
         contributors: [Contributor]
+        allocatedPayments: [Payment]
+        timeEntries(parameters: TimeEntryInput): [TimeEntry]
+    }
+
+    input TimeEntryInput {
+        from_date: String
+        to_date: String
+        contributor_id: Int
     }
 
     input ProjectInput {

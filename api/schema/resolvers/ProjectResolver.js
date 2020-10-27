@@ -1,3 +1,6 @@
+const moment = require('moment')
+const { Op } = require('sequelize');
+
 const { validateDatesFormat } = require('../helpers/inputValidation')
 
 module.exports = {
@@ -20,9 +23,43 @@ module.exports = {
                     }
                 ],
             })
+        },
+        allocatedPayments: (project, args, { models }) => {
+            return models.Payment.findAll({
+                include: [
+                    {
+                        model: models.Allocation,
+                        where: {
+                            'project_id': project.id
+                        }
+                    }
+                ]
+            })
+        },
+        timeEntries: (project, { parameters }, { models }) => {
+            const args = { ...parameters }
+            validateDatesFormat({
+                from_date: args.from_date,
+                to_date: args.to_date
+            })
+            return models.TimeEntry.findAll({
+                where: {
+                    project_id: project.id,
+                    start_time: { [Op.between]: [
+                        args.from_date
+                            ? args.from_date
+                            : moment.utc(1),
+                        args.to_date
+                            ? args.to_date
+                            : moment.utc()
+                    ] },
+                    contributor_id: args.contributor_id
+                        ? args.contributor_id
+                        : { [Op.ne]: null }
+                }
+            })
         }
     },
-
     Query: {
         getProjectById: (root, { id }, { models }) => {
             return models.Project.findByPk(id)
@@ -44,9 +81,7 @@ module.exports = {
         }
     },
     Mutation: {
-        createProject: (root, {
-            createFields
-        }, { models }) => {
+        createProject: (root, { createFields }, { models }) => {
             validateDatesFormat({
                 date: createFields['date']
             })
