@@ -34,13 +34,26 @@ module.exports = {
                             'project_id': project.id
                         }
                     }
-                ],
+                ]
+            })
+        },
+        githubContributors: (project, arge, { models }) => {
+            return models.Contributor.findAll({
+                where: { 'github_id': { [Op.ne]: null } },
+                include: [
+                    {
+                        model: models.Allocation,
+                        where: {
+                            'project_id': project.id
+                        }
+                    }
+                ]
             })
         },
         issues: (project, args, { models }) => {
             return models.Issue.findAll({ where: { project_id: project.id } })
         },
-        timeEntries: (project, { parameters }, { models }) => {            
+        timeEntries: (project, { parameters }, { models }) => {
             const args = { ...parameters }
             validateDatesFormat({
                 from_date: args.fromDate,

@@ -10,10 +10,11 @@ module.exports = gql`
         github_url: String!
         date: String!
         client_id: Int!
-        client: Client
         allocations: [Allocation]
         allocatedPayments: [Payment]
+        client: Client
         contributors: [Contributor]
+        githubContributors: [Contributor]
         issues: [Issue]
         timeEntries(parameters: TimeEntryInput): [TimeEntry]
         timeSpent(parameters: TimeSpentInput): TimeSpent
