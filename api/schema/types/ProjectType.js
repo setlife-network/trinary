@@ -24,8 +24,8 @@ module.exports = gql`
     }
 
     input TimeEntryInput {
-        from_date: String
-        to_date: String
+        fromDate: String
+        toDate: String
         contributor_id: Int
     }
 

@@ -40,21 +40,21 @@ module.exports = {
         issues: (project, args, { models }) => {
             return models.Issue.findAll({ where: { project_id: project.id } })
         },
-        timeEntries: (project, { parameters }, { models }) => {
+        timeEntries: (project, { parameters }, { models }) => {            
             const args = { ...parameters }
             validateDatesFormat({
-                from_date: args.from_date,
-                to_date: args.to_date
+                from_date: args.fromDate,
+                to_date: args.toDate
             })
             return models.TimeEntry.findAll({
                 where: {
                     project_id: project.id,
                     start_time: { [Op.between]: [
-                        args.from_date
-                            ? args.from_date
+                        args.fromDate
+                            ? args.fromDate
                             : moment.utc(1),
-                        args.to_date
-                            ? args.to_date
+                        args.toDate
+                            ? args.toDate
                             : moment.utc()
                     ] },
                     contributor_id: args.contributor_id
