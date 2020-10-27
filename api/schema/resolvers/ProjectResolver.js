@@ -6,11 +6,23 @@ const { validateDatesFormat } = require('../helpers/inputValidation')
 module.exports = {
 
     Project: {
+        allocations: (project, args, { models }) => {
+            return models.Allocation.findAll({ where: { project_id: project.id } })
+        },
+        allocatedPayments: (project, args, { models }) => {
+            return models.Payment.findAll({
+                include: [
+                    {
+                        model: models.Allocation,
+                        where: {
+                            'project_id': project.id
+                        }
+                    }
+                ]
+            })
+        },
         client: (project, args, { models }) => {
             return models.Client.findByPk(project.client_id)
-        },
-        issues: (project, args, { models }) => {
-            return models.Issue.findAll({ where: { project_id: project.id } })
         },
         contributors: (project, args, { models }) => {
             return models.Contributor.findAll({
@@ -24,17 +36,8 @@ module.exports = {
                 ],
             })
         },
-        allocatedPayments: (project, args, { models }) => {
-            return models.Payment.findAll({
-                include: [
-                    {
-                        model: models.Allocation,
-                        where: {
-                            'project_id': project.id
-                        }
-                    }
-                ]
-            })
+        issues: (project, args, { models }) => {
+            return models.Issue.findAll({ where: { project_id: project.id } })
         },
         timeEntries: (project, { parameters }, { models }) => {
             const args = { ...parameters }

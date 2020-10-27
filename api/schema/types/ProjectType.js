@@ -11,9 +11,10 @@ module.exports = gql`
         date: String!
         client_id: Int!
         client: Client
-        issues: [Issue]
-        contributors: [Contributor]
+        allocations: [Allocation]
         allocatedPayments: [Payment]
+        contributors: [Contributor]
+        issues: [Issue]
         timeEntries(parameters: TimeEntryInput): [TimeEntry]
     }
 

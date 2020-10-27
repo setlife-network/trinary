@@ -10,7 +10,7 @@ module.exports = gql`
         active: Boolean!
         start_date: String!
         created_at: String!
-        end_date: String!
+        end_date: String
         date_paid: String
         payment: Payment
         project: Project
