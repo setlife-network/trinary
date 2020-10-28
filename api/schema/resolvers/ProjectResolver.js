@@ -1,5 +1,5 @@
 const moment = require('moment')
-const { Op, fn } = require('sequelize');
+const { col, fn, Op } = require('sequelize');
 const sequelize = require('sequelize');
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
@@ -88,6 +88,37 @@ module.exports = {
                     'start_time': { [Op.between]: [args.fromDate, args.toDate] }
                 }
             })
+        },
+        totalPaid: async (project, args, { models }) => {
+            const total = await models.Payment.findOne({
+                attributes: [[fn('sum', col('amount')), 'totalPaid']],
+                where: {
+                    'date_paid': { [Op.and]:
+                        [
+                            { [Op.ne]: null },
+                            { [Op.between]: [
+                                args.fromDate
+                                    ? args.fromDate
+                                    : moment.utc(1),
+                                args.toDate
+                                    ? args.toDate
+                                    : moment.utc()
+                            ] }
+                        ]
+                    }
+                },
+                include: [
+                    {
+                        model: models.Allocation,
+                        attributes: [],
+                        where: {
+                            'project_id': project.id
+                        },
+                        required: true,
+                    }
+                ],
+            })
+            return total.dataValues.totalPaid
         }
     },
     Query: {
