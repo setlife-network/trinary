@@ -37,7 +37,7 @@ module.exports = {
                 ]
             })
         },
-        githubContributors: (project, arge, { models }) => {
+        githubContributors: (project, args, { models }) => {
             return models.Contributor.findAll({
                 where: { 'github_id': { [Op.ne]: null } },
                 include: [
@@ -53,8 +53,7 @@ module.exports = {
         issues: (project, args, { models }) => {
             return models.Issue.findAll({ where: { project_id: project.id } })
         },
-        timeEntries: (project, { parameters }, { models }) => {
-            const args = { ...parameters }
+        timeEntries: (project, args, { models }) => {
             validateDatesFormat({
                 from_date: args.fromDate,
                 to_date: args.toDate
@@ -76,17 +75,17 @@ module.exports = {
                 }
             })
         },
-        timeSpent: (project, { parameters }, { models }) => {
+        timeSpent: (project, args, { models }) => {
             validateDatesFormat({
-                fromDate: parameters.fromDate,
-                toDate: parameters.toDate
+                fromDate: args.fromDate,
+                toDate: args.toDate
             })
             return models.TimeEntry.findOne({
                 attributes: [[fn('sum', sequelize.col('seconds')), 'seconds']],
                 where: {
                     'project_id': project.id,
-                    'contributor_id': parameters.contributor_id ? parameters.contributor_id : { [Op.ne]: null },
-                    'start_time': { [Op.between]: [parameters.fromDate, parameters.toDate] }
+                    'contributor_id': args.contributor_id ? args.contributor_id : { [Op.ne]: null },
+                    'start_time': { [Op.between]: [args.fromDate, args.toDate] }
                 }
             })
         }
