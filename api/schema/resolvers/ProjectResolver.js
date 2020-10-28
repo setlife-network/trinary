@@ -1,3 +1,6 @@
+const moment = require('moment')
+const { Op } = require('sequelize')
+
 const { validateDatesFormat } = require('../helpers/inputValidation')
 
 module.exports = {
@@ -8,6 +11,27 @@ module.exports = {
         },
         issues: (project, args, { models }) => {
             return models.Issue.findAll({ where: { project_id: project.id } })
+        },
+        githubIssuesOpened: (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
+            return models.Issue.count({
+                where: {
+                    'project_id': project.id,
+                    'created_at': {
+                        [Op.between]: [
+                            args.fromDate
+                                ? args.fromDate
+                                : moment.utc(1),
+                            args.toDate
+                                ? args.toDate
+                                : moment.utc()
+                        ]
+                    }
+                }
+            })
         }
     },
 
