@@ -105,20 +105,20 @@ module.exports = {
                                     : moment.utc()
                             ] }
                         ]
-                    }
+                    },
                 },
                 include: [
                     {
                         model: models.Allocation,
-                        attributes: [],
                         where: {
                             'project_id': project.id
-                        },
-                        required: true,
+                        }
                     }
                 ],
             })
-            return total.dataValues.totalPaid
+            return total
+                ? total.dataValues.totalPaid
+                : 0
         }
     },
     Query: {
