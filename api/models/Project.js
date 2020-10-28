@@ -30,6 +30,10 @@ module.exports = (sequelize) => {
             allowNull: false,
             unique: true
         },
+        toggl_url: {
+            type: DataTypes.STRING,
+            unique: true
+        },
         date: {
             type: DataTypes.DATE,
             allowNull: false

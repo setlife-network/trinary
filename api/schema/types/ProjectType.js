@@ -8,6 +8,7 @@ module.exports = gql`
         is_active: Boolean!
         name: String!
         github_url: String!
+        toggl_url: String
         date: String!
         client_id: Int!
         client: Client
@@ -19,6 +20,7 @@ module.exports = gql`
         is_active: Boolean
         name: String
         github_url: String
+        toggl_url: String
         client_id: Int
         date: String
     }
