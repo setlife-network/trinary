@@ -13,6 +13,7 @@ module.exports = {
             return models.Project.findAll({ where: { client_id: client.id } })
         },
         totalPaid: async (client, args, { models }) => {
+            //MARK: Review if validateDatesFormat({ ...args }) is the best solution, consider if we pass more attributes non date this will break
             validateDatesFormat({ ...args })
             const totalPaid = await models.Payment.findOne({
                 raw: true,
