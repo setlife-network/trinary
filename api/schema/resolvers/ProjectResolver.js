@@ -80,30 +80,38 @@ module.exports = {
                 fromDate: args.fromDate,
                 toDate: args.toDate
             })
+
+            const whereConditions = {
+                'project_id': project.id,
+                'start_time': { [Op.between]: [args.fromDate, args.toDate] }
+            }
+            if (args.contributor_id) {
+                whereConditions.contributor_id = args.contributor_id
+            }
+
             return models.TimeEntry.findOne({
+                // The sum gets returned with the property name "seconds"
                 attributes: [[fn('sum', sequelize.col('seconds')), 'seconds']],
-                where: {
-                    'project_id': project.id,
-                    'contributor_id': args.contributor_id ? args.contributor_id : { [Op.ne]: null },
-                    'start_time': { [Op.between]: [args.fromDate, args.toDate] }
-                }
+                where: whereConditions
             })
         },
         totalPaid: async (project, args, { models }) => {
             const total = await models.Payment.findOne({
                 attributes: [[fn('sum', col('amount')), 'totalPaid']],
                 where: {
-                    'date_paid': { [Op.and]:
-                        [
+                    'date_paid': {
+                        [Op.and]: [
                             { [Op.ne]: null },
-                            { [Op.between]: [
-                                args.fromDate
-                                    ? args.fromDate
-                                    : moment.utc(1),
-                                args.toDate
-                                    ? args.toDate
-                                    : moment.utc()
-                            ] }
+                            {
+                                [Op.between]: [
+                                    args.fromDate
+                                        ? args.fromDate
+                                        : moment.utc(1),
+                                    args.toDate
+                                        ? args.toDate
+                                        : moment.utc()
+                                ]
+                            }
                         ]
                     },
                 },
