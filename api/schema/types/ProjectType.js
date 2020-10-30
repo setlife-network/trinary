@@ -26,7 +26,7 @@ module.exports = gql`
             toDate: String!
             contributor_id: Int
         ): TimeSpent
-        totalPaid(fromDate:String, toDate: String): Int
+        totalPaid(fromDate: String, toDate: String): Int
     }
 
     type TimeSpent {
