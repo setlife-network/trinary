@@ -11,7 +11,7 @@ const github = module.exports = (() => {
         return new Promise((resolve, reject ) => {
             axios
                 .post(`${GITHUB_OAUTH_URL}?client_id=${GITHUB.CLIENT_ID}&client_secret=${GITHUB.CLIENT_SECRET}&code=${params.code}`, null, opts)
-                .then((res) => {
+                .then(res => {
                     resolve(res.data['access_token'])
                 })
                 .catch((error) => {
@@ -39,14 +39,21 @@ const github = module.exports = (() => {
         })
     }
 
-    const fetchRepoIssues = (params) => {
+    const fetchRepoIssues = async (params) => {
         const octokit = new Octokit({
             auth: params.auth_key,
         });
-        return octokit.issues.listForRepo({
-            owner: params.auth_key,
-            repo: params.repo_id,
-        });
+
+        const res = await octokit.issues.listForRepo({
+            owner: params.owner,
+            repo: params.repo,
+        })
+
+        if (res.status == 200) {
+            return res
+        } else {
+            throw new Error('An error ocurred ' + error)
+        }
     }
 
     const fetchUserData = async (params) => {
