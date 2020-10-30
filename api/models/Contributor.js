@@ -31,12 +31,10 @@ module.exports = (sequelize) => {
         },
         github_id: {
             type: DataTypes.STRING,
-            allowNull: false,
             unique: true
         },
         github_handle: {
             type: DataTypes.STRING,
-            allowNull: false,
             unique: true
         }
     },

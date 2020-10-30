@@ -11,8 +11,27 @@ module.exports = gql`
         toggl_url: String
         date: String!
         client_id: Int!
+        allocations: [Allocation]
+        allocatedPayments: [Payment]
         client: Client
+        contributors: [Contributor]
+        githubContributors: [Contributor]
         issues: [Issue]
+        timeEntries(
+            fromDate: String
+            toDate: String
+            contributor_id: Int
+        ): [TimeEntry]
+        timeSpent(
+            fromDate: String!
+            toDate: String!
+            contributor_id: Int
+        ): TimeSpent
+        totalPaid(fromDate: String, toDate: String): Int
+    }
+
+    type TimeSpent {
+        seconds: Int
     }
 
     input ProjectInput {
