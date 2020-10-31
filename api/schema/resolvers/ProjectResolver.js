@@ -75,7 +75,7 @@ module.exports = {
                 }
             })
         },
-        githubIssuesOpened: (project, args, { models }) => {
+        issuesOpened: (project, args, { models }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,
                 toDate: args.toDate
