@@ -29,10 +29,33 @@ const sequelize = module.exports = (sequelize => {
 
     }
 
+    const joinQuery = async () => {
+
+        const test = await db.models.Contributor.findAll({
+            raw: true,
+            include: [
+                {
+                    model: db.models.Allocation,
+                    attributes: [],
+                    where: {
+                        'project_id': 1
+                    },
+                    required: false,
+                }
+            ],
+
+        })
+        console.log('test');
+        console.log(test);
+
+        //console.log(test[0].Payments);
+    }
+
     return {
-        insertQuery
+        insertQuery,
+        joinQuery
     }
 })();
 //
 console.log('this.insertQuery()');
-console.log(sequelize.insertQuery());
+console.log(sequelize.joinQuery());
