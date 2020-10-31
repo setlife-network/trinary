@@ -41,16 +41,14 @@ const github = module.exports = (() => {
 
     const fetchRepoIssues = async (params) => {
         const octokit = new Octokit({
-            auth: params.auth_key,
+            auth: GITHUB.CLIENT_SECRET,
         });
-
         const res = await octokit.issues.listForRepo({
-            owner: params.owner,
+            owner: GITHUB.OWNER,
             repo: params.repo,
         })
-
         if (res.status == 200) {
-            return res
+            return res.data
         } else {
             throw new Error('An error ocurred ' + error)
         }

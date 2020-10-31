@@ -1,3 +1,5 @@
+const moment = require('moment')
+
 const github = require('../../handlers/github')
 const { validateDatesFormat } = require('../helpers/inputValidation')
 
@@ -11,17 +13,24 @@ module.exports = {
             return models.Issue.findAll({ where: { project_id: project.id } })
         },
         githubIssuesOpened: async (project, args, { models }) => {
-            const isssues = await github.fetchRepoIssues({
-                auth_key: '1285b9d9dd6a5380008287218be71afa65cd0a98', 
-                owner: 'setlife-network',
-                repo: 'project-trinary'
+            const issues = await github.fetchRepoIssues({
+                repo: project.name
             })
-            var openIssues = 0
-            issues.map(i => {
-                if (i.closed_at == null && moment(i.created_at).isAfter(args.fromDate)) {
+            let openIssues = 0
+            issues.map((i, n) => {
+                if (
+                    i.closed_at == null &&
+                    moment(i.created_at).isAfter(args.fromDate
+                        ? args.fromDate
+                        : moment(1)) &&
+                    moment(i.created_at).isBefore(args.toDate
+                        ? args.toDate
+                        : moment())
+                ) {
                     openIssues += 1
                 }
             })
+            return openIssues
         }
     },
 
