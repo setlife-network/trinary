@@ -8,9 +8,14 @@ module.exports = gql`
         is_active: Boolean!
         name: String!
         github_url: String!
+        toggl_url: String
         date: String!
         client_id: Int!
+        allocations: [Allocation]
+        allocatedPayments: [Payment]
         client: Client
+        contributors: [Contributor]
+        githubContributors: [Contributor]
         issues: [Issue]
         githubIssuesOpened(
             fromDate: String,
@@ -20,6 +25,21 @@ module.exports = gql`
             fromDate: String,
             toDate:String
         ): Int
+        timeEntries(
+            fromDate: String
+            toDate: String
+            contributor_id: Int
+        ): [TimeEntry]
+        timeSpent(
+            fromDate: String!
+            toDate: String!
+            contributor_id: Int
+        ): TimeSpent
+        totalPaid(fromDate: String, toDate: String): Int
+    }
+
+    type TimeSpent {
+        seconds: Int
     }
 
     input ProjectInput {
@@ -27,6 +47,7 @@ module.exports = gql`
         is_active: Boolean
         name: String
         github_url: String
+        toggl_url: String
         client_id: Int
         date: String
     }
