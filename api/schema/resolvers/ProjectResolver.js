@@ -1,4 +1,5 @@
 const moment = require('moment')
+const { split } = require('lodash')
 
 const github = require('../../handlers/github')
 const { validateDatesFormat } = require('../helpers/inputValidation')
@@ -13,12 +14,21 @@ module.exports = {
             return models.Issue.findAll({ where: { project_id: project.id } })
         },
         githubIssuesOpened: async (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
+            const urlSplitted = split(project.github_url, '/');
             const issues = await github.fetchRepoIssues({
-                repo: project.name
+                repo: url[urlSplitted.length - 1]
             })
             let openIssues = 0
             issues.map((i, n) => {
+                //check is the issue is not a pull request &&
+                //check if is not closed &&
+                // check the date ranges
                 if (
+                    i.pull_request == null &&
                     i.closed_at == null &&
                     moment(i.created_at).isAfter(args.fromDate
                         ? args.fromDate
@@ -31,6 +41,35 @@ module.exports = {
                 }
             })
             return openIssues
+        },
+        githubIssuesClosed: async (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
+            const urlSplitted = split(project.github_url, '/');
+            const issues = await github.fetchRepoIssues({
+                repo: url[urlSplitted.length - 1]
+            })
+            let closedIssues = 0
+            issues.map((i, n) => {
+                //check is the issue is not a pull request &&
+                //check if is closed &&
+                // check the date ranges
+                if (
+                    i.pull_request == null &&
+                    i.closed_at &&
+                    moment(i.closed_at).isAfter(args.fromDate
+                        ? args.fromDate
+                        : moment(1)) &&
+                    moment(i.closed_at).isBefore(args.toDate
+                        ? args.toDate
+                        : moment())
+                ) {
+                    closedIssues += 1
+                }
+            })
+            return closedIssues
         }
     },
 

@@ -16,6 +16,10 @@ module.exports = gql`
             fromDate: String,
             toDate:String
         ): Int
+        githubIssuesClosed(
+            fromDate: String,
+            toDate:String
+        ): Int
     }
 
     input ProjectInput {

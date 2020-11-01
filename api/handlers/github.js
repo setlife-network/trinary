@@ -43,15 +43,11 @@ const github = module.exports = (() => {
         const octokit = new Octokit({
             auth: GITHUB.CLIENT_SECRET,
         });
-        const res = await octokit.issues.listForRepo({
+        return octokit.paginate(octokit.issues.listForRepo, {
             owner: GITHUB.OWNER,
             repo: params.repo,
+            state: 'all'
         })
-        if (res.status == 200) {
-            return res.data
-        } else {
-            throw new Error('An error ocurred ' + error)
-        }
     }
 
     const fetchUserData = async (params) => {
@@ -59,11 +55,10 @@ const github = module.exports = (() => {
             auth: params.auth_key,
         });
 
-        const result = await octokit.users.getAuthenticated({})
+        const res = await octokit.users.getAuthenticated({})
 
-        if (result.status == 200) {
-            const { html_url, id, name, email } = result.data
-
+        if (res.status == 200) {
+            const { html_url, id, name, email } = res.data
             return {
                 id,
                 name,
@@ -71,7 +66,7 @@ const github = module.exports = (() => {
                 githubUrl: html_url
             }
         } else {
-            throw new Error('An error occurred' + result.status)
+            throw new Error('An error occurred' + res)
         }
     }
 
