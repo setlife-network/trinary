@@ -16,7 +16,7 @@ module.exports = {
                     {
                         model: models.Allocation,
                         where: {
-                            'project_id': project.id
+                            project_id: project.id
                         }
                     }
                 ]
@@ -31,7 +31,7 @@ module.exports = {
                     {
                         model: models.Allocation,
                         where: {
-                            'project_id': project.id
+                            project_id: project.id
                         }
                     }
                 ]
@@ -39,12 +39,12 @@ module.exports = {
         },
         githubContributors: (project, args, { models }) => {
             return models.Contributor.findAll({
-                where: { 'github_id': { [Op.ne]: null } },
+                where: { github_id: { [Op.ne]: null } },
                 include: [
                     {
                         model: models.Allocation,
                         where: {
-                            'project_id': project.id
+                            project_id: project.id
                         }
                     }
                 ]
@@ -82,8 +82,8 @@ module.exports = {
             })
 
             const whereConditions = {
-                'project_id': project.id,
-                'start_time': { [Op.between]: [args.fromDate, args.toDate] }
+                project_id: project.id,
+                start_time: { [Op.between]: [args.fromDate, args.toDate] }
             }
             if (args.contributor_id) {
                 whereConditions.contributor_id = args.contributor_id
@@ -99,7 +99,7 @@ module.exports = {
             const total = await models.Payment.findOne({
                 attributes: [[fn('sum', col('amount')), 'totalPaid']],
                 where: {
-                    'date_paid': {
+                    date_paid: {
                         [Op.and]: [
                             { [Op.ne]: null },
                             {
@@ -119,7 +119,7 @@ module.exports = {
                     {
                         model: models.Allocation,
                         where: {
-                            'project_id': project.id
+                            project_id: project.id
                         }
                     }
                 ],
