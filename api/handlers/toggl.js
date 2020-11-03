@@ -19,7 +19,7 @@ const toggl = module.exports = (() => {
         })
     }
 
-    const fetchProjectData = (params) => {
+    const fetchProjectTimeEntries = (params) => {
         const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
         return new Promise((resolve, reject) => {
             togglClient.getTimeEntries((err, timeEntries) => {

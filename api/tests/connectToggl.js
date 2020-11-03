@@ -4,7 +4,7 @@ console.log('toggl');
 console.log(toggl);
 console.log('toggl.fetchProjectData');
 console.log('toggl.createTimeEntry()');
-const fetchProjectData = toggl.fetchProjectData({ projectId:  })
+const fetchProjectData = toggl.fetchProjectTimeEntries({ projectId: })
     .then(res => {
         console.log('res');
         console.log(res);
