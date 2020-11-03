@@ -61,14 +61,16 @@ module.exports = {
             return models.TimeEntry.findAll({
                 where: {
                     project_id: project.id,
-                    start_time: { [Op.between]: [
-                        args.fromDate
-                            ? args.fromDate
-                            : moment.utc(1),
-                        args.toDate
-                            ? args.toDate
-                            : moment.utc()
-                    ] },
+                    start_time: {
+                        [Op.between]: [
+                            args.fromDate
+                                ? args.fromDate
+                                : moment.utc(1),
+                            args.toDate
+                                ? args.toDate
+                                : moment.utc()
+                        ]
+                    },
                     contributor_id: args.contributor_id
                         ? args.contributor_id
                         : { [Op.ne]: null }
