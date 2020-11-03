@@ -58,7 +58,7 @@ module.exports = gql`
 
         syncTogglProject(
             project_id: Int!,
-            toggl_id: String
+            toggl_id: Int
         ): Project
 
         updateProjectById(

@@ -23,9 +23,12 @@ const dataSyncs = module.exports = (() => {
 
     const syncTogglProject = async (params) => {
         return (
-            toggl.fetchProjectTimeEntries({ project_id: params.togglProjectId })
+            toggl.fetchProjectTimeEntries({ projectId: params.togglProjectId })
                 .then(timeEntries => {
-                    timeEntriesCodebase.addTimeEntries({ timeEntries: timeEntries, projectId: params.projectId })
+                    timeEntriesCodebase.addTimeEntries({
+                        timeEntries,
+                        projectId: params.projectId
+                    })
                     return 'Success'
                 })
                 .catch(err => {

@@ -5,6 +5,36 @@ const {
 
 const toggl = module.exports = (() => {
 
+    const fetchProjectData = async (params) => {
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
+        return new Promise((resolve, reject) => {
+            togglClient.getProjectData(params.projectId, (err, projectData) => {
+                if (projectData) {
+                    resolve(projectData)
+                }
+                reject(err)
+            })
+        })
+    }
+
+    const fetchProjectTimeEntries = (params) => {
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
+        return new Promise((resolve, reject) => {
+            togglClient.getTimeEntries( async (err, timeEntries) => {
+                let projectTimeEntries = []
+                if (timeEntries) {
+                    await timeEntries.map(t => {
+                        if (t.pid == params.projectId) {
+                            projectTimeEntries.push(t)
+                        }
+                    })
+                    resolve(projectTimeEntries)
+                }
+                reject(err)
+            })
+        })
+    }
+
     const fetchTimeEntries = (params) => {
         const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
         return new Promise((resolve, reject) => {
@@ -17,28 +47,10 @@ const toggl = module.exports = (() => {
         })
     }
 
-    const fetchProjectTimeEntries = (params) => {
-        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
-        return new Promise((resolve, reject) => {
-            togglClient.getTimeEntries((err, timeEntries) => {
-                let projectTimeEntries = []
-                if (timeEntries) {
-                    timeEntries.map(t => {
-                        if (t.pid == params.projectId) {
-                            return projectTimeEntries.push(t)
-                        }
-                    })
-                    resolve(projectTimeEntries)
-                } else {
-                    reject(err)
-                }
-            })
-        })
-    }
-
     return {
+        fetchProjectData,
         fetchTimeEntries,
-        fetchProjectData
+        fetchProjectTimeEntries
     }
 
 })();
