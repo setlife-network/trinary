@@ -1,8 +1,10 @@
 const moment = require('moment')
 const { col, fn, Op } = require('sequelize');
 const sequelize = require('sequelize');
+const { ApolloError } = require('apollo-server')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
+const apiModules = require('../../modules');
 
 module.exports = {
 
@@ -148,6 +150,38 @@ module.exports = {
         },
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
+        },
+        syncTogglProject: async (root, args, { models }) => {
+            let project = models.Project.findByPk(args.project_id)
+            let projectTogglId = args.toggl_id
+            if (!projectTogglId && !project.toggl_id) {
+                //return error pls provide toggl_id
+                return new ApolloError('You need to provide a toggl project id', 2002)
+            } else if (projectTogglId) {
+                //update toggl_id
+                await models.Project.update({
+                    toggl_id: projectTogglId
+                }, {
+                    where: {
+                        id: args.project_id
+                    }
+                });
+                //get updated project
+                project = models.Project.findByPk(args.project_id)
+            }
+
+            //call sync func
+            //TODO: analyze if await is necessary
+            const dataSync = await apiModules.dataSyncs.syncTogglProject({
+                togglProjectId: projec.toggl_id,
+                projectId: project.id
+            })
+
+            if (dataSync == 'Success') {
+                return project
+            } else {
+                return new ApolloError('Something worong happened', 2003)
+            }
         },
         updateProjectById: async (root, { id, updateFields }, { models }) => {
             validateDatesFormat({

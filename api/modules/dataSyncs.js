@@ -1,6 +1,7 @@
 const amazon = require('../handlers/amazon')
 const toggl = require('../handlers/toggl')
 const invoicelyCodebase = require('../scripts/invoicelyCodebase')
+const timeEntriesCodebase = require('../scripts/timeEntriesCodebase')
 const { INVOICELY_CSV_PATH } = require('../config/constants')
 
 const dataSyncs = module.exports = (() => {
@@ -23,8 +24,8 @@ const dataSyncs = module.exports = (() => {
     const syncTogglProject = async (params) => {
         return (
             toggl.fetchProjectTimeEntries({ project_id: params.togglProjectId })
-                .then(res => {
-                    //some func to add time entries to the db
+                .then(timeEntries => {
+                    timeEntriesCodebase.addTimeEntries({ timeEntries: timeEntries, projectId: params.projectId })
                     return 'Success'
                 })
                 .catch(err => {
@@ -32,10 +33,10 @@ const dataSyncs = module.exports = (() => {
                     return err.message
                 })
         )
-
     }
 
     return {
-        syncInvoicelyCSV
+        syncInvoicelyCSV,
+        syncTogglProject
     }
 })()

@@ -3,8 +3,6 @@ const {
     TOGGL
 } = require('../config/credentials')
 
-//var togglClient = new TogglClient({apiToken: TOGGL.API_KEY});
-
 const toggl = module.exports = (() => {
 
     const fetchTimeEntries = (params) => {
@@ -31,8 +29,9 @@ const toggl = module.exports = (() => {
                         }
                     })
                     resolve(projectTimeEntries)
+                } else {
+                    reject(err)
                 }
-                reject(err)
             })
         })
     }

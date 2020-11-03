@@ -10,19 +10,17 @@ module.exports = (() => {
         })
     }
 
-    const addTimeEntries = (timeEntries, projectId) => {
+    const addTimeEntries = (params) => {
 
-        timeEntries.map(async t => {
-
+        params.timeEntries.map(async t => {
             if (!this.matchingTimeEntries(t)) {
                 await db.models.timeEntries.create({
                     secods: t.duration,
                     toggl_id: t.id,
                     contribuitor_id: 1,
-                    project_id: projectId,
+                    project_id: params.projectId,
                 })
             }
-
         })
 
     }

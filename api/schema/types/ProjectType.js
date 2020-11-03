@@ -56,6 +56,11 @@ module.exports = gql`
 
         deleteProjectById(id: Int!): String
 
+        syncTogglProject(
+            project_id: Int!,
+            toggl_id: String
+        ): Project
+
         updateProjectById(
             id: Int!,
             updateFields: ProjectInput
