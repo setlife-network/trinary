@@ -6,7 +6,7 @@ const {
 const toggl = module.exports = (() => {
 
     const fetchProjectData = async (params) => {
-        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         return new Promise((resolve, reject) => {
             togglClient.getProjectData(params.projectId, (err, projectData) => {
                 if (projectData) {
@@ -18,9 +18,9 @@ const toggl = module.exports = (() => {
     }
 
     const fetchProjectTimeEntries = (params) => {
-        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         return new Promise((resolve, reject) => {
-            togglClient.getTimeEntries( async (err, timeEntries) => {
+            togglClient.getTimeEntries(async (err, timeEntries) => {
                 let projectTimeEntries = []
                 if (timeEntries) {
                     await timeEntries.map(t => {
@@ -36,7 +36,7 @@ const toggl = module.exports = (() => {
     }
 
     const fetchTimeEntries = (params) => {
-        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         return new Promise((resolve, reject) => {
             togglClient.getTimeEntries((err, timeEntries) => {
                 if (err) {
@@ -47,10 +47,23 @@ const toggl = module.exports = (() => {
         })
     }
 
+    const fetchUserData = (params) => {
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
+        return new Promise((resolve, reject) => {
+            togglClient.getUserData((since = 0), (err, userData) => {
+                if (err) {
+                    reject(err)
+                }
+                resolve(userData)
+            })
+        })
+    }
+
     return {
         fetchProjectData,
         fetchProjectTimeEntries,
-        fetchTimeEntries        
+        fetchTimeEntries,
+        fetchUserData
     }
 
 })();

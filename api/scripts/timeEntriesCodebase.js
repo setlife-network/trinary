@@ -10,20 +10,27 @@ module.exports = (() => {
         })
     }
 
-    const addTimeEntries = (params) => {
+    const matchContributor = (timeEntry) => {
+        return db.models.Contributor.findOne({
+            where: {
+                toggl_id: timeEntry.uid
+            }
+        })
+    }
 
+    const addTimeEntries = (params) => {
         params.timeEntries.map(async t => {
             if (!(await matchingTimeEntries(t))) {
+                const contributor = await matchContributor(t)
                 await db.models.TimeEntry.create({
                     seconds: t.duration,
                     start_time: t.start,
                     toggl_id: t.id,
-                    contributor_id: 1,
+                    contributor_id: contributor.id,
                     project_id: params.projectId,
                 })
             }
         })
-
     }
 
     return {

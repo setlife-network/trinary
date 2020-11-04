@@ -24,8 +24,8 @@ const dataSyncs = module.exports = (() => {
     const syncTogglProject = async (params) => {
         return (
             toggl.fetchProjectTimeEntries({ projectId: params.togglProjectId })
-                .then(timeEntries => {
-                    timeEntriesCodebase.addTimeEntries({
+                .then(async timeEntries => {
+                    await timeEntriesCodebase.addTimeEntries({
                         timeEntries,
                         projectId: params.projectId
                     })

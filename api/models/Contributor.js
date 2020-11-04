@@ -13,6 +13,10 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             allowNull: false,
         },
+        toggl_id: {
+            type: DataTypes.INTEGER,
+            unique: true
+        },
         hourly_rate: {
             type: DataTypes.INTEGER
         },
