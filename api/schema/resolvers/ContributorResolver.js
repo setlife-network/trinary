@@ -11,7 +11,7 @@ module.exports = {
         }
     },
     Mutation: {
-        addTogglContributor: async (root, { contributorId, togglAPIKey }, { models }) => {
+        linkTogglContributor: async (root, { contributorId, togglAPIKey }, { models }) => {
             const togglUser = await toggl.fetchUserData({ apiToken: togglAPIKey })
             const contributor = await models.Contributor.update({
                 toggl_id: togglUser.id

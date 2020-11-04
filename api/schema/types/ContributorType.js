@@ -40,7 +40,7 @@ module.exports = gql`
     }
 
     type Mutation {
-        addTogglContributor(contributorId: Int!, togglAPIKey: String!): Contributor
+        linkTogglContributor(contributorId: Int!, togglAPIKey: String!): Contributor
         createContributor(
             createFields: CreateContributorInput
         ): Contributor
