@@ -4,6 +4,7 @@ module.exports = gql`
 
     type Contributor {
         id: Int!
+        toggl_id: Int
         hourly_rate: Int
         weekly_rate: Int
         monthlyRate: Int
@@ -39,12 +40,11 @@ module.exports = gql`
     }
 
     type Mutation {
+        addTogglContributor(contributorId: Int!, togglAPIKey: String!): Contributor
         createContributor(
             createFields: CreateContributorInput
         ): Contributor
-
         deleteContributorById(id: Int!): String
-
         updateContributorById(
             id: Int!,
             updateFields: UpdateContributorInput

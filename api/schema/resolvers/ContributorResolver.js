@@ -1,3 +1,5 @@
+const toggl = require('../../handlers/toggl')
+
 module.exports = {
 
     Query: {
@@ -9,6 +11,17 @@ module.exports = {
         }
     },
     Mutation: {
+        addTogglContributor: async (root, { contributorId, togglAPIKey }, { models }) => {
+            const togglUser = await toggl.fetchUserData({ apiToken: togglAPIKey })
+            const contributor = await models.Contributor.update({
+                toggl_id: togglUser.id
+            }, {
+                where: {
+                    id: contributorId
+                }
+            })
+            return models.Contributor.findByPk(contributorId)
+        },
         createContributor: (root, { createFields }, { models }) => {
             return models.Contributor.create({
                 ...createFields

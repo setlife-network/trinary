@@ -48,7 +48,7 @@ const toggl = module.exports = (() => {
     }
 
     const fetchUserData = (params) => {
-        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
+        const togglClient = new TogglClient({ apiToken: params.apiToken });
         return new Promise((resolve, reject) => {
             togglClient.getUserData((since = 0), (err, userData) => {
                 if (err) {
