@@ -159,7 +159,7 @@ module.exports = {
             if (!TOGGL.API_KEY) {
                 return new ApolloError('You need to setup a Toggl API KEY on the .env file', 2001)
             }
-            if ((!args.toggl_id && !project.toggl_id) || !TOGGL.API_KEY) {
+            if (!args.toggl_id && !project.toggl_id) {
                 return new ApolloError('You need to provide a toggl project id', 2001)
             } else if (args.toggl_id) {
                 //check if project exists
