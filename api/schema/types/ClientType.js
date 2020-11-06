@@ -6,6 +6,7 @@ module.exports = gql`
         id: Int!
         is_active: Boolean!
         name: String!
+        email: String!
         currency: String!
         payments: [Payment]
         projects: [Project]
@@ -14,6 +15,7 @@ module.exports = gql`
     input ClientInput {
         is_active: Boolean,
         name: String,
+        email: String,
         currency: String,
     }
 
