@@ -42,6 +42,86 @@ module.exports = {
             //the averageHourlyPaid is returned in cents
             return parseInt(totalAllocatedMoney / totalHours, 10)
         },
+        averageIssueCost: async (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
+            const dateCondition = {
+                [Op.between]: [
+                    args.fromDate
+                        ? args.fromDate
+                        : moment.utc(1),
+                    args.toDate
+                        ? args.toDate
+                        : moment.utc()
+                ]
+            }
+            const totalPaidFromClient = await models.Payment.sum(
+                'Payment.amount',
+                {
+                    where: {
+                        date_paid: {
+                            [Op.and]: [
+                                { [Op.ne]: null },
+                                dateCondition
+                            ]
+                        }
+                    },
+                    include: [
+                        {
+                            model: models.Allocation,
+                            where: {
+                                project_id: project.id
+                            }
+                        }
+                    ],
+                }
+            )
+            const totalPaidFromAllocation = await models.Allocation.sum(
+                'amount',
+                {
+                    where: {
+                        project_id: project.id,
+                        date_paid: {
+                            [Op.and]: [
+                                { [Op.ne]: null },
+                                dateCondition
+                            ]
+                        }
+                    }
+                }
+            )
+            const totalIssues = await models.Issue.count(
+                {
+                    where: {
+                        project_id: project.id,
+                        created_at: dateCondition,
+                    }
+                }
+            )
+            if (totalIssues) {
+                return {
+                    fromPayments: (
+                        parseInt(
+                            (totalPaidFromClient
+                                ? totalPaidFromClient
+                                : 0
+                            ) / totalIssues, 10
+                        )),
+                    fromAllocations: (
+                        parseInt(
+                            (totalPaidFromAllocation
+                                ? totalPaidFromAllocation
+                                : 0) / totalIssues, 10
+                        ))
+                }
+            }
+            return {
+                fromPayments: 0,
+                fromAllocations: 0
+            }
+        },
         client: (project, args, { models }) => {
             return models.Client.findByPk(project.client_id)
         },
@@ -75,8 +155,8 @@ module.exports = {
         },
         timeEntries: (project, args, { models }) => {
             validateDatesFormat({
-                from_date: args.fromDate,
-                to_date: args.toDate
+                fromDate: args.fromDate,
+                toDate: args.toDate
             })
             return models.TimeEntry.findAll({
                 where: {
@@ -118,6 +198,10 @@ module.exports = {
             })
         },
         totalPaid: async (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
             const total = await models.Payment.findOne({
                 attributes: [[fn('sum', col('amount')), 'totalPaid']],
                 where: {

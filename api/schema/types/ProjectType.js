@@ -14,6 +14,7 @@ module.exports = gql`
         allocations: [Allocation]
         allocatedPayments: [Payment]
         averageHourlyPaid: Int
+        averageIssueCost(fromDate: String, toDate: String): AverageIssueCost
         client: Client
         contributors: [Contributor]
         githubContributors: [Contributor]
@@ -29,6 +30,11 @@ module.exports = gql`
             contributor_id: Int
         ): TimeSpent
         totalPaid(fromDate: String, toDate: String): Int
+    }
+
+    type AverageIssueCost {
+        fromPayments: Int
+        fromAllocations: Int
     }
 
     type TimeSpent {
