@@ -13,7 +13,7 @@ module.exports = gql`
         client_id: Int!
         allocations: [Allocation]
         allocatedPayments: [Payment]
-        averageHourlyPaid: Int
+        averageHourlyPaid(fromDate: String, toDate: String): Int
         averageIssueCost(fromDate: String, toDate: String): AverageIssueCost
         client: Client
         contributors: [Contributor]

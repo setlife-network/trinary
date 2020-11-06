@@ -23,14 +23,31 @@ module.exports = {
             })
         },
         averageHourlyPaid: async (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
             const totalAllocatedMoney = await models.Allocation.sum(
                 'amount',
                 {
                     where: {
-                        project_id: project.id
+                        project_id: project.id,
+                        date_paid: {
+                            [Op.and]: [
+                                { [Op.ne]: null },
+                                { [Op.between]: [
+                                    args.fromDate
+                                        ? args.fromDate
+                                        : moment.utc(1),
+                                    args.toDate
+                                        ? args.toDate
+                                        : moment.utc()
+                                ] }
+                            ]
+                        }
                     }
                 }
-            )
+            ) || 0
             const totalHours = await models.TimeEntry.sum(
                 'seconds',
                 {
@@ -39,6 +56,7 @@ module.exports = {
                     }
                 }
             ) / 3600
+
             //the averageHourlyPaid is returned in cents
             return parseInt(totalAllocatedMoney / totalHours, 10)
         },
@@ -77,7 +95,7 @@ module.exports = {
                         }
                     ],
                 }
-            )
+            ) || 0
             const totalPaidFromAllocation = await models.Allocation.sum(
                 'amount',
                 {
@@ -91,7 +109,7 @@ module.exports = {
                         }
                     }
                 }
-            )
+            ) || 0
             const totalIssues = await models.Issue.count(
                 {
                     where: {
@@ -99,27 +117,10 @@ module.exports = {
                         created_at: dateCondition,
                     }
                 }
-            )
-            if (totalIssues) {
-                return {
-                    fromPayments: (
-                        parseInt(
-                            (totalPaidFromClient
-                                ? totalPaidFromClient
-                                : 0
-                            ) / totalIssues, 10
-                        )),
-                    fromAllocations: (
-                        parseInt(
-                            (totalPaidFromAllocation
-                                ? totalPaidFromAllocation
-                                : 0) / totalIssues, 10
-                        ))
-                }
-            }
+            ) || 0
             return {
-                fromPayments: 0,
-                fromAllocations: 0
+                fromPayments: parseInt( totalPaidFromClient / totalIssues, 10),
+                fromAllocations: parseInt(totalPaidFromAllocation / totalIssues, 10)
             }
         },
         client: (project, args, { models }) => {
