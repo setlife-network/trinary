@@ -13,6 +13,7 @@ module.exports = gql`
         client_id: Int!
         allocations: [Allocation]
         allocatedPayments: [Payment]
+        averageHourlyPaid: Int
         client: Client
         contributors: [Contributor]
         githubContributors: [Contributor]

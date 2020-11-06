@@ -22,6 +22,26 @@ module.exports = {
                 ]
             })
         },
+        averageHourlyPaid: async (project, args, { models }) => {
+            const totalAllocatedMoney = await models.Allocation.sum(
+                'amount',
+                {
+                    where: {
+                        project_id: project.id
+                    }
+                }
+            )
+            const totalHours = await models.TimeEntry.sum(
+                'seconds',
+                {
+                    where: {
+                        project_id: project.id
+                    }
+                }
+            ) / 3600
+            //the averageHourlyPaid is returned in cents
+            return parseInt(totalAllocatedMoney / totalHours, 10)
+        },
         client: (project, args, { models }) => {
             return models.Client.findByPk(project.client_id)
         },
