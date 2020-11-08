@@ -2,7 +2,7 @@ const db = require('../models')
 
 module.exports = (() => {
 
-    const matchingTimeEntries = async (timeEntry) => {
+    const matchTimeEntry = async (timeEntry) => {
         return db.models.TimeEntry.findOne({
             where: {
                 toggl_id: timeEntry.id
@@ -19,8 +19,8 @@ module.exports = (() => {
     }
 
     const addTimeEntries = (params) => {
-        params.timeEntries.map(async t => {
-            if (!(await matchingTimeEntries(t))) {
+        return Promise.all(params.timeEntries.map(async t => {
+            if (!(await matchTimeEntry(t))) {
                 const contributor = await matchContributor(t)
                 await db.models.TimeEntry.create({
                     seconds: t.duration,
@@ -30,7 +30,7 @@ module.exports = (() => {
                     project_id: params.projectId,
                 })
             }
-        })
+        }))
     }
 
     return {
