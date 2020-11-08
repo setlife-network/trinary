@@ -1,7 +1,7 @@
 const moment = require('moment')
 const { col, fn, Op } = require('sequelize');
-const sequelize = require('sequelize');
 const { ApolloError } = require('apollo-server')
+const { split } = require('lodash')
 
 const { TOGGL } = require('../../config/credentials');
 const { validateDatesFormat } = require('../helpers/inputValidation')
@@ -95,7 +95,7 @@ module.exports = {
 
             return models.TimeEntry.findOne({
                 // The sum gets returned with the property name "seconds"
-                attributes: [[fn('sum', sequelize.col('seconds')), 'seconds']],
+                attributes: [[fn('sum', col('seconds')), 'seconds']],
                 where: whereConditions
             })
         },
@@ -146,7 +146,11 @@ module.exports = {
             validateDatesFormat({
                 date: createFields['date']
             })
+            //get toggleId from togglUrl
+            const togglArray = split(createFields.toggl_url, '/')
+            const togglId = togglArray[togglArray.length - 1]
             return models.Project.create({
+                toggl_id: togglId,
                 ...createFields
             })
         },
@@ -183,8 +187,6 @@ module.exports = {
                 togglProjectId: project.toggl_id,
                 projectId: project.id
             })
-            console.log('dataSync');
-            console.log(dataSync);
             if (dataSync == 'Success') {
                 return project
             } else {
