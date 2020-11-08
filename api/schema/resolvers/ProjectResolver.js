@@ -153,7 +153,6 @@ module.exports = {
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
         },
-
         syncTogglProject: async (root, args, { models }) => {
             let project = await models.Project.findByPk(args.project_id)
             if (!TOGGL.API_KEY) {
@@ -184,7 +183,8 @@ module.exports = {
                 togglProjectId: project.toggl_id,
                 projectId: project.id
             })
-
+            console.log('dataSync');
+            console.log(dataSync);
             if (dataSync == 'Success') {
                 return project
             } else {
