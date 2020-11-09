@@ -3,21 +3,21 @@ const { DataTypes } = require('sequelize')
 
 module.exports = (sequelize) => {
 
-    class Issue extends Sequelize.Model {}
+    class Permission extends Sequelize.Model {}
 
-    Issue.init({
-        // Model attributes are defined here
-        id: {
+    Permission.init({
+        type: {
+            type: DataTypes.STRING
+        },
+        contributor_id: { //FK
             type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
             allowNull: false,
+            references: {
+                model: 'Contributors',
+                key: 'id',
+            }
         },
-        github_url: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        project_id: { //FK
+        project_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
@@ -29,11 +29,11 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'Issue',
+        modelName: 'Permission',
         createdAt: 'created_at',
         updatedAt: 'updated_at'
-    });
+    })
 
-    return Issue
+    return Permission
 
 }
