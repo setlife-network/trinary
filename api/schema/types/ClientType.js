@@ -10,6 +10,10 @@ module.exports = gql`
         currency: String!
         payments: [Payment]
         projects: [Project]
+        totalPaid(
+            fromDate: String
+            toDate: String
+        ): String
     }
 
     input ClientInput {

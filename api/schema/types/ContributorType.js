@@ -11,6 +11,7 @@ module.exports = gql`
         external_data_url: String
         github_id: String!
         github_handle: String!
+        timeEntries: [TimeEntry]
     }
 
     input CreateContributorInput {
