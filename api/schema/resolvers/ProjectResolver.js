@@ -18,11 +18,112 @@ module.exports = {
                     {
                         model: models.Allocation,
                         where: {
-                            'project_id': project.id
+                            project_id: project.id
                         }
                     }
                 ]
             })
+        },
+        averageHourlyPaid: async (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
+            const totalAllocatedMoney = await models.Allocation.sum(
+                'amount',
+                {
+                    where: {
+                        project_id: project.id,
+                        date_paid: {
+                            [Op.and]: [
+                                { [Op.ne]: null },
+                                { [Op.between]: [
+                                    args.fromDate
+                                        ? args.fromDate
+                                        : moment.utc(1),
+                                    args.toDate
+                                        ? args.toDate
+                                        : moment.utc()
+                                ] }
+                            ]
+                        }
+                    }
+                }
+            ) || 0
+            const totalHours = await models.TimeEntry.sum(
+                'seconds',
+                {
+                    where: {
+                        project_id: project.id
+                    }
+                }
+            ) / 3600
+
+            //the averageHourlyPaid is returned in cents
+            return parseInt(totalAllocatedMoney / totalHours, 10)
+        },
+        averageIssueCost: async (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
+            const dateCondition = {
+                [Op.between]: [
+                    args.fromDate
+                        ? args.fromDate
+                        : moment.utc(1),
+                    args.toDate
+                        ? args.toDate
+                        : moment.utc()
+                ]
+            }
+            const totalPaidFromClient = await models.Payment.sum(
+                'Payment.amount',
+                {
+                    where: {
+                        date_paid: {
+                            [Op.and]: [
+                                { [Op.ne]: null },
+                                dateCondition
+                            ]
+                        }
+                    },
+                    include: [
+                        {
+                            model: models.Allocation,
+                            where: {
+                                project_id: project.id
+                            }
+                        }
+                    ],
+                }
+            ) || 0
+            const totalPaidFromAllocation = await models.Allocation.sum(
+                'amount',
+                {
+                    where: {
+                        project_id: project.id,
+                        date_paid: {
+                            [Op.and]: [
+                                { [Op.ne]: null },
+                                dateCondition
+                            ]
+                        }
+                    }
+                }
+            ) || 0
+            const totalIssues = await models.Issue.count(
+                {
+                    where: {
+                        project_id: project.id,
+                        created_at: dateCondition,
+                    }
+                }
+            ) || 0
+            return {
+                fromPayments: parseInt( totalPaidFromClient / totalIssues, 10),
+                fromAllocations: parseInt(totalPaidFromAllocation / totalIssues, 10)
+            }
         },
         client: (project, args, { models }) => {
             return models.Client.findByPk(project.client_id)
@@ -33,7 +134,7 @@ module.exports = {
                     {
                         model: models.Allocation,
                         where: {
-                            'project_id': project.id
+                            project_id: project.id
                         }
                     }
                 ]
@@ -41,12 +142,12 @@ module.exports = {
         },
         githubContributors: (project, args, { models }) => {
             return models.Contributor.findAll({
-                where: { 'github_id': { [Op.ne]: null } },
+                where: { github_id: { [Op.ne]: null } },
                 include: [
                     {
                         model: models.Allocation,
                         where: {
-                            'project_id': project.id
+                            project_id: project.id
                         }
                     }
                 ]
@@ -116,20 +217,22 @@ module.exports = {
         },
         timeEntries: (project, args, { models }) => {
             validateDatesFormat({
-                from_date: args.fromDate,
-                to_date: args.toDate
+                fromDate: args.fromDate,
+                toDate: args.toDate
             })
             return models.TimeEntry.findAll({
                 where: {
                     project_id: project.id,
-                    start_time: { [Op.between]: [
-                        args.fromDate
-                            ? args.fromDate
-                            : moment.utc(1),
-                        args.toDate
-                            ? args.toDate
-                            : moment.utc()
-                    ] },
+                    start_time: {
+                        [Op.between]: [
+                            args.fromDate
+                                ? args.fromDate
+                                : moment.utc(1),
+                            args.toDate
+                                ? args.toDate
+                                : moment.utc()
+                        ]
+                    },
                     contributor_id: args.contributor_id
                         ? args.contributor_id
                         : { [Op.ne]: null }
@@ -163,8 +266,8 @@ module.exports = {
                 toDate: args.toDate
             })
             const whereConditions = {
-                'project_id': project.id,
-                'start_time': { [Op.between]: [args.fromDate, args.toDate] }
+                project_id: project.id,
+                start_time: { [Op.between]: [args.fromDate, args.toDate] }
             }
             if (args.contributor_id) {
                 whereConditions.contributor_id = args.contributor_id
@@ -177,10 +280,14 @@ module.exports = {
             })
         },
         totalPaid: async (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
             const total = await models.Payment.findOne({
                 attributes: [[fn('sum', col('amount')), 'totalPaid']],
                 where: {
-                    'date_paid': {
+                    date_paid: {
                         [Op.and]: [
                             { [Op.ne]: null },
                             {
@@ -200,7 +307,7 @@ module.exports = {
                     {
                         model: models.Allocation,
                         where: {
-                            'project_id': project.id
+                            project_id: project.id
                         }
                     }
                 ],
