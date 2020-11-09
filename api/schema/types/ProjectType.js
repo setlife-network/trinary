@@ -18,6 +18,14 @@ module.exports = gql`
         githubContributors: [Contributor]
         issuesOpened(fromDate: String, toDate: String): Int
         issues: [Issue]
+        githubIssuesOpened(
+            fromDate: String,
+            toDate:String
+        ): Int
+        githubIssuesClosed(
+            fromDate: String,
+            toDate:String
+        ): Int
         timeEntries(
             fromDate: String
             toDate: String
