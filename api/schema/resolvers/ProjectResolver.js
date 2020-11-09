@@ -136,12 +136,32 @@ module.exports = {
                 }
             })
         },
+        issuesOpened: (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
+            return models.Issue.count({
+                where: {
+                    'project_id': project.id,
+                    'created_at': {
+                        [Op.between]: [
+                            args.fromDate
+                                ? args.fromDate
+                                : moment.utc(1),
+                            args.toDate
+                                ? args.toDate
+                                : moment.utc()
+                        ]
+                    }
+                }
+            })
+        },
         timeSpent: (project, args, { models }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,
                 toDate: args.toDate
             })
-
             const whereConditions = {
                 'project_id': project.id,
                 'start_time': { [Op.between]: [args.fromDate, args.toDate] }

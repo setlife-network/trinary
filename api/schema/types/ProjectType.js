@@ -16,6 +16,7 @@ module.exports = gql`
         client: Client
         contributors: [Contributor]
         githubContributors: [Contributor]
+        issuesOpened(fromDate: String, toDate: String): Int
         issues: [Issue]
         githubIssuesOpened(
             fromDate: String,
