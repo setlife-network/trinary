@@ -8,6 +8,7 @@ module.exports = {
         S3_BUCKET_URL: process.env.AWS_S3_BUCKET_URL,
     },
     GITHUB: {
+        OWNER: `${process.env.GITHUB_OWNER}`,
         CLIENT_ID: process.env.GITHUB_CLIENT_ID,
         CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
     },
