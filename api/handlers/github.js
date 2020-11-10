@@ -71,9 +71,10 @@ const github = module.exports = (() => {
         const octokit = await new Octokit({
             auth: params.auth_key,
         });
-        const result = await octokit.repos.listCollaborators({
+        const result = await octokit.repos.getCollaboratorPermissionLevel({
             owner: params.owner,
             repo: params.repo,
+            username: params.username
         });
         if (result.status == 200) {
             const permission = result.data

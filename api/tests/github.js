@@ -19,10 +19,11 @@ const userPermission = github.fetchUserPermission({
     auth_key: GITHUB.CLIENT_SECRET,
     owner: 'setlife-network',
     repo: 'project-trinary',
+    username: 'otech47'
 })
     .then(res => {
         console.log('res');
-        console.log(res.permissions);
+        console.log(res);
 
     })
     .catch(err => {
