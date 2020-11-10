@@ -1,7 +1,7 @@
 const amazon = require('../handlers/amazon')
 const toggl = require('../handlers/toggl')
 const invoicelyCodebase = require('../scripts/invoicelyCodebase')
-const timeEntriesCodebase = require('../scripts/timeEntriesCodebase')
+const timeEntriesCodebase = require('../scripts/timeLogging')
 const { INVOICELY_CSV_PATH } = require('../config/constants')
 
 const dataSyncs = module.exports = (() => {
