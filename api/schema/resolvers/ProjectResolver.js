@@ -338,8 +338,8 @@ module.exports = {
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
         },
-        syncProjectPermissions: async (root, { id }, { models }) => {
-            const project = await models.Project.findByPk(id)
+        syncProjectPermissions: async (root, { project_id }, { models }) => {
+            const project = await models.Project.findByPk(project_id)
             const projectContributors = await models.Contributor.findAll({
                 raw: true,
                 include: [
@@ -352,7 +352,7 @@ module.exports = {
                 ]
             })
             return dataSyncs.syncProjectCollaboratorsPermission({
-                project_id: id,
+                project_id: project_id,
                 github_url: project.github_url,
                 contributors: projectContributors
             })

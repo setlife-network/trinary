@@ -73,7 +73,7 @@ module.exports = gql`
 
         deleteProjectById(id: Int!): String
 
-        syncProjectPermissions(id: Int!):[Permission]
+        syncProjectPermissions(project_id: Int!):[Permission]
 
         updateProjectById(
             id: Int!,
