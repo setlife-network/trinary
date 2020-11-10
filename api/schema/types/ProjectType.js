@@ -17,6 +17,7 @@ module.exports = gql`
         contributors: [Contributor]
         githubContributors: [Contributor]
         issues: [Issue]
+        permissions: [Permission]
         timeEntries(
             fromDate: String
             toDate: String
@@ -55,6 +56,8 @@ module.exports = gql`
         ): Project
 
         deleteProjectById(id: Int!): String
+
+        syncProjectPermissions(id: Int!):[Permission]
 
         updateProjectById(
             id: Int!,

@@ -23,7 +23,7 @@ const dataSyncs = module.exports = (() => {
         )
     }
 
-    const syncProjectCollaboratorPermission = async (params) => {
+    const syncProjectCollaboratorsPermission = async (params) => {
         /*
         params = {
             project_id: id,
@@ -56,6 +56,7 @@ const dataSyncs = module.exports = (() => {
     }
 
     return {
-        syncInvoicelyCSV
+        syncInvoicelyCSV,
+        syncProjectCollaboratorsPermission
     }
 })()

@@ -3,6 +3,7 @@ const { col, fn, Op } = require('sequelize');
 const sequelize = require('sequelize');
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
+const { dataSyncs } = require('../../modules')
 
 module.exports = {
 
@@ -148,6 +149,49 @@ module.exports = {
         },
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
+        },
+        syncProjectPermissions: async (root, { id }, { models }) => {
+            const project = await models.Project.findByPk(id)
+            const projectContributors = models.Contributor.findAll({
+                include: [
+                    {
+                        model: models.Allocation,
+                        where: {
+                            project_id: project.id
+                        }
+                    }
+                ]
+            })
+            console.log('projectContributors');
+            console.log(projectContributors);
+
+            /*
+            params = {
+                project_id: id,
+                github_url: https://github.com/setlife-network/project-trinary,
+                contributors = [{
+                    id,
+                    name
+                }]
+            }
+            */
+
+            const params = {
+                project_id: id,
+                github_url: project.github_url,
+                contributors: projectContributors
+            }
+            console.log('params');
+            console.log(params);
+            const permissions = await dataSyncs.syncProjectCollaboratorsPermission(params)
+            console.log('permissions');
+            console.log(permissions);
+            return models.Permission.findAll({
+                where: {
+                    project_id: id
+                }
+            })
+
         },
         updateProjectById: async (root, { id, updateFields }, { models }) => {
             validateDatesFormat({
