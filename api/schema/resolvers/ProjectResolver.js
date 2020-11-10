@@ -183,8 +183,6 @@ module.exports = {
                 togglProjectId: project.toggl_id,
                 projectId: project.id
             })
-            console.log('dataSync');
-            console.log(dataSync);
             if (dataSync == 'Success') {
                 return project
             } else {
