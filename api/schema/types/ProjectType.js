@@ -14,10 +14,21 @@ module.exports = gql`
         toggl_id: String
         allocations: [Allocation]
         allocatedPayments: [Payment]
+        averageHourlyPaid(fromDate: String, toDate: String): Int
+        averageIssueCost(fromDate: String, toDate: String): AverageIssueCost
         client: Client
         contributors: [Contributor]
         githubContributors: [Contributor]
+        issuesOpened(fromDate: String, toDate: String): Int
         issues: [Issue]
+        githubIssuesOpened(
+            fromDate: String,
+            toDate:String
+        ): Int
+        githubIssuesClosed(
+            fromDate: String,
+            toDate:String
+        ): Int
         timeEntries(
             fromDate: String
             toDate: String
@@ -29,6 +40,11 @@ module.exports = gql`
             contributor_id: Int
         ): TimeSpent
         totalPaid(fromDate: String, toDate: String): Int
+    }
+
+    type AverageIssueCost {
+        fromPayments: Int
+        fromAllocations: Int
     }
 
     type TimeSpent {

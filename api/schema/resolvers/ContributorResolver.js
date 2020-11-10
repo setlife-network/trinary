@@ -1,5 +1,13 @@
 module.exports = {
-
+    Contributor: {
+        timeEntries: (contributor, args, { models }) => {
+            return models.TimeEntry.findAll({
+                where: {
+                    'contributor_id': contributor.id
+                }
+            })
+        }
+    },
     Query: {
         getContributorById: (root, { id }, { models }) => {
             return models.Contributor.findByPk(id)
