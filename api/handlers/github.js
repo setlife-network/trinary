@@ -53,12 +53,9 @@ const github = module.exports = (() => {
         const octokit = new Octokit({
             auth: params.auth_key,
         });
-
         const result = await octokit.users.getAuthenticated({})
-
         if (result.status == 200) {
             const { html_url, id, name, email } = result.data
-
             return {
                 id,
                 name,
@@ -70,10 +67,29 @@ const github = module.exports = (() => {
         }
     }
 
+    const fetchUserPermission = (params) => {
+        const octokit = new Octokit({
+            auth: params.auth_key,
+        });
+        const permission = octokit.projects.getPermissionForUser({
+            project_id: params.project_id,
+            username: params.github_user,
+        });
+        if (permission.status == 200) {
+            const { permission } = permission.data
+            return {
+                permission
+            }
+        } else {
+            throw new Error('An error occurred' + result.status)
+        }
+    }
+
     return {
         fetchUserData,
         fetchRepos,
         fetchRepoIssues,
-        fetchAccessToken
+        fetchAccessToken,
+        fetchUserPermission
     }
 })()
