@@ -24,35 +24,50 @@ const dataSyncs = module.exports = (() => {
     }
 
     const syncProjectCollaboratorsPermission = async (params) => {
-        /*
-        params = {
-            project_id: id,
-            github_url: https://github.com/setlife-network/project-trinary,
-            contributors = [{
-                id,
-                name
-            }]
-        }
-        */
+        const syncedPermissions = []
         await Promise.all(
-            params.contributos.map(async c => {
+            params.contributors.map(async c => {
                 const urlInfo = params.github_url.split('/')
                 const owner = urlInfo[urlInfo.length - 2]
                 const repo = urlInfo[urlInfo.length - 1]
-                const userPermission = await github.fetchUserPermission({
+                const dbContributorPermission = await db.models.Permission.findOne({
+                    raw: true,
+                    where: {
+                        project_id: params.project_id,
+                        contributor_id: c.id
+                    }
+                })
+                const githubContributorPermission = await github.fetchUserPermission({
                     auth_key: GITHUB.CLIENT_SECRET,
                     owner,
                     repo,
-                    username: c.name
+                    username: c.github_handle
                 })
-                db.models.Permission.create({
-                    type: userPermission.permission,
-                    contributor_id: c.id,
-                    project_id: params.project_id
-                })
-
+                //if the permission it's not already stored save it into the db
+                //if is stored and the permission value it's not the same update it
+                //if not don't do anything
+                if (!dbContributorPermission) {
+                    return syncedPermissions.push(
+                        db.models.Permission.create({
+                            type: githubContributorPermission,
+                            contributor_id: c.id,
+                            project_id: params.project_id
+                        })
+                    )
+                } else if (dbContributorPermission.type != githubContributorPermission) {
+                    syncedPermissions.push(dbContributorPermission)
+                    return db.models.Permission.update({
+                        type: githubContributorPermission,
+                    }, {
+                        where: {
+                            contributor_id: c.id,
+                            project_id: params.project_id
+                        }
+                    })
+                }
             })
         )
+        return syncedPermissions
     }
 
     return {

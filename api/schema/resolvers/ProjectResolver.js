@@ -152,7 +152,8 @@ module.exports = {
         },
         syncProjectPermissions: async (root, { id }, { models }) => {
             const project = await models.Project.findByPk(id)
-            const projectContributors = models.Contributor.findAll({
+            const projectContributors = await models.Contributor.findAll({
+                raw: true,
                 include: [
                     {
                         model: models.Allocation,
@@ -162,36 +163,11 @@ module.exports = {
                     }
                 ]
             })
-            console.log('projectContributors');
-            console.log(projectContributors);
-
-            /*
-            params = {
-                project_id: id,
-                github_url: https://github.com/setlife-network/project-trinary,
-                contributors = [{
-                    id,
-                    name
-                }]
-            }
-            */
-
-            const params = {
+            return dataSyncs.syncProjectCollaboratorsPermission({
                 project_id: id,
                 github_url: project.github_url,
                 contributors: projectContributors
-            }
-            console.log('params');
-            console.log(params);
-            const permissions = await dataSyncs.syncProjectCollaboratorsPermission(params)
-            console.log('permissions');
-            console.log(permissions);
-            return models.Permission.findAll({
-                where: {
-                    project_id: id
-                }
             })
-
         },
         updateProjectById: async (root, { id, updateFields }, { models }) => {
             validateDatesFormat({
