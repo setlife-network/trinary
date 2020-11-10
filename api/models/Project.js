@@ -21,6 +21,9 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        toggl_id: {
+            type: DataTypes.STRING
+        },
         name: {
             type: DataTypes.STRING,
             allowNull: false
