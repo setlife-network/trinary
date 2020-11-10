@@ -67,21 +67,21 @@ const github = module.exports = (() => {
         }
     }
 
-    const fetchUserPermission = (params) => {
-        const octokit = new Octokit({
+    const fetchUserPermission = async (params) => {
+        const octokit = await new Octokit({
             auth: params.auth_key,
         });
-        const permission = octokit.projects.getPermissionForUser({
-            project_id: params.project_id,
-            username: params.github_user,
+        const result = await octokit.repos.listCollaborators({
+            owner: params.owner,
+            repo: params.repo,
         });
-        if (permission.status == 200) {
-            const { permission } = permission.data
+        if (result.status == 200) {
+            const permission = result.data
             return {
                 permission
             }
         } else {
-            throw new Error('An error occurred' + result.status)
+            throw new Error('An error occurred ' + permission.status)
         }
     }
 
