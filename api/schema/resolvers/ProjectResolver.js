@@ -1,14 +1,14 @@
 const moment = require('moment')
 const sequelize = require('sequelize');
+const { ApolloError } = require('apollo-server')
 const { col, fn, Op } = require('sequelize');
 const { split } = require('lodash')
-const { ApolloError } = require('apollo-server')
 
+const { TOGGL } = require('../../config/credentials');
 const github = require('../../handlers/github')
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules');
 const toggl = require('../../handlers/toggl')
-const { TOGGL } = require('../../config/credentials');
 
 module.exports = {
 

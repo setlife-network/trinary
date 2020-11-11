@@ -11,6 +11,7 @@ module.exports = gql`
         toggl_url: String
         date: String!
         client_id: Int!
+        toggl_id: String
         allocations: [Allocation]
         allocatedPayments: [Payment]
         averageHourlyPaid(fromDate: String, toDate: String): Int
@@ -50,13 +51,24 @@ module.exports = gql`
         seconds: Int
     }
 
-    input ProjectInput {
+    input CreateProjectInput {
         expected_budget: Int
         is_active: Boolean
         name: String
         github_url: String
         toggl_url: String
         client_id: Int
+        date: String
+    }
+
+    input UpdateProjectInput {
+        expected_budget: Int
+        is_active: Boolean
+        name: String
+        github_url: String
+        toggl_url: String
+        client_id: Int
+        toggl_id: String
         date: String
     }
 
@@ -67,19 +79,19 @@ module.exports = gql`
 
     type Mutation {
         createProject(
-            createFields: ProjectInput!,
+            createFields: CreateProjectInput!
         ): Project
 
         deleteProjectById(id: Int!): String
 
         syncTogglProject(
             project_id: Int!,
-            toggl_id: Int
+            toggl_id: String
         ): Project
 
         updateProjectById(
             id: Int!,
-            updateFields: ProjectInput
+            updateFields: UpdateProjectInput
         ): Project
     }
 
