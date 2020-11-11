@@ -1,10 +1,53 @@
+const { split } = require('lodash')
+
 const amazon = require('../handlers/amazon')
+const github = require('../handlers/github')
 const toggl = require('../handlers/toggl')
 const invoicelyCodebase = require('../scripts/invoicelyCodebase')
 const timeLogging = require('../scripts/timeLogging')
 const { INVOICELY_CSV_PATH } = require('../config/constants')
+const db = require('../models')
 
 const dataSyncs = module.exports = (() => {
+
+    const matchIssue = async (issue) => {
+        return db.models.Issue.findOne({
+            where: {
+                github_url: issue.url
+            }
+        })
+    }
+
+    const syncGithubIssues = async (params) => {
+        const newIssues = []
+        /*
+        params = {
+            github_url: '',
+            project_id: int
+        }
+        */
+        const githubUrlSplitted = split(params.github_url, '/');
+        const issues = await github.fetchRepoIssues({
+            repo: githubUrlSplitted[githubUrlSplitted.length - 1]
+        })
+
+        await Promise.all(
+            issues.map(async i => {
+                if (!(await matchIssue(i))) {
+                    await db.models.Issue.create({
+                        github_url: i.url,
+                        date_opened: i.created_at,
+                        date_closed: i.closed_at,
+                        project_id: params.project_id
+                    })
+                        .then((res) => {
+                            newIssues.push(res.get({ plain: true }))
+                        })
+                }
+            })
+        )
+        return newIssues
+    }
 
     const syncInvoicelyCSV = async () => {
         const invoiceFile = INVOICELY_CSV_PATH
@@ -34,6 +77,7 @@ const dataSyncs = module.exports = (() => {
     }
 
     return {
+        syncGithubIssues,
         syncInvoicelyCSV,
         syncTogglProject
     }
