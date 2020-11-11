@@ -4,8 +4,10 @@ module.exports = gql`
 
     type Issue {
         id: Int!
-        project_id: Int!
         github_url: String!
+        date_opened: String
+        date_closed: String
+        project_id: Int!
         project: Project!
     }
 
