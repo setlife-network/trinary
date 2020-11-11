@@ -1,11 +1,15 @@
 const moment = require('moment')
 const sequelize = require('sequelize');
+const { ApolloError } = require('apollo-server')
 const { col, fn, Op } = require('sequelize');
 const { split } = require('lodash')
 
+const { TOGGL } = require('../../config/credentials');
 const github = require('../../handlers/github')
+const toggl = require('../../handlers/toggl')
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const { dataSyncs } = require('../../modules')
+const apiModules = require('../../modules');
 
 module.exports = {
 
@@ -363,6 +367,43 @@ module.exports = {
                 contributors: projectContributors
             })
         },
+        syncTogglProject: async (root, args, { models }) => {
+            let project = await models.Project.findByPk(args.project_id)
+            if (!TOGGL.API_KEY) {
+                return new ApolloError('You need to setup a Toggl API KEY on the .env file', 2001)
+            }
+            if (!args.toggl_id && !project.toggl_id) {
+                return new ApolloError('You need to provide a toggl project id', 2001)
+            } else if (args.toggl_id) {
+                //check if project exists
+                try {
+                    await toggl.fetchProjectData({ projectId: args.toggl_id })
+                } catch (err) {
+                    return new ApolloError(`That toggl_id project doesen't exists`, 2002)
+                }
+                //update toggl_id
+                await models.Project.update({
+                    toggl_id: args.toggl_id
+                }, {
+                    where: {
+                        id: args.project_id
+                    }
+                });
+                //get updated project
+                project = await models.Project.findByPk(args.project_id)
+            }
+
+            const dataSync = await apiModules.dataSyncs.syncTogglProject({
+                togglProjectId: project.toggl_id,
+                projectId: project.id
+            })
+            if (dataSync == 'Success') {
+                return project
+            } else {
+                return new ApolloError('Something wrong happened', 2003)
+            }
+        },
+
         updateProjectById: async (root, { id, updateFields }, { models }) => {
             validateDatesFormat({
                 date: updateFields['date']

@@ -1,8 +1,9 @@
 const amazon = require('../handlers/amazon')
 const github = require('../handlers/github')
-
+const toggl = require('../handlers/toggl')
 const db = require('../models')
 const invoicelyCodebase = require('../scripts/invoicelyCodebase')
+const timeLogging = require('../scripts/timeLogging')
 const { INVOICELY_CSV_PATH } = require('../config/constants')
 const { GITHUB } = require('../config/credentials')
 
@@ -70,8 +71,21 @@ const dataSyncs = module.exports = (() => {
         return syncedPermissions
     }
 
+    const syncTogglProject = async (params) => {
+        const timeEntries = await toggl.fetchProjectTimeEntries({ projectId: params.togglProjectId })
+        const addedTimeEntries = await timeLogging.addTimeEntries({
+            timeEntries,
+            projectId: params.projectId
+        })
+        if (addedTimeEntries == undefined) {
+            throw new Error('Something went wrong')
+        }
+        return 'Success'
+    }
+
     return {
         syncInvoicelyCSV,
-        syncProjectCollaboratorsPermission
+        syncProjectCollaboratorsPermission,
+        syncTogglProject
     }
 })()
