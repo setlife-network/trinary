@@ -1,9 +1,16 @@
 module.exports = {
     Contributor: {
+        permissions: (contributor, args, { models }) => {
+            return models.Permission.findAll({
+                where: {
+                    contributor_id: contributor.id
+                }
+            })
+        },
         timeEntries: (contributor, args, { models }) => {
             return models.TimeEntry.findAll({
                 where: {
-                    'contributor_id': contributor.id
+                    contributor_id: contributor.id
                 }
             })
         }

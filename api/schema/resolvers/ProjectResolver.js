@@ -157,7 +157,13 @@ module.exports = {
         issues: (project, args, { models }) => {
             return models.Issue.findAll({ where: { project_id: project.id } })
         },
-
+        permissions: (project, args, { models }) => {
+            return models.Permission.findAll({
+                where: {
+                    project_id: project.id
+                }
+            })
+        },
         githubIssuesOpened: async (project, args, { models }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,
