@@ -41,6 +41,9 @@ module.exports = (sequelize) => {
             type: DataTypes.DATE,
             allowNull: false
         },
+        date_last_synced: {
+            type: DataTypes.DATE,
+        },
         client_id: { //FK
             type: DataTypes.INTEGER(11),
             allowNull: false,
