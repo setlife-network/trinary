@@ -81,7 +81,6 @@ const toggl = module.exports = (() => {
     return {
         fetchProjectData,
         fetchProjectTimeEntries,
-        fetchTimeEntries,
         fetchWorkspacesData,
         fetchWorkspacesProject,
         fetchWorkspaceTimeEntries
