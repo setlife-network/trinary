@@ -6,9 +6,10 @@ const { split } = require('lodash')
 
 const { TOGGL } = require('../../config/credentials');
 const github = require('../../handlers/github')
-const { validateDatesFormat } = require('../helpers/inputValidation')
-const apiModules = require('../../modules');
 const toggl = require('../../handlers/toggl')
+const { validateDatesFormat } = require('../helpers/inputValidation')
+const { dataSyncs } = require('../../modules')
+const apiModules = require('../../modules');
 
 module.exports = {
 
@@ -160,7 +161,13 @@ module.exports = {
         issues: (project, args, { models }) => {
             return models.Issue.findAll({ where: { project_id: project.id } })
         },
-
+        permissions: (project, args, { models }) => {
+            return models.Permission.findAll({
+                where: {
+                    project_id: project.id
+                }
+            })
+        },
         githubIssuesOpened: async (project, args, { models }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,
@@ -344,6 +351,25 @@ module.exports = {
         },
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
+        },
+        syncProjectPermissions: async (root, { project_id }, { models }) => {
+            const project = await models.Project.findByPk(project_id)
+            const projectContributors = await models.Contributor.findAll({
+                raw: true,
+                include: [
+                    {
+                        model: models.Allocation,
+                        where: {
+                            project_id: project.id
+                        }
+                    }
+                ]
+            })
+            return dataSyncs.syncProjectCollaboratorsPermission({
+                project_id: project_id,
+                github_url: project.github_url,
+                contributors: projectContributors
+            })
         },
         syncTogglProject: async (root, args, { models }) => {
             let project = await models.Project.findByPk(args.project_id)
