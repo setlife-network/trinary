@@ -16,7 +16,7 @@ const toggl = module.exports = (() => {
             })
         })
     }
-
+    //use fetchWorkspaceTimeEntries instead
     const fetchProjectTimeEntries = (params) => {
         const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         return new Promise((resolve, reject) => {
@@ -31,18 +31,6 @@ const toggl = module.exports = (() => {
                     resolve(projectTimeEntries)
                 }
                 reject(err)
-            })
-        })
-    }
-
-    const fetchTimeEntries = (params) => {
-        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
-        return new Promise((resolve, reject) => {
-            togglClient.getTimeEntries((err, timeEntries) => {
-                if (err) {
-                    reject(err)
-                }
-                resolve(timeEntries)
             })
         })
     }

@@ -16,14 +16,7 @@ console.log('toggl.createTimeEntry()');
 //     return toggl.fetchProjectData({ projectId:  })
 // }
 // const projectData = await toggl.fetchProjectData({ projectId:  })
-//
-// const timeEntries = toggl.fetchTimeEntries({ accessToken: TOGGL.API_KEY })
-//     .then(res => {
-//         console.log(res);
-//     })
-//     .catch(err => {
-//         new Error(err)
-//     })
+
 //
 // const ptojectData = toggl.fetchProjectData({ projectId:  })
 //     .then(res => {
