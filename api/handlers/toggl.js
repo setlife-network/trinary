@@ -47,10 +47,43 @@ const toggl = module.exports = (() => {
         })
     }
 
+    const fetchWorkspacesData = (params) => {
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
+        return new Promise((resolve, reject) => {
+            togglClient.getWorkspaceData(params.wId, (err, workspaces) => {
+                if (err) {
+                    reject(err)
+                }
+                resolve(workspaces)
+            })
+        })
+    }
+
+    const fetchWorkspaceReport = (params) => {
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
+        const opts = {
+            user_agent: '',
+            workspace_id: params.wId,
+            project_ids: params.pId,
+            since: params.since,
+            until: params.until
+        }
+        return new Promise( (resolve, reject) => {
+            togglClient.detailedReport(opts, (err, report) => {
+                if (err) {
+                    reject(err)
+                }
+                resolve(report.data)
+            })
+        })
+    }
+
     return {
         fetchProjectData,
         fetchProjectTimeEntries,
-        fetchTimeEntries        
+        fetchTimeEntries,
+        fetchWorkspacesData,
+        fetchWorkspaceReport
     }
 
 })();
