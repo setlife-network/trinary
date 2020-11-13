@@ -8,6 +8,7 @@ const ContributorResolver = require('./resolvers/ContributorResolver')
 const IssueResolver = require('./resolvers/IssueResolver')
 const PaymentResolver = require('./resolvers/PaymentResolver')
 const ProjectResolver = require('./resolvers/ProjectResolver')
+const RateResolver = require('./resolvers/RateResolver')
 const TimeEntryResolver = require('./resolvers/TimeEntryResolver')
 
 //import types
@@ -17,6 +18,7 @@ const ContributorType = require('./types/ContributorType')
 const IssueType = require('./types/IssueType')
 const PaymentType = require('./types/PaymentType')
 const ProjectType = require('./types/ProjectType')
+const RateType = require('./types/RateType')
 const TimeEntry = require('./types/TimeEntryType')
 
 //merge types
@@ -27,6 +29,7 @@ const typeDefs = mergeTypeDefs([
     IssueType,
     PaymentType,
     ProjectType,
+    RateType,
     TimeEntry
 ])
 
@@ -38,6 +41,7 @@ const resolvers = mergeResolvers([
     IssueResolver,
     PaymentResolver,
     ProjectResolver,
+    RateResolver,
     TimeEntryResolver
 ])
 
