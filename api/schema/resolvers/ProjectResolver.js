@@ -279,7 +279,7 @@ module.exports = {
 
             return models.TimeEntry.findOne({
                 // The sum gets returned with the property name "seconds"
-                attributes: [[fn('sum', sequelize.col('seconds')), 'seconds']],
+                attributes: [[fn('sum', col('seconds')), 'seconds']],
                 where: whereConditions
             })
         },
@@ -334,7 +334,11 @@ module.exports = {
             validateDatesFormat({
                 date: createFields['date']
             })
+            //get toggleId from togglUrl
+            const togglArray = split(createFields.toggl_url, '/')
+            const togglId = togglArray[togglArray.length - 1]
             return models.Project.create({
+                toggl_id: togglId,
                 ...createFields
             })
         },
