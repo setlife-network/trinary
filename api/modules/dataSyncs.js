@@ -25,7 +25,6 @@ const dataSyncs = module.exports = (() => {
         const issues = await github.fetchRepoIssues({
             repo: githubUrlSplitted[githubUrlSplitted.length - 1]
         })
-
         await Promise.all(
             issues.map(async i => {
                 const mathingIssue = await matchIssue(i)

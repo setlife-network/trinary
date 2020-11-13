@@ -383,6 +383,13 @@ module.exports = {
                 project_id,
                 github_url: project.github_url,
             })
+            await models.Project.update({
+                date_last_synced: moment.utc()
+            }, {
+                where: {
+                    id: project_id
+                }
+            })
             return issuesSync
         },
         updateProjectById: async (root, { id, updateFields }, { models }) => {
