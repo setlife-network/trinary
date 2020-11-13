@@ -12,6 +12,7 @@ const dataSyncs = module.exports = (() => {
 
     const matchIssue = async (issue) => {
         return db.models.Issue.findOne({
+            raw: true,
             where: {
                 github_url: issue.url
             }
@@ -20,12 +21,6 @@ const dataSyncs = module.exports = (() => {
 
     const syncGithubIssues = async (params) => {
         const newIssues = []
-        /*
-        params = {
-            github_url: '',
-            project_id: int
-        }
-        */
         const githubUrlSplitted = split(params.github_url, '/');
         const issues = await github.fetchRepoIssues({
             repo: githubUrlSplitted[githubUrlSplitted.length - 1]
@@ -33,7 +28,8 @@ const dataSyncs = module.exports = (() => {
 
         await Promise.all(
             issues.map(async i => {
-                if (!(await matchIssue(i))) {
+                const mathingIssue = await matchIssue(i)
+                if (!mathingIssue) {
                     await db.models.Issue.create({
                         github_url: i.url,
                         date_opened: i.created_at,
@@ -43,6 +39,14 @@ const dataSyncs = module.exports = (() => {
                         .then((res) => {
                             newIssues.push(res.get({ plain: true }))
                         })
+                } else if (mathingIssue.date_closed != i.date_closed) {
+                    await db.models.Issue.update({
+                        date_closed: mathingIssue.date_closed
+                    }, {
+                        where: {
+                            id: i.id
+                        }
+                    })
                 }
             })
         )
