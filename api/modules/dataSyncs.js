@@ -27,8 +27,8 @@ const dataSyncs = module.exports = (() => {
         })
         await Promise.all(
             issues.map(async i => {
-                const mathingIssue = await matchIssue(i)
-                if (!mathingIssue) {
+                const matchingIssue = await matchIssue(i)
+                if (!matchingIssue) {
                     await db.models.Issue.create({
                         github_url: i.url,
                         date_opened: i.created_at,
@@ -38,9 +38,9 @@ const dataSyncs = module.exports = (() => {
                         .then((res) => {
                             newIssues.push(res.get({ plain: true }))
                         })
-                } else if (mathingIssue.date_closed != i.date_closed) {
+                } else if (matchingIssue.date_closed != i.date_closed) {
                     await db.models.Issue.update({
-                        date_closed: mathingIssue.date_closed
+                        date_closed: matchingIssue.date_closed
                     }, {
                         where: {
                             id: i.id
