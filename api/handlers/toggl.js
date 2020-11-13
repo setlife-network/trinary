@@ -47,6 +47,18 @@ const toggl = module.exports = (() => {
         })
     }
 
+    const fetchWorkspacesProject = (params) => {
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
+        return new Promise((resolve, reject) => {
+            togglClient.getWorkspaceProjects(params.wId, (err, projects) => {
+                if (err) {
+                    reject(err)
+                }
+                resolve(projects)
+            })
+        })
+    }
+
     const fetchWorkspacesData = (params) => {
         const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         return new Promise((resolve, reject) => {
@@ -59,7 +71,7 @@ const toggl = module.exports = (() => {
         })
     }
 
-    const fetchWorkspaceReport = (params) => {
+    const fetchWorkspaceTimeEntries = (params) => {
         const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         const opts = {
             user_agent: '',
@@ -83,7 +95,8 @@ const toggl = module.exports = (() => {
         fetchProjectTimeEntries,
         fetchTimeEntries,
         fetchWorkspacesData,
-        fetchWorkspaceReport
+        fetchWorkspacesProject,
+        fetchWorkspaceTimeEntries
     }
 
 })();

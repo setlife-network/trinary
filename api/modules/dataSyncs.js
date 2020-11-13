@@ -22,7 +22,12 @@ const dataSyncs = module.exports = (() => {
     }
 
     const syncTogglProject = async (params) => {
-        const timeEntries = await toggl.fetchProjectTimeEntries({ projectId: params.togglProjectId })
+        const timeEntries = await toggl.fetchWorkspaceTimeEntries({
+            pId: params.togglProjectId,
+            wId: params.workspaceId,
+            since: params.since,
+            until: params.until
+        })
         const addedTimeEntries = await timeLogging.addTimeEntries({
             timeEntries,
             projectId: params.projectId

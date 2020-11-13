@@ -366,10 +366,11 @@ module.exports = {
                 //get updated project
                 project = await models.Project.findByPk(args.project_id)
             }
-
+            //get all time entries from a workspace project in a period of 1 year
             const dataSync = await apiModules.dataSyncs.syncTogglProject({
                 togglProjectId: project.toggl_id,
-                projectId: project.id
+                projectId: project.id,
+                since: moment.utc().subtract(.1, 'years')
             })
             if (dataSync == 'Success') {
                 return project

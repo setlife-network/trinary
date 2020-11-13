@@ -39,7 +39,7 @@ const workspaceData = toggl.fetchWorkspacesData({
         console.log(res);
     })
 
-const workspaceReport = toggl.fetchWorkspaceReport({
+const workspaceReport = toggl.fetchWorkspaceTimeEntries({
     wId: 3070291,
     pId: 162053371,
     since: '2020-01-01',
@@ -47,5 +47,13 @@ const workspaceReport = toggl.fetchWorkspaceReport({
 })
     .then(res => {
         console.log('report');
+        console.log(res);
+    })
+
+const workspaceProjects = toggl.fetchWorkspacesProject({
+    wId: 3070291
+})
+    .then(res => {
+        console.log('projects');
         console.log(res);
     })
