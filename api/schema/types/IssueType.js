@@ -12,7 +12,9 @@ module.exports = gql`
     }
 
     input IssueInput {
-        github_url: String,
+        github_url: String
+        date_opened: String
+        date_closed: String
         project_id: Int
     }
 
