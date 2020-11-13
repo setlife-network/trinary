@@ -6,7 +6,7 @@ const {
 const toggl = module.exports = (() => {
 
     const fetchProjectData = async (params) => {
-        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         return new Promise((resolve, reject) => {
             togglClient.getProjectData(params.projectId, (err, projectData) => {
                 if (projectData) {
@@ -18,7 +18,7 @@ const toggl = module.exports = (() => {
     }
 
     const fetchProjectTimeEntries = (params) => {
-        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         return new Promise((resolve, reject) => {
             togglClient.getTimeEntries( async (err, timeEntries) => {
                 let projectTimeEntries = []
@@ -36,7 +36,7 @@ const toggl = module.exports = (() => {
     }
 
     const fetchTimeEntries = (params) => {
-        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY });
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         return new Promise((resolve, reject) => {
             togglClient.getTimeEntries((err, timeEntries) => {
                 if (err) {
