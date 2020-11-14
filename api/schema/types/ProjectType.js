@@ -21,6 +21,7 @@ module.exports = gql`
         githubContributors: [Contributor]
         issuesOpened(fromDate: String, toDate: String): Int
         issues: [Issue]
+        permissions: [Permission]
         githubIssuesOpened(
             fromDate: String,
             toDate:String
@@ -39,7 +40,10 @@ module.exports = gql`
             toDate: String!
             contributor_id: Int
         ): TimeSpent
-        totalPaid(fromDate: String, toDate: String): Int
+        totalPaid(
+            fromDate: String,
+            toDate: String
+        ): Int
     }
 
     type AverageIssueCost {
@@ -81,14 +85,12 @@ module.exports = gql`
         createProject(
             createFields: CreateProjectInput!
         ): Project
-
         deleteProjectById(id: Int!): String
-
+        syncProjectPermissions(project_id: Int!):[Permission]
         syncTogglProject(
             project_id: Int!,
             toggl_id: String
         ): Project
-
         updateProjectById(
             id: Int!,
             updateFields: UpdateProjectInput

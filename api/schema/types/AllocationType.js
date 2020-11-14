@@ -6,8 +6,9 @@ module.exports = gql`
         id: Int!
         amount: Int!
         rate_unit: Int
-        rate_type: String!
+        rate_id: Int!
         active: Boolean!
+        rate_type: String!
         start_date: String!
         created_at: String!
         end_date: String
@@ -15,6 +16,7 @@ module.exports = gql`
         payment: Payment
         project: Project
         contributor: Contributor
+        rate: Rate
     }
 
     input CreateAllocationInput {
@@ -28,6 +30,7 @@ module.exports = gql`
         payment_id: Int
         project_id: Int!
         contributor_id: Int!
+        rate_id: Int!
     }
 
     input UpdateAllocationInput {
@@ -41,6 +44,7 @@ module.exports = gql`
         payment_id: Int
         project_id: Int
         contributor_id: Int
+        rate_id: Int
     }
 
     type Query {

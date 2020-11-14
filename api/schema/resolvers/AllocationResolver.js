@@ -11,7 +11,9 @@ module.exports = {
         },
         contributor: (allocation, args, { models }) => {
             return models.Contributor.findByPk(allocation.contributor_id)
-
+        },
+        rate: (allocation, args, { models }) => {
+            return models.Rate.findByPk(allocation.rate_id)
         }
     },
     Query: {
