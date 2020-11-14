@@ -396,11 +396,16 @@ module.exports = {
                 //get updated project
                 project = await models.Project.findByPk(args.project_id)
             }
-            //get all time entries from a workspace project in a period of 1 year
+            //search for the date of the last sync to fetch since taht date
+            const lastEntrySynced = await models.TimeEntry.findOne({
+                order: [['created_at', 'DESC']]
+            })
             const dataSync = await apiModules.dataSyncs.syncTogglProject({
                 togglProjectId: project.toggl_id,
                 projectId: project.id,
-                since: moment().subtract(1, 'y').format('YYYY-MM-DD')
+                since: lastEntrySynced
+                    ? lastEntrySynced.created_at
+                    : moment().subtract(1, 'y').format('YYYY-MM-DD')
             })
             if (dataSync == 'Success') {
                 return project
