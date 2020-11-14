@@ -74,18 +74,18 @@ const dataSyncs = module.exports = (() => {
     const syncTogglProject = async (params) => {
         try {
             const timeEntries = await toggl.fetchWorkspaceTimeEntries({
-                pId: params.togglProjectId,
+                pId: params.toggl_project_id,
                 wId: TOGGL.WORKSPACE_ID,
                 since: params.since,
                 until: params.until
             })
             const addedTimeEntries = await timeLogging.addTimeEntries({
                 timeEntries,
-                projectId: params.projectId
+                project_id: params.project_id
             })
         } catch (error) {
             console.log('error: ' + error);
-            return null
+            return
         }
         return 'Success'
     }

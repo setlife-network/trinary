@@ -401,8 +401,8 @@ module.exports = {
                 order: [['created_at', 'DESC']]
             })
             const dataSync = await apiModules.dataSyncs.syncTogglProject({
-                togglProjectId: project.toggl_id,
-                projectId: project.id,
+                toggl_project_id: project.toggl_id,
+                project_id: project.id,
                 since: lastEntrySynced
                     ? lastEntrySynced.created_at
                     : moment().subtract(1, 'y').format('YYYY-MM-DD')

@@ -28,7 +28,7 @@ module.exports = (() => {
                         toggl_id: t.id,
                         start_time: t.start,
                         contributor_id: contributor.id,
-                        project_id: params.projectId,
+                        project_id: params.project_id,
                     })
                 }
             }

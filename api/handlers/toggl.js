@@ -78,7 +78,6 @@ const toggl = module.exports = (() => {
                 } else {
                     reject(new Error('Not time entries to sync'))
                 }
-
             })
         })
     }
