@@ -10,11 +10,11 @@ const db = require('../models')
 
 const dataSyncs = module.exports = (() => {
 
-    const matchIssue = async (issue) => {
+    const findIssueByGithubUrl = async (url) => {
         return db.models.Issue.findOne({
             raw: true,
             where: {
-                github_url: issue.url
+                github_url: url
             }
         })
     }
@@ -27,7 +27,7 @@ const dataSyncs = module.exports = (() => {
         })
         await Promise.all(
             issues.map(async i => {
-                const mathingIssue = await matchIssue(i)
+                const mathingIssue = await findIssueByGithubUrl(i.url)
                 if (!mathingIssue) {
                     await db.models.Issue.create({
                         github_url: i.url,
@@ -35,8 +35,8 @@ const dataSyncs = module.exports = (() => {
                         date_closed: i.closed_at,
                         project_id: params.project_id
                     })
-                        .then((res) => {
-                            newIssues.push(res.get({ plain: true }))
+                        .then((createdIssue) => {
+                            newIssues.push(createdIssue.get({ plain: true }))
                         })
                 } else if (mathingIssue.date_closed != i.date_closed) {
                     await db.models.Issue.update({
@@ -56,8 +56,8 @@ const dataSyncs = module.exports = (() => {
         const invoiceFile = INVOICELY_CSV_PATH
         return (
             amazon.fetchFile({ file: invoiceFile })
-                .then(res => {
-                    invoicelyCodebase.modelCSV(res)
+                .then(file => {
+                    invoicelyCodebase.modelCSV(file)
                     return 'Success'
                 })
                 .catch(err => {

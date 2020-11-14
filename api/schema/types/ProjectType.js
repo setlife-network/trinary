@@ -97,7 +97,7 @@ module.exports = gql`
 
         updateProjectById(
             id: Int!
-            updateFields: UpdateProjectInput
+            updateFields: UpdateProjectInput!
         ): Project
     }
 
