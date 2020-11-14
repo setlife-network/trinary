@@ -54,14 +54,14 @@ module.exports = gql`
 
     type Mutation {
         createAllocation(
-            createFields: CreateAllocationInput,
+            createFields: CreateAllocationInput!,
         ): Allocation
 
         deleteAllocationById(id: Int!): String
 
         updateAllocationById(
             id:Int!,
-            updateFields: UpdateAllocationInput,
+            updateFields: UpdateAllocationInput!,
         ): Allocation
     }
 

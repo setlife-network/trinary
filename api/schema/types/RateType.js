@@ -29,7 +29,7 @@ module.exports = gql`
         deleteRateById(id: Int!): String
         updateRateById(
             id: Int!,
-            updateFileds: RateInput
+            updateFileds: RateInput!
         ): Rate
     }
 `

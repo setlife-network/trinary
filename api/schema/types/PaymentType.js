@@ -37,7 +37,7 @@ module.exports = gql`
 
         updatePaymentById(
             id:Int!,
-            updateFields: PaymentInput,
+            updateFields: PaymentInput!,
         ): Payment
     }
 

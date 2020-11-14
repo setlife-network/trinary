@@ -36,7 +36,7 @@ module.exports = gql`
 
         upateTimeEntryById(
             id: Int!,
-            updateFields: TimeEntryInput
+            updateFields: TimeEntryInput!
         ): TimeEntry
     }
 
