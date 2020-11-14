@@ -1,9 +1,18 @@
+const toggl = require('../../handlers/toggl')
+
 module.exports = {
     Contributor: {
+        permissions: (contributor, args, { models }) => {
+            return models.Permission.findAll({
+                where: {
+                    contributor_id: contributor.id
+                }
+            })
+        },
         timeEntries: (contributor, args, { models }) => {
             return models.TimeEntry.findAll({
                 where: {
-                    'contributor_id': contributor.id
+                    contributor_id: contributor.id
                 }
             })
         }
@@ -17,6 +26,17 @@ module.exports = {
         }
     },
     Mutation: {
+        linkTogglContributor: async (root, { contributorId, togglAPIKey }, { models }) => {
+            const togglUser = await toggl.fetchUserData({ apiToken: togglAPIKey })
+            const contributor = await models.Contributor.update({
+                toggl_id: togglUser.id
+            }, {
+                where: {
+                    id: contributorId
+                }
+            })
+            return models.Contributor.findByPk(contributorId)
+        },
         createContributor: (root, { createFields }, { models }) => {
             return models.Contributor.create({
                 ...createFields

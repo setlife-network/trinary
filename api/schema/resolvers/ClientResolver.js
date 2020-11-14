@@ -19,8 +19,8 @@ module.exports = {
                 raw: true,
                 attributes: [[fn('sum', col('amount')), 'total']],
                 where: {
-                    'client_id': client.id,
-                    'date_incurred': { [Op.between]: [
+                    client_id: client.id,
+                    date_incurred: { [Op.between]: [
                         args.fromDate
                             ? args.fromDate
                             : moment.utc(1),
