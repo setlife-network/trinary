@@ -398,11 +398,9 @@ module.exports = {
             }
             //get all time entries from a workspace project in a period of 1 year
             const dataSync = await apiModules.dataSyncs.syncTogglProject({
-                //TODO: analyze where a going to store the toggl wId (workspace id)
-                workspaceId: '',
                 togglProjectId: project.toggl_id,
                 projectId: project.id,
-                since: moment.utc().subtract(.1, 'years')
+                since: moment().subtract(1, 'y').format('YYYY-MM-DD')
             })
             if (dataSync == 'Success') {
                 return project

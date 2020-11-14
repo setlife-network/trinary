@@ -22,13 +22,15 @@ module.exports = (() => {
         return Promise.all(params.timeEntries.map(async t => {
             if (!(await matchTimeEntry(t))) {
                 const contributor = await matchContributor(t)
-                await db.models.TimeEntry.create({
-                    seconds: t.duration,
-                    start_time: t.start,
-                    toggl_id: t.id,
-                    contributor_id: contributor.id,
-                    project_id: params.projectId,
-                })
+                if (contributor) {
+                    await db.models.TimeEntry.create({
+                        seconds: t.dur,
+                        toggl_id: t.id,
+                        start_time: t.start,
+                        contributor_id: contributor.id,
+                        project_id: params.projectId,
+                    })
+                }
             }
         }))
     }

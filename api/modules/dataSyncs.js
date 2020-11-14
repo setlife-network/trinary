@@ -5,7 +5,7 @@ const db = require('../models')
 const invoicelyCodebase = require('../scripts/invoicelyCodebase')
 const timeLogging = require('../scripts/timeLogging')
 const { INVOICELY_CSV_PATH } = require('../config/constants')
-const { GITHUB } = require('../config/credentials')
+const { GITHUB, TOGGL } = require('../config/credentials')
 
 const dataSyncs = module.exports = (() => {
 
@@ -72,18 +72,20 @@ const dataSyncs = module.exports = (() => {
     }
 
     const syncTogglProject = async (params) => {
-        const timeEntries = await toggl.fetchWorkspaceTimeEntries({
-            pId: params.togglProjectId,
-            wId: params.workspaceId,
-            since: params.since,
-            until: params.until
-        })
-        const addedTimeEntries = await timeLogging.addTimeEntries({
-            timeEntries,
-            projectId: params.projectId
-        })
-        if (addedTimeEntries == undefined) {
-            throw new Error('Something went wrong')
+        try {
+            const timeEntries = await toggl.fetchWorkspaceTimeEntries({
+                pId: params.togglProjectId,
+                wId: TOGGL.WORKSPACE_ID,
+                since: params.since,
+                until: params.until
+            })
+            const addedTimeEntries = await timeLogging.addTimeEntries({
+                timeEntries,
+                projectId: params.projectId
+            })
+        } catch (error) {
+            console.log('error: ' + error);
+            return null
         }
         return 'Success'
     }

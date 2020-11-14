@@ -62,7 +62,7 @@ const toggl = module.exports = (() => {
     const fetchWorkspaceTimeEntries = (params) => {
         const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         const opts = {
-            user_agent: '',
+            user_agent: 'oscar@setlife.network',
             workspace_id: params.wId,
             project_ids: params.pId,
             since: params.since,
@@ -73,7 +73,12 @@ const toggl = module.exports = (() => {
                 if (err) {
                     reject(err)
                 }
-                resolve(report.data)
+                if (report) {
+                    resolve(report.data)
+                } else {
+                    reject(new Error('Not time entries to sync'))
+                }
+
             })
         })
     }
