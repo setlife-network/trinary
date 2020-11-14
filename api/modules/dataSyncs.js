@@ -38,9 +38,9 @@ const dataSyncs = module.exports = (() => {
                         .then((createdIssue) => {
                             newIssues.push(createdIssue.get({ plain: true }))
                         })
-                } else if (mathingIssue.date_closed != i.date_closed) {
+                } else if (matchingIssue.date_closed != i.date_closed) {
                     await db.models.Issue.update({
-                        date_closed: mathingIssue.date_closed
+                        date_closed: matchingIssue.date_closed
                     }, {
                         where: {
                             id: i.id
