@@ -409,7 +409,7 @@ module.exports = {
         },
         syncProjectIssues: async (root, { project_id }, { models }) => {
             const project = await models.Project.findByPk(project_id)
-            const issuesSync = await apiModules.dataSyncs.syncGithubIssues({
+            const syncedIssues = await apiModules.dataSyncs.syncGithubIssues({
                 project_id,
                 github_url: project.github_url,
             })
@@ -420,7 +420,7 @@ module.exports = {
                     id: project_id
                 }
             })
-            return issuesSync
+            return syncedIssues
         },
         updateProjectById: async (root, { id, updateFields }, { models }) => {
             validateDatesFormat({
