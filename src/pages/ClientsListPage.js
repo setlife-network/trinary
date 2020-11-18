@@ -1,4 +1,15 @@
 import React from 'react'
+import { useQuery, gql, NetworkStatus } from '@apollo/client';
+
+const EXCHANGE_RATES = gql`
+    query Clients {
+        getClients {
+              id
+              name
+              currency
+        }
+    }
+`;
 
 const MOCKED_CLIENTS = [
     {
@@ -26,32 +37,24 @@ const ClientTile = (props) => {
 
 }
 
-class ClientListPage extends React.Component {
-    componentDidMount() {}
+function ClientListPage({ currency_code }) {
 
-    renderClients = () => {
-        // TODO:
-        // fetch clients from API
-        // store them in state
-        // replace the mocked array
+    const { loading, error, data } = useQuery(EXCHANGE_RATES, {
 
-        return MOCKED_CLIENTS.map(c => {
-            return (
-                <ClientTile
-                    client={c}
-                />
-            )
-        })
-    }
-
-    render() {
+    })
+    if (loading) return <h1>Loading... </h1>
+    if (error) return <h1>{`${error}`}</h1>
+    console.log('data');
+    console.log(data);
+    return data.getClients.map(c => {
         return (
-            <div className='ClientListPage'>
-                <h1>ClientListPage</h1>
-                {this.renderClients()}
-            </div>
+            <h1>
+                {c.name}
+            </h1>
         )
-    }
+
+    })
+
 }
 
 export default ClientListPage

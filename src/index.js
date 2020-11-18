@@ -1,22 +1,25 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 import './styles/index.scss'
 import App from './App'
+import SITE_ROOT from 'constants'
 
-// import * as serviceWorker from './serviceWorker'
+const client = new ApolloClient({
+    uri: `${SITE_ROOT}/api/graph`,
+    connectToDevTools: true,
+    cache: new InMemoryCache()
+});
 
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
+        <ApolloProvider client={client}>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </ApolloProvider>
     </React.StrictMode>,
     document.getElementById('root')
 )
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-// serviceWorker.unregister()
