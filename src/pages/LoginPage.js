@@ -4,52 +4,41 @@ import Button from '@material-ui/core/Button'
 import { Redirect } from 'react-router-dom'
 
 import { API_ROOT } from '../constants'
-import Grid from '@material-ui/core/Grid'
-import Header from '../components/Header'
-import { setlifeBlue } from '../styles/colors.scss'
 
+import { ReactComponent as ReactImg } from '../images/sample.svg'
 
-const loggedInUser = [{
-    id: null,
-    email: '',
-}]
+function LoginPage() {
 
-class LoginPage extends React.Component {
-    componentDidMount () {}
+    const [loggedInUser, setLoggedInUser] = useState({
+        id: null,
+        email: '',
+    })
 
-    handleGithubLogin = () => {
+    const handleGithubLogin = () => {
         window.open(`${API_ROOT}/login`, '_self')
     }
 
-    render() {
-        return (
-            <Grid container className='LoginPage'>
-                
-                <Grid item xs={12}>
-                    <Header
-                        title='Login'
-                    />
-                </Grid>
-
-                <div className='image-button'>
-                    {loggedInUser.id !== null && (
-                        <Button
-                            onClick={this.handleGithubLogin}
-                            variant='contained'
-                            color='primary'
-                            href='#contained-buttons'
-                            style={{ backgroundColor: setlifeBlue }} 
-                        >
-                            <h3>Log in with your Github Account</h3>
-
-                            <GitHubIcon className='githubIcon' />
-                        </Button>
-                    )}
-                </div>
-
-            </Grid>           
-        )
-    }
+    return (
+        <div className='LoginPage'>
+            <ReactImg className='image' />
+            <span>
+                <h2>Welcome to Trinary</h2>
+            </span>
+            <div className='image-button'>
+                {loggedInUser.id === null && (
+                    <Button
+                        onClick={handleGithubLogin}
+                        variant='contained'
+                        color='primary'
+                        href='#contained-buttons'
+                    >
+                        <h3>Log in with your Github Account</h3>
+                        <GitHubIcon className='githubIcon' />
+                    </Button>
+                )}
+            </div>
+        </div>
+    )
 }
 
 export default LoginPage
