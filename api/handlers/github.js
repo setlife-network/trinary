@@ -11,7 +11,7 @@ const github = module.exports = (() => {
         return new Promise((resolve, reject ) => {
             axios
                 .post(`${GITHUB_OAUTH_URL}?client_id=${GITHUB.CLIENT_ID}&client_secret=${GITHUB.CLIENT_SECRET}&code=${params.code}`, null, opts)
-                .then((res) => {
+                .then(res => {
                     resolve(res.data['access_token'])
                 })
                 .catch((error) => {
@@ -39,26 +39,24 @@ const github = module.exports = (() => {
         })
     }
 
-    const fetchRepoIssues = (params) => {
+    const fetchRepoIssues = async (params) => {
         const octokit = new Octokit({
-            auth: params.auth_key,
+            auth: GITHUB.CLIENT_SECRET,
         });
-        return octokit.issues.listForRepo({
-            owner: params.auth_key,
-            repo: params.repo_id,
-        });
+        return octokit.paginate(octokit.issues.listForRepo, {
+            owner: GITHUB.OWNER,
+            repo: params.repo,
+            state: 'all'
+        })
     }
 
     const fetchUserData = async (params) => {
         const octokit = new Octokit({
             auth: params.auth_key,
         });
-
-        const result = await octokit.users.getAuthenticated({})
-
-        if (result.status == 200) {
-            const { html_url, id, name, email } = result.data
-
+        const res = await octokit.users.getAuthenticated({})
+        if (res.status == 200) {
+            const { html_url, id, name, email } = res.data
             return {
                 id,
                 name,
@@ -66,7 +64,24 @@ const github = module.exports = (() => {
                 githubUrl: html_url
             }
         } else {
-            throw new Error('An error occurred' + result.status)
+            throw new Error('An error occurred' + res)
+        }
+    }
+
+    const fetchUserPermission = async (params) => {
+        const octokit = await new Octokit({
+            auth: params.auth_key,
+        });
+        const result = await octokit.repos.getCollaboratorPermissionLevel({
+            owner: params.owner,
+            repo: params.repo,
+            username: params.username
+        });
+        if (result.status == 200) {
+            const userPermission = result.data
+            return userPermission.permission
+        } else {
+            throw new Error('An error occurred ' + permission.status)
         }
     }
 
@@ -74,6 +89,7 @@ const github = module.exports = (() => {
         fetchUserData,
         fetchRepos,
         fetchRepoIssues,
-        fetchAccessToken
+        fetchAccessToken,
+        fetchUserPermission
     }
 })()

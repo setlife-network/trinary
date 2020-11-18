@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize')
 const { DataTypes } = require('sequelize')
-const { Client } = require('.')
 
 module.exports = (sequelize) => {
 
@@ -17,6 +16,10 @@ module.exports = (sequelize) => {
         amount: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        external_uuid: {
+            type: DataTypes.STRING,
+            unique: true
         },
         date_incurred: {
             type: DataTypes.DATE,

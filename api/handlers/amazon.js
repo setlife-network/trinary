@@ -1,5 +1,5 @@
 var AWS = require('aws-sdk');
-const { AMAZON_AWS } = require('../config/credentials')
+// const { AMAZON_AWS } = require('../config/credentials')
 
 const amazon = module.exports = (() => {
 

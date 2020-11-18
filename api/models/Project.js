@@ -21,6 +21,10 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        toggl_id: {
+            type: DataTypes.STRING,
+            unique: true
+        },
         name: {
             type: DataTypes.STRING,
             allowNull: false
@@ -28,6 +32,10 @@ module.exports = (sequelize) => {
         github_url: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true
+        },
+        toggl_url: {
+            type: DataTypes.STRING,
             unique: true
         },
         date: {

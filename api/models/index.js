@@ -28,7 +28,6 @@ const sequelize = new Sequelize(
 sequelize
     .authenticate()
     .then(async function(err) {
-        console.log('Connection has been established successfully.');
         await db.sequelize.sync();
     })
     .catch(function (err) {
@@ -43,10 +42,29 @@ const db = {
         Contributor: require('./Contributor')(sequelize),
         Issue: require('./Issue')(sequelize),
         Payment: require('./Payment')(sequelize),
+        Permission: require('./Permission')(sequelize),
         Project: require('./Project')(sequelize),
         Rate: require('./Rate')(sequelize),
         TimeEntry: require('./TimeEntry')(sequelize),
     }
 };
+
+//Associations
+const associations = ({ Allocation, Client, Contributor, Issue, Payment, Permission, Project, Rate, TimeEntry }) => {
+    Client.hasMany(Payment, { foreignKey: 'client_id' });
+    Contributor.hasMany(Allocation, { foreignKey: 'contributor_id' })
+    Contributor.hasMany(Permission, { foreignKey: 'contributor_id' })
+    Payment.hasMany(Allocation, { foreignKey: 'payment_id' })
+    Project.hasMany(Allocation, { foreignKey: 'project_id' })
+    Project.belongsTo(Client, { foreignKey: 'client_id' })
+    Project.hasMany(Permission, { foreignKey: 'project_id' })
+    Issue.belongsTo(Project, { foreignKey: 'project_id' })
+    Rate.hasMany(Allocation, { foreignKey: 'rate_id' })
+    Rate.belongsTo(Contributor, { foreignKey: 'contributor_id' })
+    Contributor.hasMany(TimeEntry, { foreignKey: 'contributor_id' })
+    Project.hasMany(TimeEntry, { foreignKey: 'project_id' })
+}
+
+associations(db.models)
 
 module.exports = db;

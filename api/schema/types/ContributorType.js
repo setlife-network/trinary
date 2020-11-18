@@ -4,6 +4,7 @@ module.exports = gql`
 
     type Contributor {
         id: Int!
+        toggl_id: Int
         hourly_rate: Int
         weekly_rate: Int
         monthlyRate: Int
@@ -11,16 +12,29 @@ module.exports = gql`
         external_data_url: String
         github_id: String!
         github_handle: String!
+        permissions: [Permission]
+        timeEntries: [TimeEntry]
     }
 
-    input ContributorInput {
-        hourly_rate: Int,
-        weekly_rate: Int,
-        monthly_rate: Int,
-        name: String!,
-        external_data_url: String,
-        github_id: String!,
+    input CreateContributorInput {
+        hourly_rate: Int
+        weekly_rate: Int
+        monthly_rate: Int
+        name: String!
+        external_data_url: String
+        github_id: String!
         github_handle: String!
+    }
+
+    input UpdateContributorInput {
+        hourly_rate: Int
+        weekly_rate: Int
+        monthly_rate: Int
+        toggl_id: Int
+        name: String
+        external_data_url: String
+        github_id: String
+        github_handle: String
     }
 
     type Query {
@@ -29,19 +43,14 @@ module.exports = gql`
     }
 
     type Mutation {
+        linkTogglContributor(contributorId: Int!, togglAPIKey: String!): Contributor
         createContributor(
-            createFields: ContributorInput
+            createFields: CreateContributorInput
         ): Contributor
-
         deleteContributorById(id: Int!): String
-
         updateContributorById(
-            id: Int!,
-            hourly_rate: Int,
-            weekly_rate: Int,
-            monthly_rate: Int,
-            name: String,
-            date_created: String
-        ):[Int]
+            id: Int!
+            updateFields: UpdateContributorInput
+        ):Contributor
     }
 `

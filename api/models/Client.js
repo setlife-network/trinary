@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize')
 const { DataTypes, Deferrable } = require('sequelize')
-const { Payment } = require('.')
 
 module.exports = (sequelize) => {
 
@@ -21,6 +20,9 @@ module.exports = (sequelize) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        email: {
+            type: DataTypes.STRING
         },
         currency: {
             type: DataTypes.STRING,

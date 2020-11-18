@@ -29,11 +29,10 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         end_date: {
-            type: Sequelize.DATE
+            type: Sequelize.DATE,
         },
         date_paid: {
-            type: Sequelize.DATE,
-            allowNull: false,
+            type: Sequelize.DATE
         },
         contributor_id: { //FK
             type: DataTypes.INTEGER,

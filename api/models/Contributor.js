@@ -13,17 +13,18 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             allowNull: false,
         },
-        hourly_rate: {
+        toggl_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            unique: true
+        },
+        hourly_rate: {
+            type: DataTypes.INTEGER
         },
         weekly_rate: {
-            type: DataTypes.INTEGER,
-            allowNull: false
+            type: DataTypes.INTEGER
         },
         monthly_rate: {
-            type: DataTypes.INTEGER,
-            allowNull: false
+            type: DataTypes.INTEGER
         },
         name: {
             type: DataTypes.STRING,
@@ -34,12 +35,10 @@ module.exports = (sequelize) => {
         },
         github_id: {
             type: DataTypes.STRING,
-            allowNull: false,
             unique: true
         },
         github_handle: {
             type: DataTypes.STRING,
-            allowNull: false,
             unique: true
         }
     },
