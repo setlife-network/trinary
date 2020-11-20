@@ -28,8 +28,8 @@ const dataSyncs = module.exports = (() => {
         })
         await Promise.all(
             issues.map(async i => {
-                const mathingIssue = await findIssueByGithubUrl(i.url)
-                if (!mathingIssue) {
+                const matchingIssue = await findIssueByGithubUrl(i.url)
+                if (!matchingIssue) {
                     await db.models.Issue.create({
                         github_url: i.url,
                         date_opened: i.created_at,
