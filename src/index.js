@@ -5,10 +5,10 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 import './styles/index.scss'
 import App from './App'
-import SITE_ROOT from 'constants'
+import { API_ROOT } from './constants'
 
 const client = new ApolloClient({
-    uri: `${SITE_ROOT}/api/graph`,
+    uri: `${API_ROOT}/graph`,
     connectToDevTools: true,
     cache: new InMemoryCache()
 });

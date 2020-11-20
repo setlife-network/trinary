@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery, gql, NetworkStatus } from '@apollo/client';
 
-const EXCHANGE_RATES = gql`
+const GET_CLIENTS = gql`
     query Clients {
         getClients {
               id
@@ -39,7 +39,7 @@ const ClientTile = (props) => {
 
 function ClientListPage({ currency_code }) {
 
-    const { loading, error, data } = useQuery(EXCHANGE_RATES, {
+    const { loading, error, data } = useQuery(GET_CLIENTS, {
 
     })
     if (loading) return <h1>Loading... </h1>
