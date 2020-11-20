@@ -1,12 +1,22 @@
 import React from 'react'
-import { useQuery, gql, NetworkStatus } from '@apollo/client';
+import { useQuery, gql, useMutation } from '@apollo/client';
 
-const GET_CLIENTS = gql`
-    query Clients {
-        getClients {
-              id
-              name
-              currency
+import { GET_CLIENTS } from '../operations/queries/ClientQueries'
+
+const CREATE_CLIENT = gql`
+    mutation CreateClient(
+        $name: String!,
+        $currency: String!,
+        $is_active: Boolean!
+    ){
+        createClient(createFields:{
+            name: $name,
+            currency:$currency,
+            is_active: $is_active
+        }){
+            id,
+            name,
+            currency
         }
     }
 `;
@@ -37,8 +47,7 @@ const ClientTile = (props) => {
 
 }
 
-function ClientListPage({ currency_code }) {
-
+function RenderClientsList() {
     const { loading, error, data } = useQuery(GET_CLIENTS, {
 
     })
@@ -52,9 +61,61 @@ function ClientListPage({ currency_code }) {
                 {c.name}
             </h1>
         )
-
     })
+}
 
+function ClientListPage() {
+    let input;
+    const [createClient, { loading, error, data }] = useMutation(CREATE_CLIENT, {
+        update (cache, { data }) {
+            const newClient = data?.createClient.client
+            const existingClients = cache.readQuery({
+                query: GET_CLIENTS
+            });
+            cache.writeQuery({
+                query: GET_CLIENTS,
+                data: {
+                    clients: [
+                        ...existingClients?.clients,
+                        newClient
+                    ]
+                }
+            })
+        }
+    });
+
+    const onSubmit = (e) => {
+        createClient({
+            variables: {
+                name: document.getElementById('clientName').value,
+                currency: document.getElementById('clientCurrency').value,
+                is_active: true
+            }
+        });
+    }
+
+    if (loading) return <h1>'Loading...'</h1>
+    if (error) return 'Error'
+    return (
+        <div>
+            {RenderClientsList()}
+            <form
+                onSubmit={(e) => {
+                    onSubmit()
+                    document.getElementById('clientName').value = ''
+                    document.getElementById('clientCurrency').value = ''
+                    document.getElementById('clientActive').value = ''
+                    e.preventDefault();
+
+                }}
+            >
+                <input id='clientName'/>
+                <input id='clientCurrency'/>
+                <input id='clientActive'/>
+                <button type='submit'>Add Todo</button>
+            </form>
+        </div>
+    )
 }
 
 export default ClientListPage

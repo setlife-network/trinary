@@ -7,10 +7,11 @@ import './styles/index.scss'
 import App from './App'
 import { API_ROOT } from './constants'
 
+const cache = new InMemoryCache()
 const client = new ApolloClient({
     uri: `${API_ROOT}/graph`,
     connectToDevTools: true,
-    cache: new InMemoryCache()
+    cache
 });
 
 ReactDOM.render(

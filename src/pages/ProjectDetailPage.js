@@ -15,11 +15,15 @@ import ProjectPayments from '../components/ProjectPayments'
 import ProjectContributors from '../components/ProjectContributors'
 import ProjectIssues from '../components/ProjectIssues'
 
-const GET_PROJECTS = gql`
+const GET_PROJECT = gql`
     query Project($id: Int!){
         getProjectById(id: $id){
             id,
-            name
+            name,
+            client{
+                id,
+                name
+            }
         }
     }
 `
@@ -69,7 +73,7 @@ function ProjectDetailPage(
     }
 ) {
 
-    const { data, loading, error } = useQuery(GET_PROJECTS, {
+    const { data, loading, error } = useQuery(GET_PROJECT, {
         variables: {
             id: 1
         }
