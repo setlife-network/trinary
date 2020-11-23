@@ -407,7 +407,7 @@ module.exports = {
                     ? lastEntrySynced.created_at
                     : moment().subtract(1, 'y').format('YYYY-MM-DD')
             })
-            if (dataSync == 'Success') {
+            if (dataSync) {
                 return project
             } else {
                 return new ApolloError('Something wrong happened', 2003)

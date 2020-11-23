@@ -2,6 +2,9 @@ const TogglClient = require('toggl-api');
 const {
     TOGGL
 } = require('../config/credentials')
+const {
+    USER_AGENT
+} = require('../config/credentials')
 
 const toggl = module.exports = (() => {
 
@@ -61,15 +64,15 @@ const toggl = module.exports = (() => {
 
     const fetchWorkspaceTimeEntries = (params) => {
         const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
-        const opts = {
-            user_agent: 'oscar@setlife.network',
+        const options = {
+            user_agent: USER_AGENT,
             workspace_id: params.wId,
             project_ids: params.pId,
             since: params.since,
             until: params.until
         }
-        return new Promise( (resolve, reject) => {
-            togglClient.detailedReport(opts, (err, report) => {
+        return new Promise((resolve, reject) => {
+            togglClient.detailedReport(options, (err, report) => {
                 if (err) {
                     reject(err)
                 }

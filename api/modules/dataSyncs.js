@@ -87,7 +87,7 @@ const dataSyncs = module.exports = (() => {
             console.log('error: ' + error);
             return
         }
-        return 'Success'
+        return true
     }
 
     return {
