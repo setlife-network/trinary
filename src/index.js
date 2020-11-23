@@ -8,10 +8,11 @@ import App from './App'
 import { API_ROOT } from './constants'
 
 const cache = new InMemoryCache()
+const uri = `${API_ROOT}/graph`
 const client = new ApolloClient({
-    uri: `${API_ROOT}/graph`,
-    connectToDevTools: true,
-    cache
+    uri,
+    cache,
+    connectToDevTools: true
 });
 
 ReactDOM.render(
