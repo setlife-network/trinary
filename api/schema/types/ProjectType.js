@@ -10,6 +10,7 @@ module.exports = gql`
         github_url: String!
         toggl_url: String
         date: String!
+        date_last_synced: String
         client_id: Int!
         toggl_id: String
         allocations: [Allocation]
@@ -74,6 +75,7 @@ module.exports = gql`
         client_id: Int
         toggl_id: String
         date: String
+        date_last_synced:String
     }
 
     type Query {
@@ -88,12 +90,15 @@ module.exports = gql`
         deleteProjectById(id: Int!): String
         syncProjectPermissions(project_id: Int!):[Permission]
         syncTogglProject(
-            project_id: Int!,
+            project_id: Int!
             toggl_id: String
         ): Project
+        syncProjectIssues(
+            project_id: Int
+        ): [Issue]
         updateProjectById(
-            id: Int!,
-            updateFields: UpdateProjectInput
+            id: Int!
+            updateFields: UpdateProjectInput!
         ): Project
     }
 

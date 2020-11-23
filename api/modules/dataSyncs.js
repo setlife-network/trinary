@@ -1,3 +1,5 @@
+const { split } = require('lodash')
+
 const amazon = require('../handlers/amazon')
 const github = require('../handlers/github')
 const toggl = require('../handlers/toggl')
@@ -9,12 +11,54 @@ const { GITHUB, TOGGL } = require('../config/credentials')
 
 const dataSyncs = module.exports = (() => {
 
+    const findIssueByGithubUrl = async (url) => {
+        return db.models.Issue.findOne({
+            raw: true,
+            where: {
+                github_url: url
+            }
+        })
+    }
+
+    const syncGithubIssues = async (params) => {
+        const newIssues = []
+        const githubUrlSplitted = split(params.github_url, '/');
+        const issues = await github.fetchRepoIssues({
+            repo: githubUrlSplitted[githubUrlSplitted.length - 1]
+        })
+        await Promise.all(
+            issues.map(async i => {
+                const matchingIssue = await findIssueByGithubUrl(i.url)
+                if (!matchingIssue) {
+                    await db.models.Issue.create({
+                        github_url: i.url,
+                        date_opened: i.created_at,
+                        date_closed: i.closed_at,
+                        project_id: params.project_id
+                    })
+                        .then((createdIssue) => {
+                            newIssues.push(createdIssue.get({ plain: true }))
+                        })
+                } else if (matchingIssue.date_closed != i.date_closed) {
+                    await db.models.Issue.update({
+                        date_closed: matchingIssue.date_closed
+                    }, {
+                        where: {
+                            id: i.id
+                        }
+                    })
+                }
+            })
+        )
+        return newIssues
+    }
+
     const syncInvoicelyCSV = async () => {
         const invoiceFile = INVOICELY_CSV_PATH
         return (
             amazon.fetchFile({ file: invoiceFile })
-                .then(res => {
-                    invoicelyCodebase.modelCSV(res)
+                .then(file => {
+                    invoicelyCodebase.modelCSV(file)
                     return 'Success'
                 })
                 .catch(err => {
@@ -91,6 +135,7 @@ const dataSyncs = module.exports = (() => {
     }
 
     return {
+        syncGithubIssues,
         syncInvoicelyCSV,
         syncProjectCollaboratorsPermission,
         syncTogglProject
