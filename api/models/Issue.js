@@ -17,6 +17,12 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        date_opened: {
+            type: DataTypes.DATE,
+        },
+        date_closed: {
+            type: DataTypes.DATE,
+        },
         project_id: { //FK
             type: DataTypes.INTEGER,
             allowNull: false,
