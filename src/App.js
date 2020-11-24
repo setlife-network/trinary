@@ -19,29 +19,15 @@ import { API_ROOT } from './constants'
 class App extends React.Component {
 
     async componentDidMount() {
-        //const history = useHistory();
-        console.log('document.cookie');
-        console.log(document.cookie);
         const loggedInUser = await fetch(`${API_ROOT}/check-session`, {
             credentials: 'include'
         })
-        console.log('loggedInUser');
-        console.log(loggedInUser);
         if (loggedInUser.status == 200) {
             const loggedInUserJSON = await loggedInUser.json()
-            console.log('loggedInUserJSON');
-            console.log(loggedInUserJSON);
-            console.log('loggedInUserJSON.result');
-            console.log(loggedInUserJSON.result);
-
             if (loggedInUserJSON.result == 1) {
                 //push to home
-                console.log('home');
-            } else {
-                console.log('login');
             }
             //push to login
-            //history.push('/login')
         }
 
     }

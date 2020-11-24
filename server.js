@@ -73,17 +73,11 @@ app.get('/api/login', (req, res) => {
 })
 
 app.get('/api/check-session', async (req, res) => {
-    console.log('check session');
-    console.log(req.session.userSession);
-    const loggedUser = req.session.userSession
-    console.log('loggedUser');
-    console.log(loggedUser);
-    if (loggedUser) res.send({ result: 1 })
+    if (req.session.userSession) res.send({ result: 1 })
     else res.send({ result: 0 })
 })
 
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in the Github App
-    console.log('oauth');
     github.fetchAccessToken({ code: req.query.code })
         .then(githubAccessToken => {
             req.session.userSession = githubAccessToken
@@ -96,7 +90,6 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
             }
         })
         .then(() => {
-            console.log(req.session.userSession)
             res.redirect(SITE_ROOT)
         })
         .catch(err => {
