@@ -3,6 +3,9 @@ const bodyParser = require('body-parser') //transform req into JSON format
 const fs = require('fs') //module to read files
 const cors = require('cors') //handle CORS issues
 const { ApolloServer } = require('apollo-server-express') //Apollo server for graphql integration
+const cookieSession = require('cookie-session') //store the user session key
+const cookieParser = require('cookie-parser') //transform cooki session into object with key name
+const moment = require('moment') //momentjs libreary for expitation cookie date
 
 const schema = require('./api/schema')
 const db = require('./api/models');
@@ -48,11 +51,18 @@ var corsOptions = {
     credentials: true,
     methods: ['GET,PUT,POST,DELETE,OPTIONS'],
     allowedHeaders: ['Access-Control-Allow-Headers', 'Origin', 'Access-Control-Allow-Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Cache-Control']
-};
+}
 
 app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
+
+app.use(cookieParser())
+app.use(cookieSession({
+    name: 'session',
+    keys: ['userSession'],
+    expires: moment().add(180, 'days').toDate()
+}))
 
 app.get('/api/v/:vid/ping', (req, res) => {
     res.send('Hello World')
@@ -62,10 +72,21 @@ app.get('/api/login', (req, res) => {
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.CLIENT_ID}`)
 })
 
-app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in te Github App
+app.get('/api/check-session', async (req, res) => {
+    console.log('check session');
+    console.log(req.session.userSession);
+    const loggedUser = req.session.userSession
+    console.log('loggedUser');
+    console.log(loggedUser);
+    if (loggedUser) res.send({ result: 1 })
+    else res.send({ result: 0 })
+})
 
+app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in the Github App
+    console.log('oauth');
     github.fetchAccessToken({ code: req.query.code })
         .then(githubAccessToken => {
+            req.session.userSession = githubAccessToken
             return apiModules.authentication.getContributor({ githubAccessToken })
         })
         .then(async contributorInfo => {
@@ -75,6 +96,7 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
             }
         })
         .then(() => {
+            console.log(req.session.userSession)
             res.redirect(SITE_ROOT)
         })
         .catch(err => {
