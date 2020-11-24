@@ -14,45 +14,47 @@ import ProjectDetailPage from './pages/ProjectDetailPage'
 
 import Navigation from './components/Navigation'
 
-const App = () => {
-    return (
-        <div className='App'>
-            <ThemeProvider theme={theme}>
-                <Navigation/>
+class App extends React.Component {
+    render() {
+        return (
+            <div className='App'>
+                <ThemeProvider theme={theme}>
+                    <Navigation/>
 
-                <Route
-                    exact
-                    path='/'
-                    render={(props) => <HomePage {...props} />}
-                />
-                <Route
-                    path='/login'
-                    render={(props) => <LoginPage {...props} />}
-                />
-                <Route
-                    exact
-                    path='/clients'
-                    render={(props) => <ClientsListPage {...props} />}
-                />
-                <Route
-                    path='/clients/:clientId'
-                    render={(props) => <ClientDetailPage {...props} />}
-                />
-                <Route
-                    path='/client/add'
-                    render={(props) => <AddClientPage {...props} />}
-                />
-                <Route
-                    path='/projects/:projectId'
-                    render={(props) => <ProjectDetailPage {...props} />}
-                />
-                <Route
-                    path='/project/add'
-                    render={(props) => <AddProjectPage {...props} />}
-                />
-            </ThemeProvider>
-        </div>
-    )
+                    <Route
+                        exact
+                        path='/'
+                        render={(props) => <HomePage {...props} />}
+                    />
+                    <Route
+                        path='/login'
+                        render={(props) => <LoginPage {...props} />}
+                    />
+                    <Route
+                        exact
+                        path='/clients'
+                        render={(props) => <ClientsListPage {...props} />}
+                    />
+                    <Route
+                        path='/clients/:clientId'
+                        render={(props) => <ClientDetailPage {...props} />}
+                    />
+                    <Route
+                        path='/client/add'
+                        render={(props) => <AddClientPage {...props} />}
+                    />
+                    <Route
+                        path='/projects/:projectId'
+                        render={(props) => <ProjectDetailPage {...props} />}
+                    />
+                    <Route
+                        path='/project/add'
+                        render={(props) => <AddProjectPage {...props} />}
+                    />
+                </ThemeProvider>
+            </div>
+        )
+    }
 }
 
 export default App
