@@ -14,13 +14,20 @@ import ProjectDetailPage from './pages/ProjectDetailPage'
 
 import Navigation from './components/Navigation'
 
+import { API_ROOT } from './constants'
+
 class App extends React.Component {
+
+    // componentDidMount() {
+    //     console.log('reloading');
+    //     window.open(`${API_ROOT}/login`, '_self')
+    // }
+
     render() {
         return (
             <div className='App'>
                 <ThemeProvider theme={theme}>
                     <Navigation/>
-
                     <Route
                         exact
                         path='/'
