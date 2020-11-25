@@ -3,6 +3,7 @@ import Card from '@material-ui/core/Card'
 import Grid from '@material-ui/core/Grid'
 import { spacing, boxShadow, borders } from '@material-ui/system'
 import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
 
 const ClientTile = ({
     clientName
@@ -22,19 +23,24 @@ const ClientTile = ({
                 xs={12}
             >
                 <Grid item xs={12}>
-                    <Box
-                        m={2}
-                        p={2}
-                        boxShadow={3}
-                        borderRadius='borderRadius'
+                    <Button
+                        fullWidth
                         onClick={() => (redirectClientPage(
                             {
                                 name: clientName
                             }
                         ))}
                     >
-                        {clientName}
-                    </Box>
+                        <Box
+                            width={1}
+                            px={10}
+                            py={2}
+                            boxShadow={3}
+                            borderRadius='borderRadius'
+                        >
+                            {clientName}
+                        </Box>
+                    </Button>
                 </Grid>
             </Grid>
 

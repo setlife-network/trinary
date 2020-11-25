@@ -1,6 +1,7 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 
+import ClientsListManager from '../components/ClientsListManager'
 import ProjectsList from '../components/ProjectsList'
 
 const MOCKED_CLIENTS = [
@@ -52,12 +53,11 @@ class ClientListPage extends React.Component {
             <div className='ClientListPage'>
                 <Grid container direction='row' justify='center'>
                     <Grid item xs={10}>
-                        <h1>ClientListPage</h1>
+                        <ClientsListManager/>
                         <Grid container>
                             <ProjectsList/>
                         </Grid>
                     </Grid>
-
                 </Grid>
             </div>
         )

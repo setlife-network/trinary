@@ -1,5 +1,6 @@
 $setlife-blue: #00C2D4;
 $light_blue: #d9f6f8;
+$dark-blue: #009BAD;
 $light_grey: #F1F1F1;
 $white: #FFFFFF;
 $black: #000000;
@@ -12,6 +13,7 @@ $green: #4caf50;
 :export {
     setlifeBlue: $setlife-blue;
     lightBlue: $light_blue;
+    darkBlue: $dark-blue;
     lightGrey: $light_grey;
     white: $white;
     black: $black;

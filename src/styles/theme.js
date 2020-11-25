@@ -4,8 +4,10 @@ import sizes from './sizes.scss'
 import {
     setlifeBlue,
     lightBlue,
+    darkBlue,
     lightGrey,
-    black
+    black,
+    white
 } from './colors.scss'
 
 const theme = createMuiTheme({
@@ -15,11 +17,13 @@ const theme = createMuiTheme({
     palette: {
         primary: {
             main: setlifeBlue,
-            dark: black,
-            light_blue: lightBlue
+            dark: darkBlue,
+            black: black,
+            light_blue: lightBlue,
+            light: white
         },
         secondary: {
-            main: lightGrey,
+            main: lightGrey
         },
     },
 })
