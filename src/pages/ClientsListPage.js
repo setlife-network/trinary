@@ -53,7 +53,7 @@ class ClientListPage extends React.Component {
                 <Grid container direction='row' justify='center'>
                     <Grid item xs={10}>
                         <h1>ClientListPage</h1>
-                        <Grid container spacing={2}>
+                        <Grid container>
                             <ProjectsList/>
                         </Grid>
                     </Grid>
