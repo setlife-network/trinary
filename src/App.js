@@ -19,7 +19,6 @@ const App = () => {
         <div className='App'>
             <ThemeProvider theme={theme}>
                 <Navigation/>
-
                 <Route
                     exact
                     path='/'

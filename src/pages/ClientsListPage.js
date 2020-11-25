@@ -1,5 +1,7 @@
 import React from 'react'
 
+import ProjectsList from '../components/ProjectsList'
+
 const MOCKED_CLIENTS = [
     {
         name: 'Client A'
@@ -48,7 +50,7 @@ class ClientListPage extends React.Component {
         return (
             <div className='ClientListPage'>
                 <h1>ClientListPage</h1>
-                {this.renderClients()}
+                <ProjectsList/>
             </div>
         )
     }
