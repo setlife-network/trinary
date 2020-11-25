@@ -1,4 +1,5 @@
 import React from 'react'
+import Grid from '@material-ui/core/Grid'
 
 import ProjectsList from '../components/ProjectsList'
 
@@ -49,8 +50,15 @@ class ClientListPage extends React.Component {
     render() {
         return (
             <div className='ClientListPage'>
-                <h1>ClientListPage</h1>
-                <ProjectsList/>
+                <Grid container direction='row' justify='center'>
+                    <Grid item xs={10}>
+                        <h1>ClientListPage</h1>
+                        <Grid container spacing={2}>
+                            <ProjectsList/>
+                        </Grid>
+                    </Grid>
+
+                </Grid>
             </div>
         )
     }

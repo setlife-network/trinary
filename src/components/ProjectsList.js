@@ -1,5 +1,6 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client';
+import Grid from '@material-ui/core/Grid'
 
 import ClientTile from './ClientTile'
 
@@ -11,9 +12,9 @@ const ProjectsList = () => {
 
     if (loading) {
         return (
-            <>
+            <Grid item xs={12}>
                 Loading...
-            </>
+            </Grid>
         )
     }
 
@@ -23,9 +24,11 @@ const ProjectsList = () => {
     return (
         data.getClients.map(c => {
             return (
-                <ClientTile
-                    clientName={c.name}
-                />
+                <Grid item xs={12} lg={4}>
+                    <ClientTile
+                        clientName={c.name}
+                    />
+                </Grid>
             )
         })
     )
