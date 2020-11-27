@@ -6,12 +6,14 @@ import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 
 const ClientTile = ({
-    clientName
+    clientName,
+    history
 }) => {
 
     const redirectClientPage = (client) => {
         console.log(`redirecting to ${client.name}`)
-        //TODO: History implementation
+        //TODO:Add client id to push history
+        history.push('/client')
     }
 
     return (

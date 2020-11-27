@@ -6,7 +6,9 @@ import ClientTile from './ClientTile'
 
 import { GET_CLIENTS } from '../operations/queries/ClientQueries'
 
-const ProjectsList = () => {
+const ProjectsList = ({
+    history
+}) => {
 
     const { loading, error, data } = useQuery(GET_CLIENTS);
 
@@ -17,16 +19,14 @@ const ProjectsList = () => {
             </Grid>
         )
     }
-
     if (error) return `Error! ${error.message}`;
-    console.log('data');
-    console.log(data);
     return (
         data.getClients.map(c => {
             return (
                 <Grid item xs={12} lg={4}>
                     <ClientTile
                         clientName={c.name}
+                        history={history}
                     />
                 </Grid>
             )

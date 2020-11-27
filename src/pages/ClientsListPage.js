@@ -55,7 +55,9 @@ class ClientListPage extends React.Component {
                     <Grid item xs={10}>
                         <ClientsListManager/>
                         <Grid container>
-                            <ProjectsList/>
+                            <ProjectsList
+                                history={this.props.history}
+                            />
                         </Grid>
                     </Grid>
                 </Grid>

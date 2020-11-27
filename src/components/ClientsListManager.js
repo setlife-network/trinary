@@ -9,7 +9,7 @@ const ClientListManager = () => {
 
     const addClient = () => {
         console.log('Add client');
-        //TODO:Redirect to add clietn page
+        //TODO:Redirect to add client page
     }
 
     return (

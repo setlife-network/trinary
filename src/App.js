@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import { ThemeProvider } from '@material-ui/core/styles'
 
 import theme from './styles/theme'
@@ -54,4 +54,4 @@ const App = () => {
     )
 }
 
-export default App
+export default withRouter(App)
