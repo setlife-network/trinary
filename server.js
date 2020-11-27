@@ -72,10 +72,10 @@ app.get('/api/login', (req, res) => {
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.CLIENT_ID}`)
 })
 
-app.get('/api/check-session', async (req, res) => {
-    if (req.session.userSession) res.send({ result: 1 })
-    else res.send({ result: 0 })
-})
+// app.get('/api/check-session', async (req, res) => {
+//     if (req.session.userSession) res.send({ result: 1 })
+//     else res.send({ result: 0 })
+// })
 
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in the Github App
     github.fetchAccessToken({ code: req.query.code })
@@ -99,7 +99,10 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
 
 const server = new ApolloServer({
     schema,
-    context: db
+    context: ({ req }) => ({
+        ...db,
+        cookies: req.session
+    })
 })
 
 server.applyMiddleware({

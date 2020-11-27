@@ -18,6 +18,13 @@ module.exports = {
         }
     },
     Query: {
+        checkSession: (root, args, { models, cookies }) => {
+            console.log('req');
+            console.log('req.session')
+            console.log(cookies)
+            console.log('req.session.userSession')
+            console.log(cookies.userSession)
+        },
         getContributorById: (root, { id }, { models }) => {
             return models.Contributor.findByPk(id)
         },

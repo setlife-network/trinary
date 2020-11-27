@@ -19,16 +19,16 @@ import { API_ROOT } from './constants'
 class App extends React.Component {
 
     async componentDidMount() {
-        const loggedInUser = await fetch(`${API_ROOT}/check-session`, {
-            credentials: 'include'
-        })
-        if (loggedInUser.status == 200) {
-            const loggedInUserJSON = await loggedInUser.json()
-            if (loggedInUserJSON.result == 1) {
-                //push to home
-            }
-            //push to login
-        }
+        // const loggedInUser = await fetch(`${API_ROOT}/check-session`, {
+        //     credentials: 'include'
+        // })
+        // if (loggedInUser.status == 200) {
+        //     const loggedInUserJSON = await loggedInUser.json()
+        //     if (loggedInUserJSON.result == 1) {
+        //         //push to home
+        //     }
+        //     //push to login
+        // }
 
     }
 
