@@ -10,3 +10,9 @@ export const GET_CLIENTS = gql`
         }
     }
 `;
+
+export const GET_ACTIVE_CLIENTS_COUNT = gql`
+    query Clients {
+        getActiveClientsCount
+    }
+`;

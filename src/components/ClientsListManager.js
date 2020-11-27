@@ -4,6 +4,9 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import { gql, useQuery } from '@apollo/client';
+
+import { GET_ACTIVE_CLIENTS_COUNT } from '../operations/queries/ClientQueries'
 
 const ClientListManager = () => {
 
@@ -12,6 +15,16 @@ const ClientListManager = () => {
         //TODO:Redirect to add client page
     }
 
+    const { loading, error, data } = useQuery(GET_ACTIVE_CLIENTS_COUNT);
+
+    if (loading) {
+        return (
+            <Grid item xs={12}>
+                Loading...
+            </Grid>
+        )
+    }
+    if (error) return `Error! ${error.message}`;
     return (
         <div className='ClientListManager'>
             <Box mb={3} mx={2}>
@@ -24,10 +37,7 @@ const ClientListManager = () => {
                             px={5}
                             py={1}
                         >
-                            {
-                            //TODO: Fetch active clients
-                            }
-                            X active clients
+                            {`${data.getActiveClientsCount} active ${data.getActiveClientsCount == 1 ? 'client' : 'clients'}`}
                         </Box>
                     </Grid>
                     <Grid item>
