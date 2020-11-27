@@ -407,7 +407,21 @@ module.exports = {
                 return new ApolloError('Something wrong happened', 2003)
             }
         },
-
+        syncProjectIssues: async (root, { project_id }, { models }) => {
+            const project = await models.Project.findByPk(project_id)
+            const syncedIssues = await apiModules.dataSyncs.syncGithubIssues({
+                project_id,
+                github_url: project.github_url,
+            })
+            await models.Project.update({
+                date_last_synced: moment.utc()
+            }, {
+                where: {
+                    id: project_id
+                }
+            })
+            return syncedIssues
+        },
         updateProjectById: async (root, { id, updateFields }, { models }) => {
             validateDatesFormat({
                 date: updateFields['date']
