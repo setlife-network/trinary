@@ -80,14 +80,16 @@ app.get('/api/login', (req, res) => {
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in the Github App
     github.fetchAccessToken({ code: req.query.code })
         .then(githubAccessToken => {
-            req.session.userSession = githubAccessToken
             return apiModules.authentication.getContributor({ githubAccessToken })
         })
         .then(async contributorInfo => {
+            //if it's a new user store it in contributors table
             if (!contributorInfo.contributor) {
                 const githubContributor = contributorInfo.githubContributor
-                await apiModules.authentication.createContributor({ githubContributor })
+                contributorInfo.contributor = await apiModules.authentication.createContributor({ githubContributor })
             }
+            //store contributor id in the cookie session
+            req.session.userSession = contributorInfo.contributor.id
         })
         .then(() => {
             res.redirect(SITE_ROOT)
