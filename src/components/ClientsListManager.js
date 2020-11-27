@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 const ClientListManager = () => {
     return (
@@ -25,10 +26,7 @@ const ClientListManager = () => {
                     </Grid>
                     <Grid item>
                         <Fab color='primary' onClick={() => (console.log('Tap'))}>
-                            {
-                                //TODO: Add icon
-                            }
-                            +
+                            <AddIcon color='secondary'/>
                         </Fab>
                     </Grid>
                 </Grid>
