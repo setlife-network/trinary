@@ -6,6 +6,12 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 const ClientListManager = () => {
+
+    const addClient = () => {
+        console.log('Add client');
+        //TODO:Redirect to add clietn page
+    }
+
     return (
         <div className='ClientListManager'>
             <Box mb={3} mx={2}>
@@ -25,7 +31,7 @@ const ClientListManager = () => {
                         </Box>
                     </Grid>
                     <Grid item>
-                        <Fab color='primary' onClick={() => (console.log('Tap'))}>
+                        <Fab color='primary' onClick={() => addClient()}>
                             <AddIcon color='secondary'/>
                         </Fab>
                     </Grid>
