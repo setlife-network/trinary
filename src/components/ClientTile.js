@@ -61,7 +61,6 @@ const ClientTile = ({
                     </Button>
                 </Grid>
             </Grid>
-
         </div>
     );
 }

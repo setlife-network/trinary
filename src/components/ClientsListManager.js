@@ -13,8 +13,6 @@ const ClientListManager = ({
 }) => {
 
     const addClient = () => {
-        console.log('Add client');
-        //TODO:Redirect to add client page
         history.push('/client/add')
     }
 
@@ -41,7 +39,7 @@ const ClientListManager = ({
                             py={1}
                         >
                             {
-                                ` ${data.getActiveClientsCount} active ${data.getActiveClientsCount == 1
+                                `${data.getActiveClientsCount} active ${data.getActiveClientsCount == 1
                                     ? 'client'
                                     : 'clients'}
                                 `
