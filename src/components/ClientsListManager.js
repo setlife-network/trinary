@@ -8,11 +8,14 @@ import { gql, useQuery } from '@apollo/client';
 
 import { GET_ACTIVE_CLIENTS_COUNT } from '../operations/queries/ClientQueries'
 
-const ClientListManager = () => {
+const ClientListManager = ({
+    history
+}) => {
 
     const addClient = () => {
         console.log('Add client');
         //TODO:Redirect to add client page
+        history.push('/client/add')
     }
 
     const { loading, error, data } = useQuery(GET_ACTIVE_CLIENTS_COUNT);
@@ -37,11 +40,19 @@ const ClientListManager = () => {
                             px={5}
                             py={1}
                         >
-                            {`${data.getActiveClientsCount} active ${data.getActiveClientsCount == 1 ? 'client' : 'clients'}`}
+                            {
+                                ` ${data.getActiveClientsCount} active ${data.getActiveClientsCount == 1
+                                    ? 'client'
+                                    : 'clients'}
+                                `
+                            }
                         </Box>
                     </Grid>
                     <Grid item>
-                        <Fab color='primary' onClick={() => addClient()}>
+                        <Fab
+                            color='primary'
+                            onClick={() => addClient()}
+                        >
                             <AddIcon color='action'/>
                         </Fab>
                     </Grid>

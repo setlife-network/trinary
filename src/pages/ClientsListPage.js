@@ -53,7 +53,9 @@ class ClientListPage extends React.Component {
             <div className='ClientListPage'>
                 <Grid container direction='row' justify='center'>
                     <Grid item xs={10}>
-                        <ClientsListManager/>
+                        <ClientsListManager
+                            history={this.props.history}
+                        />
                         <Grid container>
                             <ClientsList
                                 history={this.props.history}

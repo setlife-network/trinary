@@ -22,13 +22,10 @@ const ClientsList = ({
     if (error) return `Error! ${error.message}`;
     return (
         data.getClients.map(c => {
-            console.log('c');
-            console.log(c);
             return (
                 <Grid item xs={12} lg={4}>
                     <ClientTile
-                        clientName={c.name}
-                        clientActive={c.is_active}
+                        client={c}
                         history={history}
                     />
                 </Grid>

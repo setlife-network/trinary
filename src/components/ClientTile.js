@@ -7,15 +7,12 @@ import Button from '@material-ui/core/Button'
 import PersonIcon from '@material-ui/icons/Person';
 
 const ClientTile = ({
-    clientActive,
-    clientName,
+    client,
     history
 }) => {
 
     const redirectClientPage = (client) => {
-        console.log(`redirecting to ${client.name}`)
-        //TODO:Add client id to push history
-        history.push('/client')
+        history.push(`/clients/${client.id}`)
     }
 
     return (
@@ -29,11 +26,9 @@ const ClientTile = ({
                 <Grid item xs={12}>
                     <Button
                         fullWidth
-                        onClick={() => (redirectClientPage(
-                            {
-                                name: clientName
-                            }
-                        ))}
+                        onClick={() => redirectClientPage({
+                            id: client.id
+                        })}
                     >
                         <Box
                             width={1}
@@ -50,13 +45,16 @@ const ClientTile = ({
                                 justify='space-between'
                             >
                                 <Grid item xs={10}>
-                                    {clientName}
+                                    {client.name}
                                 </Grid>
                                 <Grid
                                     item
-                                    xs={1}
+                                    xs={2}
                                 >
-                                    <PersonIcon color={clientActive ? 'primary' : 'secondary'}/>
+                                    <PersonIcon
+                                        color={client.is_active ? 'primary' : 'secondary'}
+                                        fontSize='large'
+                                    />
                                 </Grid>
                             </Grid>
                         </Box>
