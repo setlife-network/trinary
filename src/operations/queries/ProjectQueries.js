@@ -12,6 +12,10 @@ export const GET_POJECTS = gql`
             client_id
             toggl_id
             date
+            client {
+                id
+                name
+            }
         }
     }
 `;

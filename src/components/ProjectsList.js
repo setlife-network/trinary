@@ -21,6 +21,8 @@ const ProjectsList = ({
         )
     }
     if (error) return `Error! ${error.message}`;
+    console.log('data.getProjects');
+    console.log(data.getProjects);
 
     const projects = orderBy(data.getProjects, ['is_active'], ['desc'])
 
