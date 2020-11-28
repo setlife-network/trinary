@@ -2,7 +2,7 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid'
 
 import ClientsListManager from '../components/ClientsListManager'
-import ProjectsList from '../components/ProjectsList'
+import ClientsList from '../components/ClientsList'
 
 const MOCKED_CLIENTS = [
     {
@@ -55,7 +55,7 @@ class ClientListPage extends React.Component {
                     <Grid item xs={10}>
                         <ClientsListManager/>
                         <Grid container>
-                            <ProjectsList
+                            <ClientsList
                                 history={this.props.history}
                             />
                         </Grid>

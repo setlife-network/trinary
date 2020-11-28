@@ -4,8 +4,10 @@ import Grid from '@material-ui/core/Grid'
 import { spacing, boxShadow, borders } from '@material-ui/system'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
+import PersonIcon from '@material-ui/icons/Person';
 
 const ClientTile = ({
+    clientActive,
     clientName,
     history
 }) => {
@@ -39,8 +41,24 @@ const ClientTile = ({
                             py={2}
                             boxShadow={3}
                             borderRadius='borderRadius'
+                            bgcolor='primary.light'
                         >
-                            {clientName}
+                            <Grid
+                                container
+                                direction='row'
+                                alignItems='center'
+                                justify='space-between'
+                            >
+                                <Grid item xs={10}>
+                                    {clientName}
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={1}
+                                >
+                                    <PersonIcon color={clientActive ? 'primary' : 'secondary'}/>
+                                </Grid>
+                            </Grid>
                         </Box>
                     </Button>
                 </Grid>

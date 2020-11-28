@@ -6,7 +6,7 @@ import ClientTile from './ClientTile'
 
 import { GET_CLIENTS } from '../operations/queries/ClientQueries'
 
-const ProjectsList = ({
+const ClientsList = ({
     history
 }) => {
 
@@ -22,10 +22,13 @@ const ProjectsList = ({
     if (error) return `Error! ${error.message}`;
     return (
         data.getClients.map(c => {
+            console.log('c');
+            console.log(c);
             return (
                 <Grid item xs={12} lg={4}>
                     <ClientTile
                         clientName={c.name}
+                        clientActive={c.is_active}
                         history={history}
                     />
                 </Grid>
@@ -34,4 +37,4 @@ const ProjectsList = ({
     )
 }
 
-export default ProjectsList
+export default ClientsList

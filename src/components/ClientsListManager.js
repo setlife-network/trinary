@@ -42,7 +42,7 @@ const ClientListManager = () => {
                     </Grid>
                     <Grid item>
                         <Fab color='primary' onClick={() => addClient()}>
-                            <AddIcon color='secondary'/>
+                            <AddIcon color='action'/>
                         </Fab>
                     </Grid>
                 </Grid>

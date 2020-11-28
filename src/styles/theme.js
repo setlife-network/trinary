@@ -5,6 +5,7 @@ import {
     setlifeBlue,
     lightBlue,
     darkBlue,
+    grey,
     lightGrey,
     black,
     white
@@ -23,8 +24,12 @@ const theme = createMuiTheme({
             light: white
         },
         secondary: {
-            main: lightGrey
+            main: grey,
+            light: lightGrey
         },
+        action: {
+            main: lightGrey,
+        }
     },
 })
 
