@@ -11,6 +11,7 @@ import ClientsListPage from './pages/ClientsListPage'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
+import ProjectsListPage from './pages/ProjectsListPage'
 
 import Navigation from './components/Navigation'
 
@@ -42,7 +43,11 @@ const App = () => {
                     render={(props) => <AddClientPage {...props} />}
                 />
                 <Route
-                    path='/projects/:projectId'
+                    path='/projects'
+                    render={(props) => <ProjectsListPage {...props} />}
+                />
+                <Route
+                    path='/project/:projectId'
                     render={(props) => <ProjectDetailPage {...props} />}
                 />
                 <Route
