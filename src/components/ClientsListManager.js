@@ -27,36 +27,35 @@ const ClientListManager = ({
     }
     if (error) return `Error! ${error.message}`;
     return (
-        <div className='ClientListManager'>
-            <Box mb={3} mx={2}>
-                <Grid container direction='row' justify='space-between' alignItems='flex-end'>
-                    <Grid item>
-                        <Box
-                            bgcolor='primary.black'
-                            color='primary.light'
-                            borderRadius='borderRadius'
-                            px={5}
-                            py={1}
-                        >
-                            {
-                                `${data.getActiveClientsCount} active ${data.getActiveClientsCount == 1
-                                    ? 'client'
-                                    : 'clients'}
+        <Box mb={3} mx={2} className='ClientListManager'>
+            <Grid container direction='row' justify='space-between' alignItems='flex-end'>
+                <Grid item>
+                    <Box
+                        bgcolor='primary.black'
+                        color='primary.light'
+                        borderRadius='borderRadius'
+                        px={5}
+                        py={1}
+                    >
+                        {
+                            `${data.getActiveClientsCount} active ${data.getActiveClientsCount == 1
+                                ? 'client'
+                                : 'clients'}
                                 `
-                            }
-                        </Box>
-                    </Grid>
-                    <Grid item>
-                        <Fab
-                            color='primary'
-                            onClick={() => addClient()}
-                        >
-                            <AddIcon color='action'/>
-                        </Fab>
-                    </Grid>
+                        }
+                    </Box>
                 </Grid>
-            </Box>
-        </div>
+                <Grid item>
+                    <Fab
+                        color='primary'
+                        onClick={() => addClient()}
+                    >
+                        <AddIcon color='action'/>
+                    </Fab>
+                </Grid>
+            </Grid>
+        </Box>
+
     )
 }
 
