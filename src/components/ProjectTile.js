@@ -6,7 +6,6 @@ import { spacing, boxShadow, borders } from '@material-ui/system'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import CodeIcon from '@material-ui/icons/Code'
-import { useLocation } from 'react-router-dom'
 
 const ProjectTile = ({
     history,
@@ -16,8 +15,6 @@ const ProjectTile = ({
     const redirectProjectPage = (project) => {
         history.push(`/project/${project.id}`)
     }
-    console.log('useLocation');
-    console.log(useLocation());
 
     return (
         <div className='ProjectTile'>
@@ -52,7 +49,7 @@ const ProjectTile = ({
                                     </Typography>
                                 </Grid>
                                 {
-                                    useLocation().pathname == '/projects' &&
+                                    window.location.pathname == '/projects' &&
                                     <Grid item xs={2}>
                                         <Typography variant='caption'>
                                             {project.client.name}

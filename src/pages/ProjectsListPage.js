@@ -4,23 +4,26 @@ import Grid from '@material-ui/core/Grid'
 //import ClientsListManager from '../components/ClientsListManager'
 import ProjectsList from '../components/ProjectsList'
 
-class ClientListPage extends React.Component {
+class ProjectsListPage extends React.Component {
 
     render() {
         return (
-            <div className='ProjectsListPage'>
-                <Grid container direction='row' justify='center'>
-                    <Grid item xs={10}>
-                        <Grid container>
-                            <ProjectsList
-                                history={this.props.history}
-                            />
-                        </Grid>
+            <Grid
+                container
+                direction='row'
+                justify='center'
+                className='ProjectsListPage'
+            >
+                <Grid item xs={12}>
+                    <Grid container>
+                        <ProjectsList
+                            history={this.props.history}
+                        />
                     </Grid>
                 </Grid>
-            </div>
+            </Grid>
         )
     }
 }
 
-export default ClientListPage
+export default ProjectsListPage

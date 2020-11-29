@@ -22,18 +22,14 @@ const App = () => {
                 <Navigation/>
                 <Route
                     exact
-                    path='/'
+                    path='/home/:list'
                     render={(props) => <HomePage {...props} />}
                 />
                 <Route
                     path='/login'
                     render={(props) => <LoginPage {...props} />}
                 />
-                <Route
-                    exact
-                    path='/clients'
-                    render={(props) => <ClientsListPage {...props} />}
-                />
+
                 <Route
                     path='/clients/:clientId'
                     render={(props) => <ClientDetailPage {...props} />}
@@ -42,10 +38,7 @@ const App = () => {
                     path='/client/add'
                     render={(props) => <AddClientPage {...props} />}
                 />
-                <Route
-                    path='/projects'
-                    render={(props) => <ProjectsListPage {...props} />}
-                />
+
                 <Route
                     path='/project/:projectId'
                     render={(props) => <ProjectDetailPage {...props} />}
