@@ -6,6 +6,7 @@ import { spacing, boxShadow, borders } from '@material-ui/system'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import CodeIcon from '@material-ui/icons/Code'
+import { useLocation } from 'react-router-dom'
 
 const ProjectTile = ({
     history,
@@ -15,6 +16,8 @@ const ProjectTile = ({
     const redirectProjectPage = (project) => {
         history.push(`/project/${project.id}`)
     }
+    console.log('useLocation');
+    console.log(useLocation());
 
     return (
         <div className='ProjectTile'>
@@ -31,8 +34,8 @@ const ProjectTile = ({
                     >
                         <Box
                             width={1}
-                            px={10}
-                            py={2}
+                            px={3}
+                            py={1}
                             boxShadow={3}
                             borderRadius='borderRadius'
                             bgcolor='primary.light'
@@ -41,20 +44,24 @@ const ProjectTile = ({
                                 container
                                 direction='row'
                                 alignItems='center'
-                                justify='space-between'
+                                justify='space-around'
                             >
-                                <Grid item xs={8}>
-                                    {project.name}
-                                </Grid>
                                 <Grid item xs={2}>
-                                    <Typography variant='body1'>
-                                        {project.client.name}
+                                    <Typography variant='subtitle1'>
+                                        {project.name.toUpperCase()}
                                     </Typography>
                                 </Grid>
-
+                                {
+                                    useLocation().pathname == '/projects' &&
+                                    <Grid item xs={2}>
+                                        <Typography variant='caption'>
+                                            {project.client.name}
+                                        </Typography>
+                                    </Grid>
+                                }
                                 <Grid
                                     item
-                                    xs={2}
+                                    xs={1}
                                 >
                                     <CodeIcon
                                         color={project.is_active ? 'primary' : 'secondary'}

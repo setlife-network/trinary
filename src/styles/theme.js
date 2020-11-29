@@ -12,7 +12,13 @@ import {
 } from './colors.scss'
 
 const theme = createMuiTheme({
+    typography: {
+        button: {
+            textTransform: 'capitalize'
+        }
+    },
     text: {
+        textTransform: 'none',
         primary: lightGrey,
     },
     palette: {
