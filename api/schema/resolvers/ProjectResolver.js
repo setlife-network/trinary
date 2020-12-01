@@ -334,6 +334,13 @@ module.exports = {
         },
         getProjects: (root, args, { models }) => {
             return models.Project.findAll()
+        },
+        getActiveProjectsCount: (root, args, { models }) => {
+            return models.Project.count({
+                where: {
+                    is_active: true
+                }
+            })
         }
     },
     Mutation: {
