@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 
-//import ClientsListManager from '../components/ClientsListManager'
+import ProjectsListManager from '../components/ProjectsListManager'
 import ProjectsList from '../components/ProjectsList'
 
 class ProjectsListPage extends React.Component {
@@ -15,6 +15,9 @@ class ProjectsListPage extends React.Component {
                 className='ProjectsListPage'
             >
                 <Grid item xs={12}>
+                    <ProjectsListManager
+                        history={this.props.history}
+                    />
                     <Grid container>
                         <ProjectsList
                             history={this.props.history}

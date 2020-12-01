@@ -6,7 +6,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { gql, useQuery } from '@apollo/client';
 
-import { GET_ACTIVE_CLIENTS_COUNT } from '../operations/queries/ClientQueries'
+import { GET_ACTIVE_PROJECTS_COUNT } from '../operations/queries/ProjectQueries'
 
 const ProjectsListManager = ({
     history
@@ -16,7 +16,7 @@ const ProjectsListManager = ({
         history.push('/client/add')
     }
 
-    const { loading, error, data } = useQuery(GET_ACTIVE_CLIENTS_COUNT);
+    const { loading, error, data } = useQuery(GET_ACTIVE_PROJECTS_COUNT);
 
     if (loading) {
         return (
@@ -26,6 +26,8 @@ const ProjectsListManager = ({
         )
     }
     if (error) return `Error! ${error.message}`;
+    console.log('data');
+    console.log(data);
     return (
         <Box mb={3} mx={2} className='ClientListManager'>
             <Grid container direction='row' justify='space-between' alignItems='flex-end'>
@@ -38,10 +40,10 @@ const ProjectsListManager = ({
                         py={1}
                     >
                         {
-                            `${data.getActiveClientsCount} active ${data.getActiveClientsCount == 1
-                                ? 'client'
-                                : 'clients'}
-                                `
+                            `${data.getActiveProjectsCount} active ${data.getActiveProjectsCount == 1
+                                ? 'project'
+                                : 'projects'}
+                            `
                         }
                     </Box>
                 </Grid>

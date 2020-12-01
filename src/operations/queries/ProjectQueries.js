@@ -19,3 +19,9 @@ export const GET_POJECTS = gql`
         }
     }
 `;
+
+export const GET_ACTIVE_PROJECTS_COUNT = gql`
+    query Clients {
+        getActiveProjectsCount
+    }
+`;
