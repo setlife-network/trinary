@@ -13,7 +13,7 @@ const ProjectsListManager = ({
 }) => {
 
     const addClient = () => {
-        history.push('/client/add')
+        history.push('/project/add')
     }
 
     const { loading, error, data } = useQuery(GET_ACTIVE_PROJECTS_COUNT);
@@ -26,8 +26,6 @@ const ProjectsListManager = ({
         )
     }
     if (error) return `Error! ${error.message}`;
-    console.log('data');
-    console.log(data);
     return (
         <Box mb={3} mx={2} className='ClientListManager'>
             <Grid container direction='row' justify='space-between' alignItems='flex-end'>
@@ -42,8 +40,8 @@ const ProjectsListManager = ({
                         {
                             `${data.getActiveProjectsCount} active ${data.getActiveProjectsCount == 1
                                 ? 'project'
-                                : 'projects'}
-                            `
+                                : 'projects'
+                            }`
                         }
                     </Box>
                 </Grid>

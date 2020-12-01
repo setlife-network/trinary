@@ -13,7 +13,7 @@ const ProjectTile = ({
 }) => {
 
     const redirectProjectPage = (project) => {
-        history.push(`/project/${project.id}`)
+        history.push(`/projects/${project.id}`)
     }
 
     return (

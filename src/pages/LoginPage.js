@@ -7,7 +7,9 @@ import { API_ROOT } from '../constants'
 
 import { ReactComponent as ReactImg } from '../images/sample.svg'
 
-function LoginPage() {
+function LoginPage({
+    history
+}) {
 
     const [loggedInUser, setLoggedInUser] = useState({
         id: null,

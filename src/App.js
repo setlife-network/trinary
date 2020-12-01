@@ -16,6 +16,7 @@ import ProjectsListPage from './pages/ProjectsListPage'
 import Navigation from './components/Navigation'
 
 const App = () => {
+
     return (
         <div className='App'>
             <ThemeProvider theme={theme}>
@@ -38,9 +39,8 @@ const App = () => {
                     path='/client/add'
                     render={(props) => <AddClientPage {...props} />}
                 />
-
                 <Route
-                    path='/project/:projectId'
+                    path='/projects/:projectId'
                     render={(props) => <ProjectDetailPage {...props} />}
                 />
                 <Route

@@ -10,26 +10,12 @@ import ClientsListPage from './ClientsListPage'
 
 class HomePage extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            list: this.props.match.params.list
-        }
-    }
-
-    componentDidMount() {
-
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props !== prevProps) {
-            this.fetchData(this.props.userID);
-        }
+    updateURL = (params) => {
+        this.props.history.push(`/home/${params.subdirectory}`)
     }
 
     render() {
-        console.log('this.state');
-        console.log(this.state.list);
+        const { list } = this.props.match.params
         return (
             <Grid
                 container
@@ -54,9 +40,9 @@ class HomePage extends React.Component {
                         <Grid item xs={5}>
                             <Button
                                 fullWidth
-                                variant={this.state.list == 'projects' ? 'contained' : 'outlined'}
+                                variant={list == 'projects' ? 'contained' : 'outlined'}
                                 color='primary'
-                                onClick={() => this.setState({ list: 'projects' })}
+                                onClick={() => this.updateURL({ subdirectory: 'projects' })}
                             >
                                 <Typography color='action'>
                                     Projects
@@ -67,21 +53,21 @@ class HomePage extends React.Component {
                         <Grid item xs={5}>
                             <Button
                                 fullWidth
-                                variant={this.state.list == 'clients' ? 'contained' : 'outlined'}
+                                variant={list == 'clients' ? 'contained' : 'outlined'}
                                 color='primary'
-                                onClick={() => this.setState({ list: 'clients' })}
+                                onClick={() => this.updateURL({ subdirectory: 'clients' })}
                             >
                                 Clients
                             </Button>
                         </Grid>
                     </Grid>
                     {
-                        this.state.list == 'projects'
+                        list == 'projects'
                             ? (
-                                <ProjectsListPage/>
+                                <ProjectsListPage {...this.props}/>
                             )
                             : (
-                                <ClientsListPage/>
+                                <ClientsListPage {...this.props}/>
                             )
                     }
                 </Grid>
