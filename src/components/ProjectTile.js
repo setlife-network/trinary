@@ -43,14 +43,14 @@ const ProjectTile = ({
                                 alignItems='center'
                                 justify='space-around'
                             >
-                                <Grid item xs={window.location.pathname == '/projects' ? 2 : 10}>
+                                <Grid item xs={window.location.pathname == '/home/projects' ? 6 : 10}>
                                     <Typography variant='h6'>
                                         {project.name}
                                     </Typography>
                                 </Grid>
                                 {
-                                    window.location.pathname == '/projects' &&
-                                    <Grid item xs={2}>
+                                    window.location.pathname == '/home/projects' &&
+                                    <Grid item xs={4}>
                                         <Typography variant='caption'>
                                             {project.client.name}
                                         </Typography>
