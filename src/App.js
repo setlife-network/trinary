@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, withRouter } from 'react-router-dom'
+import { Route, withRouter, Redirect } from 'react-router-dom'
 import { ThemeProvider } from '@material-ui/core/styles'
 
 import theme from './styles/theme'
@@ -21,6 +21,11 @@ const App = () => {
         <div className='App'>
             <ThemeProvider theme={theme}>
                 <Navigation/>
+                <Route
+                    exact
+                    path={`/home`}
+                    component={() => <Redirect to={`/home/clients`} />}
+                />
                 <Route
                     path='/home/:list'
                     render={(props) => <HomePage {...props} />}

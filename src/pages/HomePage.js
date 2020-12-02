@@ -3,6 +3,7 @@ import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import { Route, withRouter, Redirect } from 'react-router-dom'
 
 import Header from '../components/Header'
 import ProjectsListPage from './ProjectsListPage'
@@ -16,6 +17,7 @@ class HomePage extends React.Component {
 
     render() {
         const { list } = this.props.match.params
+        const { match } = this.props
         return (
             <Grid
                 container
@@ -70,15 +72,15 @@ class HomePage extends React.Component {
                         </Grid>
                     </Grid>
                     <Box mt={5}>
-                        {
-                            list == 'projects'
-                                ? (
-                                    <ProjectsListPage {...this.props}/>
-                                )
-                                : (
-                                    <ClientsListPage {...this.props}/>
-                                )
-                        }
+
+                        <Route
+                            path={`/home/clients`}
+                            render={(props) => <ClientsListPage {...props} />}
+                        />
+                        <Route
+                            path={`/home/projects`}
+                            render={(props) => <ProjectsListPage {...props} />}
+                        />
                     </Box>
                 </Grid>
             </Grid>
