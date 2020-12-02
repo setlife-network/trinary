@@ -27,7 +27,11 @@ const ClientListManager = ({
     }
     if (error) return `Error! ${error.message}`;
     return (
-        <Box mb={3} mx={2} className='ClientListManager'>
+        <Box
+            mb={3}
+            mx={1}
+            className='ClientListManager'
+        >
             <Grid container direction='row' justify='space-between' alignItems='flex-end'>
                 <Grid item>
                     <Box
@@ -40,8 +44,8 @@ const ClientListManager = ({
                         {
                             `${data.getActiveClientsCount} active ${data.getActiveClientsCount == 1
                                 ? 'client'
-                                : 'clients'}
-                                `
+                                : 'clients'
+                            }`
                         }
                     </Box>
                 </Grid>

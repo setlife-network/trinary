@@ -43,9 +43,9 @@ const ProjectTile = ({
                                 alignItems='center'
                                 justify='space-around'
                             >
-                                <Grid item xs={2}>
-                                    <Typography variant='subtitle1'>
-                                        {project.name.toUpperCase()}
+                                <Grid item xs={window.location.pathname == '/projects' ? 2 : 10}>
+                                    <Typography variant='h6'>
+                                        {project.name}
                                     </Typography>
                                 </Grid>
                                 {
@@ -58,7 +58,7 @@ const ProjectTile = ({
                                 }
                                 <Grid
                                     item
-                                    xs={1}
+                                    xs={2}
                                 >
                                     <CodeIcon
                                         color={project.is_active ? 'primary' : 'secondary'}

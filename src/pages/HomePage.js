@@ -37,39 +37,53 @@ class HomePage extends React.Component {
                         alignItems='center'
                         xs={12}
                     >
-                        <Grid item xs={5}>
-                            <Button
-                                fullWidth
-                                variant={list == 'projects' ? 'contained' : 'outlined'}
-                                color='primary'
-                                onClick={() => this.updateURL({ subdirectory: 'projects' })}
-                            >
-                                <Typography color='action'>
-                                    Projects
-                                </Typography>
 
-                            </Button>
+                        <Grid item xs={6}>
+                            <Box mr={3} ml={1}>
+                                <Button
+                                    fullWidth
+                                    variant={list == 'projects' ? 'contained' : 'outlined'}
+                                    color='primary'
+                                    onClick={() => this.updateURL({ subdirectory: 'projects' })}
+                                >
+                                    <Typography variant='h6'>
+                                        <strong>
+                                            Projects
+                                        </strong>
+                                    </Typography>
+                                </Button>
+                            </Box>
                         </Grid>
-                        <Grid item xs={5}>
-                            <Button
-                                fullWidth
-                                variant={list == 'clients' ? 'contained' : 'outlined'}
-                                color='primary'
-                                onClick={() => this.updateURL({ subdirectory: 'clients' })}
-                            >
-                                Clients
-                            </Button>
+                        <Grid item xs={6}>
+                            <Box ml={3} mr={1}>
+                                <Button
+                                    fullWidth
+                                    variant={list == 'clients' ? 'contained' : 'outlined'}
+                                    color='primary'
+                                    onClick={() => this.updateURL({ subdirectory: 'clients' })}
+                                >
+                                    <Typography variant='h6'>
+                                        <strong>
+                                            Clients
+                                        </strong>
+                                    </Typography>
+
+                                </Button>
+                            </Box>
                         </Grid>
+
                     </Grid>
-                    {
-                        list == 'projects'
-                            ? (
-                                <ProjectsListPage {...this.props}/>
-                            )
-                            : (
-                                <ClientsListPage {...this.props}/>
-                            )
-                    }
+                    <Box mt={5}>
+                        {
+                            list == 'projects'
+                                ? (
+                                    <ProjectsListPage {...this.props}/>
+                                )
+                                : (
+                                    <ClientsListPage {...this.props}/>
+                                )
+                        }
+                    </Box>
                 </Grid>
 
             </Grid>
