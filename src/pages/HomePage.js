@@ -37,7 +37,6 @@ class HomePage extends React.Component {
                         alignItems='center'
                         xs={12}
                     >
-
                         <Grid item xs={6}>
                             <Box mr={3} ml={1}>
                                 <Button
@@ -71,7 +70,6 @@ class HomePage extends React.Component {
                                 </Button>
                             </Box>
                         </Grid>
-
                     </Grid>
                     <Box mt={5}>
                         {
@@ -85,7 +83,6 @@ class HomePage extends React.Component {
                         }
                     </Box>
                 </Grid>
-
             </Grid>
         )
     }
