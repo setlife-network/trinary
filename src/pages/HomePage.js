@@ -1,7 +1,7 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
 import Header from '../components/Header'
@@ -30,7 +30,6 @@ class HomePage extends React.Component {
                     alignItems='center'
                 />
                 <Grid item xs={10}>
-
                     <Grid
                         container
                         justify='space-between'
@@ -66,7 +65,6 @@ class HomePage extends React.Component {
                                             Clients
                                         </strong>
                                     </Typography>
-
                                 </Button>
                             </Box>
                         </Grid>

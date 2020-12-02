@@ -24,7 +24,6 @@ const ClientsList = ({
     const clients = orderBy(data.getClients, 'is_active', 'desc')
     return (
         clients.map(c => {
-            console.log(c);
             return (
                 <Grid item xs={12} lg={4}>
                     <ClientTile
