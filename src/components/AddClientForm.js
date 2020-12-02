@@ -12,9 +12,11 @@ import TextField from '@material-ui/core/TextField'
 
 import { CREATE_CLIENT } from '../operations/mutations/ClientMutations'
 
-const AddClientForm = (props) => {
+const AddClientForm = ({
+    history
+}) => {
 
-    const [addClient, { loading, error, data }] = useMutation(CREATE_CLIENT);
+    const [addClient, { data, loading, error }] = useMutation(CREATE_CLIENT)
 
     const [clientName, setClientName] = useState('');
     const [clientEmail, setClientEmail] = useState('');
@@ -22,18 +24,8 @@ const AddClientForm = (props) => {
     const [disableAdd, setDisableAdd] = useState(true);
 
     const onAdd = async () => {
-
-        addClient({ variables: { name: clientName, email: clientEmail, currency: clientCurrency } });
-        if (loading) {
-            return (
-                <Grid item xs={12}>
-                    Loading...
-                </Grid>
-            )
-        }
-        if (error) return `Error! ${error.message}`;
-        console.log('data')
-        console.log(data)
+        const newClient = await addClient({ variables: { name: clientName, email: clientEmail, currency: clientCurrency } });
+        history.push(`/clients/${newClient.data.createClient.id}`)
     }
 
     useEffect(() => {

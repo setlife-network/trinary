@@ -11,7 +11,6 @@ import AddClientForm from '../components/AddClientForm'
 import Header from '../components/Header'
 
 class AddClientPage extends React.Component {
-    componentDidMount() {}
 
     render() {
         return (
@@ -36,7 +35,9 @@ class AddClientPage extends React.Component {
                         You can add projects within the newly created client page
                     </Typography>
                     <Box mt={5}>
-                        <AddClientForm/>
+                        <AddClientForm
+                            history={this.props.history}
+                        />
                     </Box>
                 </Grid>
             </Grid>
