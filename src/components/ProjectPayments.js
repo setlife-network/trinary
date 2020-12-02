@@ -47,9 +47,9 @@ const MOCKED_PAYMENTS = [
 const PaymentTile = (props) => {
     const { payment } = props
     
-    const formattedDatePaid = moment.unix(payment.date_paid).format("MM/DD/YYYY")
-    const formattedDateIncurred = moment.unix(payment.date_incurred).format("MM/DD/YYYY")
-    const paymentHasBeenPaid = payment.date_paid != null
+    const formattedDatePaid = moment.unix(payment.date_paid).format('MM/DD/YYYY')
+    const formattedDateIncurred = moment.unix(payment.date_incurred).format('MM/DD/YYYY')
+    const paymentHasBeenMade = payment.date_paid != null
 
     return (
         
@@ -63,7 +63,7 @@ const PaymentTile = (props) => {
             </Box>
             
 
-            {paymentHasBeenPaid
+            {paymentHasBeenMade
                 ? (
                     <Box 
                         className='DatePaid'
