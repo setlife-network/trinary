@@ -38,7 +38,7 @@ module.exports = gql`
 
         updateClientById(
             id: Int!,
-            updateFields: ClientInput
+            updateFields: ClientInput!
         ): Client
     }
 

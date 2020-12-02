@@ -13,7 +13,10 @@ module.exports = gql`
         getPermissions: [Permission]
         getPermissionsByProjectId(id: Int!): [Permission]
         getPermissionsByContributorId(id: Int!): [Permission]
-        getPermissionByProjectIdAndContributorId(project_id: Int!, contributor_id: Int!): Permission
+        getPermissionByProjectIdAndContributorId(
+            project_id: Int!,
+            contributor_id: Int!
+        ): Permission
     }
 
 `
