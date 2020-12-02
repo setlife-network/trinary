@@ -32,8 +32,8 @@ const ClientTile = ({
                     >
                         <Box
                             width={1}
-                            px={10}
-                            py={2}
+                            px={2}
+                            py={1}
                             boxShadow={3}
                             borderRadius='borderRadius'
                             bgcolor='primary.light'
@@ -44,7 +44,10 @@ const ClientTile = ({
                                 alignItems='center'
                                 justify='space-between'
                             >
-                                <Grid item xs={10}>
+                                <Grid
+                                    item
+                                    xs={10}
+                                >
                                     {client.name}
                                 </Grid>
                                 <Grid

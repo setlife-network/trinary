@@ -1,6 +1,7 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client';
 import Grid from '@material-ui/core/Grid'
+import { orderBy } from 'lodash'
 
 import ClientTile from './ClientTile'
 
@@ -20,8 +21,10 @@ const ClientsList = ({
         )
     }
     if (error) return `Error! ${error.message}`;
+    const clients = orderBy(data.getClients, 'is_active', 'desc')
     return (
-        data.getClients.map(c => {
+        clients.map(c => {
+            console.log(c);
             return (
                 <Grid item xs={12} lg={4}>
                     <ClientTile
