@@ -21,6 +21,13 @@ const theme = createMuiTheme({
         textTransform: 'none',
         primary: lightGrey,
     },
+    overrides: {
+        MuiCardContent: {
+            root: {
+                padding: 0,
+            }
+        }
+    },
     palette: {
         primary: {
             main: setlifeBlue,

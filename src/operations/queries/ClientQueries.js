@@ -16,3 +16,15 @@ export const GET_ACTIVE_CLIENTS_COUNT = gql`
         getActiveClientsCount
     }
 `;
+
+export const GET_CLIENT_INFO = gql`
+    query Client($id: Int!) {
+        getClientById(id: $id){
+            id,
+            name,
+            email,
+            currency,
+            is_active
+        }
+    }
+`

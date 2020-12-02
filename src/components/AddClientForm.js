@@ -24,7 +24,7 @@ const AddClientForm = ({
     const [disableAdd, setDisableAdd] = useState(true);
 
     const onAdd = async () => {
-        const newClient = await addClient({ variables: { name: clientName, email: clientEmail, currency: clientCurrency } });
+        const newClient = await addClient({ variables: { name: clientName, email: clientEmail, currency: clientCurrency } })
         history.push(`/clients/${newClient.data.createClient.id}`)
     }
 
@@ -32,7 +32,7 @@ const AddClientForm = ({
         if (clientName && clientCurrency) {
             setDisableAdd(false)
         }
-    });
+    })
 
     return (
         <FormControl fullWidth noValidate autoComplete='off' align='left'>

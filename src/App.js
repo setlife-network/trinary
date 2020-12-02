@@ -22,7 +22,6 @@ const App = () => {
             <ThemeProvider theme={theme}>
                 <Navigation/>
                 <Route
-                    exact
                     path='/home/:list'
                     render={(props) => <HomePage {...props} />}
                 />

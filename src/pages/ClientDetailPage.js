@@ -1,24 +1,20 @@
 import React from 'react'
+import Grid from '@material-ui/core/Grid'
 
-const MOCKED_CLIENT = {
-    id: 1,
-    name: 'Client A',
-    projects: [
-        {
-            id: 1,
-            name: 'Project One',
-        }
-    ]
-}
+import ClientInfo from '../components/ClientInfo'
 
 class ClientDetailPage extends React.Component {
     componentDidMount() {}
 
     render() {
         return (
-            <div className='ClientDetailPage'>
-                ClientDetailPage
-            </div>
+            <Grid container justify='center' className='ClientDetailPage'>
+                <Grid item xs={5}>
+                    <ClientInfo
+                        clientId={this.props.match.params.clientId}
+                    />
+                </Grid>
+            </Grid>
         )
     }
 }
