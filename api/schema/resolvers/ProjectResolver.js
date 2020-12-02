@@ -396,12 +396,18 @@ module.exports = {
                 //get updated project
                 project = await models.Project.findByPk(args.project_id)
             }
-
-            const dataSync = await apiModules.dataSyncs.syncTogglProject({
-                togglProjectId: project.toggl_id,
-                projectId: project.id
+            //search for the date of the last sync to fetch since taht date
+            const lastEntrySynced = await models.TimeEntry.findOne({
+                order: [['created_at', 'DESC']]
             })
-            if (dataSync == 'Success') {
+            const dataSync = await apiModules.dataSyncs.syncTogglProject({
+                toggl_project_id: project.toggl_id,
+                project_id: project.id,
+                since: lastEntrySynced
+                    ? lastEntrySynced.created_at
+                    : moment().subtract(1, 'y').format('YYYY-MM-DD')
+            })
+            if (dataSync) {
                 return project
             } else {
                 return new ApolloError('Something wrong happened', 2003)
