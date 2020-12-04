@@ -24,12 +24,12 @@ module.exports = gql`
 
     type Mutation {
         createRate(
-            createFileds: RateInput!
+            createFields: RateInput!
         ): Rate
         deleteRateById(id: Int!): String
         updateRateById(
             id: Int!,
-            updateFileds: RateInput
+            updateFileds: RateInput!
         ): Rate
     }
 `

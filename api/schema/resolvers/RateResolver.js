@@ -14,9 +14,9 @@ module.exports = {
         }
     },
     Mutation: {
-        createRate: (root, { createFileds }, { models }) => {
+        createRate: (root, { createFields }, { models }) => {
             return models.Rate.create({
-                ...createFileds
+                ...createFields
             })
         },
         deleteRateById: (root, { id }, { models }) => {

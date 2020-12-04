@@ -45,12 +45,12 @@ module.exports = gql`
     type Mutation {
         linkTogglContributor(contributorId: Int!, togglAPIKey: String!): Contributor
         createContributor(
-            createFields: CreateContributorInput
+            createFields: CreateContributorInput!
         ): Contributor
         deleteContributorById(id: Int!): String
         updateContributorById(
             id: Int!
-            updateFields: UpdateContributorInput
+            updateFields: UpdateContributorInput!
         ):Contributor
     }
 `
