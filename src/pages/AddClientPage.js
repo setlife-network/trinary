@@ -8,6 +8,7 @@ class AddClientPage extends React.Component {
             <div className='AddClientPage'>
                 AddClientPage
             </div>
+            
         )
     }
 }
