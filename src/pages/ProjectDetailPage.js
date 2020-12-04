@@ -70,7 +70,9 @@ class ProjectDetailPage extends React.Component {
         return (
             <div className='ProjectDetailPage'>
                 {/* Apollo client hooks are in here */}
-                <ProjectManager/>
+                {/* <ProjectManager
+                    projectId={match.params.projectId}
+                /> */}
 
                 <Route
                     exact

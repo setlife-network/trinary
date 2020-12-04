@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import moment from 'moment'
-import Box from '@material-ui/core/box'
+import Box from '@material-ui/core/Box'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
-
-
 
 const MOCKED_PAYMENTS = [
     {

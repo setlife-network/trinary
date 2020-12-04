@@ -6,27 +6,14 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { gql, useQuery } from '@apollo/client';
 
-import { GET_ACTIVE_PROJECTS_COUNT } from '../operations/queries/ProjectQueries'
-
-const GET_PROJECT = gql`
-    query Project($id: Int!){
-        getProjectById(id: $id){
-            id,
-            name,
-            client{
-                id,
-                name
-            }
-        }
-    }
-`
+import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 
 const ProjectManager = ({
-    history
+    projectId
 }) => {
     const { data, loading, error } = useQuery(GET_PROJECT, {
         variables: {
-            id: 1
+            id: Number(projectId)
         }
     })
 

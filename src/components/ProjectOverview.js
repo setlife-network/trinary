@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
+
+import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 
 const MOCKED_PROJECT = {
     id: 1,
@@ -64,13 +67,28 @@ const TimeTracking = ({
 
 
 const ProjectOverview = (props) => {
-    console.log(MOCKED_PROJECT)
+    console.log(props)
+    const { data, loading, error } = useQuery(GET_PROJECT, {
+        variables: {
+            id: 4
+            // id: Number(projectId)
+        }
+    })
 
+    if (loading) return 'Loading...'
+    if (error) return error
+    
+    console.log('data')
+    console.log(data)
+    const project = data?.getProjectById
+
+    console.log('project')
+    console.log(project)
     return (
         <div className='ProjectOverview'>
             ProjectOverview
-            <ProjectSummary project={MOCKED_PROJECT}/>
-            <TimeTracking project={MOCKED_PROJECT}/>
+            {/* <ProjectSummary project={project}/>
+            <TimeTracking project={project}/> */}
         </div>
     );
 }
