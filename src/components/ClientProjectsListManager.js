@@ -1,61 +1,47 @@
 import React from 'react'
-import { gql, useQuery, useApolloClient, ApolloProvider, ApolloConsumer } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import Grid from '@material-ui/core/Grid'
 import { orderBy } from 'lodash'
 
 import { GET_POJECTS } from '../operations/queries/ProjectQueries'
+import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import ProjectsList from './ProjectsList'
-//import { client } from '../index'
 
 const ClientProjectsListManager = ({
     clientId,
     history
 }) => {
 
-    const apolloClient = useApolloClient()
-    console.log('apolloClient.cache.data.data');
-    console.log(apolloClient.cache.data.data);
-    const client = apolloClient.cache.data.data.['Client:2']
-    // console.log('client');
-    // console.log(client);
-    // console.log('client.cache.data.data');
-    // console.log(client.cache.data.data);
-    // console.log(client.readQuery());
+    const { loading, error, data, networkStatus } = useQuery(GET_CLIENT_INFO, {
+        variables: { id: parseInt(clientId, 10) }
+    })
 
-    // const { loading, error, data } = client.readQuery({
-    //     query: gql`
-    //         query Client {
-    //             getClientById(id: 1){
-    //                 id,
-    //                 name,
-    //                 email,
-    //                 currency,
-    //                 is_active
-    //             }
-    //         }
-    //     `
-    // })
+    if (loading) {
+        return (
+            <Grid item xs={12}>
+                Loading...
+            </Grid>
+        )
+    }
+    if (error) return `Error! ${error.message}`;
 
-    // const client = client.cache.data.data.client
+    const projects = orderBy(data.getClientById.projects, ['is_active'], ['desc'])
 
-    // if (loading) {
-    //     return (
-    //         <Grid item xs={12}>
-    //             Loading...
-    //         </Grid>
-    //     )
-    // }
-    // if (error) return `Error! ${error.message}`;
-    //const projects = orderBy(data.getProjects, ['is_active'], ['desc'])
-    // console.log('data');
-    // console.log(client.projects);
-    // const projects = client.projects
-    // return (
-    //     <ProjectsList
-    //         history={history}
-    //         projects={projects}
-    //     />
-    // )
+    return (
+        projects.length != 0
+            ? (
+                <ProjectsList
+                    history={history}
+                    projects={projects}
+                />
+            )
+            : (
+                //TODO: Create empty state
+                <p>
+                    No projects to display
+                </p>
+            )
+    )
 }
 
 export default ClientProjectsListManager

@@ -16,8 +16,11 @@ import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 const ClientInfo = ({
     clientId
 }) => {
+    
     const { loading, error, data, networkStatus } = useQuery(GET_CLIENT_INFO, {
-        variables: { id: parseInt(clientId, 10) }
+        variables: {
+            id: parseInt(clientId, 10)
+        }
     })
 
     if (loading) {
@@ -32,7 +35,6 @@ const ClientInfo = ({
     const client = data.getClientById
     return (
         <Card>
-
             <Box px={5} p={3} align='left'>
                 <Typography variant='h4' color='primary'>
                     <strong>
@@ -65,7 +67,6 @@ const ClientInfo = ({
                     </Button>
                 </CardActions>
             </Box>
-
         </Card>
     );
 }

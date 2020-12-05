@@ -16,14 +16,16 @@ class HomePage extends React.Component {
     }
 
     render() {
+
         const { list } = this.props.match.params
         const { match } = this.props
+
         return (
             <Grid
                 container
-                className='HomePage'
                 justify='center'
                 alignItems='center'
+                className='HomePage'
             >
                 <Header
                     title='Home'
@@ -31,7 +33,7 @@ class HomePage extends React.Component {
                     justify='center'
                     alignItems='center'
                 />
-                <Grid item xs={10}>
+                <Grid item xs={8}>
                     <Grid
                         container
                         justify='space-between'

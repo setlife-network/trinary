@@ -7,11 +7,6 @@ export const GET_CLIENTS = gql`
             name
             currency
             is_active
-            projects {
-                id,
-                name,
-                is_active
-            }
         }
     }
 `;

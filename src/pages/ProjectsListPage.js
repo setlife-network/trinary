@@ -18,6 +18,7 @@ class ProjectsListPage extends React.Component {
                 <Grid item xs={12}>
                     <ProjectsListManager
                         history={this.props.history}
+                        home
                     />
                     <Grid container>
                         <HomeProjectsListManager
