@@ -17,22 +17,36 @@ console.log('toggl.createTimeEntry()');
 // }
 // const projectData = await toggl.fetchProjectData({ projectId:  })
 
-// const timeEntries = toggl.fetchTimeEntries({ accessToken: TOGGL.API_KEY })
-//     .then(res => {
-//         console.log(res);
-//     })
-//     .catch(err => {
-//         Error(err)
-//     })
-
+//
 // const ptojectData = toggl.fetchProjectData({ projectId:  })
 //     .then(res => {
 //         console.log('res');
 //         console.log(res);
 //     })
 
-const userData = toggl.fetchUserData()
+const workspaceData = toggl.fetchWorkspacesData({
+    wId: 3070291
+})
     .then(res => {
         console.log('res');
+        console.log(res);
+    })
+
+const workspaceReport = toggl.fetchWorkspaceTimeEntries({
+    wId: 3070291,
+    pId: 162053371,
+    since: '2020-01-01',
+    until: '2020-11-12'
+})
+    .then(res => {
+        console.log('report');
+        console.log(res);
+    })
+
+const workspaceProjects = toggl.fetchWorkspacesProject({
+    wId: 3070291
+})
+    .then(res => {
+        console.log('projects');
         console.log(res);
     })

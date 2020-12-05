@@ -8,25 +8,12 @@ import AssessmentIcon from '@material-ui/icons/Assessment';
 import PeopleIcon from '@material-ui/icons/People';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
-import { useQuery, gql, NetworkStatus } from '@apollo/client';
 
+import ProjectManager from '../components/ProjectManager'
 import ProjectOverview from '../components/ProjectOverview'
 import ProjectPayments from '../components/ProjectPayments'
 import ProjectContributors from '../components/ProjectContributors'
 import ProjectIssues from '../components/ProjectIssues'
-
-const GET_PROJECT = gql`
-    query Project($id: Int!){
-        getProjectById(id: $id){
-            id,
-            name,
-            client{
-                id,
-                name
-            }
-        }
-    }
-`
 
 const MOCKED_PROJECT = {
     id: 1,
@@ -65,85 +52,78 @@ const MOCKED_PROJECT = {
     ]
 }
 
-function ProjectDetailPage(
-    {
-        history,
-        location,
-        match
-    }
-) {
-
-    const { data, loading, error } = useQuery(GET_PROJECT, {
-        variables: {
-            id: 1
-        }
-    })
-
-    const handleTabClick = (event, tab) => {
-
-        history.push(`/projects/${match.params.projectId}/${tab}`)
+class ProjectDetailPage extends React.Component {
+    handleTabClick = (event, tab) => {
+        this.props.history.push(`/projects/${this.props.match.params.projectId}/${tab}`)
     }
 
-    // Convert URL `/projects/1/payments` to `payments`
-    const selectedTab = location.pathname.replace(match.url, '').slice(1)
+    render() {
+        const {
+            history,
+            location,
+            match
+        } = this.props
 
-    if (loading) return 'Loading...'
-    if (error) return error
+        // Convert URL `/projects/1/payments` to `payments`
+        const selectedTab = location.pathname.replace(match.url, '').slice(1)
 
-    return (
-        <div className='ProjectDetailPage'>
-            ProjectDetailPage
+        return (
+            <div className='ProjectDetailPage'>
+                {/* Apollo client hooks are in here */}
+                {/* <ProjectManager
+                    projectId={match.params.projectId}
+                /> */}
 
-            <Route
-                exact
-                path={`${match.url}/`}
-                component={() => <Redirect to={`${match.url}/overview`} />}
-            />
-            <Route
-                path={`${match.url}/overview`}
-                render={(props) => <ProjectOverview {...props} />}
-            />
-            <Route
-                path={`${match.url}/payments`}
-                render={(props) => <ProjectPayments {...props} />}
-            />
-            <Route
-                path={`${match.url}/contributors`}
-                render={(props) => <ProjectContributors {...props} />}
-            />
-            <Route
-                path={`${match.url}/issues`}
-                render={(props) => <ProjectIssues {...props} />}
-            />
-
-            <BottomNavigation
-                value={selectedTab}
-                onChange={() => handleTabClick}
-            >
-                <BottomNavigationAction
-                    label='Overview'
-                    value='overview'
-                    icon={<AssessmentIcon/>}
+                <Route
+                    exact
+                    path={`${match.url}/`}
+                    component={() => <Redirect to={`${match.url}/overview`} />}
                 />
-                <BottomNavigationAction
-                    label='Payments'
-                    value='payments'
-                    icon={<AttachMoneyIcon/>}
+                <Route
+                    path={`${match.url}/overview`}
+                    render={(props) => <ProjectOverview {...props} />}
                 />
-                <BottomNavigationAction
-                    label='Contributors'
-                    value='contributors'
-                    icon={<PeopleIcon/>}
+                <Route
+                    path={`${match.url}/payments`}
+                    render={(props) => <ProjectPayments {...props} />}
                 />
-                <BottomNavigationAction
-                    label='Issues'
-                    value='issues'
-                    icon={<FormatListNumberedIcon/>}
+                <Route
+                    path={`${match.url}/contributors`}
+                    render={(props) => <ProjectContributors {...props} />}
                 />
-            </BottomNavigation>
-        </div>
-    )
+                <Route
+                    path={`${match.url}/issues`}
+                    render={(props) => <ProjectIssues {...props} />}
+                />
 
+                <BottomNavigation
+                    value={selectedTab}
+                    onChange={this.handleTabClick}
+                >
+                    <BottomNavigationAction
+                        label='Overview'
+                        value='overview'
+                        icon={<AssessmentIcon/>}
+                    />
+                    <BottomNavigationAction
+                        label='Payments'
+                        value='payments'
+                        icon={<AttachMoneyIcon/>}
+                    />
+                    <BottomNavigationAction
+                        label='Contributors'
+                        value='contributors'
+                        icon={<PeopleIcon/>}
+                    />
+                    <BottomNavigationAction
+                        label='Issues'
+                        value='issues'
+                        icon={<FormatListNumberedIcon/>}
+                    />
+                </BottomNavigation>
+            </div>
+        )
+    }
 }
 
 export default ProjectDetailPage

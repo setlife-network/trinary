@@ -25,3 +25,34 @@ export const GET_ACTIVE_PROJECTS_COUNT = gql`
         getActiveProjectsCount
     }
 `;
+
+export const GET_PROJECT = gql`
+    query Project($id: Int!){
+        getProjectById(id: $id){
+            id,
+            name,
+            client {
+                id,
+                name
+            },
+            allocatedPayments {
+                id
+            },
+            issues {
+                id
+            },
+            contributors {
+                id
+            },
+            allocations {
+                id
+            },
+            timeSpent(
+                fromDate: "2020-01-01",
+                toDate: "2020-12-31"
+            ) {
+                seconds
+            }
+        }
+    }
+`

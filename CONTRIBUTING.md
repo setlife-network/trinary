@@ -38,7 +38,7 @@ git push -u origin your-branch
 
 There may be specific linting rules configured in the project that should be followed and it is worth taking the time to set up a linter in your IDE to do this automatically. However, it is not the linting rules themselves that constitute good enforcement of code quality and rules may be changed according to developer preference as long as there is consistency throughout the codebase.
 
-There are key principles involving language skills and grammer that are more important than linting rules and cannot be automated because they are more abstract/logical/conceptual in nature. Use these principles as a guide to make sure your code is as readable and understandable as possible.
+There are key principles involving language skills and grammar that are more important than linting rules and cannot be automated because they are more abstract/logical/conceptual in nature. Use these principles as a guide to make sure your code is as readable and understandable as possible.
 
 #### 1. Minimize Required Knowledge
 
@@ -56,7 +56,7 @@ After:
 
 #### 3. Avoid Abbreviations
 
-Verbosity is almost _always_ preferred over abbreviations, which far more often than not makes it more difficult to read code. By appling #1 and minimizing the required knowledge, you may not remember what was abbreviated and might have to guess, which takes time and effort when you just are trying to read and decipher the behavior of the code.
+Verbosity is almost _always_ preferred over abbreviations, which far more often than not makes it more difficult to read code. By applying #1 and minimizing the required knowledge, you may not remember what was abbreviated and might have to guess, which takes time and effort when you just are trying to read and decipher the behavior of the code.
 
 Usually the only case where it is acceptable to abbreviate is where the full word was just used, like when looping through items in an array.
 
@@ -180,7 +180,7 @@ let availableFruits = [
     }
 ]
 
-const addFruitToInventory = (fruitName, quanitity) => {
+const addFruitToInventory = (fruitName, quantity) => {
     availableFruits.push({
         fruitName,
         quantityRemaining: quantity
