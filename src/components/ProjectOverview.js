@@ -44,7 +44,6 @@ const MOCKED_PROJECT = {
     ]
 }
 
-
 const ProjectSummary = (props) => {
     return (
         <div className='ProjectSummary'>
@@ -52,7 +51,6 @@ const ProjectSummary = (props) => {
         </div>
     )
 }
-
 
 const TimeTracking = ({
     totalTimeSpent,
@@ -65,9 +63,7 @@ const TimeTracking = ({
     )
 }
 
-
 const ProjectOverview = (props) => {
-    console.log(props)
     const { data, loading, error } = useQuery(GET_PROJECT, {
         variables: {
             id: 4
@@ -77,13 +73,8 @@ const ProjectOverview = (props) => {
 
     if (loading) return 'Loading...'
     if (error) return error
-    
-    console.log('data')
-    console.log(data)
-    const project = data?.getProjectById
 
-    console.log('project')
-    console.log(project)
+    const project = data?.getProjectById
     return (
         <div className='ProjectOverview'>
             ProjectOverview
@@ -94,7 +85,7 @@ const ProjectOverview = (props) => {
 }
 
 ProjectOverview.defaultProps = {
-    
+
 };
 
 export default ProjectOverview;

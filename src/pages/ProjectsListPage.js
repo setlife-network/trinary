@@ -8,6 +8,7 @@ import ProjectsList from '../components/ProjectsList'
 class ProjectsListPage extends React.Component {
 
     render() {
+        const { history } = this.props
         return (
             <Grid
                 container
@@ -17,12 +18,12 @@ class ProjectsListPage extends React.Component {
             >
                 <Grid item xs={12}>
                     <ProjectsListManager
-                        history={this.props.history}
+                        history={history}
                         home
                     />
                     <Grid container>
                         <HomeProjectsListManager
-                            history={this.props.history}
+                            history={history}
                         />
                     </Grid>
                 </Grid>

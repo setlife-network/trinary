@@ -31,6 +31,7 @@ const ProjectsListManager = ({
         )
     }
     if (error) return `Error! ${error.message}`
+    
     return (
         <Box
             mb={3}
@@ -72,7 +73,6 @@ const ProjectsListManager = ({
                 }
             </Grid>
         </Box>
-
     )
 }
 

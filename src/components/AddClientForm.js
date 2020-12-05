@@ -24,7 +24,13 @@ const AddClientForm = ({
     const [disableAdd, setDisableAdd] = useState(true);
 
     const onAdd = async () => {
-        const newClient = await addClient({ variables: { name: clientName, email: clientEmail, currency: clientCurrency } })
+        const newClient = await addClient({
+            variables: {
+                name: clientName,
+                email: clientEmail,
+                currency: clientCurrency
+            }
+        })
         history.push(`/clients/${newClient.data.createClient.id}`)
     }
 
@@ -41,7 +47,6 @@ const AddClientForm = ({
                 justify='space-between'
                 alignItems='center'
             >
-
                 <Grid item xs={5}>
                     <TextField
                         label='Client name'
@@ -73,7 +78,9 @@ const AddClientForm = ({
                             <MenuItem value={'MXUSD'}>MXUSD</MenuItem>
                             <MenuItem value={'EUR'}>EUR</MenuItem>
                         </Select>
-                        <FormHelperText>Select currency</FormHelperText>
+                        <FormHelperText>
+                            Select currency
+                        </FormHelperText>
                     </Box>
                 </Grid>
                 <Grid item xs={12}>
