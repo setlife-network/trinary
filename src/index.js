@@ -13,11 +13,14 @@ const link = createHttpLink({
     uri,
     credentials: 'same-origin'
 });
-const client = new ApolloClient({
+export const client = new ApolloClient({
     link,
     cache,
     connectToDevTools: true
 });
+
+console.log('client');
+console.log(client);
 
 ReactDOM.render(
     <React.StrictMode>

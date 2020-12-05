@@ -42,6 +42,23 @@ class HomePage extends React.Component {
                             <Box mr={3} ml={1}>
                                 <Button
                                     fullWidth
+                                    variant={list == 'clients' ? 'contained' : 'outlined'}
+                                    color='primary'
+                                    onClick={() => this.updateURL({ subdirectory: 'clients' })}
+                                >
+                                    <Typography variant='h6'>
+                                        <strong>
+                                            Clients
+                                        </strong>
+                                    </Typography>
+                                </Button>
+
+                            </Box>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Box ml={3} mr={1}>
+                                <Button
+                                    fullWidth
                                     variant={list == 'projects' ? 'contained' : 'outlined'}
                                     color='primary'
                                     onClick={() => this.updateURL({ subdirectory: 'projects' })}
@@ -54,32 +71,15 @@ class HomePage extends React.Component {
                                 </Button>
                             </Box>
                         </Grid>
-                        <Grid item xs={6}>
-                            <Box ml={3} mr={1}>
-                                <Button
-                                    fullWidth
-                                    variant={list == 'clients' ? 'contained' : 'outlined'}
-                                    color='primary'
-                                    onClick={() => this.updateURL({ subdirectory: 'clients' })}
-                                >
-                                    <Typography variant='h6'>
-                                        <strong>
-                                            Clients
-                                        </strong>
-                                    </Typography>
-                                </Button>
-                            </Box>
-                        </Grid>
                     </Grid>
                     <Box mt={5}>
-
-                        <Route
-                            path={`/home/clients`}
-                            render={(props) => <ClientsListPage {...props} />}
-                        />
                         <Route
                             path={`/home/projects`}
                             render={(props) => <ProjectsListPage {...props} />}
+                        />
+                        <Route
+                            path={`/home/clients`}
+                            render={(props) => <ClientsListPage {...props} />}
                         />
                     </Box>
                 </Grid>

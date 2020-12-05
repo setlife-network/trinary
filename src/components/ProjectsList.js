@@ -8,24 +8,11 @@ import ProjectTile from './ProjectTile'
 import { GET_POJECTS } from '../operations/queries/ProjectQueries'
 
 const ProjectsList = ({
-    history
+    history,
+    projects
 }) => {
 
-    const { loading, error, data } = useQuery(GET_POJECTS);
-
-    if (loading) {
-        return (
-            <Grid item xs={12}>
-                Loading...
-            </Grid>
-        )
-    }
-    if (error) return `Error! ${error.message}`;
-
-    const projects = orderBy(data.getProjects, ['is_active'], ['desc'])
-
     return (
-
         projects.map(p => {
             return (
                 <Grid item xs={12} lg={4}>

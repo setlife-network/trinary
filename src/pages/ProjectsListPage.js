@@ -1,6 +1,7 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 
+import HomeProjectsListManager from '../components/HomeProjectsListManager'
 import ProjectsListManager from '../components/ProjectsListManager'
 import ProjectsList from '../components/ProjectsList'
 
@@ -19,7 +20,7 @@ class ProjectsListPage extends React.Component {
                         history={this.props.history}
                     />
                     <Grid container>
-                        <ProjectsList
+                        <HomeProjectsListManager
                             history={this.props.history}
                         />
                     </Grid>
