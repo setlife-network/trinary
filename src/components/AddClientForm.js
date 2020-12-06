@@ -41,7 +41,13 @@ const AddClientForm = ({
     })
 
     return (
-        <FormControl fullWidth noValidate autoComplete='off' align='left'>
+        <FormControl
+            fullWidth
+            noValidate
+            autoComplete='off'
+            align='left'
+            className='AddClientForm'
+        >
             <Grid
                 container
                 justify='space-between'
