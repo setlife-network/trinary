@@ -12,30 +12,31 @@ import TextField from '@material-ui/core/TextField'
 
 import { CREATE_CLIENT } from '../operations/mutations/ClientMutations'
 
-const AddClientForm = ({
+const AddProjectForm = ({
     history
 }) => {
 
-    const [addClient, { data, loading, error }] = useMutation(CREATE_CLIENT)
+    const [addProject, { data, loading, error }] = useMutation(CREATE_CLIENT)
 
-    const [clientName, setClientName] = useState('');
-    const [clientEmail, setClientEmail] = useState('');
-    const [clientCurrency, setClientCurrency] = useState('');
+    const [projectName, setProjectName] = useState('');
+    const [projectGithub, setProjectGithub] = useState('');
+    const [projectToggl, setProjectToggl] = useState('');
+    const [projectBudget, setProjectBudget] = useState(0);
     const [disableAdd, setDisableAdd] = useState(true);
 
     const onAdd = async () => {
-        const newClient = await addClient({
-            variables: {
-                name: clientName,
-                email: clientEmail,
-                currency: clientCurrency
-            }
-        })
-        history.push(`/clients/${newClient.data.createClient.id}`)
+        // const newProject = await addClient({
+        //     variables: {
+        //         name: projectName,
+        //         email: clientEmail,
+        //         currency: clientCurrency
+        //     }
+        // })
+        history.push(``)
     }
 
     useEffect(() => {
-        if (clientName && clientCurrency) {
+        if (projectName && projectGithub && projectBudget) {
             setDisableAdd(false)
         }
     })
@@ -52,41 +53,44 @@ const AddClientForm = ({
                 justify='space-between'
                 alignItems='center'
             >
+
                 <Grid item xs={5}>
                     <TextField
-                        label='Client name'
-                        id='clientName'
+                        label='Project name'
+                        id='projectName'
                         variant='outlined'
                         fullWidth
-                        required
-                        onChange={(event) => setClientName(event.target.value)}
+                        onChange={(event) => setProjectName(event.target.value)}
+                    />
+                </Grid>
+
+                <Grid item xs={5}>
+                    <TextField
+                        label='Github URL'
+                        id='projectGithub'
+                        variant='outlined'
+                        fullWidth
+                        onChange={(event) => setProjectGithub(event.target.value)}
+                    />
+                </Grid>
+
+                <Grid item xs={5}>
+                    <TextField
+                        label='Toggl URL'
+                        id='projectToggl'
+                        variant='outlined'
+                        fullWidth
+                        onChange={(event) => setProjectToggl(event.target.value)}
                     />
                 </Grid>
                 <Grid item xs={5}>
                     <TextField
-                        label='Email'
-                        id='clientEmail'
+                        label='Expected Budget'
+                        id='projectBudget'
                         variant='outlined'
                         fullWidth
-                        onChange={(event) => setClientEmail(event.target.value)}
+                        onChange={(event) => setProjectBudget(event.target.value)}
                     />
-                </Grid>
-                <Grid item xs={5}>
-                    <Box width={1} mt={5}>
-                        <Select
-                            name='Currency'
-                            fullWidth
-                            onChange={(event) => setClientCurrency(event.target.value)}
-                            value={clientCurrency}
-                        >
-                            <MenuItem value={'USD'}>USD</MenuItem>
-                            <MenuItem value={'MXUSD'}>MXUSD</MenuItem>
-                            <MenuItem value={'EUR'}>EUR</MenuItem>
-                        </Select>
-                        <FormHelperText>
-                            Select currency
-                        </FormHelperText>
-                    </Box>
                 </Grid>
                 <Grid item xs={12}>
                     <Box mt={5}>
@@ -96,7 +100,7 @@ const AddClientForm = ({
                             disabled={disableAdd}
                             onClick={() => (onAdd())}
                         >
-                            Add client
+                            Add Project
                         </Button>
                     </Box>
                 </Grid>
@@ -105,4 +109,4 @@ const AddClientForm = ({
     )
 }
 
-export default AddClientForm
+export default AddProjectForm
