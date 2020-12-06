@@ -93,7 +93,6 @@ const AddClientForm = ({
                             variant='contained'
                             color='primary'
                             disabled={disableAdd}
-                            fullWidth
                             onClick={() => (onAdd())}
                         >
                             Add client
