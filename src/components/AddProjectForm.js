@@ -9,30 +9,41 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
+import MomentUtils from '@date-io/moment';
+import moment from 'moment';
 
-import { CREATE_CLIENT } from '../operations/mutations/ClientMutations'
+import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
 
 const AddProjectForm = ({
+    clientId,
     history
 }) => {
 
-    const [addProject, { data, loading, error }] = useMutation(CREATE_CLIENT)
+    const [addProject, { data, loading, error }] = useMutation(ADD_PROJECT)
 
     const [projectName, setProjectName] = useState('');
     const [projectGithub, setProjectGithub] = useState('');
-    const [projectToggl, setProjectToggl] = useState('');
+    const [projectToggl, setProjectToggl] = useState(null);
+    const [projectDate, setProjectDate] = useState('');
     const [projectBudget, setProjectBudget] = useState(0);
     const [disableAdd, setDisableAdd] = useState(true);
 
     const onAdd = async () => {
-        // const newProject = await addClient({
-        //     variables: {
-        //         name: projectName,
-        //         email: clientEmail,
-        //         currency: clientCurrency
-        //     }
-        // })
-        history.push(``)
+        const variables = {
+            client_id: parseInt(clientId, 10),
+            name: projectName,
+            github_url: projectGithub,
+            date: '2020-10-10',
+            expected_budget: parseInt(projectBudget, 10)
+        }
+        if (projectToggl) { variables['toggl_url'] = projectToggl }
+        const newProject = await addProject({
+            variables
+        })
+        console.log('newProject');
+        console.log(newProject);
+        history.push(`/projects/${newProject.data.createProject.id}`)
     }
 
     useEffect(() => {
@@ -92,6 +103,24 @@ const AddProjectForm = ({
                         onChange={(event) => setProjectBudget(event.target.value)}
                     />
                 </Grid>
+                {// <Grid item xs={5}>
+                //     <MuiPickersUtilsProvider utils={MomentUtils}>
+                //         <KeyboardDatePicker
+                //             disableToolbar
+                //             variant='inline'
+                //             format='MM/dd/yyyy'
+                //             margin='normal'
+                //             id='date-picker-inline'
+                //             label='Date picker inline'
+                //             value={projectDate}
+                //             //onChange={handleDateChange}
+                //             KeyboardButtonProps={{
+                //                 'aria-label': 'change date',
+                //             }}
+                //         />
+                //     </MuiPickersUtilsProvider>
+                // </Grid>
+                }
                 <Grid item xs={12}>
                     <Box mt={5}>
                         <Button

@@ -34,6 +34,7 @@ class AddProjectPage extends React.Component {
                 <Grid item xs={8}>
                     <Box item mt={5}>
                         <AddProjectForm
+                            clientId={clientId}
                             history={this.props.history}
                         />
                     </Box>
