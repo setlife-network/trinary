@@ -150,7 +150,6 @@ const AddProjectForm = ({
                         color='primary'
                         disabled={disableAdd}
                         onClick={() => (onAdd())}
-                        fullWidth
                     >
                         Add Project
                     </Button>
