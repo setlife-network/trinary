@@ -25,24 +25,26 @@ const AddProjectForm = ({
     const [projectName, setProjectName] = useState('');
     const [projectGithub, setProjectGithub] = useState('');
     const [projectToggl, setProjectToggl] = useState(null);
-    const [projectDate, setProjectDate] = useState('');
+    const [projectDate, setProjectDate] = useState(null);
     const [projectBudget, setProjectBudget] = useState(0);
     const [disableAdd, setDisableAdd] = useState(true);
+
+    const handleDateChange = (date) => {
+        setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
+    }
 
     const onAdd = async () => {
         const variables = {
             client_id: parseInt(clientId, 10),
             name: projectName,
             github_url: projectGithub,
-            date: '2020-10-10',
+            date: projectDate,
             expected_budget: parseInt(projectBudget, 10)
         }
         if (projectToggl) { variables['toggl_url'] = projectToggl }
         const newProject = await addProject({
             variables
         })
-        console.log('newProject');
-        console.log(newProject);
         history.push(`/projects/${newProject.data.createProject.id}`)
     }
 
@@ -103,24 +105,24 @@ const AddProjectForm = ({
                         onChange={(event) => setProjectBudget(event.target.value)}
                     />
                 </Grid>
-                {// <Grid item xs={5}>
-                //     <MuiPickersUtilsProvider utils={MomentUtils}>
-                //         <KeyboardDatePicker
-                //             disableToolbar
-                //             variant='inline'
-                //             format='MM/dd/yyyy'
-                //             margin='normal'
-                //             id='date-picker-inline'
-                //             label='Date picker inline'
-                //             value={projectDate}
-                //             //onChange={handleDateChange}
-                //             KeyboardButtonProps={{
-                //                 'aria-label': 'change date',
-                //             }}
-                //         />
-                //     </MuiPickersUtilsProvider>
-                // </Grid>
-                }
+                <Grid item xs={5}>
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                        <KeyboardDatePicker
+                            disableToolbar
+                            variant='inline'
+                            format='MM/DD/yyyy'
+                            margin='normal'
+                            id='date-picker-inline'
+                            label=''
+                            value={projectDate}
+                            onChange={handleDateChange}
+                            KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                            }}
+                        />
+                    </MuiPickersUtilsProvider>
+                </Grid>
+
                 <Grid item xs={12}>
                     <Box mt={5}>
                         <Button
