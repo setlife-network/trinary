@@ -19,6 +19,9 @@ const PaymentList = (props) => {
         })
     }
 
+    console.log('PaymentList');
+    console.log(payments);
+
     return (
         <Grid container>
             {renderPaymentTiles(payments)}

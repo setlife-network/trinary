@@ -21,12 +21,24 @@ const ClientPaymentsListManager = (props) => {
     }
     if (error) return `Error! ${error.message}`;
 
-    console.log('data');
-    console.log(data);
+    const { getClientPaymentsByClientId } = data
 
     return (
-        <div/>
+
+        getClientPaymentsByClientId.length != 0
+            ? (
+                <PaymentList
+                    payments={getClientPaymentsByClientId}
+                />
+            )
+            : (
+                //TODO: Create empty state
+                <p>
+                    No payments to display
+                </p>
+            )
     )
+
 }
 
 export default ClientPaymentsListManager
