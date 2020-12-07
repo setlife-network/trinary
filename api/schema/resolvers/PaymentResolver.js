@@ -19,7 +19,7 @@ module.exports = {
             return models.Payment.findAll()
         },
         getClientPaymentsByClientId: (root, { clientId }, { models }) => {
-            return models.Payment.findAll({ where: { client_id: client_id } })
+            return models.Payment.findAll({ where: { client_id: clientId } })
         }
     },
     Mutation: {
