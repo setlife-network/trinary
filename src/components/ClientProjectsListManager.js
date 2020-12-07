@@ -30,10 +30,12 @@ const ClientProjectsListManager = ({
     return (
         projects.length != 0
             ? (
-                <ProjectsList
-                    history={history}
-                    projects={projects}
-                />
+                <Grid container>
+                    <ProjectsList
+                        history={history}
+                        projects={projects}
+                    />
+                </Grid>
             )
             : (
                 //TODO: Create empty state
