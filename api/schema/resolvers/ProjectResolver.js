@@ -359,7 +359,7 @@ module.exports = {
                 //get toggleId from togglUrl
                 const togglArray = split(createFields.toggl_url, '/')
                 const togglId = togglArray[togglArray.length - 1]
-                data['toggl_id'] = togglId
+                createData['toggl_id'] = togglId
             }
             return models.Project.create({
                 ...createData
