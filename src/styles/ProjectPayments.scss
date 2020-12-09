@@ -3,7 +3,7 @@
     padding-top: 2rem;
     text-align: center;
     max-width: 500px;
-    margin: auto;  
+    margin: auto;
 }
 
 .title-container {
@@ -18,7 +18,7 @@
 }
 
 .usd-total {
-    text-align: right; 
+    text-align: right;
 }
 
 .PaymentTile {
@@ -43,12 +43,10 @@
     color: $grey;
 }
 
-.MoneyIcon {  
+.MoneyIcon {
     color: $setlife-blue;
 }
 
 .NoMoneyIcon {
     color: $grey;
 }
-
-

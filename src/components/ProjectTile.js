@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Card from '@material-ui/core/Card'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { spacing, boxShadow, borders } from '@material-ui/system'
@@ -17,61 +16,54 @@ const ProjectTile = ({
     }
 
     return (
-        <div className='ProjectTile'>
-            <Grid
-                container
-                justify='center'
-                alignItems='center'
-                xs={12}
-            >
-                <Grid item xs={12}>
-                    <Button
-                        fullWidth
-                        onClick={() => redirectProjectPage(project)}
+        <Grid container className='ProjectTile'>
+            <Grid item xs={12}>
+                <Button
+                    fullWidth
+                    onClick={() => redirectProjectPage(project)}
+                >
+                    <Box
+                        width={1}
+                        px={3}
+                        py={1}
+                        boxShadow={3}
+                        borderRadius='borderRadius'
+                        bgcolor='primary.light'
                     >
-                        <Box
-                            width={1}
-                            px={3}
-                            py={1}
-                            boxShadow={3}
-                            borderRadius='borderRadius'
-                            bgcolor='primary.light'
+                        <Grid
+                            container
+                            direction='row'
+                            alignItems='center'
+                            justify='space-around'
                         >
-                            <Grid
-                                container
-                                direction='row'
-                                alignItems='center'
-                                justify='space-around'
-                            >
-                                <Grid item xs={window.location.pathname == '/home/projects' ? 6 : 10}>
-                                    <Typography variant='h6'>
-                                        {project.name}
-                                    </Typography>
-                                </Grid>
-                                {
-                                    window.location.pathname == '/home/projects' &&
+                            <Grid item xs={window.location.pathname == '/home/projects' ? 6 : 10}>
+                                <Typography variant='h6'>
+                                    {project.name}
+                                </Typography>
+                            </Grid>
+                            {
+                                window.location.pathname == '/home/projects' &&
                                     <Grid item xs={4}>
                                         <Typography variant='caption'>
                                             {project.client.name}
                                         </Typography>
                                     </Grid>
-                                }
-                                <Grid
-                                    item
-                                    xs={2}
-                                >
-                                    <CodeIcon
-                                        color={project.is_active ? 'primary' : 'secondary'}
-                                        fontSize='large'
-                                    />
-                                </Grid>
+                            }
+                            <Grid
+                                item
+                                xs={2}
+                            >
+                                <CodeIcon
+                                    color={project.is_active ? 'primary' : 'secondary'}
+                                    fontSize='large'
+                                />
                             </Grid>
-                        </Box>
-                    </Button>
-                </Grid>
+                        </Grid>
+                    </Box>
+                </Button>
             </Grid>
-        </div>
-    );
+        </Grid>
+    )
 }
 
 ProjectTile.defaultProps = {

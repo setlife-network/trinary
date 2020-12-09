@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import moment from 'moment'
 import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 
 const PaymentTile = (props) => {
@@ -11,52 +14,48 @@ const PaymentTile = (props) => {
     const paymentHasBeenMade = payment.date_paid != null
 
     return (
-
         <Box
-            className='PaymentTile'
-            flexDirection='row'
             display='flex'
+            boxShadow={3}
+            borderRadius='borderRadius'
+            bgcolor='primary.light'
+            px={3}
+            py={1}
+            mx={1}
+            className='PaymentTile'
         >
-            <Box flex={1}>
-                {`$ ${payment.amount}`}
-            </Box>
-
-            {paymentHasBeenMade
-                ? (
-                    <Box
-                        className='DatePaid'
-                        flex={2}
-                        flexDirection='row'
-                        display='flex'
+            <Grid container alignItems='baseline'>
+                <Grid item xs={3}>
+                    <Typography variant='h6'>
+                        {`$ ${payment.amount}`}
+                    </Typography>
+                </Grid>
+                <Grid item>
+                    <Typography
+                        variant='caption'
+                        align='left'
+                        color='secondary'
                     >
-                        <Box flex={1}>
-
-                            {`${formattedDatePaid}`}
-
-                        </Box>
-                        <MonetizationOnIcon className='MoneyIcon'/>
-                    </Box>
-                ) : (
-                    <Box
-                        className='DateIncurred'
-                        flex={2}
-                        flexDirection='row'
-                        display='flex'
-                    >
-                        <Box flex={1}>
-
-                            {`${formattedDateIncurred}`}
-
-                        </Box>
-                        <MonetizationOnIcon className='NoMoneyIcon'/>
-                    </Box>
-                )
-            }
-
+                        {
+                            `${paymentHasBeenMade
+                                ? formattedDatePaid
+                                : formattedDateIncurred}`
+                        }
+                    </Typography>
+                </Grid>
+                <Grid item xs={6} align='right'>
+                    <MonetizationOnIcon
+                        className={
+                            `${paymentHasBeenMade
+                                ? 'MoneyIcon'
+                                : 'NoMoneyIcon'
+                            }`
+                        }
+                    />
+                </Grid>
+            </Grid>
         </Box>
-
     )
-
 }
 
 PaymentTile.defaultProps = {

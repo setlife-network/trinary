@@ -12,15 +12,12 @@ const PaymentList = (props) => {
     const renderPaymentTiles = (payments) => {
         return payments.map(p => {
             return (
-                <Grid item>
+                <Grid item xs={12} lg={4} className='PaymentsList'>
                     <PaymentTile payment={p}/>
                 </Grid>
             )
         })
     }
-
-    console.log('PaymentList');
-    console.log(payments);
 
     return (
         <Grid container>
