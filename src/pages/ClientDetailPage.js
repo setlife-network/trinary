@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import ClientInfo from '../components/ClientInfo'
 import ClientProjectsListManager from '../components/ClientProjectsListManager'
 import ProjectsListManager from '../components/ProjectsListManager'
+import ClientPaymentsManager from '../components/ClientPaymentsManager'
 import ClientPaymentsListManager from '../components/ClientPaymentsListManager'
 
 class ClientDetailPage extends React.Component {
@@ -39,6 +40,9 @@ class ClientDetailPage extends React.Component {
                         <ClientProjectsListManager
                             clientId={clientId}
                             history={this.props.history}
+                        />
+                        <ClientPaymentsManager
+                            clientId={clientId}
                         />
                         <ClientPaymentsListManager
                             clientId={clientId}
