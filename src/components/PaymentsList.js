@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid'
 
 import PaymentTile from './PaymentTile'
 
-const PaymentList = (props) => {
+const PaymentsList = (props) => {
 
     const {
         payments
@@ -26,4 +26,4 @@ const PaymentList = (props) => {
     )
 }
 
-export default PaymentList
+export default PaymentsList
