@@ -30,7 +30,6 @@ const theme = createMuiTheme({
         MuiIcon: {
             root: {
                 overflow: 'initial'
-                //fontSize: 200,
             },
         }
     },
