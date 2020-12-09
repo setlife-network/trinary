@@ -2,7 +2,7 @@ import React from 'react'
 import { gql, useQuery } from '@apollo/client';
 import { orderBy } from 'lodash'
 
-import PaymentList from './PaymentList'
+import PaymentsList from './PaymentsList'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/PaymentQueries'
 
 const ClientPaymentsListManager = (props) => {
@@ -26,7 +26,7 @@ const ClientPaymentsListManager = (props) => {
     return (
         payments.length != 0
             ? (
-                <PaymentList
+                <PaymentsList
                     payments={payments}
                 />
             )
