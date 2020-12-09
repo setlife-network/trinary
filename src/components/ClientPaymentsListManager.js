@@ -1,5 +1,6 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client';
+import { orderBy } from 'lodash'
 
 import PaymentList from './PaymentList'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/PaymentQueries'
@@ -20,15 +21,13 @@ const ClientPaymentsListManager = (props) => {
         )
     }
     if (error) return `Error! ${error.message}`;
-
-    const { getClientPaymentsByClientId } = data
+    const payments = orderBy(data.getClientPaymentsByClientId, ['date_paid'], ['desc'])
 
     return (
-
-        getClientPaymentsByClientId.length != 0
+        payments.length != 0
             ? (
                 <PaymentList
-                    payments={getClientPaymentsByClientId}
+                    payments={payments}
                 />
             )
             : (
