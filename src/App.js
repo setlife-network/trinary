@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route, withRouter, Redirect } from 'react-router-dom'
 import { ThemeProvider } from '@material-ui/core/styles'
 
 import theme from './styles/theme'
@@ -11,29 +11,30 @@ import ClientsListPage from './pages/ClientsListPage'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
+import ProjectsListPage from './pages/ProjectsListPage'
 
 import Navigation from './components/Navigation'
 
 const App = () => {
+
     return (
         <div className='App'>
             <ThemeProvider theme={theme}>
                 <Navigation/>
-
                 <Route
                     exact
-                    path='/'
+                    path={`/home`}
+                    component={() => <Redirect to={`/home/clients`} />}
+                />
+                <Route
+                    path='/home/:list'
                     render={(props) => <HomePage {...props} />}
                 />
                 <Route
                     path='/login'
                     render={(props) => <LoginPage {...props} />}
                 />
-                <Route
-                    exact
-                    path='/clients'
-                    render={(props) => <ClientsListPage {...props} />}
-                />
+
                 <Route
                     path='/clients/:clientId'
                     render={(props) => <ClientDetailPage {...props} />}
@@ -55,4 +56,4 @@ const App = () => {
     )
 }
 
-export default App
+export default withRouter(App)

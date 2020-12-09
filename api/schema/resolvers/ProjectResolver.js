@@ -334,6 +334,17 @@ module.exports = {
         },
         getProjects: (root, args, { models }) => {
             return models.Project.findAll()
+        },
+        getActiveProjectsCount: (root, args, { models }) => {
+            const whereFields = {
+                is_active: true
+            }
+            if (args.clientId) whereFields.client_id = args.clientId
+            return models.Project.count({
+                where: {
+                    ...whereFields
+                }
+            })
         }
     },
     Mutation: {

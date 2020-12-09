@@ -9,6 +9,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 
+import ProjectManager from '../components/ProjectManager'
 import ProjectOverview from '../components/ProjectOverview'
 import ProjectPayments from '../components/ProjectPayments'
 import ProjectContributors from '../components/ProjectContributors'
@@ -52,23 +53,26 @@ const MOCKED_PROJECT = {
 }
 
 class ProjectDetailPage extends React.Component {
-    componentDidMount() {}
-
     handleTabClick = (event, tab) => {
-        const { history, match } = this.props
-
-        history.push(`/projects/${match.params.projectId}/${tab}`)
+        this.props.history.push(`/projects/${this.props.match.params.projectId}/${tab}`)
     }
 
     render() {
-        const { location, match } = this.props
+        const {
+            history,
+            location,
+            match
+        } = this.props
 
         // Convert URL `/projects/1/payments` to `payments`
         const selectedTab = location.pathname.replace(match.url, '').slice(1)
 
         return (
             <div className='ProjectDetailPage'>
-                ProjectDetailPage
+                {/* Apollo client hooks are in here */}
+                {/* <ProjectManager
+                    projectId={match.params.projectId}
+                /> */}
 
                 <Route
                     exact
@@ -100,7 +104,6 @@ class ProjectDetailPage extends React.Component {
                         label='Overview'
                         value='overview'
                         icon={<AssessmentIcon/>}
-                        
                     />
                     <BottomNavigationAction
                         label='Payments'
