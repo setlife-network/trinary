@@ -6,6 +6,7 @@ import { orderBy } from 'lodash'
 import { GET_POJECTS } from '../operations/queries/ProjectQueries'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import ProjectsList from './ProjectsList'
+import NoProjectsFound from './NoProjectsFound'
 
 const ClientProjectsListManager = ({
     clientId,
@@ -37,9 +38,7 @@ const ClientProjectsListManager = ({
             )
             : (
                 //TODO: Create empty state
-                <p>
-                    No projects to display
-                </p>
+                <NoProjectsFound/>
             )
     )
 }

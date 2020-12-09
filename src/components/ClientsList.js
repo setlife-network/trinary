@@ -37,19 +37,14 @@ const ClientsList = ({
     const clients = orderBy(data.getClients, 'is_active', 'desc')
     return (
         <>
-            {// {
-            //     clients.length != 0
-            //         ? (
-            //             renderClientsTiles(clients)
-            //         ) : (
-            //             <Typography>
-            //                 There are currently no clients. Add a client to get started.
-            //             </Typography>
-            //         )
-            // }
+            {
+                clients.length != 0
+                    ? (
+                        renderClientsTiles(clients)
+                    ) : (
+                        <NoClientsFound/>
+                    )
             }
-            <NoClientsFound/>
-
         </>
     )
 }
