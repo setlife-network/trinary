@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+    Box,
     Dialog,
     DialogTitle,
     Grid
@@ -14,13 +15,20 @@ const ClientEditDialog = (props) => {
 
     return (
         <Dialog onClose={onClose} open={open}>
-            <DialogTitle>
-                Edit client
-            </DialogTitle>
-            <Grid container>
-                <Grid item>
+            <Box mx={5}>
+                <DialogTitle>
+                    Edit client
+                </DialogTitle>
+                <Grid container>
+                    <Grid item>
+
+                        <p>
+                            {`Enter info below to edit this client`}
+                        </p>
+
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Box>
         </Dialog>
     )
 }
