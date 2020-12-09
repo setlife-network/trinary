@@ -1,5 +1,5 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid'
+import { Grid } from '@material-ui/core'
 
 import HomeProjectsListManager from '../components/HomeProjectsListManager'
 import ProjectsListManager from '../components/ProjectsListManager'
@@ -12,7 +12,6 @@ class ProjectsListPage extends React.Component {
         return (
             <Grid
                 container
-                direction='row'
                 justify='center'
                 className='ProjectsListPage'
             >
