@@ -32,7 +32,7 @@ module.exports = gql`
 
         updateIssueById(
             id: Int!,
-            updateFields: IssueInput
+            updateFields: IssueInput!
         ): Issue
     }
 `

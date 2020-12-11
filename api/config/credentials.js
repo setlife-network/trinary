@@ -18,6 +18,7 @@ module.exports = {
     },
     TOGGL: {
         API_KEY: process.env.TOGGL_API_KEY,
+        WORKSPACE_ID: process.env.TOGGL_WORKSPACE_ID
     },
     // MYSQL Access Keys
     MYSQL: {

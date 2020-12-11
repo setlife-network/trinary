@@ -4,23 +4,50 @@ import sizes from './sizes.scss'
 import {
     setlifeBlue,
     lightBlue,
+    darkBlue,
+    grey,
     lightGrey,
-    black
+    black,
+    white
 } from './colors.scss'
 
 const theme = createMuiTheme({
+    typography: {
+        button: {
+            textTransform: 'capitalize'
+        }
+    },
     text: {
+        textTransform: 'none',
         primary: lightGrey,
+    },
+    overrides: {
+        MuiCardContent: {
+            root: {
+                padding: 0,
+            }
+        },
+        MuiIcon: {
+            root: {
+                overflow: 'initial'
+            },
+        }
     },
     palette: {
         primary: {
             main: setlifeBlue,
-            dark: black,
-            light_blue: lightBlue
+            dark: darkBlue,
+            black: black,
+            light_blue: lightBlue,
+            light: white
         },
         secondary: {
-            main: lightGrey,
+            main: grey,
+            light: lightGrey
         },
+        action: {
+            main: lightGrey,
+        }
     },
 })
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, useHistory } from 'react-router-dom'
+import { Route, withRouter, Redirect } from 'react-router-dom'
 import { ThemeProvider } from '@material-ui/core/styles'
 
 import theme from './styles/theme'
@@ -11,6 +11,7 @@ import ClientsListPage from './pages/ClientsListPage'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
+import ProjectsListPage from './pages/ProjectsListPage'
 
 import Navigation from './components/Navigation'
 
@@ -73,4 +74,4 @@ class App extends React.Component {
     }
 }
 
-export default App
+export default withRouter(App)

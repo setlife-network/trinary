@@ -334,6 +334,17 @@ module.exports = {
         },
         getProjects: (root, args, { models }) => {
             return models.Project.findAll()
+        },
+        getActiveProjectsCount: (root, args, { models }) => {
+            const whereFields = {
+                is_active: true
+            }
+            if (args.clientId) whereFields.client_id = args.clientId
+            return models.Project.count({
+                where: {
+                    ...whereFields
+                }
+            })
         }
     },
     Mutation: {
@@ -341,12 +352,17 @@ module.exports = {
             validateDatesFormat({
                 date: createFields['date']
             })
-            //get toggleId from togglUrl
-            const togglArray = split(createFields.toggl_url, '/')
-            const togglId = togglArray[togglArray.length - 1]
-            return models.Project.create({
-                toggl_id: togglId,
+            const createData = {
                 ...createFields
+            }
+            if (createFields.toggl_url) {
+                //get toggleId from togglUrl
+                const togglArray = split(createFields.toggl_url, '/')
+                const togglId = togglArray[togglArray.length - 1]
+                createData['toggl_id'] = togglId
+            }
+            return models.Project.create({
+                ...createData
             })
         },
         deleteProjectById: (root, { id }, { models }) => {
@@ -396,12 +412,18 @@ module.exports = {
                 //get updated project
                 project = await models.Project.findByPk(args.project_id)
             }
-
-            const dataSync = await apiModules.dataSyncs.syncTogglProject({
-                togglProjectId: project.toggl_id,
-                projectId: project.id
+            //search for the date of the last sync to fetch since taht date
+            const lastEntrySynced = await models.TimeEntry.findOne({
+                order: [['created_at', 'DESC']]
             })
-            if (dataSync == 'Success') {
+            const dataSync = await apiModules.dataSyncs.syncTogglProject({
+                toggl_project_id: project.toggl_id,
+                project_id: project.id,
+                since: lastEntrySynced
+                    ? lastEntrySynced.created_at
+                    : moment().subtract(1, 'y').format('YYYY-MM-DD')
+            })
+            if (dataSync) {
                 return project
             } else {
                 return new ApolloError('Something wrong happened', 2003)

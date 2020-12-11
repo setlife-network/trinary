@@ -37,8 +37,15 @@ module.exports = {
         getClientById: (root, { id }, { models }) => {
             return models.Client.findByPk(id)
         },
-        getClients: (parent, args, { models }) => {
+        getClients: (root, args, { models }) => {
             return models.Client.findAll()
+        },
+        getActiveClientsCount: (root, args, { models }) => {
+            return models.Client.count({
+                where: {
+                    is_active: true
+                }
+            })
         }
     },
     Mutation: {

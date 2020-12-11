@@ -2,6 +2,9 @@ const TogglClient = require('toggl-api');
 const {
     TOGGL
 } = require('../config/credentials')
+const {
+    USER_AGENT
+} = require('../config/credentials')
 
 const toggl = module.exports = (() => {
 
@@ -16,7 +19,7 @@ const toggl = module.exports = (() => {
             })
         })
     }
-
+    //use fetchWorkspaceTimeEntries instead
     const fetchProjectTimeEntries = (params) => {
         const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         return new Promise((resolve, reject) => {
@@ -35,14 +38,49 @@ const toggl = module.exports = (() => {
         })
     }
 
-    const fetchTimeEntries = (params) => {
+    const fetchWorkspacesProject = (params) => {
         const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         return new Promise((resolve, reject) => {
-            togglClient.getTimeEntries((err, timeEntries) => {
+            togglClient.getWorkspaceProjects(params.wId, (err, projects) => {
                 if (err) {
                     reject(err)
                 }
-                resolve(timeEntries)
+                resolve(projects)
+            })
+        })
+    }
+
+    const fetchWorkspacesData = (params) => {
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
+        return new Promise((resolve, reject) => {
+            togglClient.getWorkspaceData(params.wId, (err, workspaces) => {
+                if (err) {
+                    reject(err)
+                }
+                resolve(workspaces)
+            })
+        })
+    }
+
+    const fetchWorkspaceTimeEntries = (params) => {
+        const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
+        const options = {
+            user_agent: USER_AGENT,
+            workspace_id: params.wId,
+            project_ids: params.pId,
+            since: params.since,
+            until: params.until
+        }
+        return new Promise((resolve, reject) => {
+            togglClient.detailedReport(options, (err, report) => {
+                if (err) {
+                    reject(err)
+                }
+                if (report) {
+                    resolve(report.data)
+                } else {
+                    reject(new Error('Not time entries to sync'))
+                }
             })
         })
     }
@@ -60,10 +98,12 @@ const toggl = module.exports = (() => {
     }
 
     return {
+        fetchUserData,
         fetchProjectData,
         fetchProjectTimeEntries,
-        fetchTimeEntries,
-        fetchUserData
+        fetchWorkspacesData,
+        fetchWorkspacesProject,
+        fetchWorkspaceTimeEntries,
     }
 
 })();
