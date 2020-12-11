@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import { orderBy } from 'lodash'
 
 import PaymentsList from './PaymentsList'
-import NoPaymentsFound from './NoPaymentsFound'
+import PaymentsEmptyState from './PaymentsEmptyState'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/PaymentQueries'
 
 const ClientPaymentsListManager = (props) => {
@@ -32,7 +32,7 @@ const ClientPaymentsListManager = (props) => {
                 />
             )
             : (
-                <NoPaymentsFound/>
+                <PaymentsEmptyState/>
             )
     )
 

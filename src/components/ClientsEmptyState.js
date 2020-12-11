@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import { Box, Grid, Icon, Typography } from '@material-ui/core'
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
-const NoPaymentsFound = () => {
+const ClientsEmptyState = () => {
     return (
-        <Grid container justify='center' className='NoClientsFound'>
+        <Grid container justify='center' className='ClientsEmptyState'>
             <Box mt={5}>
                 <Typography color='secondary' variant='h6'>
-                    Nothing here
+                    There are currently no clients. Add a client to get started
                 </Typography>
-                <Box m={5} pb={5}>
-                    <Icon className='fas fa-piggy-bank emptyIcon' color='secondary'/>
+                <Box mt={5}>
+                    <Icon className='fas fa-user-plus emptyIcon' color='secondary'/>
                 </Box>
             </Box>
         </Grid>
     )
 }
 
-export default NoPaymentsFound
+export default ClientsEmptyState

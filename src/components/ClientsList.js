@@ -5,7 +5,7 @@ import { orderBy } from 'lodash'
 
 import { GET_CLIENTS } from '../operations/queries/ClientQueries'
 import ClientTile from './ClientTile'
-import NoClientsFound from './NoClientsFound'
+import ClientsEmptyState from './ClientsEmptyState'
 
 const ClientsList = ({
     history
@@ -42,7 +42,7 @@ const ClientsList = ({
                     ? (
                         renderClientsTiles(clients)
                     ) : (
-                        <NoClientsFound/>
+                        <ClientsEmptyState/>
                     )
             }
         </>
