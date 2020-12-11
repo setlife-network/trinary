@@ -6,6 +6,7 @@ import { orderBy } from 'lodash'
 import { GET_POJECTS } from '../operations/queries/ProjectQueries'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import ProjectsList from './ProjectsList'
+import ProjectsEmptyState from './ProjectsEmptyState'
 
 const ClientProjectsListManager = ({
     clientId,
@@ -30,18 +31,13 @@ const ClientProjectsListManager = ({
     return (
         projects.length != 0
             ? (
-                <Grid container>
-                    <ProjectsList
-                        history={history}
-                        projects={projects}
-                    />
-                </Grid>
+                <ProjectsList
+                    history={history}
+                    projects={projects}
+                />
             )
             : (
-                //TODO: Create empty state
-                <p>
-                    No projects to display
-                </p>
+                <ProjectsEmptyState/>
             )
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid'
+import { Grid } from '@material-ui/core'
 
 import ClientsListManager from '../components/ClientsListManager'
 import ClientsList from '../components/ClientsList'
@@ -12,7 +12,6 @@ class ClientListPage extends React.Component {
             <div>
                 <Grid
                     container
-                    direction='row'
                     justify='center'
                     className='ClientListPage'
                 >

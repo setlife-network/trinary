@@ -3,6 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import { orderBy } from 'lodash'
 
 import PaymentsList from './PaymentsList'
+import PaymentsEmptyState from './PaymentsEmptyState'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/PaymentQueries'
 
 const ClientPaymentsListManager = (props) => {
@@ -31,10 +32,7 @@ const ClientPaymentsListManager = (props) => {
                 />
             )
             : (
-                //TODO: Create empty state
-                <p>
-                    No payments to display
-                </p>
+                <PaymentsEmptyState/>
             )
     )
 

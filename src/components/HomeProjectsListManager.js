@@ -1,6 +1,6 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client';
-import Grid from '@material-ui/core/Grid'
+import { Grid } from '@material-ui/core'
 import { orderBy } from 'lodash'
 
 import { GET_POJECTS } from '../operations/queries/ProjectQueries'
@@ -23,10 +23,23 @@ const HomeProjectsListManager = ({
     const projects = orderBy(data.getProjects, ['is_active'], ['desc'])
 
     return (
-        <ProjectsList
-            history={history}
-            projects={projects}
-        />
+        <>
+            {
+                projects.length != 0
+                    ? (
+                        <ProjectsList
+                            history={history}
+                            projects={projects}
+                        />
+                    ) : (
+                        <>
+                            {
+                                //TODO: Empty State
+                            }
+                        </>
+                    )
+            }
+        </>
     )
 }
 
