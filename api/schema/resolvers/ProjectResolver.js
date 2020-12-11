@@ -352,12 +352,17 @@ module.exports = {
             validateDatesFormat({
                 date: createFields['date']
             })
-            //get toggleId from togglUrl
-            const togglArray = split(createFields.toggl_url, '/')
-            const togglId = togglArray[togglArray.length - 1]
-            return models.Project.create({
-                toggl_id: togglId,
+            const createData = {
                 ...createFields
+            }
+            if (createFields.toggl_url) {
+                //get toggleId from togglUrl
+                const togglArray = split(createFields.toggl_url, '/')
+                const togglId = togglArray[togglArray.length - 1]
+                createData['toggl_id'] = togglId
+            }
+            return models.Project.create({
+                ...createData
             })
         },
         deleteProjectById: (root, { id }, { models }) => {

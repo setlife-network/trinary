@@ -31,13 +31,10 @@ const ClientProjectsListManager = ({
     return (
         projects.length != 0
             ? (
-                <>
-                    <ProjectsEmptyState/>
-                    <ProjectsList
-                        history={history}
-                        projects={projects}
-                    />
-                </>
+                <ProjectsList
+                    history={history}
+                    projects={projects}
+                />
             )
             : (
                 <ProjectsEmptyState/>
