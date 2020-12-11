@@ -24,7 +24,7 @@ const ClientEditDialog = (props) => {
         open
     } = props
 
-    const [updateClient, { data, loading, error }] = useMutation(UPDATE_CLIENT)
+    const [updateClient, { data, loading, error }] = useMutation(UPDATE_CLIENT, { errorPolicy: 'all' })
 
     const [clientName, setClientName] = useState('')
     const [clientEmail, setClientEmail] = useState('')
@@ -61,8 +61,6 @@ const ClientEditDialog = (props) => {
     const renderCurrencies = (currencies) => {
         return (
             currencies.map(c => {
-                console.log('c');
-                console.log(c);
                 return (
                     <MenuItem value={c.name}>
                         {c.name}
@@ -132,6 +130,12 @@ const ClientEditDialog = (props) => {
                                     </Box>
                                 </Grid>
                                 <Grid item xs={12}>
+                                    <pre>
+                                        Bad:
+                                        {error.graphQLErrors.map(({ message }, i) => (
+                                            <span key={i}>{message}</span>
+                                        ))}
+                                    </pre>
                                     <Box mt={5}>
                                         <Button
                                             variant='contained'
