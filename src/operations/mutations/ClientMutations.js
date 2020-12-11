@@ -17,7 +17,7 @@ export const CREATE_CLIENT = gql`
 `
 
 export const UPDATE_CLIENT = gql`
-    mutation UpdateClient($id: Int!, $name: String!, $email: String, $currency: String) {
+    mutation UpdateClient($id: Int!, $name: String, $email: String, $currency: String) {
         updateClientById(
             id: $id,
             updateFields: {
