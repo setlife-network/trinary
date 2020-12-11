@@ -46,32 +46,37 @@ const AddClientForm = ({
             noValidate
             autoComplete='off'
             align='left'
+            className='AddClientForm'
         >
             <Grid
                 container
                 justify='space-between'
                 alignItems='center'
             >
-                <Grid item xs={5}>
-                    <TextField
-                        label='Client name'
-                        id='clientName'
-                        variant='outlined'
-                        fullWidth
-                        required
-                        onChange={(event) => setClientName(event.target.value)}
-                    />
+                <Grid item xs={12} lg={5}>
+                    <Box my={2}>
+                        <TextField
+                            label='Client name'
+                            id='clientName'
+                            variant='outlined'
+                            fullWidth
+                            required
+                            onChange={(event) => setClientName(event.target.value)}
+                        />
+                    </Box>
                 </Grid>
-                <Grid item xs={5}>
-                    <TextField
-                        label='Email'
-                        id='clientEmail'
-                        variant='outlined'
-                        fullWidth
-                        onChange={(event) => setClientEmail(event.target.value)}
-                    />
+                <Grid item xs={12} lg={5}>
+                    <Box my={2}>
+                        <TextField
+                            label='Email'
+                            id='clientEmail'
+                            variant='outlined'
+                            fullWidth
+                            onChange={(event) => setClientEmail(event.target.value)}
+                        />
+                    </Box>
                 </Grid>
-                <Grid item xs={5}>
+                <Grid item xs={12} lg={5}>
                     <Box width={1} mt={5}>
                         <Select
                             name='Currency'
