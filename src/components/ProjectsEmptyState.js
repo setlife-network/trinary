@@ -4,13 +4,13 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd'
 
 const ProjectsEmptyState = () => {
     return (
-        <Grid container justify='center' className='ProjectsEmptyState'>
+        <Grid container justify='center' className='EmptyState'>
             <Box mt={5}>
                 <Typography color='secondary' variant='h6'>
                     Add new projects directly from Github
                 </Typography>
                 <Box mt={5}>
-                    <Icon className='fas fa-project-diagram emptyIcon' color='secondary'/>
+                    <Icon className='fas fa-project-diagram empty-icon' color='secondary'/>
                 </Box>
             </Box>
         </Grid>

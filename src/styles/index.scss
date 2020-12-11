@@ -12,10 +12,6 @@ code {
     monospace;
 }
 
-.emptyIcon {
-    font-size: 150px !important
-}
-
 @import './colors.scss';
 
 @import './App.scss';
@@ -23,6 +19,7 @@ code {
 @import './AddProjectPage.scss';
 @import './ClientDetailPage.scss';
 @import './ClientsListPage.scss';
+@import './EmptyState.scss';
 @import './Header.scss';
 @import './HomePage.scss';
 @import './LoginPage.scss';
