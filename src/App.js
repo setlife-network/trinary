@@ -40,18 +40,18 @@ class App extends React.Component {
                     <Navigation/>
                     <Route
                         exact
-                        path='/'
+                        path={`/home`}
+                        component={() => <Redirect to={`/home/clients`} />}
+                    />
+                    <Route
+                        path='/home/:list'
                         render={(props) => <HomePage {...props} />}
                     />
                     <Route
                         path='/login'
                         render={(props) => <LoginPage {...props} />}
                     />
-                    <Route
-                        exact
-                        path='/clients'
-                        render={(props) => <ClientsListPage {...props} />}
-                    />
+
                     <Route
                         path='/clients/:clientId'
                         render={(props) => <ClientDetailPage {...props} />}
@@ -65,7 +65,7 @@ class App extends React.Component {
                         render={(props) => <ProjectDetailPage {...props} />}
                     />
                     <Route
-                        path='/project/add'
+                        path='/project/add/:clientId'
                         render={(props) => <AddProjectPage {...props} />}
                     />
                 </ThemeProvider>
