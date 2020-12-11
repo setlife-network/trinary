@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useMutation } from '@apollo/client';
 import {
     Box,
     Button,
@@ -12,12 +13,64 @@ import {
     TextField
 } from '@material-ui/core/'
 
+import { UPDATE_CLIENT } from '../operations/mutations/ClientMutations'
+import { CURRENCIES } from '../constants/'
+
 const ClientEditDialog = (props) => {
 
     const {
+        client,
         onClose,
         open
     } = props
+
+    const [updateClient, { data, loading, error }] = useMutation(UPDATE_CLIENT)
+
+    const [clientName, setClientName] = useState('')
+    const [clientEmail, setClientEmail] = useState('')
+    const [clientCurrency, setClientCurrency] = useState('')
+    const [disableAdd, setDisableAdd] = useState(true)
+
+    const onEdit = async () => {
+
+        const variables = {
+            id: client.id
+        }
+        if (clientName) {
+            variables['name'] = clientName
+        }
+        if (clientEmail) {
+            variables['email'] = clientEmail
+        }
+        if (clientCurrency) {
+            variables['currency'] = clientCurrency
+        }
+
+        updateClient({
+            variables: variables
+        })
+        onClose()
+    }
+
+    useEffect(() => {
+        if (clientName && clientCurrency) {
+            setDisableAdd(false)
+        }
+    })
+
+    const renderCurrencies = (currencies) => {
+        return (
+            currencies.map(c => {
+                console.log('c');
+                console.log(c);
+                return (
+                    <MenuItem value={c.name}>
+                        {c.name}
+                    </MenuItem>
+                )
+            })
+        )
+    }
 
     return (
         <Dialog onClose={onClose} open={open}>
@@ -30,7 +83,6 @@ const ClientEditDialog = (props) => {
                         <FormControl
                             fullWidth
                             noValidate
-                            autoComplete='off'
                             align='left'
                             className='AddClientForm'
                         >
@@ -45,9 +97,10 @@ const ClientEditDialog = (props) => {
                                             label='Client name'
                                             id='clientName'
                                             variant='outlined'
+                                            defaultValue={client.name}
                                             fullWidth
                                             required
-
+                                            onChange={(event) => setClientName(event.target.value)}
                                         />
                                     </Box>
                                 </Grid>
@@ -57,8 +110,9 @@ const ClientEditDialog = (props) => {
                                             label='Email'
                                             id='clientEmail'
                                             variant='outlined'
+                                            defaultValue={client.email}
                                             fullWidth
-
+                                            onChange={(event) => setClientEmail(event.target.value)}
                                         />
                                     </Box>
                                 </Grid>
@@ -66,12 +120,11 @@ const ClientEditDialog = (props) => {
                                     <Box width={1} mt={5}>
                                         <Select
                                             name='Currency'
+                                            defaultValue={client.currency}
                                             fullWidth
-
+                                            onChange={(event) => setClientCurrency(event.target.value)}
                                         >
-                                            <MenuItem value={'USD'}>USD</MenuItem>
-                                            <MenuItem value={'MXUSD'}>MXUSD</MenuItem>
-                                            <MenuItem value={'EUR'}>EUR</MenuItem>
+                                            {renderCurrencies(CURRENCIES)}
                                         </Select>
                                         <FormHelperText>
                                             Select currency
@@ -83,15 +136,14 @@ const ClientEditDialog = (props) => {
                                         <Button
                                             variant='contained'
                                             color='primary'
-
+                                            onClick={() => (onEdit())}
                                         >
-                                            Add client
+                                            Edit client
                                         </Button>
                                     </Box>
                                 </Grid>
                             </Grid>
                         </FormControl>
-
                     </Grid>
                 </Grid>
             </Box>

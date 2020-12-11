@@ -20,10 +20,10 @@ const AddClientForm = ({
 
     const [addClient, { data, loading, error }] = useMutation(CREATE_CLIENT)
 
-    const [clientName, setClientName] = useState('');
-    const [clientEmail, setClientEmail] = useState('');
-    const [clientCurrency, setClientCurrency] = useState('');
-    const [disableAdd, setDisableAdd] = useState(true);
+    const [clientName, setClientName] = useState('')
+    const [clientEmail, setClientEmail] = useState('')
+    const [clientCurrency, setClientCurrency] = useState('')
+    const [disableAdd, setDisableAdd] = useState(true)
 
     const onAdd = async () => {
         const newClient = await addClient({

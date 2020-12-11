@@ -80,7 +80,11 @@ const ClientInfo = ({
                     </Button>
                 </CardActions>
             </Box>
-            <ClientEditDialog open={open} onClose={handleEditClose}/>
+            <ClientEditDialog
+                client={client}
+                open={open}
+                onClose={handleEditClose}
+            />
         </Card>
     )
 }
