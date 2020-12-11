@@ -15,7 +15,7 @@ const ProjectsListManager = ({
 }) => {
 
     const addClient = () => {
-        history.push('/project/add')
+        history.push(`/project/add/${clientId}`)
     }
     const { loading, error, data } = useQuery(GET_ACTIVE_PROJECTS_COUNT, {
         variables: {
@@ -31,7 +31,7 @@ const ProjectsListManager = ({
         )
     }
     if (error) return `Error! ${error.message}`
-    
+
     return (
         <Box
             mb={3}
