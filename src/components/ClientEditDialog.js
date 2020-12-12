@@ -32,7 +32,6 @@ const ClientEditDialog = (props) => {
     const [disableEdit, setDisableEdit] = useState(true)
 
     const onEdit = async () => {
-
         const variables = {
             id: client.id,
             email: clientEmail
@@ -43,7 +42,6 @@ const ClientEditDialog = (props) => {
         if (clientCurrency) {
             variables['currency'] = clientCurrency
         }
-
         updateClient({
             variables: variables
         })
