@@ -24,7 +24,7 @@ const ClientEditDialog = (props) => {
         open
     } = props
 
-    const [updateClient, { data, loading, error }] = useMutation(UPDATE_CLIENT, { errorPolicy: 'all' })
+    const [updateClient, { data, loading, error }] = useMutation(UPDATE_CLIENT)
 
     const [clientName, setClientName] = useState('')
     const [clientEmail, setClientEmail] = useState('')
@@ -34,13 +34,11 @@ const ClientEditDialog = (props) => {
     const onEdit = async () => {
 
         const variables = {
-            id: client.id
+            id: client.id,
+            email: clientEmail
         }
         if (clientName) {
             variables['name'] = clientName
-        }
-        if (clientEmail) {
-            variables['email'] = clientEmail
         }
         if (clientCurrency) {
             variables['currency'] = clientCurrency
@@ -53,7 +51,7 @@ const ClientEditDialog = (props) => {
     }
 
     useEffect(() => {
-        if (clientName && clientCurrency) {
+        if (clientName || clientCurrency || clientEmail) {
             setDisableAdd(false)
         }
     })
@@ -71,85 +69,70 @@ const ClientEditDialog = (props) => {
     }
 
     return (
-        <Dialog onClose={onClose} open={open}>
+        <Dialog className='ClientEditDialog' onClose={onClose} open={open}>
             <Box mx={5} my={3}>
                 <DialogTitle>
-                    Edit client
+                    {`Edit client`}
                 </DialogTitle>
-                <Grid container>
-                    <Grid item>
-                        <FormControl
-                            fullWidth
-                            noValidate
-                            align='left'
-                            className='AddClientForm'
-                        >
-                            <Grid
-                                container
-                                justify='space-between'
-                                alignItems='center'
-                            >
-                                <Grid item xs={12} lg={5}>
-                                    <Box my={2}>
-                                        <TextField
-                                            label='Client name'
-                                            id='clientName'
-                                            variant='outlined'
-                                            defaultValue={client.name}
-                                            fullWidth
-                                            required
-                                            onChange={(event) => setClientName(event.target.value)}
-                                        />
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={12} lg={5}>
-                                    <Box my={2}>
-                                        <TextField
-                                            label='Email'
-                                            id='clientEmail'
-                                            variant='outlined'
-                                            defaultValue={client.email}
-                                            fullWidth
-                                            onChange={(event) => setClientEmail(event.target.value)}
-                                        />
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={12} lg={5}>
-                                    <Box width={1} mt={5}>
-                                        <Select
-                                            name='Currency'
-                                            defaultValue={client.currency}
-                                            fullWidth
-                                            onChange={(event) => setClientCurrency(event.target.value)}
-                                        >
-                                            {renderCurrencies(CURRENCIES)}
-                                        </Select>
-                                        <FormHelperText>
-                                            Select currency
-                                        </FormHelperText>
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <pre>
-                                        Bad:
-                                        {error.graphQLErrors.map(({ message }, i) => (
-                                            <span key={i}>{message}</span>
-                                        ))}
-                                    </pre>
-                                    <Box mt={5}>
-                                        <Button
-                                            variant='contained'
-                                            color='primary'
-                                            onClick={() => (onEdit())}
-                                        >
-                                            Edit client
-                                        </Button>
-                                    </Box>
-                                </Grid>
-                            </Grid>
-                        </FormControl>
+                <FormControl>
+                    <Grid
+                        container
+                        justify='space-between'
+                        alignItems='center'
+                    >
+                        <Grid item xs={12} lg={5}>
+                            <Box my={2}>
+                                <TextField
+                                    label='Client name'
+                                    variant='outlined'
+                                    defaultValue={client.name}
+                                    fullWidth
+                                    required
+                                    onChange={(event) => setClientName(event.target.value)}
+                                />
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12} lg={5}>
+                            <Box my={2}>
+                                <TextField
+                                    label='Email'
+                                    variant='outlined'
+                                    defaultValue={client.email}
+                                    fullWidth
+                                    onChange={(event) => setClientEmail(event.target.value)}
+                                />
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12} lg={5}>
+                            <Box width={1}>
+                                <Select
+                                    name='Currency'
+                                    defaultValue={client.currency}
+                                    fullWidth
+                                    onChange={(event) => setClientCurrency(event.target.value)}
+                                >
+                                    {renderCurrencies(CURRENCIES)}
+                                </Select>
+                                <FormHelperText>
+                                    {`Select currency`}
+                                </FormHelperText>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12}>
+
+                            <Box mt={5}>
+                                <Button
+                                    variant='contained'
+                                    color='primary'
+                                    disabled={disableAdd}
+                                    onClick={() => (onEdit())}
+                                >
+                                    {`Edit client`}
+                                </Button>
+                            </Box>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </FormControl>
             </Box>
         </Dialog>
     )
