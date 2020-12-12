@@ -38,7 +38,8 @@ const ClientListManager = ({
                         bgcolor='primary.black'
                         color='primary.light'
                         borderRadius='borderRadius'
-                        px={5}
+                        px={2}
+                        px-lg={5}
                         py={1}
                     >
                         {
