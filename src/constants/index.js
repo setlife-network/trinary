@@ -9,9 +9,12 @@ export const CURRENCIES = [
         name: 'USD'
     },
     {
-        name: 'MXUSD'
+        name: 'MXN'
     },
     {
         name: 'EUR'
+    },
+    {
+        name: 'BTC'
     }
 ]

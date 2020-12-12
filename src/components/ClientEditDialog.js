@@ -123,7 +123,7 @@ const ClientEditDialog = (props) => {
                                     variant='contained'
                                     color='primary'
                                     disabled={disableEdit}
-                                    onClick={() => (onEdit())}
+                                    onClick={onEdit}
                                 >
                                     {`Edit client`}
                                 </Button>
