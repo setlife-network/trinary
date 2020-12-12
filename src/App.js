@@ -48,7 +48,7 @@ const App = () => {
                     render={(props) => <ProjectDetailPage {...props} />}
                 />
                 <Route
-                    path='/project/add'
+                    path='/project/add/:clientId'
                     render={(props) => <AddProjectPage {...props} />}
                 />
             </ThemeProvider>

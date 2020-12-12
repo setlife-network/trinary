@@ -26,6 +26,11 @@ const theme = createMuiTheme({
             root: {
                 padding: 0,
             }
+        },
+        MuiIcon: {
+            root: {
+                overflow: 'initial'
+            },
         }
     },
     palette: {

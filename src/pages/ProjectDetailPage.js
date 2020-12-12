@@ -9,7 +9,6 @@ import PeopleIcon from '@material-ui/icons/People';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 
-import ProjectManager from '../components/ProjectManager'
 import ProjectOverview from '../components/ProjectOverview'
 import ProjectPayments from '../components/ProjectPayments'
 import ProjectContributors from '../components/ProjectContributors'
@@ -69,11 +68,6 @@ class ProjectDetailPage extends React.Component {
 
         return (
             <div className='ProjectDetailPage'>
-                {/* Apollo client hooks are in here */}
-                {/* <ProjectManager
-                    projectId={match.params.projectId}
-                /> */}
-
                 <Route
                     exact
                     path={`${match.url}/`}
