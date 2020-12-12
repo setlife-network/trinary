@@ -18,12 +18,12 @@ const AddClientForm = ({
 
     const [addClient, { data, loading, error }] = useMutation(CREATE_CLIENT)
 
-    const [clientName, setClientName] = useState('');
-    const [clientEmail, setClientEmail] = useState('');
-    const [clientCurrency, setClientCurrency] = useState('');
-    const [disableAdd, setDisableAdd] = useState(true);
+    const [clientName, setClientName] = useState('')
+    const [clientEmail, setClientEmail] = useState('')
+    const [clientCurrency, setClientCurrency] = useState('')
+    const [disableAdd, setDisableAdd] = useState(true)
 
-    const onAdd = async () => {
+    const createClient = async () => {
         const newClient = await addClient({
             variables: {
                 name: clientName,
@@ -43,8 +43,6 @@ const AddClientForm = ({
     return (
         <FormControl
             fullWidth
-            noValidate
-            autoComplete='off'
             align='left'
             className='AddClientForm'
         >
@@ -99,7 +97,7 @@ const AddClientForm = ({
                             variant='contained'
                             color='primary'
                             disabled={disableAdd}
-                            onClick={() => (onAdd())}
+                            onClick={createClient}
                         >
                             Add client
                         </Button>

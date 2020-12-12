@@ -36,7 +36,7 @@ const AddProjectForm = ({
         }
     })
 
-    const handleBudgetChage = (input) => {
+    const handleBudgetChange = (input) => {
         if (!/^[0-9]*$/.test(input)) {
             setInvalidBudgetInput(true)
         } else {
@@ -49,7 +49,7 @@ const AddProjectForm = ({
         setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
     }
 
-    const onAdd = async () => {
+    const createProject = async () => {
         const variables = {
             client_id: parseInt(clientId, 10),
             name: projectName,
@@ -69,8 +69,6 @@ const AddProjectForm = ({
     return (
         <FormControl
             fullWidth
-            noValidate
-            autoComplete='off'
             align='left'
         >
             <Grid container justify='space-between'>
@@ -120,7 +118,8 @@ const AddProjectForm = ({
                             id='projectBudget'
                             variant='outlined'
                             fullWidth
-                            onChange={(event) => handleBudgetChage(event.target.value)}
+                            required
+                            onChange={(event) => handleBudgetChange(event.target.value)}
                         />
                     </Box>
                 </Grid>
@@ -149,7 +148,7 @@ const AddProjectForm = ({
                         variant='contained'
                         color='primary'
                         disabled={disableAdd}
-                        onClick={() => (onAdd())}
+                        onClick={createProject}
                     >
                         Add Project
                     </Button>
