@@ -29,7 +29,7 @@ const ClientEditDialog = (props) => {
     const [clientName, setClientName] = useState('')
     const [clientEmail, setClientEmail] = useState('')
     const [clientCurrency, setClientCurrency] = useState('')
-    const [disableAdd, setDisableAdd] = useState(true)
+    const [disableEdit, setDisableEdit] = useState(true)
 
     const onEdit = async () => {
 
@@ -50,12 +50,6 @@ const ClientEditDialog = (props) => {
         onClose()
     }
 
-    useEffect(() => {
-        if (clientName || clientCurrency || clientEmail) {
-            setDisableAdd(false)
-        }
-    })
-
     const renderCurrencies = (currencies) => {
         return (
             currencies.map(c => {
@@ -67,6 +61,12 @@ const ClientEditDialog = (props) => {
             })
         )
     }
+
+    useEffect(() => {
+        if (clientName || clientCurrency || clientEmail) {
+            setDisableEdit(false)
+        }
+    })
 
     return (
         <Dialog className='ClientEditDialog' onClose={onClose} open={open}>
@@ -124,7 +124,7 @@ const ClientEditDialog = (props) => {
                                 <Button
                                     variant='contained'
                                     color='primary'
-                                    disabled={disableAdd}
+                                    disabled={disableEdit}
                                     onClick={() => (onEdit())}
                                 >
                                     {`Edit client`}

@@ -13,8 +13,9 @@ import {
 } from '@material-ui/core/'
 
 import { CREATE_CLIENT } from '../operations/mutations/ClientMutations'
+import { CURRENCIES } from '../constants/'
 
-const AddClientForm = ({
+const ClientAddForm = ({
     history
 }) => {
 
@@ -36,6 +37,18 @@ const AddClientForm = ({
         history.push(`/clients/${newClient.data.createClient.id}`)
     }
 
+    const renderCurrencies = (currencies) => {
+        return (
+            currencies.map(c => {
+                return (
+                    <MenuItem value={c.name}>
+                        {c.name}
+                    </MenuItem>
+                )
+            })
+        )
+    }
+
     useEffect(() => {
         if (clientName && clientCurrency) {
             setDisableAdd(false)
@@ -44,11 +57,9 @@ const AddClientForm = ({
 
     return (
         <FormControl
+            className='ClientAddForm'
             fullWidth
-            noValidate
-            autoComplete='off'
             align='left'
-            className='AddClientForm'
         >
             <Grid
                 container
@@ -86,9 +97,7 @@ const AddClientForm = ({
                             onChange={(event) => setClientCurrency(event.target.value)}
                             value={clientCurrency}
                         >
-                            <MenuItem value={'USD'}>USD</MenuItem>
-                            <MenuItem value={'MXUSD'}>MXUSD</MenuItem>
-                            <MenuItem value={'EUR'}>EUR</MenuItem>
+                            {renderCurrencies(CURRENCIES)}
                         </Select>
                         <FormHelperText>
                             Select currency
@@ -112,4 +121,4 @@ const AddClientForm = ({
     )
 }
 
-export default AddClientForm
+export default ClientAddForm
