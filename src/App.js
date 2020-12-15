@@ -6,6 +6,7 @@ import theme from './styles/theme'
 
 import AddClientPage from './pages/AddClientPage'
 import AddProjectPage from './pages/AddProjectPage'
+import Authentication from './components/Authentication'
 import ClientDetailPage from './pages/ClientDetailPage'
 import ClientsListPage from './pages/ClientsListPage'
 import HomePage from './pages/HomePage'
@@ -36,6 +37,7 @@ class App extends React.Component {
     render() {
         return (
             <div className='App'>
+                <Authentication/>
                 <ThemeProvider theme={theme}>
                     <Navigation/>
                     <Route

@@ -16,7 +16,7 @@ import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 const ClientInfo = ({
     clientId
 }) => {
-    
+
     const { loading, error, data, networkStatus } = useQuery(GET_CLIENT_INFO, {
         variables: {
             id: parseInt(clientId, 10)
@@ -30,7 +30,7 @@ const ClientInfo = ({
             </Grid>
         )
     }
-    if (error) return `Error! ${error.message}`;
+    if (error) return `Error! ${error.message}`
 
     const client = data.getClientById
     return (
