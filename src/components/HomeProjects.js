@@ -6,7 +6,7 @@ import { orderBy } from 'lodash'
 import { GET_POJECTS } from '../operations/queries/ProjectQueries'
 import ProjectsList from './ProjectsList'
 
-const HomeProjectsListManager = ({
+const HomeProjects = ({
     history
 }) => {
 
@@ -43,4 +43,4 @@ const HomeProjectsListManager = ({
     )
 }
 
-export default HomeProjectsListManager
+export default HomeProjects
