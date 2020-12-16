@@ -7,7 +7,7 @@ import ClientInfo from '../components/ClientInfo'
 import ClientProjectsList from '../components/ClientProjectsList'
 import ProjectsListManager from '../components/ProjectsListManager'
 import ClientPaymentsManager from '../components/ClientPaymentsManager'
-import ClientPaymentsListManager from '../components/ClientPaymentsListManager'
+import ClientPayments from '../components/ClientPayments'
 
 class ClientDetailPage extends React.Component {
 
@@ -44,7 +44,7 @@ class ClientDetailPage extends React.Component {
                         <ClientPaymentsManager
                             clientId={clientId}
                         />
-                        <ClientPaymentsListManager
+                        <ClientPayments
                             clientId={clientId}
                         />
                     </Box>
