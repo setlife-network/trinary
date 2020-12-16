@@ -12,16 +12,22 @@ code {
     monospace;
 }
 
+// Globals
 @import './colors.scss';
+@import './flex.scss';
+@import './sizes.scss';
 
+//Pages
 @import './App.scss';
 @import './AddClientPage.scss';
 @import './AddProjectPage.scss';
 @import './ClientDetailPage.scss';
 @import './ClientsListPage.scss';
-@import './EmptyState.scss';
-@import './Header.scss';
 @import './HomePage.scss';
 @import './LoginPage.scss';
 @import './ProjectDetailPage.scss';
 @import './ProjectPayments.scss';
+
+//Components
+@import './EmptyState.scss';
+@import './Header.scss';
