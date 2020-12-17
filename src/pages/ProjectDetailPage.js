@@ -52,6 +52,7 @@ const MOCKED_PROJECT = {
 }
 
 class ProjectDetailPage extends React.Component {
+
     handleTabClick = (event, tab) => {
         this.props.history.push(`/projects/${this.props.match.params.projectId}/${tab}`)
     }
@@ -62,6 +63,9 @@ class ProjectDetailPage extends React.Component {
             location,
             match
         } = this.props
+
+        console.log('this.props.match.params');
+        console.log(this.props.match);
 
         // Convert URL `/projects/1/payments` to `payments`
         const selectedTab = location.pathname.replace(match.url, '').slice(1)
@@ -75,7 +79,7 @@ class ProjectDetailPage extends React.Component {
                 />
                 <Route
                     path={`${match.url}/overview`}
-                    render={(props) => <ProjectOverview {...props} />}
+                    render={(props) => <ProjectOverview {...props} projectId={this.props.match.params.projectId}/>}
                 />
                 <Route
                     path={`${match.url}/payments`}
