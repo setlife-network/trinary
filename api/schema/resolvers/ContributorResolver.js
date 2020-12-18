@@ -1,3 +1,4 @@
+const { AuthenticationError } = require('apollo-server')
 const toggl = require('../../handlers/toggl')
 
 module.exports = {
@@ -24,6 +25,11 @@ module.exports = {
             console.log(cookies)
             console.log('req.session.userSession')
             console.log(cookies.userSession)
+            if (cookies.userSession) {
+                return models.Contributor.findByPk(cookies.userSession)
+            } else {
+                throw new AuthenticationError('You must be authenticated')
+            }
         },
         getContributorById: (root, { id }, { models }) => {
             return models.Contributor.findByPk(id)
