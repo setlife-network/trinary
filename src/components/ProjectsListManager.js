@@ -44,7 +44,7 @@ const ProjectsListManager = ({
                 justify='space-between'
                 alignItems='flex-end'
             >
-                <Grid item>
+                <Grid item xs={12} md={3}>
                     <Box
                         bgcolor='primary.black'
                         color='primary.light'

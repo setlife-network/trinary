@@ -352,17 +352,17 @@ module.exports = {
             validateDatesFormat({
                 date: createFields['date']
             })
-            const createData = {
+            const projectToCreate = {
                 ...createFields
             }
             if (createFields.toggl_url) {
                 //get toggleId from togglUrl
                 const togglArray = split(createFields.toggl_url, '/')
                 const togglId = togglArray[togglArray.length - 1]
-                createData['toggl_id'] = togglId
+                projectToCreate['toggl_id'] = togglId
             }
             return models.Project.create({
-                ...createData
+                ...projectToCreate
             })
         },
         deleteProjectById: (root, { id }, { models }) => {
