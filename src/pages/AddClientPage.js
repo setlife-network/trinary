@@ -7,7 +7,7 @@ import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
-import AddClientForm from '../components/AddClientForm'
+import ClientAddForm from '../components/ClientAddForm'
 import Header from '../components/Header'
 
 class AddClientPage extends React.Component {
@@ -36,7 +36,7 @@ class AddClientPage extends React.Component {
                         You can add projects within the newly created client page
                     </Typography>
                     <Box mt={5}>
-                        <AddClientForm
+                        <ClientAddForm
                             history={this.props.history}
                         />
                     </Box>

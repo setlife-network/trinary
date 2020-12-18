@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
-import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
-import FormControl from '@material-ui/core/FormControl'
-import Grid from '@material-ui/core/Grid'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import TextField from '@material-ui/core/TextField'
+import {
+    Box,
+    Button,
+    FormControl,
+    Grid,
+    FormHelperText,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField
+} from '@material-ui/core/'
 
 import { CREATE_CLIENT } from '../operations/mutations/ClientMutations'
+import { CURRENCIES } from '../constants/'
 
-const AddClientForm = ({
+const ClientAddForm = ({
     history
 }) => {
 
@@ -34,6 +37,18 @@ const AddClientForm = ({
         history.push(`/clients/${newClient.data.createClient.id}`)
     }
 
+    const renderCurrencies = (currencies) => {
+        return (
+            currencies.map(c => {
+                return (
+                    <MenuItem value={c.name}>
+                        {c.name}
+                    </MenuItem>
+                )
+            })
+        )
+    }
+
     useEffect(() => {
         if (clientName && clientCurrency) {
             setDisableAdd(false)
@@ -42,9 +57,9 @@ const AddClientForm = ({
 
     return (
         <FormControl
+            className='ClientAddForm'
             fullWidth
             align='left'
-            className='AddClientForm'
         >
             <Grid
                 container
@@ -82,9 +97,7 @@ const AddClientForm = ({
                             onChange={(event) => setClientCurrency(event.target.value)}
                             value={clientCurrency}
                         >
-                            <MenuItem value={'USD'}>USD</MenuItem>
-                            <MenuItem value={'MXUSD'}>MXUSD</MenuItem>
-                            <MenuItem value={'EUR'}>EUR</MenuItem>
+                            {renderCurrencies(CURRENCIES)}
                         </Select>
                         <FormHelperText>
                             Select currency
@@ -108,4 +121,4 @@ const AddClientForm = ({
     )
 }
 
-export default AddClientForm
+export default ClientAddForm

@@ -1,22 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
-import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
-import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import EuroIcon from '@material-ui/icons/Euro';
+import {
+    Box,
+    Button,
+    Card,
+    CardActions,
+    Dialog,
+    Grid,
+    Typography,
+} from '@material-ui/core/'
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
+import EuroIcon from '@material-ui/icons/Euro'
 
 import { lightGrey } from '../styles/colors.scss'
-
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
+import ClientEditDialog from './ClientEditDialog'
 
 const ClientInfo = ({
     clientId
 }) => {
-    
+
+    const [open, setOpen] = useState(false);
+
+    const handleEditOpen = () => {
+        setOpen(true)
+    }
+
+    const handleEditClose = (value) => {
+        setOpen(false)
+    }
+
     const { loading, error, data, networkStatus } = useQuery(GET_CLIENT_INFO, {
         variables: {
             id: parseInt(clientId, 10)
@@ -31,8 +44,8 @@ const ClientInfo = ({
         )
     }
     if (error) return `Error! ${error.message}`;
-
     const client = data.getClientById
+
     return (
         <Card>
             <Box px={5} p={3} align='left'>
@@ -62,13 +75,18 @@ const ClientInfo = ({
             <hr color={lightGrey}/>
             <Box px={3} pb={1}>
                 <CardActions>
-                    <Button>
+                    <Button onClick={handleEditOpen}>
                         {'Edit'.toUpperCase()}
                     </Button>
                 </CardActions>
             </Box>
+            <ClientEditDialog
+                client={client}
+                open={open}
+                onClose={handleEditClose}
+            />
         </Card>
-    );
+    )
 }
 
-export default ClientInfo;
+export default ClientInfo
