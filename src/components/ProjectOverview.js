@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
     Box,
-    Button,
     Grid,
     Typography
 } from '@material-ui/core'
@@ -10,6 +9,7 @@ import {
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 import ProjectSummary from './ProjectSummary'
 import ProjectOverviewExternalLinks from './ProjectOverviewExternalLinks'
+import ProjectTimeTracking from './ProjectTimeTracking'
 
 const TimeTracking = ({
     totalTimeSpent,
@@ -37,9 +37,6 @@ const ProjectOverview = (props) => {
 
     const project = data?.getProjectById
 
-    console.log('project');
-    console.log(project);
-
     return (
         <Grid container className='ProjectOverview' justify='center'>
             <Grid item xs={10} lg={5}>
@@ -55,11 +52,11 @@ const ProjectOverview = (props) => {
                     github_url={project.github_url}
                     toggl_url={project.toggl_url}
                 />
+                <Box mt={4}>
+                    <ProjectTimeTracking/>
+                </Box>
             </Grid>
 
-            {
-                //<TimeTracking project={project}/>
-            }
         </Grid>
     );
 }
