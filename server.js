@@ -50,7 +50,7 @@ var corsOptions = {
     },
     credentials: true,
     methods: ['GET,PUT,POST,DELETE,OPTIONS'],
-    allowedHeaders: ['Access-Control-Allow-Headers', 'Origin', 'Access--Allow-Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Cache-Control']
+    allowedHeaders: ['Access-Control-Allow-Headers', 'Origin', 'Access-Control-Allow-Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Cache-Control']
 }
 
 app.use(cors(corsOptions));
