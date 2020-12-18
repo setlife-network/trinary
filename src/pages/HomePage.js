@@ -43,7 +43,7 @@ class HomePage extends React.Component {
                         xs={12}
                     >
                         <Grid item xs={6}>
-                            <Box mr={3} ml={1}>
+                            <Box mr={1} mr-lg={3} ml={1}>
                                 <Button
                                     fullWidth
                                     variant={list == 'clients' ? 'contained' : 'outlined'}
@@ -60,7 +60,7 @@ class HomePage extends React.Component {
                             </Box>
                         </Grid>
                         <Grid item xs={6}>
-                            <Box ml={3} mr={1}>
+                            <Box ml={1} ml-lg={3} mr={1}>
                                 <Button
                                     fullWidth
                                     variant={list == 'projects' ? 'contained' : 'outlined'}

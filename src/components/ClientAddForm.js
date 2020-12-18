@@ -26,7 +26,7 @@ const ClientAddForm = ({
     const [clientCurrency, setClientCurrency] = useState('')
     const [disableAdd, setDisableAdd] = useState(true)
 
-    const onAdd = async () => {
+    const createClient = async () => {
         const newClient = await addClient({
             variables: {
                 name: clientName,
@@ -110,7 +110,7 @@ const ClientAddForm = ({
                             variant='contained'
                             color='primary'
                             disabled={disableAdd}
-                            onClick={() => (onAdd())}
+                            onClick={createClient}
                         >
                             Add client
                         </Button>
