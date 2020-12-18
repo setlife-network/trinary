@@ -9,6 +9,7 @@ import {
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 import ProjectSummary from './ProjectSummary'
+import ProjectOverviewExternalLinks from './ProjectOverviewExternalLinks'
 
 const TimeTracking = ({
     totalTimeSpent,
@@ -50,38 +51,10 @@ const ProjectOverview = (props) => {
                     </Typography>
                 </Box>
                 <ProjectSummary project={project}/>
-                <Grid container>
-                    <Grid item xs={12} sm={6}>
-                        <Box mt={2} mr={{ xs: 0, sm: 1 }}>
-                            <Button
-                                fullWidth
-                                variant='outlined'
-                                color='primary'
-                                disabled={project.github_url ? 0 : 1}
-                                onClick={() => window.open(project.github_url, '_blank')}
-                            >
-                                <Typography variant='h6'>
-                                    {`Check Github profile`}
-                                </Typography>
-                            </Button>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <Box mt={2} ml={{ xs: 0, sm: 1 }}>
-                            <Button
-                                fullWidth
-                                variant='outlined'
-                                color='primary'
-                                disabled={project.github_url ? 0 : 1}
-                                onClick={() => window.open(project.toggl_url, '_blank')}
-                            >
-                                <Typography variant='h6'>
-                                    {`Check Toggl profile`}
-                                </Typography>
-                            </Button>
-                        </Box>
-                    </Grid>
-                </Grid>
+                <ProjectOverviewExternalLinks
+                    github_url={project.github_url}
+                    toggl_url={project.toggl_url}
+                />
             </Grid>
 
             {
