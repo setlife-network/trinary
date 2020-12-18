@@ -3,12 +3,11 @@ import { gql, useQuery } from '@apollo/client';
 import Grid from '@material-ui/core/Grid'
 import { orderBy } from 'lodash'
 
-import { GET_POJECTS } from '../operations/queries/ProjectQueries'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import ProjectsList from './ProjectsList'
 import ProjectsEmptyState from './ProjectsEmptyState'
 
-const ClientProjectsListManager = ({
+const ClientProjectsList = ({
     clientId,
     history
 }) => {
@@ -42,4 +41,4 @@ const ClientProjectsListManager = ({
     )
 }
 
-export default ClientProjectsListManager
+export default ClientProjectsList

@@ -1,4 +1,3 @@
-
 .ProjectPayments {
     padding-top: 2rem;
     text-align: center;
@@ -49,4 +48,10 @@
 
 .NoMoneyIcon {
     color: $grey;
+}
+
+@media screen and (min-width: $sm) {
+    .ProjectPayments {
+
+    }
 }

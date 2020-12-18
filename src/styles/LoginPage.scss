@@ -11,8 +11,14 @@
 
     .image-button {
         margin: auto;
-                      
+
     }
-    
-   
+
+
+}
+
+@media screen and (min-width: $sm) {
+    .LoginPage {
+
+    }
 }
