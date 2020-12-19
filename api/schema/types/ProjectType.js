@@ -37,8 +37,8 @@ module.exports = gql`
             contributor_id: Int
         ): [TimeEntry]
         timeSpent(
-            fromDate: String!
-            toDate: String!
+            fromDate: String
+            toDate: String
             contributor_id: Int
         ): TimeSpent
         totalPaid(

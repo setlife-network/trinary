@@ -278,7 +278,7 @@ module.exports = {
             })
             const whereConditions = {
                 project_id: project.id,
-                start_time: { [Op.between]: [args.fromDate, args.toDate] }
+                start_time: { [Op.between]: [args.fromDate ? args.fromDate : moment.utc(1), args.toDate ? args.toDate : moment.utc()] }
             }
             if (args.contributor_id) {
                 whereConditions.contributor_id = args.contributor_id

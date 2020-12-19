@@ -11,6 +11,14 @@ const timeEntries = [
     {
         name: 'Contributor name',
         time: 20
+    },
+    {
+        name: 'Contributor name',
+        time: 20
+    },
+    {
+        name: 'Contributor name',
+        time: 20
     }
 ]
 
@@ -48,7 +56,9 @@ const ProjectTimeTracking = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                {renderContributorTimeEntries(timeEntries)}
+                <Box mt={5}>
+                    {renderContributorTimeEntries(timeEntries)}
+                </Box>
             </Grid>
         </Grid>
     )
