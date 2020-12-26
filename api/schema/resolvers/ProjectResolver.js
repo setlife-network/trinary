@@ -250,6 +250,15 @@ module.exports = {
                 }
             })
         },
+        timeSpentPerContributor: (project, args, { models }) => {
+            return models.TimeEntry.findAll(
+                {
+                    where: { project_id: project.id },
+                    group: 'contributor_id',
+                    attributes: ['contributor_id', [fn('sum', col('seconds')), 'seconds']]
+                }
+            )
+        },
         issuesOpened: (project, args, { models }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,

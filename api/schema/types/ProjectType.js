@@ -41,6 +41,7 @@ module.exports = gql`
             toDate: String
             contributor_id: Int
         ): TimeSpent
+        timeSpentPerContributor: [timeSpentPerContributor]
         totalPaid(
             fromDate: String,
             toDate: String
@@ -53,6 +54,11 @@ module.exports = gql`
     }
 
     type TimeSpent {
+        seconds: Int
+    }
+
+    type timeSpentPerContributor {
+        contributor_id: Int!
         seconds: Int
     }
 
