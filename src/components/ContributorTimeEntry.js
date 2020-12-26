@@ -11,9 +11,8 @@ const ContributorTimeEntry = (props) => {
 
     const { timeEntry } = props
 
-    const timeSpent = (timeEntry.seconds / 3600).toString().split('.')
-    const hoursSpent = timeSpent[0]
-    const minutesSpent = timeSpent[1].substring(0, 2)
+    const hoursSpent = Math.trunc(timeEntry.seconds / 3600)
+    const minutesSpent = Math.trunc(timeEntry.seconds / 60)
 
     return (
         <Grid container className='ContributorTimeEntry'>
@@ -24,7 +23,9 @@ const ContributorTimeEntry = (props) => {
             </Grid>
             <Grid item xs={6} align='right'>
                 <Typography>
-                    {`${hoursSpent} h. ${minutesSpent} m.`}
+                    {`
+                        ${hoursSpent ? `${hoursSpent} h` : `${minutesSpent} m`}
+                    `}
                 </Typography>
             </Grid>
             <Grid item xs={12}>
