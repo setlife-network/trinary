@@ -40,24 +40,27 @@ export const GET_PROJECT = gql`
             client {
                 id,
                 name
-            },
+            }
             allocatedPayments {
                 id
-            },
+            }
             issues {
                 id
-            },
+            }
             contributors {
                 id
-            },
+            }
             allocations {
                 id
-            },
-            timeSpent(
-                fromDate: "2020-01-01",
-                toDate: "2020-12-31"
-            ) {
+            }
+            timeSpent {
                 seconds
+            }
+            timeEntries{
+                seconds
+                contributor {
+                    name
+                }
             }
         }
     }

@@ -53,7 +53,7 @@ const ProjectOverview = (props) => {
                     toggl_url={project.toggl_url}
                 />
                 <Box mt={8}>
-                    <ProjectTimeTracking/>
+                    <ProjectTimeTracking project={project}/>
                 </Box>
             </Grid>
 
