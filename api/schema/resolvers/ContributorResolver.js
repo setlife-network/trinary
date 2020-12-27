@@ -20,11 +20,6 @@ module.exports = {
     },
     Query: {
         checkSession: (root, args, { models, cookies }) => {
-            console.log('req');
-            console.log('req.session')
-            console.log(cookies)
-            console.log('req.session.userSession')
-            console.log(cookies.userSession)
             if (cookies.userSession) {
                 return models.Contributor.findByPk(cookies.userSession)
             } else {
