@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useMutation } from '@apollo/client';
+import React, { useState, useEffect } from 'react'
+import { useMutation } from '@apollo/client'
+import Alert from '@material-ui/lab/Alert'
 import {
     Box,
     Button,
@@ -9,6 +10,7 @@ import {
     InputLabel,
     MenuItem,
     Select,
+    Snackbar,
     TextField,
     Typography
 } from '@material-ui/core'
@@ -24,7 +26,7 @@ const AddProjectForm = ({
     history
 }) => {
 
-    const [addProject, { data, loading, error }] = useMutation(ADD_PROJECT)
+    const [addProject, { data, loading, errors }] = useMutation(ADD_PROJECT, { errorPolicy: 'all' })
 
     const [disableAdd, setDisableAdd] = useState(true)
     const [invalidBudgetInput, setInvalidBudgetInput] = useState(false)
@@ -34,12 +36,20 @@ const AddProjectForm = ({
     const [projectToggl, setProjectToggl] = useState(null)
     const [projectDate, setProjectDate] = useState(null)
     const [projectBudget, setProjectBudget] = useState(0)
+    const [displayError, setDisplayError] = useState(false)
 
     useEffect(() => {
         if (projectName && projectGithub && projectBudget && projectDate) {
             setDisableAdd(false)
         }
     })
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setDisplayError(false)
+    }
 
     const handleBudgetChage = (input) => {
         if (!/^[0-9]*$/.test(input)) {
@@ -66,12 +76,19 @@ const AddProjectForm = ({
             variables['toggl_url'] = projectToggl
         }
 
-        try {
-            const newProject = await addProject({ variables })
+        const newProject = await addProject({ variables })
+        console.log('newProject');
+        if (loading) return <span>loading...</span>
+        if (newProject.errors) {
+            console.log('error');
+            console.log(newProject.errors[0].extensions.exception.fields);
+            setCreateProjectError(`${Object.keys(newProject.errors[0].extensions.exception.fields)[0]}`)
+            setDisplayError(true)
+        } else {
+            console.log('push');
             history.push(`/projects/${newProject.data.createProject.id}`)
-        } catch (e) {
-            setCreateProjectError(`${e}`)
         }
+
     }
 
     return (
@@ -161,13 +178,15 @@ const AddProjectForm = ({
                     </Button>
                 </Box>
             </Grid>
-            <Grid item xs={12}>
-                <Box mt={4} color={red}>
-                    <Typography>
-                        {`${createProjectError}`}
-                    </Typography>
-                </Box>
-            </Grid>
+            <Snackbar
+                open={displayError}
+                autoHideDuration={6000}
+                onClose={handleAlertClose}
+            >
+                <Alert severity='error'>
+                    {`${createProjectError} already exists`}
+                </Alert>
+            </Snackbar>
         </FormControl>
     )
 }
