@@ -1,0 +1,14 @@
+// material ui breakpoints
+$xs: 0px;
+$sm: 600px;
+$md: 960px;
+$lg: 1280px;
+$xl: 1920px;
+
+:export {
+    xs: $xs;
+    sm: $sm;
+    md: $md;
+    lg: $lg;
+    xl: $xl;
+}

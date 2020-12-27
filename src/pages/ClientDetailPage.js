@@ -4,10 +4,10 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
 import ClientInfo from '../components/ClientInfo'
-import ClientProjectsListManager from '../components/ClientProjectsListManager'
+import ClientProjectsList from '../components/ClientProjectsList'
 import ProjectsListManager from '../components/ProjectsListManager'
 import ClientPaymentsManager from '../components/ClientPaymentsManager'
-import ClientPaymentsListManager from '../components/ClientPaymentsListManager'
+import ClientPayments from '../components/ClientPayments'
 
 class ClientDetailPage extends React.Component {
 
@@ -37,14 +37,14 @@ class ClientDetailPage extends React.Component {
                             clientId={clientId}
                             history={this.props.history}
                         />
-                        <ClientProjectsListManager
+                        <ClientProjectsList
                             clientId={clientId}
                             history={this.props.history}
                         />
                         <ClientPaymentsManager
                             clientId={clientId}
                         />
-                        <ClientPaymentsListManager
+                        <ClientPayments
                             clientId={clientId}
                         />
                     </Box>
