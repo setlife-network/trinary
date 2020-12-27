@@ -58,8 +58,9 @@ module.exports = gql`
     }
 
     type timeSpentPerContributor {
-        contributor_id: Int!
+        contributor: Contributor!
         seconds: Int
+        contributor_id: Int!
     }
 
     input CreateProjectInput {

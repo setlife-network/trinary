@@ -19,11 +19,14 @@ const ProjectTimeTracking = (props) => {
 
     const { project } = props
 
+    console.log('project');
+    console.log(project);
+
     const projectHoursSpent = project.timeSpent.seconds
         ? Math.trunc(project.timeSpent.seconds / 3600)
         : 0
 
-    const projectTimeEntries = project.timeEntries
+    const contributorTimeEntries = project.timeSpentPerContributor
 
     return (
         <Grid container className='ProjectTimeTracking'>
@@ -48,7 +51,7 @@ const ProjectTimeTracking = (props) => {
             </Grid>
             <Grid item xs={12}>
                 <Box mt={5}>
-                    {renderContributorTimeEntries(projectTimeEntries)}
+                    {renderContributorTimeEntries(contributorTimeEntries)}
                 </Box>
             </Grid>
         </Grid>

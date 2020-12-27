@@ -130,7 +130,7 @@ module.exports = {
                 fromAllocations: parseInt(totalPaidFromAllocation / totalIssues, 10)
             }
         },
-        client: (project, args, { models }) => {
+        client: async (project, args, { models }) => {
             return models.Client.findByPk(project.client_id)
         },
         contributors: (project, args, { models }) => {
@@ -253,11 +253,14 @@ module.exports = {
         timeSpentPerContributor: (project, args, { models }) => {
             return models.TimeEntry.findAll(
                 {
-                    where: { project_id: project.id },
+                    where: {
+                        project_id: project.id
+                    },
                     group: 'contributor_id',
                     attributes: ['contributor_id', [fn('sum', col('seconds')), 'seconds']]
                 }
             )
+
         },
         issuesOpened: (project, args, { models }) => {
             validateDatesFormat({
@@ -335,6 +338,17 @@ module.exports = {
             return total
                 ? total.dataValues.totalPaid
                 : 0
+        }
+    },
+    timeSpentPerContributor: {
+        contributor: (timeSpentPerContributor, args, { models }) => {
+            return models.Contributor.findOne(
+                {
+                    where: {
+                        id: timeSpentPerContributor.contributor_id
+                    }
+                }
+            )
         }
     },
     Query: {
