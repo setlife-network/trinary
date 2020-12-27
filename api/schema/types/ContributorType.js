@@ -38,7 +38,7 @@ module.exports = gql`
     }
 
     type Query {
-        checkSession: Boolean!
+        checkSession: Contributor
         getContributorById(id: Int!): Contributor
         getContributors: [Contributor]
     }
