@@ -19,9 +19,6 @@ const ProjectTimeTracking = (props) => {
 
     const { project } = props
 
-    console.log('project');
-    console.log(project);
-
     const projectHoursSpent = project.timeSpent.seconds
         ? Math.trunc(project.timeSpent.seconds / 3600)
         : 0
@@ -37,7 +34,7 @@ const ProjectTimeTracking = (props) => {
                     </strong>
                 </Typography>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={5} md={3}>
                 <Box
                     bgcolor='primary.black'
                     color='primary.light'

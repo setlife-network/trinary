@@ -63,8 +63,10 @@ export const GET_PROJECT = gql`
                 }
             }
             timeSpentPerContributor {
-                contributor_id
                 seconds
+                contributor {
+                    name
+                }
             }
         }
     }
