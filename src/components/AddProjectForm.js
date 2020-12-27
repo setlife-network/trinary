@@ -26,7 +26,7 @@ const AddProjectForm = ({
     history
 }) => {
 
-    const [addProject, { data, loading, errors }] = useMutation(ADD_PROJECT, { errorPolicy: 'all' })
+    const [addProject, { data, loading, error }] = useMutation(ADD_PROJECT, { errorPolicy: 'all' })
 
     const [disableAdd, setDisableAdd] = useState(true)
     const [invalidBudgetInput, setInvalidBudgetInput] = useState(false)
@@ -77,15 +77,11 @@ const AddProjectForm = ({
         }
 
         const newProject = await addProject({ variables })
-        console.log('newProject');
         if (loading) return <span>loading...</span>
         if (newProject.errors) {
-            console.log('error');
-            console.log(newProject.errors[0].extensions.exception.fields);
             setCreateProjectError(`${Object.keys(newProject.errors[0].extensions.exception.fields)[0]}`)
             setDisplayError(true)
         } else {
-            console.log('push');
             history.push(`/projects/${newProject.data.createProject.id}`)
         }
 
