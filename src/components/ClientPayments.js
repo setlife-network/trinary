@@ -6,7 +6,7 @@ import PaymentsList from './PaymentsList'
 import PaymentsEmptyState from './PaymentsEmptyState'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/PaymentQueries'
 
-const ClientPaymentsListManager = (props) => {
+const ClientPayments = (props) => {
 
     const { clientId } = props
 
@@ -38,4 +38,4 @@ const ClientPaymentsListManager = (props) => {
 
 }
 
-export default ClientPaymentsListManager
+export default ClientPayments

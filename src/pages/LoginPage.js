@@ -8,7 +8,6 @@ import Grid from '@material-ui/core/Grid'
 import Header from '../components/Header'
 import { setlifeBlue } from '../styles/colors.scss'
 
-
 const loggedInUser = [{
     id: null,
     email: '',
@@ -24,7 +23,7 @@ class LoginPage extends React.Component {
     render() {
         return (
             <Grid container className='LoginPage'>
-                
+
                 <Grid item xs={12}>
                     <Header
                         title='Login'
@@ -38,7 +37,7 @@ class LoginPage extends React.Component {
                             variant='contained'
                             color='primary'
                             href='#contained-buttons'
-                            style={{ backgroundColor: setlifeBlue }} 
+                            style={{ backgroundColor: setlifeBlue }}
                         >
                             <h3>Log in with your Github Account</h3>
 
@@ -47,7 +46,7 @@ class LoginPage extends React.Component {
                     )}
                 </div>
 
-            </Grid>           
+            </Grid>
         )
     }
 }

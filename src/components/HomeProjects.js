@@ -3,14 +3,14 @@ import { gql, useQuery } from '@apollo/client';
 import { Grid } from '@material-ui/core'
 import { orderBy } from 'lodash'
 
-import { GET_POJECTS } from '../operations/queries/ProjectQueries'
+import { GET_ALL_PROJECTS } from '../operations/queries/ProjectQueries'
 import ProjectsList from './ProjectsList'
 
-const HomeProjectsListManager = ({
+const HomeProjects = ({
     history
 }) => {
 
-    const { loading, error, data } = useQuery(GET_POJECTS);
+    const { loading, error, data } = useQuery(GET_ALL_PROJECTS);
 
     if (loading) {
         return (
@@ -43,4 +43,4 @@ const HomeProjectsListManager = ({
     )
 }
 
-export default HomeProjectsListManager
+export default HomeProjects
