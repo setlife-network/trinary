@@ -1,107 +1,79 @@
 import React, { useState } from 'react'
+import { useQuery } from '@apollo/client';
 import moment from 'moment'
-import Box from '@material-ui/core/Box'
+import {
+    Box,
+    Grid,
+    Typography
+} from '@material-ui/core'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 
+import PaymentsEmptyState from './PaymentsEmptyState'
 import PaymentTile from './PaymentTile'
-
-const MOCKED_PAYMENTS = [
-    {
-        id: 1,
-        amount: 100,
-        //date_paid: '1601063721',
-        date_paid: null,
-        date_incurred: '1602878139',
-    },
-
-    {
-        id: 2,
-        amount: 200,
-        date_paid: '1601063721',
-        date_incurred: '1600286121',
-    },
-
-    {
-        id: 3,
-        amount: 300,
-        date_paid: null,
-        date_incurred: '1600286121',
-    },
-
-    {
-        id: 4,
-        amount: 500,
-        date_paid: '1601063721',
-        date_incurred: '1600286121',
-    },
-
-    {
-        id: 5,
-        amount: 800,
-        date_paid: null,
-        date_incurred: '1600286121',
-    }
-]
+import PaymentsList from './PaymentsList'
+import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 
 const ProjectPayments = (props) => {
 
-    const renderPayments = () => {
-        // TODO:
-        // fetch payments from API
-        // store them in state
-        // replace the mocked array
-
-        return MOCKED_PAYMENTS.map(p => {
-            return (
-                <PaymentTile
-                    payment={p}
-                />
-            )
-        })
-    }
-
-    const calculateTotalPayments = () => {
-        return MOCKED_PAYMENTS.reduce((sum, payment) => {
+    const calculateTotalPayments = (payments) => {
+        return payments.reduce((sum, payment) => {
             return sum + payment.amount;
         }, 0)
     }
 
+    const { projectId } = props
+
+    const { loading, error, data } = useQuery(GET_PROJECT, {
+        variables: {
+            id: Number(projectId)
+        }
+    })
+
+    if (loading) {
+        return (
+            <div>
+                Loading...
+            </div>
+        )
+    }
+    if (error) return `Error! ${error.message}`
+
+    const { getProjectById } = data
+    const { allocatedPayments, client } = getProjectById
+
     return (
 
-        <div className='ProjectPayments'>
-
-            <Box
-                className='title-container'
-                flexDirection='row'
-                display='flex'
-                alignItems='baseline'
-            >
-                <Box
-                    className='payments-title'
-                    flex={1}
-                >
-                    Payments
+        <Grid container justify='center' className='ProjectPayments'>
+            <Grid item xs={10} md={6} align='left'>
+                <Box p={3}>
+                    <Grid container justify='space-between'>
+                        <Grid item>
+                            <Typography variant='h4'>
+                                <strong>
+                                    {'Payments'}
+                                </strong>
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant='h4'>
+                                <strong>
+                                    {`${calculateTotalPayments(allocatedPayments)} ${client.currency} Total`}
+                                </strong>
+                            </Typography>
+                        </Grid>
+                    </Grid>
                 </Box>
-                <Box
-                    flex={1}
-                    className='usd-total'
-                >
-                    {`Total: $${calculateTotalPayments()}`}
-                </Box>
+                {allocatedPayments.length != 0
+                    ? (
+                        <PaymentsList payments={allocatedPayments}/>
+                    )
+                    : (
+                        <PaymentsEmptyState/>
+                    )}
+            </Grid>
+        </Grid>
 
-            </Box>
-
-            <div>
-                {renderPayments()}
-            </div>
-
-        </div>
-
-    );
+    )
 }
 
-ProjectPayments.defaultProps = {
-
-};
-
-export default ProjectPayments;
+export default ProjectPayments

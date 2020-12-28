@@ -13,7 +13,7 @@ const ClientProjectsList = ({
 }) => {
 
     const { loading, error, data, networkStatus } = useQuery(GET_CLIENT_INFO, {
-        variables: { id: parseInt(clientId, 10) }
+        variables: { id: Number(clientId) }
     })
 
     if (loading) {

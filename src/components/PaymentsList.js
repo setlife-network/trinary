@@ -1,5 +1,8 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid'
+import {
+    Box,
+    Grid
+} from '@material-ui/core'
 
 import PaymentTile from './PaymentTile'
 
@@ -12,15 +15,17 @@ const PaymentsList = (props) => {
     const renderPaymentTiles = (payments) => {
         return payments.map(p => {
             return (
-                <Grid item xs={12} lg={4} className='PaymentsList'>
-                    <PaymentTile payment={p}/>
+                <Grid item xs={12} lg={4}>
+                    <Box my={2}>
+                        <PaymentTile payment={p} client={p.client}/>
+                    </Box>
                 </Grid>
             )
         })
     }
 
     return (
-        <Grid container>
+        <Grid container justify='space-between' className='PaymentsList'>
             {renderPaymentTiles(payments)}
         </Grid>
     )

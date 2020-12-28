@@ -7,15 +7,15 @@ import Typography from '@material-ui/core/Typography'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 
 const PaymentTile = (props) => {
-    const { payment } = props
 
-    const formattedDatePaid = moment.unix(payment.date_paid).format('MM/DD/YYYY')
-    const formattedDateIncurred = moment.unix(payment.date_incurred).format('MM/DD/YYYY')
+    const { client, payment } = props
+
+    const formattedDatePaid = moment(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
+    const formattedDateIncurred = moment(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
     const paymentHasBeenMade = payment.date_paid != null
 
     return (
         <Box
-            display='flex'
             boxShadow={3}
             borderRadius='borderRadius'
             bgcolor='primary.light'
@@ -25,12 +25,12 @@ const PaymentTile = (props) => {
             className='PaymentTile'
         >
             <Grid container alignItems='baseline'>
-                <Grid item xs={3}>
+                <Grid item xs={5} align='left'>
                     <Typography variant='h6'>
-                        {`$ ${payment.amount}`}
+                        {`${client.currency != 'USD' ? '' : '$'} ${payment.amount}`}
                     </Typography>
                 </Grid>
-                <Grid item>
+                <Grid item xs={1}>
                     <Typography
                         variant='caption'
                         align='left'
@@ -45,12 +45,7 @@ const PaymentTile = (props) => {
                 </Grid>
                 <Grid item xs={6} align='right'>
                     <MonetizationOnIcon
-                        className={
-                            `${paymentHasBeenMade
-                                ? 'MoneyIcon'
-                                : 'NoMoneyIcon'
-                            }`
-                        }
+                        color={`${paymentHasBeenMade ? 'primary' : 'secondary'}`}
                     />
                 </Grid>
             </Grid>
