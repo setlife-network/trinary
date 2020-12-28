@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+import { useQuery } from '@apollo/client'
+import { Grid } from '@material-ui/core/'
 
-const MOCKED_CONTRIBUTORS = [
-    {
-        id: 1,
-        name: 'Alice'
-    },
-    {
-        id: 2,
-        name: 'Bob'
-    },
-]
+import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 
 // Convert to imported component as ContributorTile.js when ready to merge
 const ContributorTile = (props) => {
@@ -27,31 +20,48 @@ const ContributorTile = (props) => {
 
 const ProjectContributors = (props) => {
 
-    const renderContributors = () => {
-        // TODO:
-        // fetch contributors from API
-        // store them in state
-        // replace the mocked array
+    const { projectId } = props
+    const { loading, error, data, networkStatus } = useQuery(GET_PROJECT, {
+        variables: {
+            id: Number(projectId)
+        }
+    })
 
-        return MOCKED_CONTRIBUTORS.map(c => {
-            return (
-                <ContributorTile
-                    contributor={c}
-                />
-            )
-        })
+    if (loading) {
+        return (
+            <Grid item xs={12}>
+                Loading...
+            </Grid>
+        )
     }
+    if (error) return `Error! ${error.message}`
+
+    const project = data.getProjectById
+
+    const { contributors } = project
+
+    // const renderContributors = () => {
+    //     // TODO:
+    //     // fetch contributors from API
+    //     // store them in state
+    //     // replace the mocked array
+    //
+    //     return MOCKED_CONTRIBUTORS.map(c => {
+    //         return (
+    //             <ContributorTile
+    //                 contributor={c}
+    //             />
+    //         )
+    //     })
+    // }
 
     return (
-        <div className='ProjectContributors'>
-            <h1>ProjectContributors</h1>
-            {renderContributors()}
-        </div>
+        <Grid container className='ProjectContributors'>
+            <Grid item xs={12}>
+                <h1>Trinary Contributors</h1>
+            </Grid>
+        </Grid>
     );
 }
 
-ProjectContributors.defaultProps = {
-
-};
-
-export default ProjectContributors;
+export default ProjectContributors

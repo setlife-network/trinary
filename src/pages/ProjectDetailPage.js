@@ -83,7 +83,7 @@ class ProjectDetailPage extends React.Component {
                 />
                 <Route
                     path={`${match.url}/contributors`}
-                    render={(props) => <ProjectContributors {...props} />}
+                    render={(props) => <ProjectContributors {...props} projectId={this.props.match.params.projectId}/>}
                 />
                 <Route
                     path={`${match.url}/issues`}

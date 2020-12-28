@@ -29,24 +29,25 @@ export const GET_ACTIVE_PROJECTS_COUNT = gql`
 export const GET_PROJECT = gql`
     query Project($id: Int!){
         getProjectById(id: $id){
-            id,
-            name,
-            client {
-                id,
-                name
-            },
-            allocatedPayments {
-                id
-            },
-            issues {
-                id
-            },
-            contributors {
-                id
-            },
+            id
+            name
             allocations {
                 id
-            },
+            }
+            allocatedPayments {
+                id
+            }
+            client {
+                id
+                name
+            }
+            contributors {
+                id
+                name
+            }
+            issues {
+                id
+            }
             timeSpent(
                 fromDate: "2020-01-01",
                 toDate: "2020-12-31"
