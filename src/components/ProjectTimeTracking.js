@@ -5,14 +5,14 @@ import {
     Typography
 } from '@material-ui/core'
 
-import ContributorTimeEntry from './ContributorTimeEntry'
+import ContributorTimeTrackedTile from './ContributorTimeTrackedTile'
 
 const ProjectTimeTracking = (props) => {
 
     const renderContributorTimeEntries = (timeEntries) => {
         return timeEntries.map(t => {
             return (
-                <ContributorTimeEntry timeEntry={t}/>
+                <ContributorTimeTrackedTile timeEntry={t}/>
             )
         })
     }

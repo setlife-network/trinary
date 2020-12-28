@@ -7,7 +7,7 @@ import {
 
 import { lightGrey } from '../styles/colors.scss'
 
-const ContributorTimeEntry = (props) => {
+const ContributorTimeTrackedTile = (props) => {
 
     const { timeEntry } = props
 
@@ -35,4 +35,4 @@ const ContributorTimeEntry = (props) => {
     )
 }
 
-export default ContributorTimeEntry
+export default ContributorTimeTrackedTile
