@@ -254,7 +254,17 @@ module.exports = {
             return models.TimeEntry.findAll(
                 {
                     where: {
-                        project_id: project.id
+                        project_id: project.id,
+                        start_time: {
+                            [Op.between]: [
+                                args.fromDate
+                                    ? args.fromDate
+                                    : moment.utc(1),
+                                args.toDate
+                                    ? args.toDate
+                                    : moment.utc()
+                            ]
+                        },
                     },
                     group: 'contributor_id',
                     attributes: ['contributor_id', [fn('sum', col('seconds')), 'seconds']]
