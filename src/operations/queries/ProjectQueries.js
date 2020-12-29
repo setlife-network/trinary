@@ -33,6 +33,11 @@ export const GET_PROJECT = gql`
             name
             allocations {
                 id
+                active
+                contributor {
+                    id
+                    name
+                }
             }
             allocatedPayments {
                 id
@@ -48,10 +53,7 @@ export const GET_PROJECT = gql`
             issues {
                 id
             }
-            timeSpent(
-                fromDate: "2020-01-01",
-                toDate: "2020-12-31"
-            ) {
+            timeSpent {
                 seconds
             }
         }

@@ -4,22 +4,10 @@ import {
     Box,
     Grid
 } from '@material-ui/core/'
+import { filter } from 'lodash'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
-
-// Convert to imported component as ContributorTile.js when ready to merge
-const ContributorTile = (props) => {
-    const { contributor } = props
-
-    // Log the `contributor` object to confirm its data structure
-
-    return (
-        <div className='ContributorTile'>
-            ContributorTile
-        </div>
-    )
-
-}
+import ContributorTile from './ContributorTile'
 
 const ProjectContributors = (props) => {
 
@@ -40,32 +28,28 @@ const ProjectContributors = (props) => {
     if (error) return `Error! ${error.message}`
 
     const project = data.getProjectById
+    const { allocations } = project
+    const activeAllocations = filter(allocations, 'active')
+    const activeContributors = activeAllocations.map(a => {
+        return a.contributor
+    })
 
-    const { contributors } = project
+    const renderContributors = (contributors) => {
 
-    console.log('contributors');
-    console.log(contributors);
-
-    // const renderContributors = () => {
-    //     // TODO:
-    //     // fetch contributors from API
-    //     // store them in state
-    //     // replace the mocked array
-    //
-    //     return MOCKED_CONTRIBUTORS.map(c => {
-    //         return (
-    //             <ContributorTile
-    //                 contributor={c}
-    //             />
-    //         )
-    //     })
-    // }
+        return contributors.map(c => {
+            return (
+                <ContributorTile
+                    contributor={c}
+                />
+            )
+        })
+    }
 
     return (
         <Grid container className='ProjectContributors'>
-
             <h1>Trinary Contributors</h1>
-            <Grid item xs={12} md={3}>
+            <Grid xs={12}/>
+            <Grid item xs={12} md={4}>
                 <Box
                     bgcolor='primary.black'
                     color='primary.light'
@@ -74,12 +58,15 @@ const ProjectContributors = (props) => {
                     py={1}
                 >
                     {
-                        `${contributors.length} active ${contributors.length == 1
+                        `${activeContributors.length} active ${activeContributors.length == 1
                             ? 'contributor'
                             : 'contributors'
                         }`
                     }
                 </Box>
+            </Grid>
+            <Grid item xs={12}>
+                {renderContributors(activeContributors)}
             </Grid>
         </Grid>
     );

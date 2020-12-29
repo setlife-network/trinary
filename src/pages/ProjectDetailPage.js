@@ -2,7 +2,8 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import {
     BottomNavigation,
-    BottomNavigationAction
+    BottomNavigationAction,
+    Grid
 } from '@material-ui/core'
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import PeopleIcon from '@material-ui/icons/People';
@@ -67,29 +68,30 @@ class ProjectDetailPage extends React.Component {
         const selectedTab = location.pathname.replace(match.url, '').slice(1)
 
         return (
-            <div className='ProjectDetailPage'>
-                <Route
-                    exact
-                    path={`${match.url}/`}
-                    component={() => <Redirect to={`${match.url}/overview`} />}
-                />
-                <Route
-                    path={`${match.url}/overview`}
-                    render={(props) => <ProjectOverview {...props} />}
-                />
-                <Route
-                    path={`${match.url}/payments`}
-                    render={(props) => <ProjectPayments {...props} />}
-                />
-                <Route
-                    path={`${match.url}/contributors`}
-                    render={(props) => <ProjectContributors {...props} projectId={this.props.match.params.projectId}/>}
-                />
-                <Route
-                    path={`${match.url}/issues`}
-                    render={(props) => <ProjectIssues {...props} />}
-                />
-
+            <Grid container justify='center' className='ProjectDetailPage'>
+                <Grid item xs={10} lg={5}>
+                    <Route
+                        exact
+                        path={`${match.url}/`}
+                        component={() => <Redirect to={`${match.url}/overview`} />}
+                    />
+                    <Route
+                        path={`${match.url}/overview`}
+                        render={(props) => <ProjectOverview {...props} />}
+                    />
+                    <Route
+                        path={`${match.url}/payments`}
+                        render={(props) => <ProjectPayments {...props} />}
+                    />
+                    <Route
+                        path={`${match.url}/contributors`}
+                        render={(props) => <ProjectContributors {...props} projectId={this.props.match.params.projectId}/>}
+                    />
+                    <Route
+                        path={`${match.url}/issues`}
+                        render={(props) => <ProjectIssues {...props} />}
+                    />
+                </Grid>
                 <BottomNavigation
                     value={selectedTab}
                     onChange={this.handleTabClick}
@@ -115,7 +117,7 @@ class ProjectDetailPage extends React.Component {
                         icon={<FormatListNumberedIcon/>}
                     />
                 </BottomNavigation>
-            </div>
+            </Grid>
         )
     }
 }
