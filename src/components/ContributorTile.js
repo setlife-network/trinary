@@ -1,7 +1,8 @@
 import React from 'react'
 import {
     Box,
-    Grid
+    Grid,
+    Typography
 } from '@material-ui/core/'
 
 const ContributorTile = (props) => {
@@ -12,7 +13,19 @@ const ContributorTile = (props) => {
     console.log(contributor);
 
     return (
-        <Box className='ContributorTile'>
+        <Box
+            className='ContributorTile'
+            bgcolor='primary.light_blue'
+            borderRadius='borderRadius'
+            p={2}
+            align='left'
+        >
+            <Typography>
+                <strong>
+                    {contributor.name}
+                </strong>
+            </Typography>
+            {contributor.github_handle}
         </Box>
     )
 

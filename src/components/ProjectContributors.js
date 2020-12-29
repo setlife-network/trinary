@@ -38,18 +38,22 @@ const ProjectContributors = (props) => {
 
         return contributors.map(c => {
             return (
-                <ContributorTile
-                    contributor={c}
-                />
+                <Grid container>
+                    <Grid item xs={12}>
+                        <ContributorTile
+                            contributor={c}
+                        />
+                    </Grid>
+                </Grid>
             )
         })
     }
 
     return (
         <Grid container className='ProjectContributors'>
-            <h1>Trinary Contributors</h1>
+            <h1>{`Trinary Contributors`}</h1>
             <Grid xs={12}/>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={5}>
                 <Box
                     bgcolor='primary.black'
                     color='primary.light'
@@ -66,8 +70,12 @@ const ProjectContributors = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                {renderContributors(activeContributors)}
+                <Box my={5}>
+                    {renderContributors(activeContributors)}
+                </Box>
+                <hr/>
             </Grid>
+            <h1>{`Github Project Contributors`}</h1>
         </Grid>
     );
 }

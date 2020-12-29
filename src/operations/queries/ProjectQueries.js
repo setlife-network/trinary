@@ -36,6 +36,7 @@ export const GET_PROJECT = gql`
                 active
                 contributor {
                     id
+                    github_handle
                     name
                 }
             }
