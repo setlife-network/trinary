@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
-import { Grid } from '@material-ui/core/'
+import {
+    Box,
+    Grid
+} from '@material-ui/core/'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 
@@ -40,6 +43,9 @@ const ProjectContributors = (props) => {
 
     const { contributors } = project
 
+    console.log('contributors');
+    console.log(contributors);
+
     // const renderContributors = () => {
     //     // TODO:
     //     // fetch contributors from API
@@ -57,8 +63,23 @@ const ProjectContributors = (props) => {
 
     return (
         <Grid container className='ProjectContributors'>
-            <Grid item xs={12}>
-                <h1>Trinary Contributors</h1>
+
+            <h1>Trinary Contributors</h1>
+            <Grid item xs={12} md={3}>
+                <Box
+                    bgcolor='primary.black'
+                    color='primary.light'
+                    borderRadius='borderRadius'
+                    px={5}
+                    py={1}
+                >
+                    {
+                        `${contributors.length} active ${contributors.length == 1
+                            ? 'contributor'
+                            : 'contributors'
+                        }`
+                    }
+                </Box>
             </Grid>
         </Grid>
     );
