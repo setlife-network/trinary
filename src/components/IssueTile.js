@@ -19,12 +19,14 @@ const IssueTile = (props) => {
             mt={3}
         >
             <Grid container>
-                <Grid item xs={6} align='left'>
-                    <Typography variant='h6'>
-                        {issue.name}
-                    </Typography>
+                <Grid item xs={12} lg={10} align='left'>
+                    <Box overflow='hidden' textOverflow='ellipsis'>
+                        <Typography variant='h6' noWrap>
+                            {issue.name}
+                        </Typography>
+                    </Box>
                 </Grid>
-                <Grid item xs={6} align='right'>
+                <Grid item xs={12} lg={2} align='left'>
                     <Typography color='secondary'>
                         {`Issue # ${issue.github_number}`}
                     </Typography>
@@ -47,7 +49,6 @@ const IssueTile = (props) => {
                                         <ArrowForwardIcon/>
                                     </Typography>
                                 </Grid>
-
                             </Grid>
                         </a>
                     </Box>
