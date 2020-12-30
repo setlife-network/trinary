@@ -41,6 +41,9 @@ export const GET_PROJECT = gql`
             },
             issues {
                 id
+                github_url
+                date_opened
+                date_closed
             },
             contributors {
                 id

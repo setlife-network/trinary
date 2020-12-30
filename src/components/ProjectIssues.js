@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core'
 import moment from 'moment'
 
+import IssueTile from './IssueTile'
 import ProjectIssuesMetrics from './ProjectIssuesMetrics'
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 
@@ -12,6 +13,16 @@ const ProjectIssues = (props) => {
 
     const { projectId } = props
     const todayAMonthAgo = moment(moment().subtract(30, 'days')).format('YYYY-MM-DD')
+
+    const renderIssues = (issues) => {
+        return issues.map(i => {
+            return (
+                <Grid item xs={12}>
+                    <IssueTile issue={i}/>
+                </Grid>
+            )
+        })
+    }
 
     const { loading, error, data } = useQuery(GET_PROJECT, {
         variables: {
@@ -40,6 +51,11 @@ const ProjectIssues = (props) => {
                     openedIssues={project.githubIssuesOpened}
                     closedIssues={project.githubIssuesClosed}
                 />
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container>
+                    {renderIssues(project.issues)}
+                </Grid>
             </Grid>
         </Grid>
     )
