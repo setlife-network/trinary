@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import {
+    Box,
     Grid
 } from '@material-ui/core'
 import moment from 'moment'
@@ -56,6 +57,8 @@ const ProjectIssues = (props) => {
                 <Grid container>
                     {renderIssues(project.issues)}
                 </Grid>
+                <Box my={5}>
+                </Box>
             </Grid>
         </Grid>
     )

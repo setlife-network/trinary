@@ -4,7 +4,7 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 
 const ProjectIssuesMetrics = (props) => {
 
@@ -33,26 +33,28 @@ const ProjectIssuesMetrics = (props) => {
                 </strong>
             </Typography>
             <Box mt={2}>
-                <Grid container>
-                    <Grid item>
-                        <a
-                            href={`${githubURL}/issues`}
-                            target='_blank'
-                            rel='noreferrer'
-                        >
+                <a
+                    href={`${githubURL}/issues`}
+                    target='_blank'
+                    rel='noreferrer'
+                >
+                    <Grid container>
+                        <Grid item>
                             <Typography color='primary'>
                                 <strong>
                                     Go to issues on Github
                                 </strong>
                             </Typography>
-                        </a>
+
+                        </Grid>
+                        <Grid item>
+                            <Typography color='primary'>
+                                <ArrowForwardIcon/>
+                            </Typography>
+                        </Grid>
+
                     </Grid>
-                    <Grid item>
-                        <Typography color='primary'>
-                            <ArrowForwardIcon/>
-                        </Typography>
-                    </Grid>
-                </Grid>
+                </a>
             </Box>
         </Box>
     )

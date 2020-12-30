@@ -42,6 +42,8 @@ export const GET_PROJECT = gql`
             issues {
                 id
                 github_url
+                github_number
+                name
                 date_opened
                 date_closed
             },
