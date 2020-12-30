@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { useQuery } from '@apollo/client'
 import {
     Grid
 } from '@material-ui/core'
 
+import ProjectIssuesMetrics from './ProjectIssuesMetrics'
 import { GET_PROJECT_ISSUES } from '../operations/queries/IssueQueries'
 // Convert to imported component as IssueTile.js when ready to merge
 const IssueTile = (props) => {
@@ -35,8 +37,10 @@ const ProjectIssues = (props) => {
     //     })
     // }
 
+    const { projectId } = props
+
     const { loading, error, data } = useQuery(GET_PROJECT_ISSUES, {
-        variables: { projectId: Number(clientId) }
+        variables: { projectId: Number(projectId) }
     })
 
     if (loading) {
@@ -46,19 +50,21 @@ const ProjectIssues = (props) => {
             </div>
         )
     }
-    if (error) return `Error! ${error.message}`;
+    if (error) return `Error! ${error.message}`
+
+    console.log('data');
+    console.log(data);
+
+    const { getIssuesByProjectId: projectIssues } = data
 
     return (
         <Grid container className='ProjectIssues'>
             <h1>Issues</h1>
-            <Grid item>
+            <Grid item xs={12}>
+                <ProjectIssuesMetrics githubURL={projectIssues.github_url} issues={projectIssues}/>
             </Grid>
         </Grid>
-    );
+    )
 }
 
-ProjectIssues.defaultProps = {
-
-};
-
-export default ProjectIssues;
+export default ProjectIssues

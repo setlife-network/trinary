@@ -47,12 +47,17 @@ export const GET_PROJECT = gql`
             allocations {
                 id
             },
-            timeSpent(
-                fromDate: "2020-01-01",
-                toDate: "2020-12-31"
-            ) {
+            timeSpent {
                 seconds
-            }
+            },
+            githubIssuesOpened(
+                fromDate: String,
+                toDate:String
+            ): Int
+            githubIssuesClosed(
+                fromDate: String,
+                toDate:String
+            ): Int
         }
     }
 `

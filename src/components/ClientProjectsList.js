@@ -1,5 +1,5 @@
 import React from 'react'
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client'
 import Grid from '@material-ui/core/Grid'
 import { orderBy } from 'lodash'
 
@@ -23,7 +23,7 @@ const ClientProjectsList = ({
             </Grid>
         )
     }
-    if (error) return `Error! ${error.message}`;
+    if (error) return `Error! ${error.message}`
 
     const projects = orderBy(data.getClientById.projects, ['is_active'], ['desc'])
 

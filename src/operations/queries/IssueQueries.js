@@ -5,10 +5,13 @@ export const GET_PROJECT_ISSUES = gql`
         getIssuesByProjectId(
             project_id: $projectId
         ) {
-            id,
-            github_url,
-            date_opened,
+            id
+            github_url
+            date_opened
             date_closed
+            project {
+                github_url
+            }
         }
     }
 `

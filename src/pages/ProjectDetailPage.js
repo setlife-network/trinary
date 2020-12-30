@@ -89,7 +89,7 @@ class ProjectDetailPage extends React.Component {
                     />
                     <Route
                         path={`${match.url}/issues`}
-                        render={(props) => <ProjectIssues {...props} />}
+                        render={(props) => <ProjectIssues {...props} projectId={this.props.match.params.projectId}/>}
                     />
                 </Grid>
                 <BottomNavigation
