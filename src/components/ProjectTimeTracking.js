@@ -34,7 +34,7 @@ const ProjectTimeTracking = (props) => {
                     </strong>
                 </Typography>
             </Grid>
-            <Grid item xs={5} md={3}>
+            <Grid item xs={5} md={4}>
                 <Box
                     bgcolor='primary.black'
                     color='primary.light'
