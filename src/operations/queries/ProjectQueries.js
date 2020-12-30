@@ -54,9 +54,6 @@ export const GET_PROJECT = gql`
             issues {
                 id
             }
-            timeSpent {
-                seconds
-            }
         }
     }
 `
