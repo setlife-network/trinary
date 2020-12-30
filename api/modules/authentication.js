@@ -17,7 +17,7 @@ const authentication = module.exports = (() => {
     }
 
     const createContributor = async ({ githubContributor }) => {
-        await db.models.Contributor.create({
+        return db.models.Contributor.create({
             name: githubContributor.name,
             github_id: githubContributor.id,
             github_handle: githubContributor.githubUrl

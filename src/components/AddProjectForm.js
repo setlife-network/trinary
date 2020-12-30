@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useMutation } from '@apollo/client';
+import React, { useState, useEffect } from 'react'
+import { useMutation } from '@apollo/client'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
@@ -10,8 +10,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
-import MomentUtils from '@date-io/moment';
-import moment from 'moment';
+import MomentUtils from '@date-io/moment'
+import moment from 'moment'
 
 import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
 
