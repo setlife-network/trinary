@@ -175,7 +175,7 @@ module.exports = {
             })
             const urlSplitted = split(project.github_url, '/');
             const issues = await github.fetchRepoIssues({
-                repo: url[urlSplitted.length - 1]
+                repo: urlSplitted[urlSplitted.length - 1]
             })
             let openIssues = 0
             issues.map((i, n) => {
@@ -204,7 +204,7 @@ module.exports = {
             })
             const urlSplitted = split(project.github_url, '/');
             const issues = await github.fetchRepoIssues({
-                repo: url[urlSplitted.length - 1]
+                repo: urlSplitted[urlSplitted.length - 1]
             })
             let closedIssues = 0
             issues.map((i, n) => {

@@ -4,20 +4,15 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
-import {
-    filter
-} from 'lodash'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 const ProjectIssuesMetrics = (props) => {
 
-    const { githubURL, issues } = props
-
-    console.log('githubURL');
-    console.log(githubURL);
-
-    const activeIssues = filter(issues, { 'date_closed': null })
-    const closedIssues = filter(issues, 'date_closed')
+    const {
+        githubURL,
+        openedIssues,
+        closedIssues
+    } = props
 
     return (
         <Box
@@ -29,18 +24,22 @@ const ProjectIssuesMetrics = (props) => {
         >
             <Typography>
                 <strong>
-                    {`${activeIssues.length} active ${activeIssues.lengt == 1 ? 'issue' : 'issues'}`}
+                    {`${openedIssues} active ${openedIssues == 1 ? 'issue' : 'issues'}`}
                 </strong>
             </Typography>
             <Typography>
                 <strong>
-                    {`${closedIssues.length} closed ${closedIssues.lengt == 1 ? 'issue' : 'issues'}`}
+                    {`${closedIssues} closed ${closedIssues == 1 ? 'issue' : 'issues'}`}
                 </strong>
             </Typography>
             <Box mt={2}>
                 <Grid container>
                     <Grid item>
-                        <a href={`${githubURL}/issues`}>
+                        <a
+                            href={`${githubURL}/issues`}
+                            target='_blank'
+                            rel='noreferrer'
+                        >
                             <Typography color='primary'>
                                 <strong>
                                     Go to issues on Github
