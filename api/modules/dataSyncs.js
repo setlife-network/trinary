@@ -32,6 +32,8 @@ const dataSyncs = module.exports = (() => {
                 if (!matchingIssue) {
                     await db.models.Issue.create({
                         github_url: i.url,
+                        github_number: i.number,
+                        name: i.title,
                         date_opened: i.created_at,
                         date_closed: i.closed_at,
                         project_id: params.project_id
