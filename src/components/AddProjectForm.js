@@ -1,34 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { useMutation } from '@apollo/client';
-import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
-import FormControl from '@material-ui/core/FormControl'
-import Grid from '@material-ui/core/Grid'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import TextField from '@material-ui/core/TextField'
+import React, { useState, useEffect } from 'react'
+import { useMutation } from '@apollo/client'
+import Alert from '@material-ui/lab/Alert'
+import {
+    Box,
+    Button,
+    FormControl,
+    FormHelperText,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    Snackbar,
+    TextField,
+    Typography
+} from '@material-ui/core'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
-import MomentUtils from '@date-io/moment';
-import moment from 'moment';
+import MomentUtils from '@date-io/moment'
+import moment from 'moment'
 
 import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
+import { red } from '../styles/colors.scss'
 
 const AddProjectForm = ({
     clientId,
     history
 }) => {
 
-    const [addProject, { data, loading, error }] = useMutation(ADD_PROJECT)
+    const [addProject, { data, loading, error }] = useMutation(ADD_PROJECT, { errorPolicy: 'all' })
 
     const [disableAdd, setDisableAdd] = useState(true)
     const [invalidBudgetInput, setInvalidBudgetInput] = useState(false)
     const [projectName, setProjectName] = useState('')
     const [projectGithub, setProjectGithub] = useState('')
+    const [createProjectError, setCreateProjectError] = useState('')
     const [projectToggl, setProjectToggl] = useState(null)
     const [projectDate, setProjectDate] = useState(null)
     const [projectBudget, setProjectBudget] = useState(0)
+    const [displayError, setDisplayError] = useState(false)
 
     useEffect(() => {
         if (projectName && projectGithub && projectBudget && projectDate) {
@@ -36,7 +44,14 @@ const AddProjectForm = ({
         }
     })
 
-    const handleBudgetChage = (input) => {
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setDisplayError(false)
+    }
+
+    const handleBudgetChange = (input) => {
         if (!/^[0-9]*$/.test(input)) {
             setInvalidBudgetInput(true)
         } else {
@@ -49,7 +64,7 @@ const AddProjectForm = ({
         setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
     }
 
-    const onAdd = async () => {
+    const createProject = async () => {
         const variables = {
             client_id: parseInt(clientId, 10),
             name: projectName,
@@ -60,17 +75,21 @@ const AddProjectForm = ({
         if (projectToggl) {
             variables['toggl_url'] = projectToggl
         }
-        const newProject = await addProject({
-            variables
-        })
-        history.push(`/projects/${newProject.data.createProject.id}`)
+
+        const newProject = await addProject({ variables })
+        if (loading) return <span>loading...</span>
+        if (newProject.errors) {
+            setCreateProjectError(`${Object.keys(newProject.errors[0].extensions.exception.fields)[0]}`)
+            setDisplayError(true)
+        } else {
+            history.push(`/projects/${newProject.data.createProject.id}`)
+        }
+
     }
 
     return (
         <FormControl
             fullWidth
-            noValidate
-            autoComplete='off'
             align='left'
         >
             <Grid container justify='space-between'>
@@ -120,7 +139,8 @@ const AddProjectForm = ({
                             id='projectBudget'
                             variant='outlined'
                             fullWidth
-                            onChange={(event) => handleBudgetChage(event.target.value)}
+                            required
+                            onChange={(event) => handleBudgetChange(event.target.value)}
                         />
                     </Box>
                 </Grid>
@@ -149,12 +169,21 @@ const AddProjectForm = ({
                         variant='contained'
                         color='primary'
                         disabled={disableAdd}
-                        onClick={() => (onAdd())}
+                        onClick={createProject}
                     >
                         Add Project
                     </Button>
                 </Box>
             </Grid>
+            <Snackbar
+                open={displayError}
+                autoHideDuration={6000}
+                onClose={handleAlertClose}
+            >
+                <Alert severity='error'>
+                    {`${createProjectError} already exists`}
+                </Alert>
+            </Snackbar>
         </FormControl>
     )
 }
