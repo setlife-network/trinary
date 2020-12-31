@@ -40,7 +40,8 @@ var whitelist = [
     'http://localhost:6001',
     'http://localhost:6002',
     'http://github.com/',
-    'https://project-trinary.herokuapp.com/'
+    'https://project-trinary.herokuapp.com/',
+    'https://trinary.setlife.tech',
 ];
 
 var corsOptions = {
