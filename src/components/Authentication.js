@@ -16,7 +16,6 @@ const Authentication = ({ history }) => {
                 setLoggedIn(true)
             }
         }
-
     }, [data])
 
     if (loading) {

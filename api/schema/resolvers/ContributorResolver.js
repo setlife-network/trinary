@@ -22,8 +22,6 @@ module.exports = {
         checkSession: (root, args, { models, cookies }) => {
             if (cookies.userSession) {
                 return models.Contributor.findByPk(cookies.userSession)
-            } else {
-                throw new AuthenticationError('You must be authenticated')
             }
         },
         getContributorById: (root, { id }, { models }) => {
