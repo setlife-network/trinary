@@ -130,7 +130,7 @@ module.exports = {
                 fromAllocations: parseInt(totalPaidFromAllocation / totalIssues, 10)
             }
         },
-        client: async (project, args, { models }) => {
+        client: (project, args, { models }) => {
             return models.Client.findByPk(project.client_id)
         },
         contributors: (project, args, { models }) => {
@@ -300,7 +300,15 @@ module.exports = {
             })
             const whereConditions = {
                 project_id: project.id,
-                start_time: { [Op.between]: [args.fromDate ? args.fromDate : moment.utc(1), args.toDate ? args.toDate : moment.utc()] }
+                start_time: {
+                    [Op.between]:
+                        [args.fromDate
+                            ? args.fromDate
+                            : moment.utc(1),
+                        args.toDate
+                            ? args.toDate
+                            : moment.utc()]
+                }
             }
             if (args.contributor_id) {
                 whereConditions.contributor_id = args.contributor_id

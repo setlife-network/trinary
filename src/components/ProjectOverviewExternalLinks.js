@@ -15,7 +15,6 @@ const ProjectOverviewExternalLinks = (props) => {
     } = props
 
     return (
-
         <Grid container className='ProjectOverviewExternalLinks'>
             <Grid item xs={12} sm={6}>
                 <Box mt={2} mr={{ xs: 0, sm: 1 }}>
@@ -48,8 +47,7 @@ const ProjectOverviewExternalLinks = (props) => {
                 </Box>
             </Grid>
         </Grid>
-
-    );
+    )
 }
 
 export default ProjectOverviewExternalLinks

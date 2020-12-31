@@ -25,7 +25,6 @@ const TimeTracking = ({
 const ProjectOverview = (props) => {
 
     const { projectId } = props
-
     const { data, loading, error } = useQuery(GET_PROJECT, {
         variables: {
             id: Number(projectId)
@@ -35,7 +34,7 @@ const ProjectOverview = (props) => {
     if (loading) return 'Loading...'
     if (error) return error
 
-    const project = data?.getProjectById
+    const project = data.getProjectById
 
     return (
         <Grid container className='ProjectOverview' justify='center'>
@@ -56,9 +55,8 @@ const ProjectOverview = (props) => {
                     <ProjectTimeTracking project={project}/>
                 </Box>
             </Grid>
-
         </Grid>
-    );
+    )
 }
 
 ProjectOverview.defaultProps = {

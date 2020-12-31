@@ -18,11 +18,9 @@ const ProjectTimeTracking = (props) => {
     }
 
     const { project } = props
-
     const projectHoursSpent = project.timeSpent.seconds
         ? Math.trunc(project.timeSpent.seconds / 3600)
         : 0
-
     const contributorTimeEntries = project.timeSpentPerContributor
 
     return (
