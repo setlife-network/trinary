@@ -15,9 +15,12 @@ const PaymentsList = (props) => {
     const renderPaymentTiles = (payments) => {
         return payments.map(p => {
             return (
-                <Grid item xs={12} lg={4}>
+                <Grid item xs={12} sm={6} lg={4}>
                     <Box my={2}>
-                        <PaymentTile payment={p} client={p.client}/>
+                        <PaymentTile
+                            payment={p}
+                            client={p.client}
+                        />
                     </Box>
                 </Grid>
             )
@@ -25,7 +28,7 @@ const PaymentsList = (props) => {
     }
 
     return (
-        <Grid container justify='space-between' className='PaymentsList'>
+        <Grid container justify='flex-start' className='PaymentsList'>
             {renderPaymentTiles(payments)}
         </Grid>
     )

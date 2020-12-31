@@ -7,6 +7,7 @@ import {
     Typography
 } from '@material-ui/core'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
+import { orderBy } from 'lodash'
 
 import PaymentsEmptyState from './PaymentsEmptyState'
 import PaymentTile from './PaymentTile'
@@ -41,6 +42,8 @@ const ProjectPayments = (props) => {
     const { getProjectById } = data
     const { allocatedPayments, client } = getProjectById
 
+    const payments = orderBy(allocatedPayments, ['date_paid'], ['desc'])
+
     return (
 
         <Grid container justify='center' className='ProjectPayments'>
@@ -55,7 +58,7 @@ const ProjectPayments = (props) => {
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Typography variant='h4'>
+                            <Typography variant='h5'>
                                 <strong>
                                     {`${calculateTotalPayments(allocatedPayments)} ${client.currency} Total`}
                                 </strong>
@@ -65,7 +68,7 @@ const ProjectPayments = (props) => {
                 </Box>
                 {allocatedPayments.length != 0
                     ? (
-                        <PaymentsList payments={allocatedPayments}/>
+                        <PaymentsList payments={payments}/>
                     )
                     : (
                         <PaymentsEmptyState/>
