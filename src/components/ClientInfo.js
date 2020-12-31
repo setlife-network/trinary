@@ -25,7 +25,6 @@ const ClientInfo = ({
     const handleEditOpen = () => {
         setOpen(true)
     }
-
     const handleEditClose = (value) => {
         setOpen(false)
     }
@@ -43,7 +42,8 @@ const ClientInfo = ({
             </Grid>
         )
     }
-    if (error) return `Error! ${error.message}`;
+    if (error) return `Error! ${error.message}`
+
     const client = data.getClientById
 
     return (
