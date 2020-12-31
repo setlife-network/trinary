@@ -5,6 +5,8 @@ const authentication = module.exports = (() => {
 
     const getContributor = async ({ githubAccessToken }) => {
         const githubContributor = await fetchUserData({ auth_key: githubAccessToken })
+        console.log('githubContributor')
+        console.log(githubContributor)
         const contributor = await db.models.Contributor.findOne({
             where: {
                 github_id: githubContributor.id
