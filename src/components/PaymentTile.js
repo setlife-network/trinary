@@ -27,7 +27,12 @@ const PaymentTile = (props) => {
             <Grid container alignItems='baseline'>
                 <Grid item xs={5} align='left'>
                     <Typography variant='h6'>
-                        {`${client.currency != 'USD' ? '' : '$'} ${payment.amount}`}
+                        {
+                            `${client.currency != 'USD'
+                                ? ''
+                                : '$'}
+                        ${payment.amount}`
+                        }
                     </Typography>
                 </Grid>
                 <Grid item xs={1}>
