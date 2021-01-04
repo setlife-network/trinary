@@ -11,13 +11,13 @@ const cache = new InMemoryCache()
 const uri = `${API_ROOT}/graph`
 const link = createHttpLink({
     uri,
-    credentials: 'same-origin'
-});
+    credentials: 'include'
+})
 const client = new ApolloClient({
     link,
     cache,
     connectToDevTools: true
-});
+})
 
 ReactDOM.render(
     <React.StrictMode>

@@ -3,6 +3,9 @@ const bodyParser = require('body-parser') //transform req into JSON format
 const fs = require('fs') //module to read files
 const cors = require('cors') //handle CORS issues
 const { ApolloServer } = require('apollo-server-express') //Apollo server for graphql integration
+const cookieSession = require('cookie-session') //store the user session key
+const cookieParser = require('cookie-parser') //transform cooki session into object with key name
+const moment = require('moment') //momentjs libreary for expitation cookie date
 
 const schema = require('./api/schema')
 const db = require('./api/models');
@@ -37,7 +40,8 @@ var whitelist = [
     'http://localhost:6001',
     'http://localhost:6002',
     'http://github.com/',
-    'https://project-trinary.herokuapp.com/'
+    'https://project-trinary.herokuapp.com/',
+    'https://trinary.setlife.tech',
 ];
 
 var corsOptions = {
@@ -48,11 +52,18 @@ var corsOptions = {
     credentials: true,
     methods: ['GET,PUT,POST,DELETE,OPTIONS'],
     allowedHeaders: ['Access-Control-Allow-Headers', 'Origin', 'Access-Control-Allow-Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Cache-Control']
-};
+}
 
 app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
+
+app.use(cookieParser())
+app.use(cookieSession({
+    name: 'session',
+    keys: ['userSession'],
+    expires: moment().add(180, 'days').toDate()
+}))
 
 app.get('/api/v/:vid/ping', (req, res) => {
     res.send('Hello World')
@@ -62,19 +73,32 @@ app.get('/api/login', (req, res) => {
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.CLIENT_ID}`)
 })
 
-app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in te Github App
+// app.get('/api/check-session', async (req, res) => {
+//     if (req.session.userSession) res.send({ result: 1 })
+//     else res.send({ result: 0 })
+// })
 
+app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in the Github App
     github.fetchAccessToken({ code: req.query.code })
         .then(githubAccessToken => {
+            console.log('githubAccessToken')
+            console.log(githubAccessToken)
             return apiModules.authentication.getContributor({ githubAccessToken })
         })
         .then(async contributorInfo => {
+            //if it's a new user store it in contributors table
+            console.log('contributorInfo')
+            console.log(contributorInfo)
             if (!contributorInfo.contributor) {
                 const githubContributor = contributorInfo.githubContributor
-                await apiModules.authentication.createContributor({ githubContributor })
+                contributorInfo.contributor = await apiModules.authentication.createContributor({ githubContributor })
             }
+            //store contributor id in the cookie session
+            req.session.userSession = contributorInfo.contributor.id
         })
         .then(() => {
+            console.log('req.session')
+            console.log(req.session)
             res.redirect(SITE_ROOT)
         })
         .catch(err => {
@@ -84,12 +108,16 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
 
 const server = new ApolloServer({
     schema,
-    context: db
+    context: ({ req }) => ({
+        ...db,
+        cookies: req.session
+    })
 })
 
 server.applyMiddleware({
     app,
     path: '/api/graph',
+    cors: false
 });
 
 app.listen(port, () => {
