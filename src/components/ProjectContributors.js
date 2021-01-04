@@ -13,11 +13,6 @@ import ContributorTile from './ContributorTile'
 const ProjectContributors = (props) => {
 
     const { projectId } = props
-    // const { loading, error, data, networkStatus } = useQuery(GET_PROJECT, {
-    //     variables: {
-    //         id: Number(projectId)
-    //     }
-    // })
 
     const { data: dataProject, error: errorProject, loading: loadingProject } = useQuery(GET_PROJECT, {
         variables: {
