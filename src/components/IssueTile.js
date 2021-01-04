@@ -10,7 +10,6 @@ import moment from 'moment'
 const IssueTile = (props) => {
 
     const { issue } = props
-
     const issueIsOpen = issue.date_closed ? false : true
 
     return (
@@ -22,7 +21,12 @@ const IssueTile = (props) => {
             my={3}
         >
             <Grid container>
-                <Grid item xs={12} lg={10} align='left'>
+                <Grid
+                    item
+                    xs={12}
+                    lg={10}
+                    align='left'
+                >
                     <Box overflow='hidden' textOverflow='ellipsis'>
                         <Typography variant='h6' noWrap>
                             {issue.name}
