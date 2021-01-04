@@ -3,7 +3,7 @@ const github = require('../handlers/github')
 
 console.log('github');
 
-// const userData = github.fetchUserData({ auth_key: '' })
+// const userData = github.fetchAuthUserData({ auth_key: '' })
 //     .then(res => {
 //         console.log('res');
 //         console.log(res);
@@ -15,11 +15,10 @@ console.log('github');
 //         console.log(res);
 //     })
 
-const userPermission = github.fetchUserPermission({
+const userPermission = github.fetchRepoContributors({
     auth_key: GITHUB.CLIENT_SECRET,
     owner: 'setlife-network',
-    repo: 'project-trinary',
-    username: 'otech47'
+    repo: 'project-trinary'
 })
     .then(res => {
         console.log('res');
