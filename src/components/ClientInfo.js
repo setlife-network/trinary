@@ -25,7 +25,6 @@ const ClientInfo = ({
     const handleEditOpen = () => {
         setOpen(true)
     }
-
     const handleEditClose = (value) => {
         setOpen(false)
     }

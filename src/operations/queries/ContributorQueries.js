@@ -1,4 +1,13 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client'
+
+export const CHECK_SESSION = gql`
+    query CheckSession{
+        checkSession {
+            id,
+            name
+        }
+    }
+`
 
 export const GET_CONTRIBUTORS = gql`
     query Contributors {
