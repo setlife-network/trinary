@@ -86,11 +86,9 @@ const github = module.exports = (() => {
         const octokit = await new Octokit({
             auth: params.auth_key,
         })
-        console.log(params);
         const res = await octokit.users.getByUsername({
             username: params.username
         })
-        console.log(res);
         if (res.status != 200) {
             throw new Error('An error occurred' + res)
         }
