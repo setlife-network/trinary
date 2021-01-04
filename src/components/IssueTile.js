@@ -36,7 +36,7 @@ const IssueTile = (props) => {
                     <Box
                         bgcolor={`${issueIsOpen ? 'primary.main' : 'primary.light_blue'}`}
                         borderRadius='borderRadius'
-                        color='primary.light'
+                        color={`${issueIsOpen ? 'primary.light' : 'secondary.main'}`}
                         px={2}
                         mt={1}
                     >

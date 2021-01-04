@@ -5,7 +5,7 @@ import {
     Grid
 } from '@material-ui/core'
 import moment from 'moment'
-import { filter } from 'lodash'
+import { orderBy } from 'lodash'
 
 import IssueTile from './IssueTile'
 import ProjectIssuesMetrics from './ProjectIssuesMetrics'
@@ -49,6 +49,7 @@ const ProjectIssues = (props) => {
             last30DayIssues.push(i)
         }
     })
+    const sortedIssues = orderBy(last30DayIssues, ['date_closed'], ['desc'])
 
     return (
         <Grid container className='ProjectIssues'>
@@ -62,7 +63,7 @@ const ProjectIssues = (props) => {
             </Grid>
             <Grid item xs={12}>
                 <Grid container>
-                    {renderIssues(last30DayIssues)}
+                    {renderIssues(sortedIssues)}
                 </Grid>
                 <Box my={5}>
                 </Box>
