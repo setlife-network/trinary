@@ -16,7 +16,7 @@ const IssueTile = (props) => {
             borderRadius='borderRadius'
             boxShadow={3}
             p={3}
-            mt={3}
+            my={3}
         >
             <Grid container>
                 <Grid item xs={12} lg={10} align='left'>

@@ -5,6 +5,7 @@ import {
     Grid
 } from '@material-ui/core'
 import moment from 'moment'
+import { filter } from 'lodash'
 
 import IssueTile from './IssueTile'
 import ProjectIssuesMetrics from './ProjectIssuesMetrics'
@@ -13,7 +14,8 @@ import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 const ProjectIssues = (props) => {
 
     const { projectId } = props
-    const todayAMonthAgo = moment(moment().subtract(30, 'days')).format('YYYY-MM-DD')
+    const last30DayIssues = []
+    const today30DaysAgo = moment().subtract(30, 'days').format('x')
 
     const renderIssues = (issues) => {
         return issues.map(i => {
@@ -27,8 +29,7 @@ const ProjectIssues = (props) => {
 
     const { loading, error, data } = useQuery(GET_PROJECT, {
         variables: {
-            id: Number(projectId),
-            issuesFromDate: todayAMonthAgo
+            id: Number(projectId)
         }
     })
 
@@ -43,6 +44,12 @@ const ProjectIssues = (props) => {
 
     const { getProjectById: project } = data
 
+    project.issues.map(i => {
+        if (i['date_opened'] >= today30DaysAgo) {
+            last30DayIssues.push(i)
+        }
+    })
+
     return (
         <Grid container className='ProjectIssues'>
             <h1>Issues</h1>
@@ -55,7 +62,7 @@ const ProjectIssues = (props) => {
             </Grid>
             <Grid item xs={12}>
                 <Grid container>
-                    {renderIssues(project.issues)}
+                    {renderIssues(last30DayIssues)}
                 </Grid>
                 <Box my={5}>
                 </Box>
