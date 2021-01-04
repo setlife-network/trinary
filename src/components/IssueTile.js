@@ -5,6 +5,7 @@ import {
     Typography
 } from '@material-ui/core'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import moment from 'moment'
 
 const IssueTile = (props) => {
 
@@ -31,7 +32,7 @@ const IssueTile = (props) => {
                         {`Issue # ${issue.github_number}`}
                     </Typography>
                 </Grid>
-                <Grid item>
+                <Grid item xs={6}>
                     <Box mt={2}>
                         <a
                             href={`${issue.github_url}`}
@@ -51,6 +52,13 @@ const IssueTile = (props) => {
                                 </Grid>
                             </Grid>
                         </a>
+                    </Box>
+                </Grid>
+                <Grid item xs={6} align='right'>
+                    <Box mt={2}>
+                        <Typography color='secondary'>
+                            {`${moment(issue.date_opened, ['x']).format('MM/DD/YYYY')}`}
+                        </Typography>
                     </Box>
                 </Grid>
             </Grid>
