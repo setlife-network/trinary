@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import {
     Box,
     Grid
@@ -8,11 +8,15 @@ import { differenceBy, filter } from 'lodash'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
+import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
 import ContributorTile from './ContributorTile'
 
 const ProjectContributors = (props) => {
 
     const { projectId } = props
+
+    const [getGithubContributors, { data: dataGithubContributors, loading: loadingGithubContributors, error: errorGithubContributors }] = useMutation(SYNC_PROJECT_GITHUB_CONTRIBUTORS)
+    const githubContributors = getGithubContributors({ variables: { project_id: Number(projectId) } })
 
     const { data: dataProject, error: errorProject, loading: loadingProject } = useQuery(GET_PROJECT, {
         variables: {
@@ -21,14 +25,14 @@ const ProjectContributors = (props) => {
     })
     const { data: dataContributors, error: errorContributors, loading: loadingContributors } = useQuery(GET_CONTRIBUTORS)
 
-    if (loadingProject || loadingContributors) {
+    if (loadingProject || loadingContributors || loadingGithubContributors) {
         return (
             <Grid item xs={12}>
                 Loading...
             </Grid>
         )
     }
-    if (errorProject || errorContributors) return `Error!`
+    if (errorProject || errorContributors || errorGithubContributors) return `Error!`
 
     const project = dataProject.getProjectById
     const { allocations } = project
@@ -49,7 +53,6 @@ const ProjectContributors = (props) => {
                         contributor={c}
                     />
                 </Grid>
-
             )
         })
     }
