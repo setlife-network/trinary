@@ -18,6 +18,7 @@ const ContributorTile = (props) => {
             borderRadius='borderRadius'
             p={2}
             my={2}
+            mx={active ? 1 : 0}
             align='left'
         >
             <Grid container>

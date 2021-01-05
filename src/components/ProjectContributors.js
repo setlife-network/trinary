@@ -41,7 +41,7 @@ const ProjectContributors = (props) => {
         return a.contributor
     })
     const { getContributors: contributors } = dataContributors
-    const otherOrganizationContributors = differenceBy(contributors, activeContributors, 'id')
+    const contributorsToAdd = differenceBy(contributors, activeContributors, 'id')
 
     const renderContributors = (active, contributors) => {
 
@@ -59,7 +59,7 @@ const ProjectContributors = (props) => {
 
     return (
         <Grid container className='ProjectContributors'>
-            <h1>{`Trinary Contributors`}</h1>
+            <h1>{`${project.name} Contributors`}</h1>
             <Grid xs={12}/>
             <Grid item xs={12} sm={5}>
                 <Box
@@ -79,17 +79,36 @@ const ProjectContributors = (props) => {
             </Grid>
             <Grid item xs={12}>
                 <Box my={5}>
-                    {renderContributors(true, activeContributors)}
+                    <Grid container>
+                        {
+                            activeContributors.length != 0
+                                ? renderContributors(true, activeContributors)
+                                : (
+                                    <>
+                                        No contributors
+                                    </>
+                                )
+                        }
+                    </Grid>
                 </Box>
                 <hr/>
             </Grid>
-            <h1>{`Github Contributors`}</h1>
+            <h1>{`Add new contributors to the project`}</h1>
             <Grid item xs={12}>
                 <Box>
                     <Grid container>
-                        {renderContributors(false, otherOrganizationContributors)}
+                        {
+                            contributorsToAdd.length != 0
+                                ? renderContributors(false, contributorsToAdd)
+                                : (
+                                    <>
+                                        No contributors
+                                    </>
+                                )
+                        }
                     </Grid>
                 </Box>
+                <Box my={5} py={5}/>
             </Grid>
         </Grid>
     );
