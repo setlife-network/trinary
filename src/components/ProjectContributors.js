@@ -57,9 +57,7 @@ const ProjectContributors = (props) => {
             )
         })
     }
-
-    const emptyContributors = []
-
+    
     return (
         <Grid container className='ProjectContributors'>
             <h1>{`${project.name} Contributors`}</h1>
@@ -84,7 +82,7 @@ const ProjectContributors = (props) => {
                 <Box my={5}>
                     <Grid container>
                         {
-                            emptyContributors.length != 0
+                            activeContributors.length != 0
                                 ? renderContributors(true, activeContributors)
                                 : <ContributorsEmptyState active/>
 
@@ -98,7 +96,7 @@ const ProjectContributors = (props) => {
                 <Box>
                     <Grid container>
                         {
-                            emptyContributors.length != 0
+                            contributorsToAdd.length != 0
                                 ? renderContributors(false, contributorsToAdd)
                                 : <ContributorsEmptyState/>
                         }
