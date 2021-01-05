@@ -44,7 +44,6 @@ const ContributorTile = (props) => {
             </Grid>
         </Box>
     )
-
 }
 
 export default ContributorTile

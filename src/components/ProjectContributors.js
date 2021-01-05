@@ -57,7 +57,7 @@ const ProjectContributors = (props) => {
             )
         })
     }
-    
+
     return (
         <Grid container className='ProjectContributors'>
             <h1>{`${project.name} Contributors`}</h1>
