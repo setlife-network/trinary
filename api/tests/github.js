@@ -3,7 +3,7 @@ const github = require('../handlers/github')
 
 console.log('github');
 
-// const userData = github.fetchUserData({ auth_key: '' })
+// const userData = github.fetchAuthUserData({ auth_key: '' })
 //     .then(res => {
 //         console.log('res');
 //         console.log(res);
@@ -18,45 +18,11 @@ console.log('github');
 //         })
 //     })
 
-// const userPermission = github.fetchUserPermission({
-//     auth_key: GITHUB.CLIENT_SECRET,
-//     owner: 'setlife-network',
-//     repo: 'project-trinary',
-//     username: 'otech47'
-// })
-//     .then(res => {
-//         console.log('res');
-//         console.log(res);
-//
-//     })
-//     .catch(err => {
-//         console.log('err');
-//         console.log(err);
-//     })
-
-// const repoInfo = github.fetchRepoInfo(
-//     {
-//         auth_key: '',
-//         owner: 'setlife-network',
-//         repo: 'project-trinary'
-//     }
-// )
-//     .then(res => {
-//         console.log('res');
-//         console.log(res.data);
-//     })
-//     .catch(err => {
-//         console.log('err');
-//         console.log(err);
-//     })
-
-const repoontributors = github.fetchRepoContributors(
-    {
-        auth_key: '',
-        owner: 'setlife-network',
-        repo: 'project-trinary'
-    }
-)
+const userPermission = github.fetchRepoContributors({
+    auth_key: GITHUB.CLIENT_SECRET,
+    owner: 'setlife-network',
+    repo: 'project-trinary'
+})
     .then(res => {
         console.log('res');
         console.log(res.data);

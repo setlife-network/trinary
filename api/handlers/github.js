@@ -20,6 +20,24 @@ const github = module.exports = (() => {
         });
     };
 
+    const fetchAuthUserData = async (params) => {
+        const octokit = new Octokit({
+            auth: params.auth_key,
+        })
+        const res = await octokit.users.getAuthenticated({})
+        if (res.status == 200) {
+            const { html_url, id, name, email } = res.data
+            return {
+                id,
+                name,
+                email,
+                githubUrl: html_url
+            }
+        } else {
+            throw new Error('An error occurred' + res)
+        }
+    }
+
     const fetchRepos = (params) => {
         return new Promise((resolve, reject) => {
             const octokit = new Octokit({
@@ -39,14 +57,18 @@ const github = module.exports = (() => {
         })
     }
 
-    const fetchRepoContributors = (params) => {
+    const fetchRepoContributors = async (params) => {
         const octokit = new Octokit({
             auth: params.auth_key
         })
-        return octokit.repos.listContributors({
+        const res = await octokit.repos.listContributors({
             owner: params.owner,
             repo: params.repo
         })
+        if (res.status != 200) {
+            throw new Error('An error occurred' + res)
+        }
+        return res.data
     }
 
     const fetchRepoInfo = (params) => {
@@ -71,21 +93,16 @@ const github = module.exports = (() => {
     }
 
     const fetchUserData = async (params) => {
-        const octokit = new Octokit({
+        const octokit = await new Octokit({
             auth: params.auth_key,
         })
-        const res = await octokit.users.getAuthenticated({})
-        if (res.status == 200) {
-            const { html_url, id, name, email } = res.data
-            return {
-                id,
-                name,
-                email,
-                githubUrl: html_url
-            }
-        } else {
+        const res = await octokit.users.getByUsername({
+            username: params.username
+        })
+        if (res.status != 200) {
             throw new Error('An error occurred' + res)
         }
+        return res.data
     }
 
     const fetchUserPermission = async (params) => {
@@ -106,12 +123,13 @@ const github = module.exports = (() => {
     }
 
     return {
-        fetchUserData,
+        fetchAccessToken,
+        fetchAuthUserData,
         fetchRepos,
         fetchRepoContributors,
         fetchRepoInfo,
         fetchRepoIssues,
-        fetchAccessToken,
+        fetchUserData,
         fetchUserPermission
     }
 })()

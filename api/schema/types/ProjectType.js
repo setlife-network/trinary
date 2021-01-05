@@ -90,13 +90,14 @@ module.exports = gql`
         ): Project
         deleteProjectById(id: Int!): String
         syncProjectPermissions(project_id: Int!):[Permission]
+        syncProjectGithubContributors(project_id: Int!): [Contributor]
+        syncProjectIssues(
+            project_id: Int
+        ): [Issue]
         syncTogglProject(
             project_id: Int!
             toggl_id: String
         ): Project
-        syncProjectIssues(
-            project_id: Int
-        ): [Issue]
         updateProjectById(
             id: Int!
             updateFields: UpdateProjectInput!
