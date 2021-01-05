@@ -371,8 +371,6 @@ module.exports = {
         syncProjectGithubContributors: async (root, { project_id }, { models }) => {
             const project = await models.Project.findByPk(project_id)
             const repo = split(project.github_url, '/')
-            console.log('repo');
-            console.log(repo);
             return dataSyncs.syncGithubRepoContributors({
                 repo: repo[repo.length - 1]
             })
