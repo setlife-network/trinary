@@ -10,6 +10,7 @@ import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
 import ContributorTile from './ContributorTile'
+import ContributorsEmptyState from './ContributorsEmptyState'
 
 const ProjectContributors = (props) => {
 
@@ -57,6 +58,8 @@ const ProjectContributors = (props) => {
         })
     }
 
+    const emptyContributors = []
+
     return (
         <Grid container className='ProjectContributors'>
             <h1>{`${project.name} Contributors`}</h1>
@@ -81,13 +84,10 @@ const ProjectContributors = (props) => {
                 <Box my={5}>
                     <Grid container>
                         {
-                            activeContributors.length != 0
+                            emptyContributors.length != 0
                                 ? renderContributors(true, activeContributors)
-                                : (
-                                    <>
-                                        No contributors
-                                    </>
-                                )
+                                : <ContributorsEmptyState active/>
+
                         }
                     </Grid>
                 </Box>
@@ -98,13 +98,9 @@ const ProjectContributors = (props) => {
                 <Box>
                     <Grid container>
                         {
-                            contributorsToAdd.length != 0
+                            emptyContributors.length != 0
                                 ? renderContributors(false, contributorsToAdd)
-                                : (
-                                    <>
-                                        No contributors
-                                    </>
-                                )
+                                : <ContributorsEmptyState/>
                         }
                     </Grid>
                 </Box>
