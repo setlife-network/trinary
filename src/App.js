@@ -4,9 +4,12 @@ import { ThemeProvider } from '@material-ui/core/styles'
 
 import theme from './styles/theme'
 
+import { API_ROOT } from './constants'
+import Authentication from './components/Authentication'
+import PrivateRoute from './components/PrivateRoute'
+import PublicRoute from './components/PublicRoute'
 import AddClientPage from './pages/AddClientPage'
 import AddProjectPage from './pages/AddProjectPage'
-import Authentication from './components/Authentication'
 import ClientDetailPage from './pages/ClientDetailPage'
 import ClientsListPage from './pages/ClientsListPage'
 import HomePage from './pages/HomePage'
@@ -15,14 +18,10 @@ import Navigation from './components/Navigation'
 import ProjectDetailPage from './pages/ProjectDetailPage'
 import ProjectsListPage from './pages/ProjectsListPage'
 
-import PrivateRoute from './components/PrivateRoute'
-import PublicRoute from './components/PublicRoute'
-
-import { API_ROOT } from './constants'
-
 class App extends React.Component {
 
     render() {
+
         return (
             <div className='App'>
                 <Authentication/>
@@ -35,28 +34,28 @@ class App extends React.Component {
                     />
                     <PrivateRoute
                         path='/home/:list'
-                        render={(props) => <HomePage {...props} />}
+                        component={HomePage}
                     />
                     <PublicRoute
                         restricted
-                        component={LoginPage}
                         path='/login'
+                        component={LoginPage}
                     />
                     <PrivateRoute
                         path='/clients/:clientId'
-                        render={(props) => <ClientDetailPage {...props} />}
+                        component={ClientDetailPage}
                     />
                     <PrivateRoute
                         path='/client/add'
-                        render={(props) => <AddClientPage {...props} />}
+                        component={AddClientPage}
                     />
                     <PrivateRoute
                         path='/projects/:projectId'
-                        render={(props) => <ProjectDetailPage {...props} />}
+                        component={ProjectDetailPage}
                     />
                     <PrivateRoute
                         path='/project/add/:clientId'
-                        render={(props) => <AddProjectPage {...props} />}
+                        component={AddProjectPage}
                     />
                 </ThemeProvider>
             </div>
