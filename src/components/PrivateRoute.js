@@ -10,8 +10,6 @@ const PrivateRoute = (props) => {
 
     const { component: Component, ...rest } = props
 
-    console.log('isLoggedIn');
-    console.log(isLoggedIn);
     return (
         <Route
             {...rest}
