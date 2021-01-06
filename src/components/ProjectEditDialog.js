@@ -104,7 +104,7 @@ const ProjectEditDialog = (props) => {
                                 <TextField
                                     label='Expected Budget'
                                     variant='outlined'
-                                    defaultValue={client.email}
+                                    defaultValue={project.expected_budget}
                                     fullWidth
                                     onChange={(event) => setExpectedBudget(event.target.value)}
                                 />

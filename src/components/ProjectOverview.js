@@ -25,6 +25,7 @@ const TimeTracking = ({
 const ProjectOverview = (props) => {
 
     const { projectId } = props
+    
     const { data, loading, error } = useQuery(GET_PROJECT, {
         variables: {
             id: Number(projectId)
