@@ -15,6 +15,9 @@ import Navigation from './components/Navigation'
 import ProjectDetailPage from './pages/ProjectDetailPage'
 import ProjectsListPage from './pages/ProjectsListPage'
 
+import PrivateRoute from './components/PrivateRoute'
+import PublicRoute from './components/PublicRoute'
+
 import { API_ROOT } from './constants'
 
 class App extends React.Component {
@@ -25,33 +28,33 @@ class App extends React.Component {
                 <Authentication/>
                 <Navigation/>
                 <ThemeProvider theme={theme}>
-                    <Route
+                    <PrivateRoute
                         exact
                         path={['/home', '/']}
                         component={() => <Redirect to={`/home/clients`} />}
                     />
-                    <Route
+                    <PrivateRoute
                         path='/home/:list'
                         render={(props) => <HomePage {...props} />}
                     />
-                    <Route
+                    <PublicRoute
+                        restricted
+                        component={LoginPage}
                         path='/login'
-                        render={(props) => <LoginPage {...props} />}
                     />
-
-                    <Route
+                    <PrivateRoute
                         path='/clients/:clientId'
                         render={(props) => <ClientDetailPage {...props} />}
                     />
-                    <Route
+                    <PrivateRoute
                         path='/client/add'
                         render={(props) => <AddClientPage {...props} />}
                     />
-                    <Route
+                    <PrivateRoute
                         path='/projects/:projectId'
                         render={(props) => <ProjectDetailPage {...props} />}
                     />
-                    <Route
+                    <PrivateRoute
                         path='/project/add/:clientId'
                         render={(props) => <AddProjectPage {...props} />}
                     />
