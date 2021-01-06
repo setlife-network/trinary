@@ -25,9 +25,6 @@ const ProjectEditDialog = (props) => {
 
     const [updateProject, { data, loading, error }] = useMutation(UPDATE_PROJECT)
 
-    console.log('project');
-    console.log(project);
-
     const [projectName, setProjectName] = useState(project.name)
     const [expectedBudget, setExpectedBudget] = useState(project.expected_budget)
     const [githubURL, setGithubURL] = useState(project.github_url)
