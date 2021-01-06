@@ -13,8 +13,7 @@ import {
     TextField
 } from '@material-ui/core/'
 
-import { UPDATE_CLIENT } from '../operations/mutations/ClientMutations'
-import { CURRENCIES } from '../constants'
+import { UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
 
 const ProjectEditDialog = (props) => {
 
@@ -24,34 +23,31 @@ const ProjectEditDialog = (props) => {
         open
     } = props
 
-    // const [updateClient, { data, loading, error }] = useMutation(UPDATE_CLIENT)
-    //
+    const [updateProject, { data, loading, error }] = useMutation(UPDATE_PROJECT)
 
     console.log('project');
     console.log(project);
 
-    const [projectName, setProjectName] = useState('')
-    const [expectedBudget, setExpectedBudget] = useState('')
-    const [githubURL, setGithubURL] = useState('')
-    const [togglURL, setTogglURL] = useState('')
+    const [projectName, setProjectName] = useState(project.name)
+    const [expectedBudget, setExpectedBudget] = useState(project.expected_budget)
+    const [githubURL, setGithubURL] = useState(project.github_url)
+    const [togglURL, setTogglURL] = useState(project.toggl_url)
     const [disableEdit, setDisableEdit] = useState(true)
 
     const onEdit = async () => {
-        console.log('onEdit');
-        // const clientInfoToEdit = {
-        //     id: client.id,
-        //     email: clientEmail
-        // }
-        // if (clientName) {
-        //     clientInfoToEdit['name'] = clientName
-        // }
-        // if (clientCurrency) {
-        //     clientInfoToEdit['currency'] = clientCurrency
-        // }
-        // updateClient({
-        //     variables: clientInfoToEdit
-        // })
-        // onClose()
+        const projectInfoToEdit = {
+            project_id: project.id,
+            name: projectName,
+            expected_budget: Number(expectedBudget),
+            github_url: githubURL
+        }
+        if (togglURL) {
+            projectInfoToEdit['toggl_url'] = togglURL
+        }
+        updateProject({
+            variables: projectInfoToEdit
+        })
+        onClose()
     }
 
     useEffect(() => {
