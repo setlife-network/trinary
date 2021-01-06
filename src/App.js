@@ -11,10 +11,9 @@ import ClientDetailPage from './pages/ClientDetailPage'
 import ClientsListPage from './pages/ClientsListPage'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
+import Navigation from './components/Navigation'
 import ProjectDetailPage from './pages/ProjectDetailPage'
 import ProjectsListPage from './pages/ProjectsListPage'
-
-import Navigation from './components/Navigation'
 
 import { API_ROOT } from './constants'
 
@@ -23,9 +22,9 @@ class App extends React.Component {
     render() {
         return (
             <div className='App'>
-                <Authentication history={this.props.history}/>
+                <Authentication/>
+                <Navigation/>
                 <ThemeProvider theme={theme}>
-                    <Navigation/>
                     <Route
                         exact
                         path={['/home', '/']}

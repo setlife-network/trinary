@@ -1,0 +1,13 @@
+.Navigation {
+    .icon-image{
+        max-height: 30px;
+        cursor: pointer;
+    }
+
+}
+
+@media screen and (min-width: $sm) {
+    .Navigation {
+
+    }
+}
