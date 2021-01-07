@@ -63,7 +63,11 @@ const ProjectEditDialog = (props) => {
     }
 
     useEffect(() => {
-        if (projectName || expectedBudget || githubURL) {
+        if (expectedBudget == project.expected_budget && githubURL == project.github_url && projectName == project.name && togglURL == project.toggl_url) {
+            setDisableEdit(true)
+        } else if (expectedBudget == '' || githubURL == '' || projectName == '') {
+            setDisableEdit(true)
+        } else {
             setDisableEdit(false)
         }
     })
