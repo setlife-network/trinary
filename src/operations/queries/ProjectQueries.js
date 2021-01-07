@@ -57,12 +57,37 @@ export const GET_PROJECT = gql`
                 seconds
             }
             timeEntries{
+                id
                 seconds
                 contributor {
                     name
                 }
             }
             timeSpentPerContributor {
+                seconds
+                contributor {
+                    name
+                }
+            }
+        }
+    }
+`
+
+export const GET_PROJECT_TIME_ENTRIES = gql`
+    query ProjectTimeEntrie($id: Int!, $fromDate: String, $toDate: String){
+        getProjectById(id: $id){
+            id
+            timeEntries(fromDate: $fromDate, toDate: $toDate) {
+                id
+                seconds
+                contributor {
+                    name
+                }
+            }
+            timeSpent(fromDate: $fromDate, toDate: $toDate) {
+                seconds
+            }
+            timeSpentPerContributor(fromDate: $fromDate, toDate: $toDate) {
                 seconds
                 contributor {
                     name
