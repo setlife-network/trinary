@@ -54,7 +54,7 @@ const ProjectTimeTracking = (props) => {
         : allTimeEntriesData.getProjectById
 
     const projectHoursSpent = timeSpent.seconds
-        ? Math.trunc(project.timeSpent.seconds / 3600)
+        ? Math.trunc(timeSpent.seconds / 3600)
         : 0
 
     const contributorTimeEntries = timeSpentPerContributor
@@ -76,19 +76,20 @@ const ProjectTimeTracking = (props) => {
                     </strong>
                 </Typography>
             </Grid>
-            <Grid item>
-                <Box my={3} mr={1}>
+            <Grid item xs={6} sm={3}>
+                <Box my={3}>
                     <DatePicker
                         selected={startDate}
                         onChange={date => setStartDate(date)}
                         selectsStart
                         startDate={startDate}
                         endDate={endDate}
+                        className='date-input start-date'
                     />
                 </Box>
             </Grid>
-            <Grid item>
-                <Box my={3} ml={1}>
+            <Grid item xs={6} sm={3}>
+                <Box my={3}>
                     <DatePicker
                         selected={endDate}
                         onChange={date => getRangedTimeEntries(date)}
@@ -96,6 +97,7 @@ const ProjectTimeTracking = (props) => {
                         startDate={startDate}
                         endDate={endDate}
                         minDate={startDate}
+                        className='date-input end-date'
                     />
                 </Box>
             </Grid>
@@ -113,7 +115,7 @@ const ProjectTimeTracking = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <Box mt={5}>
+                <Box my={5} pb={3}>
                     {renderContributorTimeEntries(contributorTimeEntries)}
                 </Box>
             </Grid>
