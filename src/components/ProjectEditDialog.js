@@ -84,8 +84,8 @@ const ProjectEditDialog = (props) => {
                         justify='space-between'
                         alignItems='center'
                     >
-                        <Grid item xs={12} lg={5}>
-                            <Box my={2}>
+                        <Grid item xs={12} lg={6}>
+                            <Box my={2} pr={1}>
                                 <TextField
                                     label='Project name'
                                     variant='outlined'
@@ -96,19 +96,8 @@ const ProjectEditDialog = (props) => {
                                 />
                             </Box>
                         </Grid>
-                        <Grid item xs={12} lg={5}>
-                            <Box my={2}>
-                                <TextField
-                                    label='Github URL'
-                                    variant='outlined'
-                                    defaultValue={project.github_url}
-                                    fullWidth
-                                    onChange={(event) => setGithubURL(event.target.value)}
-                                />
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12} lg={5}>
-                            <Box my={2}>
+                        <Grid item xs={12} lg={6}>
+                            <Box my={2} pl={1}>
                                 <TextField
                                     label='Expected Budget'
                                     variant='outlined'
@@ -118,7 +107,18 @@ const ProjectEditDialog = (props) => {
                                 />
                             </Box>
                         </Grid>
-                        <Grid item xs={12} lg={5}>
+                        <Grid item xs={12} lg={6}>
+                            <Box my={2} pr={1}>
+                                <TextField
+                                    label='Github URL'
+                                    variant='outlined'
+                                    defaultValue={project.github_url}
+                                    fullWidth
+                                    onChange={(event) => setGithubURL(event.target.value)}
+                                />
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12} lg={6}>
                             <Box my={2}>
                                 <TextField
                                     label='Toggl URL'
@@ -129,8 +129,8 @@ const ProjectEditDialog = (props) => {
                                 />
                             </Box>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Box mt={5}>
+                        <Grid item xs={12} lg={6}>
+                            <Box mt={5} pl={1}>
                                 <Button
                                     variant='contained'
                                     color='primary'

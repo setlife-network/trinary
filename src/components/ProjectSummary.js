@@ -29,8 +29,8 @@ const ProjectSummary = (props) => {
             bgcolor='primary.light_blue'
             fontWeight='fontWeightBold'
         >
-            <Grid container>
-                <Grid item xs={12} md={10}>
+            <Grid container justify='center' spacing={2}>
+                <Grid item xs={12} sm={10}>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             <Grid container>
@@ -65,11 +65,17 @@ const ProjectSummary = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} md={2}>
-                    <Button onClick={handleEditOpen} color='primary' bgcolor='primary'>
-                        {'Edit'.toUpperCase()}
-                    </Button>
-
+                <Grid
+                    item
+                    xs={12}
+                    sm={2}
+                    align='left'
+                >
+                    <Box>
+                        <Button onClick={handleEditOpen} color='primary' bgcolor='primary'>
+                            {'Edit'.toUpperCase()}
+                        </Button>
+                    </Box>
                 </Grid>
             </Grid>
             <ProjectEditDialog
