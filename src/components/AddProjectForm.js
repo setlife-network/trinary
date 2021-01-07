@@ -177,7 +177,7 @@ const AddProjectForm = ({
             </Grid>
             <Snackbar
                 open={displayError}
-                autoHideDuration={6000}
+                autoHideDuration={3600}
                 onClose={handleAlertClose}
             >
                 <Alert severity='error'>

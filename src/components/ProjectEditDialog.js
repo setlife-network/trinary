@@ -47,7 +47,7 @@ const ProjectEditDialog = (props) => {
         }
         const projectEdited = await updateProject({ variables: projectInfoToEdit })
         if (loading) return <span>loading...</span>
-        if (projectEdited.errors) {
+        else if (projectEdited.errors) {
             setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}`)
             setDisplayError(true)
         } else {
@@ -63,7 +63,12 @@ const ProjectEditDialog = (props) => {
     }
 
     useEffect(() => {
-        if (expectedBudget == project.expected_budget && githubURL == project.github_url && projectName == project.name && togglURL == project.toggl_url) {
+        if (
+            expectedBudget == project.expected_budget
+            && githubURL == project.github_url
+            && projectName == project.name
+            && togglURL == project.toggl_url
+        ) {
             setDisableEdit(true)
         } else if (expectedBudget == '' || githubURL == '' || projectName == '') {
             setDisableEdit(true)
@@ -105,6 +110,7 @@ const ProjectEditDialog = (props) => {
                                 <TextField
                                     label='Expected Budget'
                                     variant='outlined'
+                                    type='number'
                                     defaultValue={project.expected_budget}
                                     fullWidth
                                     onChange={(event) => setExpectedBudget(event.target.value)}
@@ -116,6 +122,7 @@ const ProjectEditDialog = (props) => {
                                 <TextField
                                     label='Github URL'
                                     variant='outlined'
+                                    type='url'
                                     defaultValue={project.github_url}
                                     fullWidth
                                     onChange={(event) => setGithubURL(event.target.value)}
@@ -127,6 +134,7 @@ const ProjectEditDialog = (props) => {
                                 <TextField
                                     label='Toggl URL'
                                     variant='outlined'
+                                    type='url'
                                     defaultValue={project.toggl_url}
                                     fullWidth
                                     onChange={(event) => setTogglURL(event.target.value)}
@@ -148,7 +156,7 @@ const ProjectEditDialog = (props) => {
                     </Grid>
                     <Snackbar
                         open={displayError}
-                        autoHideDuration={6000}
+                        autoHideDuration={3600}
                         onClose={handleAlertClose}
                     >
                         <Alert severity='error'>
