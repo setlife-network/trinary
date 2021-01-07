@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client'
+import Alert from '@material-ui/lab/Alert'
 import {
     Box,
     Button,
@@ -10,6 +11,7 @@ import {
     Grid,
     MenuItem,
     Select,
+    Snackbar,
     TextField
 } from '@material-ui/core/'
 
@@ -23,15 +25,17 @@ const ProjectEditDialog = (props) => {
         open
     } = props
 
-    const [updateProject, { data, loading, error }] = useMutation(UPDATE_PROJECT)
+    const [updateProject, { data, loading, error }] = useMutation(UPDATE_PROJECT, { errorPolicy: 'all' })
 
-    const [projectName, setProjectName] = useState(project.name)
+    const [disableEdit, setDisableEdit] = useState(true)
+    const [displayError, setDisplayError] = useState(false)
+    const [editProjectError, setEditProjectError] = useState('')
     const [expectedBudget, setExpectedBudget] = useState(project.expected_budget)
     const [githubURL, setGithubURL] = useState(project.github_url)
+    const [projectName, setProjectName] = useState(project.name)
     const [togglURL, setTogglURL] = useState(project.toggl_url)
-    const [disableEdit, setDisableEdit] = useState(true)
 
-    const onEdit = async () => {
+    const onEditProject = async () => {
         const projectInfoToEdit = {
             project_id: project.id,
             name: projectName,
@@ -41,10 +45,21 @@ const ProjectEditDialog = (props) => {
         if (togglURL) {
             projectInfoToEdit['toggl_url'] = togglURL
         }
-        updateProject({
-            variables: projectInfoToEdit
-        })
-        onClose()
+        const projectEdited = await updateProject({ variables: projectInfoToEdit })
+        if (loading) return <span>loading...</span>
+        if (projectEdited.errors) {
+            setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}`)
+            setDisplayError(true)
+        } else {
+            onClose()
+        }
+    }
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setDisplayError(false)
     }
 
     useEffect(() => {
@@ -120,13 +135,22 @@ const ProjectEditDialog = (props) => {
                                     variant='contained'
                                     color='primary'
                                     disabled={disableEdit}
-                                    onClick={onEdit}
+                                    onClick={onEditProject}
                                 >
-                                    {`Edit client`}
+                                    {`Edit Project`}
                                 </Button>
                             </Box>
                         </Grid>
                     </Grid>
+                    <Snackbar
+                        open={displayError}
+                        autoHideDuration={6000}
+                        onClose={handleAlertClose}
+                    >
+                        <Alert severity='error'>
+                            {`${editProjectError} already exists`}
+                        </Alert>
+                    </Snackbar>
                 </FormControl>
             </Box>
         </Dialog>
