@@ -31,7 +31,7 @@ const PaymentTile = (props) => {
                             `${client.currency != 'USD'
                                 ? ''
                                 : '$'}
-                        ${payment.amount}`
+                            ${payment.amount}`
                         }
                     </Typography>
                 </Grid>
