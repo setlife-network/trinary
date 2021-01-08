@@ -33,7 +33,7 @@ class ProjectDetailPage extends React.Component {
 
         return (
             <Grid container justify='center' className='ProjectDetailPage'>
-                <Grid item xs={10} lg={5}>
+                <Grid item xs={10} md={5}>
                     <Route
                         exact
                         path={`${match.url}/`}
@@ -53,7 +53,7 @@ class ProjectDetailPage extends React.Component {
                     />
                     <Route
                         path={`${match.url}/issues`}
-                        render={(props) => <ProjectIssues {...props} />}
+                        render={(props) => <ProjectIssues {...props} projectId={this.props.match.params.projectId}/>}
                     />
                 </Grid>
                 <BottomNavigation

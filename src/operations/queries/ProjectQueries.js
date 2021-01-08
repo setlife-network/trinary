@@ -27,7 +27,7 @@ export const GET_ACTIVE_PROJECTS_COUNT = gql`
 `
 
 export const GET_PROJECT = gql`
-    query Project($id: Int!){
+    query Project($id: Int!, $issuesFromDate: String, $issuesToDate: String){
         getProjectById(id: $id){
             id
             name
@@ -37,29 +37,12 @@ export const GET_PROJECT = gql`
             toggl_url
             date
             totalPaid
-            allocations {
-                id
-                active
-                contributor {
-                    id
-                    github_handle
-                    name
-                }
-            }
-            contributors {
-                id
-                name
-            }
-            issues {
-                id
-            }
             client {
                 id
                 name
                 currency
-            }
+            },
             allocatedPayments {
-                id
                 amount
                 date_paid
                 date_incurred
@@ -69,6 +52,34 @@ export const GET_PROJECT = gql`
                     currency
                 }
             }
+            allocations {
+                id
+                active
+                contributor {
+                    id
+                    github_handle
+                    name
+                }
+            }
+            issues {
+                id
+                github_url
+                github_number
+                name
+                date_opened
+                date_closed
+            },
+            contributors {
+                id
+            }
+            githubIssuesOpened(
+                fromDate: $issuesFromDate,
+                toDate: $issuesToDate
+            )
+            githubIssuesClosed(
+                fromDate: $issuesFromDate,
+                toDate: $issuesToDate
+            )
             timeSpent(
                 fromDate: "2020-01-01",
                 toDate: "2020-12-31"
