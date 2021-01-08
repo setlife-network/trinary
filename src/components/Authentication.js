@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 
+import { authUser } from '../reactivities/variables'
 import { CHECK_SESSION } from '../operations/queries/ContributorQueries'
 
-const Authentication = ({ history }) => {
+const Authentication = () => {
 
-    const [loggedIn, setLoggedIn] = useState(false)
     const { error, loading, data } = useQuery(CHECK_SESSION)
 
     useEffect(() => {
         if (data) {
             if (!data.checkSession) {
-                history.push('/login')
+                authUser(false)
             } else {
-                setLoggedIn(true)
+                authUser(true)
             }
         }
-
     }, [data])
 
     if (loading) {

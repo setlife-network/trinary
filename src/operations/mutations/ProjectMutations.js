@@ -37,3 +37,14 @@ export const UPDATE_PROJECT = gql`
         }
     }
 `
+
+export const SYNC_PROJECT_GITHUB_CONTRIBUTORS = gql`
+    mutation syncProjectGithubContributors($project_id: Int!){
+        syncProjectGithubContributors(project_id: $project_id) {
+            id
+            name
+            github_id
+            github_handle
+        }
+    }
+ `
