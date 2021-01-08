@@ -1,56 +1,15 @@
 import React, { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
+import {
+    Box,
+    Grid,
+    Typography
+} from '@material-ui/core'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
-
-const MOCKED_PROJECT = {
-    id: 1,
-    name: 'Project Trinary',
-    expected_budget: 1000000,
-    github_url: 'https://github.com/setlife-network/project-trinary',
-    toggl_url: 'https://track.toggl.com/3070291/projects/162053371/team',
-    toggl_id: `162053371`,
-    client: {
-        id: 1,
-        name: 'SetLife'
-    },
-    totalPaid: 500000,
-    totalTimeSpent: 100000,
-    timeSpent: [
-        {
-            contributor: {
-                name: 'Oscar'
-            },
-            seconds: 360000
-        },
-        {
-            contributor: {
-                name: 'Sofia'
-            },
-            seconds: 10000
-        },
-        {
-            contributor: {
-                name: 'David'
-            },
-            seconds: 54321
-        },
-        {
-            contributor: {
-                name: 'Victor'
-            },
-            seconds: 12345
-        }
-    ]
-}
-
-const ProjectSummary = (props) => {
-    return (
-        <div className='ProjectSummary'>
-            ProjectSummary
-        </div>
-    )
-}
+import ProjectSummary from './ProjectSummary'
+import ProjectOverviewExternalLinks from './ProjectOverviewExternalLinks'
+import ProjectTimeTracking from './ProjectTimeTracking'
 
 const TimeTracking = ({
     totalTimeSpent,
@@ -64,24 +23,41 @@ const TimeTracking = ({
 }
 
 const ProjectOverview = (props) => {
+
+    const { projectId } = props
+    
     const { data, loading, error } = useQuery(GET_PROJECT, {
         variables: {
-            id: 4
-            // id: Number(projectId)
+            id: Number(projectId)
         }
     })
 
     if (loading) return 'Loading...'
     if (error) return error
 
-    const project = data?.getProjectById
+    const project = data.getProjectById
+
     return (
-        <div className='ProjectOverview'>
-            ProjectOverview
-            {/* <ProjectSummary project={project}/>
-            <TimeTracking project={project}/> */}
-        </div>
-    );
+        <Grid container className='ProjectOverview' justify='center'>
+            <Grid item xs={10} lg={5}>
+                <Box p={3}>
+                    <Typography variant='h4'>
+                        <strong>
+                            {'Overview'}
+                        </strong>
+                    </Typography>
+                </Box>
+                <ProjectSummary project={project}/>
+                <ProjectOverviewExternalLinks
+                    github_url={project.github_url}
+                    toggl_url={project.toggl_url}
+                />
+                <Box mt={8}>
+                    <ProjectTimeTracking project={project}/>
+                </Box>
+            </Grid>
+        </Grid>
+    )
 }
 
 ProjectOverview.defaultProps = {

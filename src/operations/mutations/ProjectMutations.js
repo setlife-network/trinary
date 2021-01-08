@@ -16,3 +16,35 @@ export const ADD_PROJECT = gql`
         }
     }
 `
+
+export const UPDATE_PROJECT = gql`
+    mutation updateProjectById($project_id: Int!, $expected_budget:Int!, $name: String!, $github_url: String, $toggl_url: String){
+        updateProjectById(
+            id: $project_id,
+            updateFields: {
+                expected_budget: $expected_budget
+                name: $name
+                github_url: $github_url
+                toggl_url: $toggl_url
+            }
+        ){
+            id,
+            name,
+            expected_budget,
+            is_active,
+            github_url,
+            toggl_url
+        }
+    }
+`
+
+export const SYNC_PROJECT_GITHUB_CONTRIBUTORS = gql`
+    mutation syncProjectGithubContributors($project_id: Int!){
+        syncProjectGithubContributors(project_id: $project_id) {
+            id
+            name
+            github_id
+            github_handle
+        }
+    }
+ `

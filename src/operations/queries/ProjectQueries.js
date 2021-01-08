@@ -18,27 +18,49 @@ export const GET_ALL_PROJECTS = gql`
             }
         }
     }
-`;
+`
 
 export const GET_ACTIVE_PROJECTS_COUNT = gql`
     query Clients($clientId: Int) {
         getActiveProjectsCount(clientId: $clientId)
     }
-`;
+`
 
 export const GET_PROJECT = gql`
     query Project($id: Int!, $issuesFromDate: String, $issuesToDate: String){
         getProjectById(id: $id){
             id
             name
+            is_active
+            expected_budget
             github_url
+            toggl_url
+            date
+            totalPaid
             client {
                 id
                 name
+                currency
             },
             allocatedPayments {
+                amount
+                date_paid
+                date_incurred
+                client {
+                    id
+                    name
+                    currency
+                }
+            }
+            allocations {
                 id
-            },
+                active
+                contributor {
+                    id
+                    github_handle
+                    name
+                }
+            }
             issues {
                 id
                 github_url
@@ -49,10 +71,7 @@ export const GET_PROJECT = gql`
             },
             contributors {
                 id
-            },
-            allocations {
-                id
-            },
+            }
             githubIssuesOpened(
                 fromDate: $issuesFromDate,
                 toDate: $issuesToDate
@@ -61,6 +80,24 @@ export const GET_PROJECT = gql`
                 fromDate: $issuesFromDate,
                 toDate: $issuesToDate
             )
+            timeSpent(
+                fromDate: "2020-01-01",
+                toDate: "2020-12-31"
+            ) {
+                seconds
+            }
+            timeEntries{
+                seconds
+                contributor {
+                    name
+                }
+            }
+            timeSpentPerContributor {
+                seconds
+                contributor {
+                    name
+                }
+            }
         }
     }
 `

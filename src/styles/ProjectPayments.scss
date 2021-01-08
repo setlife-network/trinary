@@ -1,53 +1,5 @@
 .ProjectPayments {
-    padding-top: 2rem;
-    text-align: center;
-    max-width: 500px;
-    margin: auto;
-}
 
-.title-container {
-    margin: 0 30px;
-}
-
-.payments-title {
-    text-align: left;
-    font-size: 2.1rem;
-    font-weight: 500;
-    line-height: 1;
-}
-
-.usd-total {
-    text-align: right;
-}
-
-.PaymentTile {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    text-align: left;
-    font-weight: 500;
-    color: $black;
-    padding: 10px 10px 10px 10px;
-    border: 1px solid;
-    border-color: $light_grey;
-    border-radius: 8px;
-    margin: 30px;
-}
-
-.DatePaid {
-    font-size: 0.9rem;
-    color: $grey;
-}
-
-.DateIncurred {
-    font-size: 0.9rem;
-    color: $grey;
-}
-
-.MoneyIcon {
-    color: $setlife-blue;
-}
-
-.NoMoneyIcon {
-    color: $grey;
 }
 
 @media screen and (min-width: $sm) {

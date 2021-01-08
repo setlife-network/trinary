@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core/'
 
 import { UPDATE_CLIENT } from '../operations/mutations/ClientMutations'
-import { CURRENCIES } from '../constants/'
+import { CURRENCIES } from '../constants'
 
 const ClientEditDialog = (props) => {
 
@@ -26,9 +26,9 @@ const ClientEditDialog = (props) => {
 
     const [updateClient, { data, loading, error }] = useMutation(UPDATE_CLIENT)
 
-    const [clientName, setClientName] = useState('')
-    const [clientEmail, setClientEmail] = useState('')
-    const [clientCurrency, setClientCurrency] = useState('')
+    const [clientName, setClientName] = useState(client.name)
+    const [clientEmail, setClientEmail] = useState(client.email)
+    const [clientCurrency, setClientCurrency] = useState(client.currency)
     const [disableEdit, setDisableEdit] = useState(true)
 
     const onEdit = async () => {

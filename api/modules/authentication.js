@@ -1,12 +1,10 @@
-const { fetchUserData } = require('../handlers/github')
+const { fetchAuthUserData } = require('../handlers/github')
 const db = require('../models')
 
 const authentication = module.exports = (() => {
 
     const getContributor = async ({ githubAccessToken }) => {
-        const githubContributor = await fetchUserData({ auth_key: githubAccessToken })
-        console.log('githubContributor')
-        console.log(githubContributor)
+        const githubContributor = await fetchAuthUserData({ auth_key: githubAccessToken })
         const contributor = await db.models.Contributor.findOne({
             where: {
                 github_id: githubContributor.id
