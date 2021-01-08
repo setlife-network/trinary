@@ -37,6 +37,22 @@ export const GET_PROJECT = gql`
             toggl_url
             date
             totalPaid
+            allocations {
+                id
+                active
+                contributor {
+                    id
+                    github_handle
+                    name
+                }
+            }
+            contributors {
+                id
+                name
+            }
+            issues {
+                id
+            }
             client {
                 id
                 name
@@ -52,15 +68,6 @@ export const GET_PROJECT = gql`
                     name
                     currency
                 }
-            }
-            issues {
-                id
-            }
-            contributors {
-                id
-            }
-            allocations {
-                id
             }
             timeSpent(
                 fromDate: "2020-01-01",
