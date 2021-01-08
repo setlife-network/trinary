@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
     Box,
+    Button,
     Grid,
     Typography
 } from '@material-ui/core'
@@ -16,8 +17,8 @@ const ProjectTimeTracking = (props) => {
 
     const { project } = props
 
-    const [startDate, setStartDate] = useState(new Date())
-    const [endDate, setEndDate] = useState(new Date())
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
 
     const [
         getProjetTimeEntries,
@@ -25,10 +26,16 @@ const ProjectTimeTracking = (props) => {
     ] = useLazyQuery(GET_PROJECT_TIME_ENTRIES, {
         variables: {
             id: project.id,
-            fromDate: moment(startDate).format('YYYY-MM-DD'),
-            toDate: moment(endDate).format('YYYY-MM-DD')
+            fromDate: startDate ? moment(startDate).format('YYYY-MM-DD') : null,
+            toDate: endDate ? moment(endDate).format('YYYY-MM-DD') : null
         }
     })
+
+    const clearDateInput = () => {
+        setStartDate(null)
+        setEndDate(null)
+        getProjetTimeEntries()
+    }
 
     const getRangedTimeEntries = (date) => {
         setEndDate(date)
@@ -68,7 +75,7 @@ const ProjectTimeTracking = (props) => {
     }
 
     return (
-        <Grid container className='ProjectTimeTracking'>
+        <Grid container className='ProjectTimeTracking' alignItems='flex-end'>
             <Grid item xs={12}>
                 <Typography variant='h4' align='left'>
                     <strong>
@@ -77,32 +84,45 @@ const ProjectTimeTracking = (props) => {
                 </Typography>
             </Grid>
             <Grid item xs={6} sm={3}>
-                <Box my={3}>
+                <Box mt={3}>
                     <DatePicker
                         selected={startDate}
-                        onChange={date => setStartDate(date)}
+                        onChange={(date) => setStartDate(date)}
                         selectsStart
                         startDate={startDate}
                         endDate={endDate}
+                        placeholderText='Tap to add a date'
                         className='date-input start-date'
                     />
                 </Box>
             </Grid>
             <Grid item xs={6} sm={3}>
-                <Box my={3}>
+                <Box mt={3}>
                     <DatePicker
                         selected={endDate}
-                        onChange={date => getRangedTimeEntries(date)}
+                        onChange={(date) => getRangedTimeEntries(date)}
                         selectsEnd
                         startDate={startDate}
                         endDate={endDate}
                         minDate={startDate}
+                        placeholderText='Tap to add a date'
                         className='date-input end-date'
                     />
                 </Box>
             </Grid>
+            <Grid item xs={12} sm={3} align='left'>
+                <Box mt={3} px={2}>
+                    <Button
+                        color='primary'
+                        disabled={!startDate && !endDate}
+                        onClick={() => clearDateInput()}
+                    >
+                        {`Clear dates`}
+                    </Button>
+                </Box>
+            </Grid>
             <Grid item xs={12}/>
-            <Grid item xs={5} md={4}>
+            <Grid item xs={12} md={4}>
                 <Box
                     bgcolor='primary.black'
                     color='primary.light'
