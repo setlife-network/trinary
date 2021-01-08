@@ -39,7 +39,7 @@ class ProjectDetailPage extends React.Component {
                 />
                 <Route
                     path={`${match.url}/overview`}
-                    render={(props) => <ProjectOverview {...props} />}
+                    render={(props) => <ProjectOverview {...props} projectId={this.props.match.params.projectId}/>}
                 />
                 <Route
                     path={`${match.url}/payments`}

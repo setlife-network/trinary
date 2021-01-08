@@ -29,8 +29,14 @@ export const GET_ACTIVE_PROJECTS_COUNT = gql`
 export const GET_PROJECT = gql`
     query Project($id: Int!){
         getProjectById(id: $id){
-            id,
-            name,
+            id
+            name
+            is_active
+            expected_budget
+            github_url
+            toggl_url
+            date
+            totalPaid
             client {
                 id
                 name
@@ -61,6 +67,18 @@ export const GET_PROJECT = gql`
                 toDate: "2020-12-31"
             ) {
                 seconds
+            }
+            timeEntries{
+                seconds
+                contributor {
+                    name
+                }
+            }
+            timeSpentPerContributor {
+                seconds
+                contributor {
+                    name
+                }
             }
         }
     }

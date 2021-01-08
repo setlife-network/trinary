@@ -32,7 +32,7 @@ const ClientListManager = ({
             mx={1}
             className='ClientListManager'
         >
-            <Grid container direction='row' justify='space-between' alignItems='flex-end'>
+            <Grid container justify='space-between' alignItems='flex-end'>
                 <Grid item>
                     <Box
                         bgcolor='primary.black'

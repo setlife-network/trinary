@@ -20,10 +20,6 @@ import { API_ROOT } from './constants'
 
 class App extends React.Component {
 
-    componentDidMount() {
-        this.props.history.push('/home')
-    }
-
     render() {
         return (
             <div className='App'>
@@ -32,7 +28,7 @@ class App extends React.Component {
                     <Navigation/>
                     <Route
                         exact
-                        path={`/home`}
+                        path={['/home', '/']}
                         component={() => <Redirect to={`/home/clients`} />}
                     />
                     <Route
