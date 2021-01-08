@@ -72,7 +72,8 @@ const ProjectPayments = (props) => {
                     )
                     : (
                         <PaymentsEmptyState/>
-                    )}
+                    )
+                }
             </Grid>
         </Grid>
 
