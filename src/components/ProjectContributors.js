@@ -16,15 +16,32 @@ const ProjectContributors = (props) => {
 
     const { projectId } = props
 
-    const [getGithubContributors, { data: dataGithubContributors, loading: loadingGithubContributors, error: errorGithubContributors }] = useMutation(SYNC_PROJECT_GITHUB_CONTRIBUTORS)
-    const githubContributors = getGithubContributors({ variables: { project_id: Number(projectId) } })
+    const [
+        getGithubContributors,
+        {
+            data: dataGithubContributors,
+            loading: loadingGithubContributors,
+            error: errorGithubContributors
+        }
+    ] = useMutation(SYNC_PROJECT_GITHUB_CONTRIBUTORS)
+    const githubContributors = getGithubContributors({
+        variables: { project_id: Number(projectId) }
+    })
 
-    const { data: dataProject, error: errorProject, loading: loadingProject } = useQuery(GET_PROJECT, {
+    const {
+        data: dataProject,
+        error: errorProject,
+        loading: loadingProject
+    } = useQuery(GET_PROJECT, {
         variables: {
             id: Number(projectId)
         }
     })
-    const { data: dataContributors, error: errorContributors, loading: loadingContributors } = useQuery(GET_CONTRIBUTORS)
+    const {
+        data: dataContributors,
+        error: errorContributors,
+        loading: loadingContributors
+    } = useQuery(GET_CONTRIBUTORS)
 
     if (loadingProject || loadingContributors || loadingGithubContributors) {
         return (
