@@ -18,13 +18,13 @@ export const GET_ALL_PROJECTS = gql`
             }
         }
     }
-`;
+`
 
 export const GET_ACTIVE_PROJECTS_COUNT = gql`
     query Clients($clientId: Int) {
         getActiveProjectsCount(clientId: $clientId)
     }
-`;
+`
 
 export const GET_PROJECT = gql`
     query Project($id: Int!){
@@ -38,11 +38,20 @@ export const GET_PROJECT = gql`
             date
             totalPaid
             client {
-                id,
+                id
                 name
+                currency
             }
             allocatedPayments {
                 id
+                amount
+                date_paid
+                date_incurred
+                client {
+                    id
+                    name
+                    currency
+                }
             }
             issues {
                 id
@@ -53,7 +62,10 @@ export const GET_PROJECT = gql`
             allocations {
                 id
             }
-            timeSpent {
+            timeSpent(
+                fromDate: "2020-01-01",
+                toDate: "2020-12-31"
+            ) {
                 seconds
             }
             timeEntries{
