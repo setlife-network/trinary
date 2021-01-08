@@ -5,18 +5,20 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import theme from './styles/theme'
 
 import { API_ROOT } from './constants'
-import Authentication from './components/Authentication'
-import PrivateRoute from './components/PrivateRoute'
-import PublicRoute from './components/PublicRoute'
+
 import AddClientPage from './pages/AddClientPage'
 import AddProjectPage from './pages/AddProjectPage'
 import ClientDetailPage from './pages/ClientDetailPage'
 import ClientsListPage from './pages/ClientsListPage'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
-import Navigation from './components/Navigation'
 import ProjectDetailPage from './pages/ProjectDetailPage'
 import ProjectsListPage from './pages/ProjectsListPage'
+
+import Authentication from './components/Authentication'
+import Navigation from './components/Navigation'
+import PrivateRoute from './components/PrivateRoute'
+import PublicRoute from './components/PublicRoute'
 
 class App extends React.Component {
 
