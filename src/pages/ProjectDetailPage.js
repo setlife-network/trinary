@@ -15,44 +15,8 @@ import ProjectPayments from '../components/ProjectPayments'
 import ProjectContributors from '../components/ProjectContributors'
 import ProjectIssues from '../components/ProjectIssues'
 
-const MOCKED_PROJECT = {
-    id: 1,
-    name: 'Project One',
-    contributors: [
-        {
-            id: 1,
-            name: 'Alice'
-        },
-        {
-            id: 2,
-            name: 'Bob'
-        },
-    ],
-    payments: [
-        {
-            id: 1,
-            amount: 100
-        },
-        {
-            id: 2,
-            amount: 200
-        }
-    ],
-    allocations: [
-        {
-            id: 1,
-            payment: null,
-            contributor: { name: 'Alice' }
-        },
-        {
-            id: 2,
-            payment: { amount: 100 },
-            contributor: { name: 'Bob' }
-        }
-    ]
-}
-
 class ProjectDetailPage extends React.Component {
+
     handleTabClick = (event, tab) => {
         this.props.history.push(`/projects/${this.props.match.params.projectId}/${tab}`)
     }
@@ -77,11 +41,11 @@ class ProjectDetailPage extends React.Component {
                     />
                     <Route
                         path={`${match.url}/overview`}
-                        render={(props) => <ProjectOverview {...props} />}
+                        render={(props) => <ProjectOverview {...props} projectId={this.props.match.params.projectId}/>}
                     />
                     <Route
                         path={`${match.url}/payments`}
-                        render={(props) => <ProjectPayments {...props} />}
+                        render={(props) => <ProjectPayments {...props} projectId={this.props.match.params.projectId}/>}
                     />
                     <Route
                         path={`${match.url}/contributors`}

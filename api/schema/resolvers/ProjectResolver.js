@@ -250,6 +250,28 @@ module.exports = {
                 }
             })
         },
+        timeSpentPerContributor: (project, args, { models }) => {
+            return models.TimeEntry.findAll(
+                {
+                    where: {
+                        project_id: project.id,
+                        start_time: {
+                            [Op.between]: [
+                                args.fromDate
+                                    ? args.fromDate
+                                    : moment.utc(1),
+                                args.toDate
+                                    ? args.toDate
+                                    : moment.utc()
+                            ]
+                        },
+                    },
+                    group: 'contributor_id',
+                    attributes: ['contributor_id', [fn('sum', col('seconds')), 'seconds']]
+                }
+            )
+
+        },
         issuesOpened: (project, args, { models }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,
@@ -278,7 +300,15 @@ module.exports = {
             })
             const whereConditions = {
                 project_id: project.id,
-                start_time: { [Op.between]: [args.fromDate, args.toDate] }
+                start_time: {
+                    [Op.between]:
+                        [args.fromDate
+                            ? args.fromDate
+                            : moment.utc(1),
+                        args.toDate
+                            ? args.toDate
+                            : moment.utc()]
+                }
             }
             if (args.contributor_id) {
                 whereConditions.contributor_id = args.contributor_id
@@ -326,6 +356,17 @@ module.exports = {
             return total
                 ? total.dataValues.totalPaid
                 : 0
+        }
+    },
+    timeSpentPerContributor: {
+        contributor: (timeSpentPerContributor, args, { models }) => {
+            return models.Contributor.findOne(
+                {
+                    where: {
+                        id: timeSpentPerContributor.contributor_id
+                    }
+                }
+            )
         }
     },
     Query: {
