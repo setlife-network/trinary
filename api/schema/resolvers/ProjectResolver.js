@@ -250,6 +250,28 @@ module.exports = {
                 }
             })
         },
+        timeSpentPerContributor: (project, args, { models }) => {
+            return models.TimeEntry.findAll(
+                {
+                    where: {
+                        project_id: project.id,
+                        start_time: {
+                            [Op.between]: [
+                                args.fromDate
+                                    ? args.fromDate
+                                    : moment.utc(1),
+                                args.toDate
+                                    ? args.toDate
+                                    : moment.utc()
+                            ]
+                        },
+                    },
+                    group: 'contributor_id',
+                    attributes: ['contributor_id', [fn('sum', col('seconds')), 'seconds']]
+                }
+            )
+
+        },
         issuesOpened: (project, args, { models }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,
@@ -278,7 +300,15 @@ module.exports = {
             })
             const whereConditions = {
                 project_id: project.id,
-                start_time: { [Op.between]: [args.fromDate, args.toDate] }
+                start_time: {
+                    [Op.between]:
+                        [args.fromDate
+                            ? args.fromDate
+                            : moment.utc(1),
+                        args.toDate
+                            ? args.toDate
+                            : moment.utc()]
+                }
             }
             if (args.contributor_id) {
                 whereConditions.contributor_id = args.contributor_id
@@ -328,6 +358,17 @@ module.exports = {
                 : 0
         }
     },
+    timeSpentPerContributor: {
+        contributor: (timeSpentPerContributor, args, { models }) => {
+            return models.Contributor.findOne(
+                {
+                    where: {
+                        id: timeSpentPerContributor.contributor_id
+                    }
+                }
+            )
+        }
+    },
     Query: {
         getProjectById: (root, { id }, { models }) => {
             return models.Project.findByPk(id)
@@ -368,6 +409,13 @@ module.exports = {
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
         },
+        syncProjectGithubContributors: async (root, { project_id }, { models }) => {
+            const project = await models.Project.findByPk(project_id)
+            const repo = split(project.github_url, '/')
+            return dataSyncs.syncGithubRepoContributors({
+                repo: repo[repo.length - 1]
+            })
+        },
         syncProjectPermissions: async (root, { project_id }, { models }) => {
             const project = await models.Project.findByPk(project_id)
             const projectContributors = await models.Contributor.findAll({
@@ -386,6 +434,21 @@ module.exports = {
                 github_url: project.github_url,
                 contributors: projectContributors
             })
+        },
+        syncProjectIssues: async (root, { project_id }, { models }) => {
+            const project = await models.Project.findByPk(project_id)
+            const syncedIssues = await apiModules.dataSyncs.syncGithubIssues({
+                project_id,
+                github_url: project.github_url,
+            })
+            await models.Project.update({
+                date_last_synced: moment.utc()
+            }, {
+                where: {
+                    id: project_id
+                }
+            })
+            return syncedIssues
         },
         syncTogglProject: async (root, args, { models }) => {
             let project = await models.Project.findByPk(args.project_id)
@@ -428,21 +491,6 @@ module.exports = {
             } else {
                 return new ApolloError('Something wrong happened', 2003)
             }
-        },
-        syncProjectIssues: async (root, { project_id }, { models }) => {
-            const project = await models.Project.findByPk(project_id)
-            const syncedIssues = await apiModules.dataSyncs.syncGithubIssues({
-                project_id,
-                github_url: project.github_url,
-            })
-            await models.Project.update({
-                date_last_synced: moment.utc()
-            }, {
-                where: {
-                    id: project_id
-                }
-            })
-            return syncedIssues
         },
         updateProjectById: async (root, { id, updateFields }, { models }) => {
             validateDatesFormat({

@@ -37,10 +37,14 @@ module.exports = gql`
             contributor_id: Int
         ): [TimeEntry]
         timeSpent(
-            fromDate: String!
-            toDate: String!
+            fromDate: String
+            toDate: String
             contributor_id: Int
         ): TimeSpent
+        timeSpentPerContributor(
+            fromDate: String
+            toDate: String
+        ): [timeSpentPerContributor]
         totalPaid(
             fromDate: String,
             toDate: String
@@ -54,6 +58,12 @@ module.exports = gql`
 
     type TimeSpent {
         seconds: Int
+    }
+
+    type timeSpentPerContributor {
+        contributor: Contributor!
+        seconds: Int
+        contributor_id: Int!
     }
 
     input CreateProjectInput {
@@ -90,13 +100,14 @@ module.exports = gql`
         ): Project
         deleteProjectById(id: Int!): String
         syncProjectPermissions(project_id: Int!):[Permission]
+        syncProjectGithubContributors(project_id: Int!): [Contributor]
+        syncProjectIssues(
+            project_id: Int
+        ): [Issue]
         syncTogglProject(
             project_id: Int!
             toggl_id: String
         ): Project
-        syncProjectIssues(
-            project_id: Int
-        ): [Issue]
         updateProjectById(
             id: Int!
             updateFields: UpdateProjectInput!

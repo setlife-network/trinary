@@ -27,7 +27,7 @@ class AddProjectPage extends React.Component {
                 <Grid item align='center' xs={8}>
                     <Typography align='left'>
                         <strong>
-                            Enter info below to create a project
+                            {`Enter info below to create a project`}
                         </strong>
                     </Typography>
                 </Grid>
