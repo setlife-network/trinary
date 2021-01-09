@@ -17,6 +17,12 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        github_number: {
+            type: DataTypes.INTEGER
+        },
+        name: {
+            type: DataTypes.STRING
+        },
         date_opened: {
             type: DataTypes.DATE,
         },

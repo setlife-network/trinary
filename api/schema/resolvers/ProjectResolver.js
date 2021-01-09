@@ -175,7 +175,7 @@ module.exports = {
             })
             const urlSplitted = split(project.github_url, '/');
             const issues = await github.fetchRepoIssues({
-                repo: url[urlSplitted.length - 1]
+                repo: urlSplitted[urlSplitted.length - 1]
             })
             let openIssues = 0
             issues.map((i, n) => {
@@ -204,7 +204,7 @@ module.exports = {
             })
             const urlSplitted = split(project.github_url, '/');
             const issues = await github.fetchRepoIssues({
-                repo: url[urlSplitted.length - 1]
+                repo: urlSplitted[urlSplitted.length - 1]
             })
             let closedIssues = 0
             issues.map((i, n) => {
@@ -409,6 +409,13 @@ module.exports = {
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
         },
+        syncProjectGithubContributors: async (root, { project_id }, { models }) => {
+            const project = await models.Project.findByPk(project_id)
+            const repo = split(project.github_url, '/')
+            return dataSyncs.syncGithubRepoContributors({
+                repo: repo[repo.length - 1]
+            })
+        },
         syncProjectPermissions: async (root, { project_id }, { models }) => {
             const project = await models.Project.findByPk(project_id)
             const projectContributors = await models.Contributor.findAll({
@@ -427,6 +434,21 @@ module.exports = {
                 github_url: project.github_url,
                 contributors: projectContributors
             })
+        },
+        syncProjectIssues: async (root, { project_id }, { models }) => {
+            const project = await models.Project.findByPk(project_id)
+            const syncedIssues = await apiModules.dataSyncs.syncGithubIssues({
+                project_id,
+                github_url: project.github_url,
+            })
+            await models.Project.update({
+                date_last_synced: moment.utc()
+            }, {
+                where: {
+                    id: project_id
+                }
+            })
+            return syncedIssues
         },
         syncTogglProject: async (root, args, { models }) => {
             let project = await models.Project.findByPk(args.project_id)
@@ -469,21 +491,6 @@ module.exports = {
             } else {
                 return new ApolloError('Something wrong happened', 2003)
             }
-        },
-        syncProjectIssues: async (root, { project_id }, { models }) => {
-            const project = await models.Project.findByPk(project_id)
-            const syncedIssues = await apiModules.dataSyncs.syncGithubIssues({
-                project_id,
-                github_url: project.github_url,
-            })
-            await models.Project.update({
-                date_last_synced: moment.utc()
-            }, {
-                where: {
-                    id: project_id
-                }
-            })
-            return syncedIssues
         },
         updateProjectById: async (root, { id, updateFields }, { models }) => {
             validateDatesFormat({

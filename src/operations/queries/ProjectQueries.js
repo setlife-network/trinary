@@ -18,16 +18,16 @@ export const GET_ALL_PROJECTS = gql`
             }
         }
     }
-`;
+`
 
 export const GET_ACTIVE_PROJECTS_COUNT = gql`
     query Clients($clientId: Int) {
         getActiveProjectsCount(clientId: $clientId)
     }
-`;
+`
 
 export const GET_PROJECT = gql`
-    query Project($id: Int!){
+    query Project($id: Int!, $issuesFromDate: String, $issuesToDate: String){
         getProjectById(id: $id){
             id
             name
@@ -38,22 +38,52 @@ export const GET_PROJECT = gql`
             date
             totalPaid
             client {
-                id,
+                id
                 name
-            }
+                currency
+            },
             allocatedPayments {
-                id
-            }
-            issues {
-                id
-            }
-            contributors {
-                id
+                amount
+                date_paid
+                date_incurred
+                client {
+                    id
+                    name
+                    currency
+                }
             }
             allocations {
                 id
+                active
+                contributor {
+                    id
+                    github_handle
+                    name
+                }
             }
-            timeSpent {
+            issues {
+                id
+                github_url
+                github_number
+                name
+                date_opened
+                date_closed
+            },
+            contributors {
+                id
+            }
+            githubIssuesOpened(
+                fromDate: $issuesFromDate,
+                toDate: $issuesToDate
+            )
+            githubIssuesClosed(
+                fromDate: $issuesFromDate,
+                toDate: $issuesToDate
+            )
+            timeSpent(
+                fromDate: "2020-01-01",
+                toDate: "2020-12-31"
+            ) {
                 seconds
             }
             timeEntries{

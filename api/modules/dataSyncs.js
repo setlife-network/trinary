@@ -20,6 +20,39 @@ const dataSyncs = module.exports = (() => {
         })
     }
 
+    const syncGithubRepoContributors = async (params) => {
+        //this func will add in the contributors table all the contributors from a github project
+        const newContributors = []
+        const githubContributors = await github.fetchRepoContributors({
+            auth_key: GITHUB.CLIENT_SECRET,
+            owner: GITHUB.OWNER,
+            repo: params.repo
+        })
+
+        await Promise.all(githubContributors.map(async c => {
+            //we look for mathing contributors in out db, if there's none add them
+            const matchingContributor = await db.models.Contributor.findOne({
+                where: {
+                    github_id: c['id']
+                }
+            })
+            if (!matchingContributor) {
+                const contributorInfo = await github.fetchUserData({
+                    auth_key: GITHUB.CLIENT_SECRET,
+                    username: c.login
+                })
+                return newContributors.push(
+                    db.models.Contributor.create({
+                        name: contributorInfo.name ? contributorInfo.name : c.login,
+                        github_id: c.id,
+                        github_handle: c.html_url
+                    })
+                )
+            }
+        }))
+        return newContributors
+    }
+
     const syncGithubIssues = async (params) => {
         const newIssues = []
         const githubUrlSplitted = split(params.github_url, '/');
@@ -31,7 +64,9 @@ const dataSyncs = module.exports = (() => {
                 const matchingIssue = await findIssueByGithubUrl(i.url)
                 if (!matchingIssue) {
                     await db.models.Issue.create({
-                        github_url: i.url,
+                        github_url: i.html_url,
+                        github_number: i.number,
+                        name: i.title,
                         date_opened: i.created_at,
                         date_closed: i.closed_at,
                         project_id: params.project_id
@@ -135,6 +170,7 @@ const dataSyncs = module.exports = (() => {
     }
 
     return {
+        syncGithubRepoContributors,
         syncGithubIssues,
         syncInvoicelyCSV,
         syncProjectCollaboratorsPermission,

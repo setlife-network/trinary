@@ -43,7 +43,6 @@ const ClientInfo = ({
         )
     }
     if (error) return `Error! ${error.message}`
-
     const client = data.getClientById
 
     return (

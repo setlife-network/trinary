@@ -2,7 +2,8 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import {
     BottomNavigation,
-    BottomNavigationAction
+    BottomNavigationAction,
+    Grid
 } from '@material-ui/core'
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import PeopleIcon from '@material-ui/icons/People';
@@ -13,43 +14,6 @@ import ProjectOverview from '../components/ProjectOverview'
 import ProjectPayments from '../components/ProjectPayments'
 import ProjectContributors from '../components/ProjectContributors'
 import ProjectIssues from '../components/ProjectIssues'
-
-const MOCKED_PROJECT = {
-    id: 1,
-    name: 'Project One',
-    contributors: [
-        {
-            id: 1,
-            name: 'Alice'
-        },
-        {
-            id: 2,
-            name: 'Bob'
-        },
-    ],
-    payments: [
-        {
-            id: 1,
-            amount: 100
-        },
-        {
-            id: 2,
-            amount: 200
-        }
-    ],
-    allocations: [
-        {
-            id: 1,
-            payment: null,
-            contributor: { name: 'Alice' }
-        },
-        {
-            id: 2,
-            payment: { amount: 100 },
-            contributor: { name: 'Bob' }
-        }
-    ]
-}
 
 class ProjectDetailPage extends React.Component {
 
@@ -68,29 +32,30 @@ class ProjectDetailPage extends React.Component {
         const selectedTab = location.pathname.replace(match.url, '').slice(1)
 
         return (
-            <div className='ProjectDetailPage'>
-                <Route
-                    exact
-                    path={`${match.url}/`}
-                    component={() => <Redirect to={`${match.url}/overview`} />}
-                />
-                <Route
-                    path={`${match.url}/overview`}
-                    render={(props) => <ProjectOverview {...props} projectId={this.props.match.params.projectId}/>}
-                />
-                <Route
-                    path={`${match.url}/payments`}
-                    render={(props) => <ProjectPayments {...props} />}
-                />
-                <Route
-                    path={`${match.url}/contributors`}
-                    render={(props) => <ProjectContributors {...props} />}
-                />
-                <Route
-                    path={`${match.url}/issues`}
-                    render={(props) => <ProjectIssues {...props} />}
-                />
-
+            <Grid container justify='center' className='ProjectDetailPage'>
+                <Grid item xs={10} md={5}>
+                    <Route
+                        exact
+                        path={`${match.url}/`}
+                        component={() => <Redirect to={`${match.url}/overview`} />}
+                    />
+                    <Route
+                        path={`${match.url}/overview`}
+                        render={(props) => <ProjectOverview {...props} projectId={this.props.match.params.projectId}/>}
+                    />
+                    <Route
+                        path={`${match.url}/payments`}
+                        render={(props) => <ProjectPayments {...props} projectId={this.props.match.params.projectId}/>}
+                    />
+                    <Route
+                        path={`${match.url}/contributors`}
+                        render={(props) => <ProjectContributors {...props} projectId={this.props.match.params.projectId}/>}
+                    />
+                    <Route
+                        path={`${match.url}/issues`}
+                        render={(props) => <ProjectIssues {...props} projectId={this.props.match.params.projectId}/>}
+                    />
+                </Grid>
                 <BottomNavigation
                     value={selectedTab}
                     onChange={this.handleTabClick}
@@ -116,7 +81,7 @@ class ProjectDetailPage extends React.Component {
                         icon={<FormatListNumberedIcon/>}
                     />
                 </BottomNavigation>
-            </div>
+            </Grid>
         )
     }
 }
