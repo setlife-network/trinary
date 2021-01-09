@@ -23,26 +23,36 @@ const ProjectTimeTracking = (props) => {
     const [
         getProjetTimeEntries,
         { data: rangedTimeData, loading: rangedTimeLoading, error: rangedTimeError }
-    ] = useLazyQuery(GET_PROJECT_TIME_ENTRIES, {
-        variables: {
-            id: project.id,
-            fromDate: startDate ? moment(startDate).format('YYYY-MM-DD') : null,
-            toDate: endDate ? moment(endDate).format('YYYY-MM-DD') : null
-        }
-    })
+    ] = useLazyQuery(GET_PROJECT_TIME_ENTRIES)
 
     const clearDateInput = () => {
         setStartDate(null)
         setEndDate(null)
-        getProjetTimeEntries()
+        getProjetTimeEntries({ variables: {
+            id: project.id,
+            fromDate: null,
+            toDate: null
+        } })
     }
 
-    const getRangedTimeEntries = (date) => {
-        setEndDate(date)
-        getProjetTimeEntries()
+    const getRangedTimeEntries = (dates) => {
+        const [start, end] = dates
+        setStartDate(start)
+        setEndDate(end)
+        if (end) {
+            getProjetTimeEntries({ variables: {
+                id: project.id,
+                fromDate: moment(startDate).format('YYYY-MM-DD'),
+                toDate: moment(end).format('YYYY-MM-DD')
+            } })
+        }
     }
 
-    const { data: allTimeEntriesData, loading: allTimeEntriesLoading, error: allTimeEntriesError } = useQuery(GET_PROJECT_TIME_ENTRIES, {
+    const {
+        data: allTimeEntriesData,
+        loading: allTimeEntriesLoading,
+        error: allTimeEntriesError
+    } = useQuery(GET_PROJECT_TIME_ENTRIES, {
         variables: {
             id: project.id,
             fromDate: null,
@@ -83,35 +93,39 @@ const ProjectTimeTracking = (props) => {
                     </strong>
                 </Typography>
             </Grid>
-            <Grid item xs={6} sm={3}>
-                <Box mt={3}>
+            <Grid item xs={12} md={4} align='left'>
+                <Box mt={2}>
                     <DatePicker
                         selected={startDate}
-                        onChange={(date) => setStartDate(date)}
-                        selectsStart
                         startDate={startDate}
                         endDate={endDate}
-                        placeholderText='Tap to add a date'
-                        className='date-input start-date'
-                    />
-                </Box>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-                <Box mt={3}>
-                    <DatePicker
-                        selected={endDate}
+                        shouldCloseOnSelect={startDate && !endDate}
+                        selectsRange
                         onChange={(date) => getRangedTimeEntries(date)}
-                        selectsEnd
-                        startDate={startDate}
-                        endDate={endDate}
-                        minDate={startDate}
-                        placeholderText='Tap to add a date'
-                        className='date-input end-date'
+                        customInput={
+                            <Box
+                                px={2}
+                                py={1}
+                                boxShadow={3}
+                                borderRadius='borderRadius'
+                                bgcolor='primary.light'
+                            >
+                                {`${
+                                    startDate
+                                        ? moment(startDate).format('MM/DD/YYYY')
+                                        : 'Start date'
+                                } - ${
+                                    endDate
+                                        ? moment(endDate).format('MM/DD/YYYY')
+                                        : ' End date'
+                                }`}
+                            </Box>
+                        }
                     />
                 </Box>
             </Grid>
-            <Grid item xs={12} sm={3} align='left'>
-                <Box mt={3} px={2}>
+            <Grid item xs={12} sm={6} align='left'>
+                <Box mt={1} px={2}>
                     <Button
                         color='primary'
                         disabled={!startDate && !endDate}
