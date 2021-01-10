@@ -255,6 +255,9 @@ module.exports = {
                 fromDate: args.fromDate,
                 toDate: args.toDate
             })
+            //This query has as parameters fromDate and endDate,
+            // if startDate is not passed we want to use moment.utc(1) that stands for startDate=Moment<1970-01-01T00:00:00Z>
+            // if endDate is not passed then we will filter by moment.utc() that stands for the current date
             return models.TimeEntry.findAll(
                 {
                     where: {
