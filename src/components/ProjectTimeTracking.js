@@ -9,6 +9,12 @@ import ContributorTimeTrackedTile from './ContributorTimeTrackedTile'
 
 const ProjectTimeTracking = (props) => {
 
+    const { project } = props
+    const projectHoursSpent = project.timeSpent.seconds
+        ? Math.trunc(project.timeSpent.seconds / 3600)
+        : 0
+    const contributorTimeEntries = project.timeSpentPerContributor
+
     const renderContributorTimeEntries = (timeEntries) => {
         return timeEntries.map(t => {
             return (
@@ -16,12 +22,6 @@ const ProjectTimeTracking = (props) => {
             )
         })
     }
-
-    const { project } = props
-    const projectHoursSpent = project.timeSpent.seconds
-        ? Math.trunc(project.timeSpent.seconds / 3600)
-        : 0
-    const contributorTimeEntries = project.timeSpentPerContributor
 
     return (
         <Grid container className='ProjectTimeTracking'>
