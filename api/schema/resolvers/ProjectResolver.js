@@ -251,6 +251,10 @@ module.exports = {
             })
         },
         timeSpentPerContributor: (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
             return models.TimeEntry.findAll(
                 {
                     where: {
@@ -358,12 +362,12 @@ module.exports = {
                 : 0
         }
     },
-    timeSpentPerContributor: {
-        contributor: (timeSpentPerContributor, args, { models }) => {
+    TimeSpent: {
+        contributor: (timeSpent, args, { models }) => {
             return models.Contributor.findOne(
                 {
                     where: {
-                        id: timeSpentPerContributor.contributor_id
+                        id: timeSpent.contributor_id
                     }
                 }
             )
