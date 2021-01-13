@@ -175,6 +175,7 @@ module.exports = {
             })
             const urlSplitted = split(project.github_url, '/');
             const issues = await github.fetchRepoIssues({
+                auth_key: GITHUB.CLIENT_SECRET,
                 repo: urlSplitted[urlSplitted.length - 1]
             })
             let openIssues = 0
@@ -204,6 +205,7 @@ module.exports = {
             })
             const urlSplitted = split(project.github_url, '/');
             const issues = await github.fetchRepoIssues({
+                auth_key: GITHUB.CLIENT_SECRET,
                 repo: urlSplitted[urlSplitted.length - 1]
             })
             let closedIssues = 0

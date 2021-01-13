@@ -57,6 +57,7 @@ const dataSyncs = module.exports = (() => {
         const newIssues = []
         const githubUrlSplitted = split(params.github_url, '/');
         const issues = await github.fetchRepoIssues({
+            auth_key: GITHUB.CLIENT_SECRET,
             repo: githubUrlSplitted[githubUrlSplitted.length - 1]
         })
         await Promise.all(

@@ -83,7 +83,7 @@ const github = module.exports = (() => {
 
     const fetchRepoIssues = async (params) => {
         const octokit = new Octokit({
-            auth: GITHUB.CLIENT_SECRET,
+            auth: params.auth_key,
         })
         return octokit.paginate(octokit.issues.listForRepo, {
             owner: GITHUB.OWNER,
