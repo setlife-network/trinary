@@ -10,7 +10,7 @@ const github = module.exports = (() => {
         const opts = { headers: { accept: 'application/json' } };
         return new Promise((resolve, reject ) => {
             axios
-                .post(`${GITHUB_OAUTH_URL}?client_id=${GITHUB.CLIENT_ID}&client_secret=${GITHUB.CLIENT_SECRET}&code=${params.code}`, null, opts)
+                .post(`${GITHUB_OAUTH_URL}?client_id=${GITHUB.OAUTH_CLIENT_ID}&client_secret=${GITHUB.OAUTH_CLIENT_SECRET}&code=${params.code}`, null, opts)
                 .then(res => {
                     resolve(res.data['access_token'])
                 })

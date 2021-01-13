@@ -24,7 +24,7 @@ const dataSyncs = module.exports = (() => {
         //this func will add in the contributors table all the contributors from a github project
         const newContributors = []
         const githubContributors = await github.fetchRepoContributors({
-            auth_key: GITHUB.CLIENT_SECRET,
+            auth_key: GITHUB.OAUTH_CLIENT_SECRET,
             owner: GITHUB.OWNER,
             repo: params.repo
         })
@@ -38,7 +38,7 @@ const dataSyncs = module.exports = (() => {
             })
             if (!matchingContributor) {
                 const contributorInfo = await github.fetchUserData({
-                    auth_key: GITHUB.CLIENT_SECRET,
+                    auth_key: GITHUB.OAUTH_CLIENT_SECRET,
                     username: c.login
                 })
                 return newContributors.push(
@@ -57,7 +57,7 @@ const dataSyncs = module.exports = (() => {
         const newIssues = []
         const githubUrlSplitted = split(params.github_url, '/');
         const issues = await github.fetchRepoIssues({
-            auth_key: GITHUB.CLIENT_SECRET,
+            auth_key: GITHUB.OAUTH_CLIENT_SECRET,
             repo: githubUrlSplitted[githubUrlSplitted.length - 1]
         })
         await Promise.all(
@@ -119,7 +119,7 @@ const dataSyncs = module.exports = (() => {
                     }
                 })
                 const githubContributorPermission = await github.fetchUserPermission({
-                    auth_key: GITHUB.CLIENT_SECRET,
+                    auth_key: GITHUB.OAUTH_CLIENT_SECRET,
                     owner,
                     repo,
                     username: c.github_handle

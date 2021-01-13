@@ -19,7 +19,7 @@ console.log('github');
 //     })
 
 const userPermission = github.fetchRepoContributors({
-    auth_key: GITHUB.CLIENT_SECRET,
+    auth_key: GITHUB.OAUTH_CLIENT_SECRET,
     owner: 'setlife-network',
     repo: 'project-trinary'
 })

@@ -70,7 +70,7 @@ app.get('/api/v/:vid/ping', (req, res) => {
 })
 
 app.get('/api/login', (req, res) => {
-    res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.CLIENT_ID}`)
+    res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.OAUTH_CLIENT_ID}`)
 })
 
 // app.get('/api/check-session', async (req, res) => {
