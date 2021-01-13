@@ -67,7 +67,7 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-money-bill-wave-alt' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-                                    {`Total paid - $${project.totalPaid}`}
+                                    {`Total paid - ${selectCurrencySymbol(project.client.currency)}${project.totalPaid}`}
                                 </Grid>
                             </Grid>
                         </Grid>
