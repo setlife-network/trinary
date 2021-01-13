@@ -7,8 +7,10 @@ import {
     Icon,
     Typography
 } from '@material-ui/core'
+import { find } from 'lodash'
 
 import ProjectEditDialog from './ProjectEditDialog'
+import { CURRENCIES } from '../constants'
 
 const ProjectSummary = (props) => {
 
@@ -20,6 +22,12 @@ const ProjectSummary = (props) => {
     }
     const handleEditClose = (value) => {
         setOpenEditDialog(false)
+    }
+
+    const selectCurrencySymbol = (c, currency) => {
+        return find(CURRENCIES, c => {
+            return c.name == project.client.currency
+        })['symbol']
     }
 
     return (
@@ -48,7 +56,7 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-wallet' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-                                    {`Expected budget - $${project.expected_budget}`}
+                                    {`Expected budget - ${selectCurrencySymbol(project.client.currency)}${project.expected_budget}`}
                                 </Grid>
                             </Grid>
                         </Grid>
