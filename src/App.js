@@ -4,7 +4,7 @@ import { ThemeProvider } from '@material-ui/core/styles'
 
 import theme from './styles/theme'
 
-import { API_ROOT } from './constants'
+import { API_ROOT, IS_PRODUCTION } from './constants'
 
 import AddClientPage from './pages/AddClientPage'
 import AddProjectPage from './pages/AddProjectPage'
@@ -19,15 +19,23 @@ import Authentication from './components/Authentication'
 import Navigation from './components/Navigation'
 import PrivateRoute from './components/PrivateRoute'
 import PublicRoute from './components/PublicRoute'
+import SwipeableNavigation from './components/SwipeableNavigation'
 
 class App extends React.Component {
 
     render() {
 
+        console.log('IS_PRODUCTION');
+        console.log(IS_PRODUCTION);
+
         return (
             <div className='App'>
                 <Authentication/>
-                <Navigation/>
+                {
+                    IS_PRODUCTION
+                        ? <Navigation/>
+                        : <SwipeableNavigation/>
+                }
                 <ThemeProvider theme={theme}>
                     <PrivateRoute
                         exact
