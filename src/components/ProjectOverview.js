@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client'
 import {
     Box,
     Grid,
@@ -25,7 +25,7 @@ const TimeTracking = ({
 const ProjectOverview = (props) => {
 
     const { projectId } = props
-    
+
     const { data, loading, error } = useQuery(GET_PROJECT, {
         variables: {
             id: Number(projectId)
@@ -39,7 +39,7 @@ const ProjectOverview = (props) => {
 
     return (
         <Grid container className='ProjectOverview' justify='center'>
-            <Grid item xs={10} lg={5}>
+            <Grid item xs={12}>
                 <Box p={3}>
                     <Typography variant='h4'>
                         <strong>

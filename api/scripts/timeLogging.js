@@ -24,7 +24,7 @@ module.exports = (() => {
                 const contributor = await matchContributor(t)
                 if (contributor) {
                     await db.models.TimeEntry.create({
-                        seconds: t.dur,
+                        seconds: t.dur / 1000,
                         toggl_id: t.id,
                         start_time: t.start,
                         contributor_id: contributor.id,

@@ -1,19 +1,80 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useLazyQuery, useQuery } from '@apollo/client'
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import {
     Box,
+    Button,
     Grid,
     Typography
 } from '@material-ui/core'
+import moment from 'moment'
 
 import ContributorTimeTrackedTile from './ContributorTimeTrackedTile'
+import { GET_PROJECT_TIME_ENTRIES } from '../operations/queries/ProjectQueries'
 
 const ProjectTimeTracking = (props) => {
 
     const { project } = props
-    const projectHoursSpent = project.timeSpent.seconds
-        ? Math.trunc(project.timeSpent.seconds / 3600)
+
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
+
+    const [
+        getProjectTimeEntries,
+        { data: rangedTimeData, loading: rangedTimeLoading, error: rangedTimeError }
+    ] = useLazyQuery(GET_PROJECT_TIME_ENTRIES)
+
+    const clearDateInput = () => {
+        setStartDate(null)
+        setEndDate(null)
+        getProjectTimeEntries({ variables: {
+            id: project.id,
+            fromDate: null,
+            toDate: null
+        } })
+    }
+
+    const getRangedTimeEntries = (dates) => {
+        const [start, end] = dates
+        setStartDate(start)
+        setEndDate(end)
+        if (end) {
+            getProjectTimeEntries({ variables: {
+                id: project.id,
+                fromDate: moment(startDate).format('YYYY-MM-DD'),
+                toDate: moment(end).format('YYYY-MM-DD')
+            } })
+        }
+    }
+
+    const {
+        data: allTimeEntriesData,
+        loading: allTimeEntriesLoading,
+        error: allTimeEntriesError
+    } = useQuery(GET_PROJECT_TIME_ENTRIES, {
+        variables: {
+            id: project.id,
+            fromDate: null,
+            toDate: null
+        }
+    })
+    if (allTimeEntriesLoading || rangedTimeLoading) return 'Loading...'
+    if (allTimeEntriesError || rangedTimeError) return 'error!'
+
+    const {
+        timeEntries,
+        timeSpent,
+        timeSpentPerContributor
+    } = rangedTimeData
+        ? rangedTimeData.getProjectById
+        : allTimeEntriesData.getProjectById
+
+    const projectHoursSpent = timeSpent.seconds
+        ? Math.trunc(timeSpent.seconds / 3600)
         : 0
-    const contributorTimeEntries = project.timeSpentPerContributor
+
+    const contributorTimeEntries = timeSpentPerContributor
 
     const renderContributorTimeEntries = (timeEntries) => {
         return timeEntries.map(t => {
@@ -24,7 +85,7 @@ const ProjectTimeTracking = (props) => {
     }
 
     return (
-        <Grid container className='ProjectTimeTracking'>
+        <Grid container className='ProjectTimeTracking' alignItems='flex-end'>
             <Grid item xs={12}>
                 <Typography variant='h4' align='left'>
                     <strong>
@@ -32,7 +93,50 @@ const ProjectTimeTracking = (props) => {
                     </strong>
                 </Typography>
             </Grid>
-            <Grid item xs={5} md={4}>
+            <Grid item xs={12} md={4} align='left'>
+                <Box mt={2}>
+                    <DatePicker
+                        selected={startDate}
+                        startDate={startDate}
+                        endDate={endDate}
+                        shouldCloseOnSelect={startDate && !endDate}
+                        selectsRange
+                        onChange={(date) => getRangedTimeEntries(date)}
+                        customInput={
+                            <Box
+                                px={2}
+                                py={1}
+                                boxShadow={3}
+                                borderRadius='borderRadius'
+                                bgcolor='primary.light'
+                            >
+                                {`${
+                                    startDate
+                                        ? moment(startDate).format('MM/DD/YYYY')
+                                        : 'Start date'
+                                } - ${
+                                    endDate
+                                        ? moment(endDate).format('MM/DD/YYYY')
+                                        : ' End date'
+                                }`}
+                            </Box>
+                        }
+                    />
+                </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} align='left'>
+                <Box mt={1} px={2}>
+                    <Button
+                        color='primary'
+                        disabled={!startDate && !endDate}
+                        onClick={() => clearDateInput()}
+                    >
+                        {`Clear dates`}
+                    </Button>
+                </Box>
+            </Grid>
+            <Grid item xs={12}/>
+            <Grid item xs={12} md={4}>
                 <Box
                     bgcolor='primary.black'
                     color='primary.light'
@@ -45,7 +149,7 @@ const ProjectTimeTracking = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <Box mt={5}>
+                <Box my={5} pb={3}>
                     {renderContributorTimeEntries(contributorTimeEntries)}
                 </Box>
             </Grid>
