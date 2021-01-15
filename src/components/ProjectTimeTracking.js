@@ -21,14 +21,14 @@ const ProjectTimeTracking = (props) => {
     const [endDate, setEndDate] = useState(null)
 
     const [
-        getProjetTimeEntries,
+        getProjectTimeEntries,
         { data: rangedTimeData, loading: rangedTimeLoading, error: rangedTimeError }
     ] = useLazyQuery(GET_PROJECT_TIME_ENTRIES)
 
     const clearDateInput = () => {
         setStartDate(null)
         setEndDate(null)
-        getProjetTimeEntries({ variables: {
+        getProjectTimeEntries({ variables: {
             id: project.id,
             fromDate: null,
             toDate: null
@@ -40,7 +40,7 @@ const ProjectTimeTracking = (props) => {
         setStartDate(start)
         setEndDate(end)
         if (end) {
-            getProjetTimeEntries({ variables: {
+            getProjectTimeEntries({ variables: {
                 id: project.id,
                 fromDate: moment(startDate).format('YYYY-MM-DD'),
                 toDate: moment(end).format('YYYY-MM-DD')
