@@ -70,6 +70,8 @@ app.get('/api/v/:vid/ping', (req, res) => {
 })
 
 app.get('/api/login', (req, res) => {
+    console.log('GITHUB.OAUTH_CLIENT_ID');
+    console.log(GITHUB.OAUTH_CLIENT_ID);
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.OAUTH_CLIENT_ID}`)
 })
 
@@ -80,14 +82,15 @@ app.get('/api/login', (req, res) => {
 
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in the Github App
     github.fetchAccessToken({ code: req.query.code })
-        .then(githubAccessToken => {
-            return apiModules.authentication.getContributor({ githubAccessToken })
+        .then(async githubAccessToken => {
+            const contributorInfo = await apiModules.authentication.getContributor({ githubAccessToken })
+            contributorInfo.githubContributor['accessToken'] = githubAccessToken
+            return contributorInfo
         })
-        .then(async contributorInfo => {
+        .then(async (contributorInfo) => {
             //if it's a new user store it in contributors table
             if (!contributorInfo.contributor) {
-                const githubContributor = contributorInfo.githubContributor
-                contributorInfo.contributor = await apiModules.authentication.createContributor({ githubContributor })
+                contributorInfo.contributor = await apiModules.authentication.createContributor({ ...contributorInfo.githubContributor })
             }
             //store contributor id in the cookie session
             req.session.userSession = contributorInfo.contributor.id
