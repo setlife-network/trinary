@@ -251,6 +251,13 @@ module.exports = {
             })
         },
         timeSpentPerContributor: (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
+            //This query has as parameters fromDate and endDate,
+            // if startDate is not passed we want to use moment.utc(1) that stands for startDate=Moment<1970-01-01T00:00:00Z>
+            // if endDate is not passed then we will filter by moment.utc() that stands for the current date
             return models.TimeEntry.findAll(
                 {
                     where: {
@@ -358,12 +365,12 @@ module.exports = {
                 : 0
         }
     },
-    timeSpentPerContributor: {
-        contributor: (timeSpentPerContributor, args, { models }) => {
+    TimeSpent: {
+        contributor: (timeSpent, args, { models }) => {
             return models.Contributor.findOne(
                 {
                     where: {
-                        id: timeSpentPerContributor.contributor_id
+                        id: timeSpent.contributor_id
                     }
                 }
             )
