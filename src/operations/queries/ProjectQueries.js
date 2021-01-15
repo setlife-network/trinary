@@ -27,7 +27,7 @@ export const GET_ACTIVE_PROJECTS_COUNT = gql`
 `
 
 export const GET_PROJECT = gql`
-    query Project($id: Int!, $issuesFromDate: String, $issuesToDate: String){
+    query Project($id: Int!, $issuesFromDate: String, $issuesToDate: String, $githubPersonalKey: String){
         getProjectById(id: $id){
             id
             name
@@ -74,11 +74,13 @@ export const GET_PROJECT = gql`
             }
             githubIssuesOpened(
                 fromDate: $issuesFromDate,
-                toDate: $issuesToDate
+                toDate: $issuesToDate,
+                githubPersonalKey: $githubPersonalKey
             )
             githubIssuesClosed(
                 fromDate: $issuesFromDate,
-                toDate: $issuesToDate
+                toDate: $issuesToDate,
+                githubPersonalKey: $githubPersonalKey
             )
             timeSpent(
                 fromDate: "2020-01-01",

@@ -25,11 +25,13 @@ module.exports = gql`
         permissions: [Permission]
         githubIssuesOpened(
             fromDate: String,
-            toDate:String
+            toDate:String,
+            githubPersonalKey: String
         ): Int
         githubIssuesClosed(
             fromDate: String,
-            toDate:String
+            toDate:String,
+            githubPersonalKey: String
         ): Int
         timeEntries(
             fromDate: String

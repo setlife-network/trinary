@@ -4,7 +4,7 @@ const { ApolloError } = require('apollo-server')
 const { col, fn, Op } = require('sequelize');
 const { split } = require('lodash')
 
-const { TOGGL } = require('../../config/credentials');
+const { GITHUB, TOGGL } = require('../../config/credentials');
 const github = require('../../handlers/github')
 const toggl = require('../../handlers/toggl')
 const { validateDatesFormat } = require('../helpers/inputValidation')
@@ -168,65 +168,81 @@ module.exports = {
                 }
             })
         },
-        githubIssuesOpened: async (project, args, { models }) => {
+        githubIssuesOpened: async (project, args, { models, cookies }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,
                 toDate: args.toDate
             })
-            const urlSplitted = split(project.github_url, '/');
-            const issues = await github.fetchRepoIssues({
-                auth_key: GITHUB.OAUTH_CLIENT_SECRET,
-                repo: urlSplitted[urlSplitted.length - 1]
-            })
-            let openIssues = 0
-            issues.map((i, n) => {
-                //check is the issue is not a pull request &&
-                //check if is not closed &&
-                // check the date ranges
-                if (
-                    i.pull_request == null &&
-                    i.closed_at == null &&
-                    moment(i.created_at).isAfter(args.fromDate
-                        ? args.fromDate
-                        : moment(1)) &&
-                    moment(i.created_at).isBefore(args.toDate
-                        ? args.toDate
-                        : moment())
-                ) {
-                    openIssues += 1
-                }
-            })
-            return openIssues
+            if (args.githubPersonalKey || cookies.userSession) {
+                const authContributorToken = args.githubPersonalKey
+                    ? args.githubPersonalKey
+                    : await models.Contributor.findByPk(cookies.userSession, { raw: true }).github_access_token
+                const urlSplitted = split(project.github_url, '/');
+                const issues = await github.fetchRepoIssues({
+                    auth_key: authContributorToken,
+                    repo: urlSplitted[urlSplitted.length - 1],
+                    owner: GITHUB.OWNER
+                })
+                let openIssues = 0
+                issues.map((i, n) => {
+                    //check is the issue is not a pull request &&
+                    //check if is not closed &&
+                    // check the date ranges
+                    if (
+                        i.pull_request == null &&
+                        i.closed_at == null &&
+                        moment(i.created_at).isAfter(args.fromDate
+                            ? args.fromDate
+                            : moment(1)) &&
+                        moment(i.created_at).isBefore(args.toDate
+                            ? args.toDate
+                            : moment())
+                    ) {
+                        openIssues += 1
+                    }
+                })
+                return openIssues
+            } else {
+                return new ApolloError('You must be authenticated', 2001)
+            }
         },
-        githubIssuesClosed: async (project, args, { models }) => {
+        githubIssuesClosed: async (project, args, { models, cookies }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,
                 toDate: args.toDate
             })
-            const urlSplitted = split(project.github_url, '/');
-            const issues = await github.fetchRepoIssues({
-                auth_key: GITHUB.OAUTH_CLIENT_SECRET,
-                repo: urlSplitted[urlSplitted.length - 1]
-            })
-            let closedIssues = 0
-            issues.map((i, n) => {
-                //check is the issue is not a pull request &&
-                //check if is closed &&
-                // check the date ranges
-                if (
-                    i.pull_request == null &&
-                    i.closed_at &&
-                    moment(i.closed_at).isAfter(args.fromDate
-                        ? args.fromDate
-                        : moment(1)) &&
-                    moment(i.closed_at).isBefore(args.toDate
-                        ? args.toDate
-                        : moment())
-                ) {
-                    closedIssues += 1
-                }
-            })
-            return closedIssues
+            if (args.githubPersonalKey || cookies.userSession) {
+                const authContributorToken = args.githubPersonalKey
+                    ? args.githubPersonalKey
+                    : await models.Contributor.findByPk(cookies.userSession, { raw: true }).github_access_token
+                const urlSplitted = split(project.github_url, '/');
+                const issues = await github.fetchRepoIssues({
+                    auth_key: authContributorToken,
+                    repo: urlSplitted[urlSplitted.length - 1],
+                    owner: GITHUB.OWNER
+                })
+                let closedIssues = 0
+                issues.map((i, n) => {
+                    //check is the issue is not a pull request &&
+                    //check if is closed &&
+                    // check the date ranges
+                    if (
+                        i.pull_request == null &&
+                        i.closed_at &&
+                        moment(i.closed_at).isAfter(args.fromDate
+                            ? args.fromDate
+                            : moment(1)) &&
+                        moment(i.closed_at).isBefore(args.toDate
+                            ? args.toDate
+                            : moment())
+                    ) {
+                        closedIssues += 1
+                    }
+                })
+                return closedIssues
+            } else {
+                return new ApolloError('You must be authenticated', 2001)
+            }
         },
         timeEntries: (project, args, { models }) => {
             validateDatesFormat({

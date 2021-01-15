@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
+import { CHECK_SESSION } from '../operations/queries/ContributorQueries'
 import ProjectSummary from './ProjectSummary'
 import ProjectOverviewExternalLinks from './ProjectOverviewExternalLinks'
 import ProjectTimeTracking from './ProjectTimeTracking'
@@ -25,7 +26,7 @@ const TimeTracking = ({
 const ProjectOverview = (props) => {
 
     const { projectId } = props
-    
+
     const { data, loading, error } = useQuery(GET_PROJECT, {
         variables: {
             id: Number(projectId)

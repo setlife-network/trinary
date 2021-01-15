@@ -22,7 +22,7 @@ const github = module.exports = (() => {
 
     const fetchAuthUserData = async (params) => {
         const octokit = new Octokit({
-            auth: params.auth_key,
+            auth: params.auth_key
         })
         const res = await octokit.users.getAuthenticated({})
         if (res.status == 200) {
@@ -41,7 +41,7 @@ const github = module.exports = (() => {
     const fetchRepos = (params) => {
         return new Promise((resolve, reject) => {
             const octokit = new Octokit({
-                auth: params.auth_key,
+                auth: params.auth_key
             });
             octokit.repos.listForAuthenticatedUser()
                 .then(result => {
@@ -83,10 +83,15 @@ const github = module.exports = (() => {
 
     const fetchRepoIssues = async (params) => {
         const octokit = new Octokit({
-            auth: params.auth_key,
+            auth: params.auth_key
+        })
+        const res = octokit.paginate(octokit.issues.listForRepo, {
+            owner: params.owner,
+            repo: params.repo,
+            state: 'all'
         })
         return octokit.paginate(octokit.issues.listForRepo, {
-            owner: GITHUB.OWNER,
+            owner: params.owner,
             repo: params.repo,
             state: 'all'
         })

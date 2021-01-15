@@ -11,23 +11,54 @@ console.log('github');
 
 // const fetchRepos = github.fetchRepos({ auth_key: '' })
 //     .then(res => {
-//         // console.log('fetchRepos res');
+//         console.log('fetchRepos res');
 //         console.log(res);
 //         res.data.map(r => {
 //             console.log(r.owner);
 //         })
 //     })
 
-const userPermission = github.fetchRepoContributors({
-    auth_key: GITHUB.OAUTH_CLIENT_SECRET,
+// const userPermission = github.fetchRepoContributors({
+//     auth_key: '',
+//     owner: 'setlife-network',
+//     repo: 'project-trinary'
+// })
+//     .then(res => {
+//         console.log('res');
+//         console.log(res.data);
+//     })
+//     .catch(err => {
+//         console.log('err');
+//         console.log(err);
+//     })
+
+const userPermission = github.fetchRepoIssues({
+    auth_key: '',
     owner: 'setlife-network',
-    repo: 'project-trinary'
+    repo: 'project-trinary',
+    state: 'all'
 })
     .then(res => {
         console.log('res');
-        console.log(res.data);
+        console.log(res);
+        return res
     })
     .catch(err => {
         console.log('err');
         console.log(err);
     })
+
+// const userPermission = github.fetchUserPermission({
+//     auth_key: '',
+//     owner: 'setlife-network',
+//     repo: 'project-trinary',
+//     username: 'sofiarm21'
+// })
+//     .then(res => {
+//         console.log('res');
+//         console.log(res);
+//     })
+//     .catch(err => {
+//         console.log('err');
+//         console.log(err);
+//     })
