@@ -7,10 +7,9 @@ import {
     Icon,
     Typography
 } from '@material-ui/core'
-import { find } from 'lodash'
 
 import ProjectEditDialog from './ProjectEditDialog'
-import { CURRENCIES } from '../constants'
+import { selectCurrencySymbol } from '../scripts/selectors'
 
 const ProjectSummary = (props) => {
 
@@ -24,11 +23,9 @@ const ProjectSummary = (props) => {
         setOpenEditDialog(false)
     }
 
-    const selectCurrencySymbol = (c, currency) => {
-        return find(CURRENCIES, c => {
-            return c.name == project.client.currency
-        })['symbol']
-    }
+    const currencySymbol = selectCurrencySymbol(project.client.currency)
+    console.log('currencySymbol');
+    console.log(currencySymbol);
 
     return (
         <Box
@@ -56,7 +53,7 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-wallet' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-                                    {`Expected budget - ${selectCurrencySymbol(project.client.currency)}${project.expected_budget}`}
+                                    {`Expected budget - ${currencySymbol}${project.expected_budget}`}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -67,7 +64,7 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-money-bill-wave-alt' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-                                    {`Total paid - ${selectCurrencySymbol(project.client.currency)}${project.totalPaid}`}
+                                    {`Total paid - ${currencySymbol}${project.totalPaid}`}
                                 </Grid>
                             </Grid>
                         </Grid>
