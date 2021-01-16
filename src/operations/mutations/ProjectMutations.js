@@ -39,8 +39,8 @@ export const UPDATE_PROJECT = gql`
 `
 
 export const SYNC_PROJECT_GITHUB_CONTRIBUTORS = gql`
-    mutation syncProjectGithubContributors($project_id: Int!){
-        syncProjectGithubContributors(project_id: $project_id) {
+    mutation syncProjectGithubContributors($project_id: Int!, $github_personal_key: String){
+        syncProjectGithubContributors(project_id: $project_id, github_personal_key: $github_personal_key) {
             id
             name
             github_id

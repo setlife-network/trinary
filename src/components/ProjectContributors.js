@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import {
     Box,
@@ -24,9 +24,13 @@ const ProjectContributors = (props) => {
             error: errorGithubContributors
         }
     ] = useMutation(SYNC_PROJECT_GITHUB_CONTRIBUTORS)
-    const githubContributors = getGithubContributors({
-        variables: { project_id: Number(projectId) }
-    })
+
+    useEffect(() => {
+
+        var githubContributors = getGithubContributors({
+            variables: { project_id: Number(projectId) }
+        })
+    }, []);
 
     const {
         data: dataProject,

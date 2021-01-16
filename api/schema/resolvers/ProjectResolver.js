@@ -173,23 +173,22 @@ module.exports = {
                 fromDate: args.fromDate,
                 toDate: args.toDate
             })
-            if (args.githubPersonalKey || cookies.userSession) {
-                const authContributorToken = args.githubPersonalKey
-                    ? args.githubPersonalKey
-                    : await models.Contributor.findByPk(cookies.userSession, { raw: true }).github_access_token
-                const urlSplitted = split(project.github_url, '/');
-                const issues = await github.fetchRepoIssues({
-                    auth_key: authContributorToken,
-                    repo: urlSplitted[urlSplitted.length - 1],
-                    owner: GITHUB.OWNER
-                })
-                let openIssues = 0
-                issues.map((i, n) => {
-                    //check is the issue is not a pull request &&
-                    //check if is not closed &&
-                    // check the date ranges
-                    if (
-                        i.pull_request == null &&
+            const authContributorKey = args.githubPersonalKey
+                ? args.githubPersonalKey
+                : (await models.Contributor.findByPk(cookies.userSession, { raw: true }))['github_access_token']
+            const urlSplitted = split(project.github_url, '/');
+            const issues = await github.fetchRepoIssues({
+                auth_key: authContributorKey,
+                repo: urlSplitted[urlSplitted.length - 1],
+                owner: GITHUB.OWNER
+            })
+            let openIssues = 0
+            issues.map((i, n) => {
+                //check is the issue is not a pull request &&
+                //check if is not closed &&
+                // check the date ranges
+                if (
+                    i.pull_request == null &&
                         i.closed_at == null &&
                         moment(i.created_at).isAfter(args.fromDate
                             ? args.fromDate
@@ -197,37 +196,33 @@ module.exports = {
                         moment(i.created_at).isBefore(args.toDate
                             ? args.toDate
                             : moment())
-                    ) {
-                        openIssues += 1
-                    }
-                })
-                return openIssues
-            } else {
-                return new ApolloError('You must be authenticated', 2001)
-            }
+                ) {
+                    openIssues += 1
+                }
+            })
+            return openIssues
         },
         githubIssuesClosed: async (project, args, { models, cookies }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,
                 toDate: args.toDate
             })
-            if (args.githubPersonalKey || cookies.userSession) {
-                const authContributorToken = args.githubPersonalKey
-                    ? args.githubPersonalKey
-                    : await models.Contributor.findByPk(cookies.userSession, { raw: true }).github_access_token
-                const urlSplitted = split(project.github_url, '/');
-                const issues = await github.fetchRepoIssues({
-                    auth_key: authContributorToken,
-                    repo: urlSplitted[urlSplitted.length - 1],
-                    owner: GITHUB.OWNER
-                })
-                let closedIssues = 0
-                issues.map((i, n) => {
-                    //check is the issue is not a pull request &&
-                    //check if is closed &&
-                    // check the date ranges
-                    if (
-                        i.pull_request == null &&
+            const authContributorKey = args.githubPersonalKey
+                ? args.githubPersonalKey
+                : (await models.Contributor.findByPk(cookies.userSession, { raw: true }))['github_access_token']
+            const urlSplitted = split(project.github_url, '/');
+            const issues = await github.fetchRepoIssues({
+                auth_key: authContributorKey,
+                repo: urlSplitted[urlSplitted.length - 1],
+                owner: GITHUB.OWNER
+            })
+            let closedIssues = 0
+            issues.map((i, n) => {
+                //check is the issue is not a pull request &&
+                //check if is closed &&
+                // check the date ranges
+                if (
+                    i.pull_request == null &&
                         i.closed_at &&
                         moment(i.closed_at).isAfter(args.fromDate
                             ? args.fromDate
@@ -235,14 +230,11 @@ module.exports = {
                         moment(i.closed_at).isBefore(args.toDate
                             ? args.toDate
                             : moment())
-                    ) {
-                        closedIssues += 1
-                    }
-                })
-                return closedIssues
-            } else {
-                return new ApolloError('You must be authenticated', 2001)
-            }
+                ) {
+                    closedIssues += 1
+                }
+            })
+            return closedIssues
         },
         timeEntries: (project, args, { models }) => {
             validateDatesFormat({
@@ -427,10 +419,14 @@ module.exports = {
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
         },
-        syncProjectGithubContributors: async (root, { project_id }, { models }) => {
-            const project = await models.Project.findByPk(project_id)
+        syncProjectGithubContributors: async (root, args, { models, cookies }) => {
+            const authContributorToken = args.githubPersonalKey
+                ? args.githubPersonalKey
+                : (await models.Contributor.findByPk(cookies.userSession, { raw: true }))['github_access_token']
+            const project = await models.Project.findByPk(args.project_id)
             const repo = split(project.github_url, '/')
             return dataSyncs.syncGithubRepoContributors({
+                auth_key: authContributorToken,
                 repo: repo[repo.length - 1]
             })
         },
