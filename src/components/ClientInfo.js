@@ -15,6 +15,7 @@ import EuroIcon from '@material-ui/icons/Euro'
 import { lightGrey } from '../styles/colors.scss'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import ClientEditDialog from './ClientEditDialog'
+import { selectCurrencySymbol } from '../scripts/selectors'
 
 const ClientInfo = ({
     clientId
@@ -58,14 +59,8 @@ const ClientInfo = ({
                 </Typography>
                 <Grid container alignItems='flex-end' >
                     <Grid item>
-                        {
-                            client.currency == 'EUR'
-                                ? <EuroIcon/>
-                                : <AttachMoneyIcon />
-                        }
-                    </Grid>
-                    <Grid item>
                         <Typography variant={'h6'}>
+                            {`${selectCurrencySymbol(client.currency)}`}
                             {client.currency}
                         </Typography>
                     </Grid>

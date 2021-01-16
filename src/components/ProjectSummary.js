@@ -24,8 +24,6 @@ const ProjectSummary = (props) => {
     }
 
     const currencySymbol = selectCurrencySymbol(project.client.currency)
-    console.log('currencySymbol');
-    console.log(currencySymbol);
 
     return (
         <Box
