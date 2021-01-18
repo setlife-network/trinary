@@ -46,7 +46,7 @@ module.exports = gql`
         timeSpentPerContributor(
             fromDate: String
             toDate: String
-        ): [timeSpentPerContributor]
+        ): [TimeSpent]
         totalPaid(
             fromDate: String,
             toDate: String
@@ -59,13 +59,9 @@ module.exports = gql`
     }
 
     type TimeSpent {
+        contributor: Contributor
+        contributor_id: Int
         seconds: Int
-    }
-
-    type timeSpentPerContributor {
-        contributor: Contributor!
-        seconds: Int
-        contributor_id: Int!
     }
 
     input CreateProjectInput {

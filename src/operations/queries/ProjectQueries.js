@@ -55,29 +55,6 @@ export const GET_PROJECT = gql`
     }
 `
 
-export const GET_PROJECT_TIME_ENTRIES = gql`
-    query ProjectTimeEntries($id: Int!){
-        getProjectById(id: $id){
-            id
-            timeSpent {
-                seconds
-            }
-            timeEntries {
-                seconds
-                contributor {
-                    name
-                }
-            }
-            timeSpentPerContributor {
-                seconds
-                contributor {
-                    name
-                }
-            }
-        }
-    }
-`
-
 export const GET_PROJECT_PAYMENTS = gql`
     query ProjectTimeEntries($id: Int!){
         getProjectById(id: $id){
@@ -132,6 +109,30 @@ export const GET_PROJECT_ISSUES = gql`
                 fromDate: $issuesFromDate,
                 toDate: $issuesToDate
             )
+        }
+    }
+`
+
+export const GET_PROJECT_TIME_ENTRIES = gql`
+    query ProjectTimeEntrie($id: Int!, $fromDate: String, $toDate: String){
+        getProjectById(id: $id){
+            id
+            timeEntries(fromDate: $fromDate, toDate: $toDate) {
+                id
+                seconds
+                contributor {
+                    name
+                }
+            }
+            timeSpent(fromDate: $fromDate, toDate: $toDate) {
+                seconds
+            }
+            timeSpentPerContributor(fromDate: $fromDate, toDate: $toDate) {
+                seconds
+                contributor {
+                    name
+                }
+            }
         }
     }
 `

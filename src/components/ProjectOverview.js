@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client'
 import {
     Box,
     Grid,
@@ -42,6 +42,7 @@ const ProjectOverview = (props) => {
 
     const project = dataProject.getProjectById
     const {
+        id,
         timeEntries,
         timeSpent,
         timeSpentPerContributor
@@ -68,6 +69,7 @@ const ProjectOverview = (props) => {
                 />
                 <Box mt={8}>
                     <ProjectTimeTracking
+                        projectId={id}
                         timeEntries={timeEntries}
                         timeSpent={timeSpent}
                         timeSpentPerContributor={timeSpentPerContributor}

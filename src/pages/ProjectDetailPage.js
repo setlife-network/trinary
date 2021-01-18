@@ -33,7 +33,7 @@ class ProjectDetailPage extends React.Component {
 
         return (
             <Grid container justify='center' className='ProjectDetailPage'>
-                <Grid item xs={10} md={5}>
+                <Grid item xs={10} md={6}>
                     <Route
                         exact
                         path={`${match.url}/`}
