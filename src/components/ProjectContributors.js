@@ -22,17 +22,18 @@ const ProjectContributors = (props) => {
         setOpenAddAllocationDialog(false)
     }
 
-    const [
-        getGithubContributors,
-        {
-            data: dataGithubContributors,
-            loading: loadingGithubContributors,
-            error: errorGithubContributors
-        }
-    ] = useMutation(SYNC_PROJECT_GITHUB_CONTRIBUTORS)
-    const githubContributors = getGithubContributors({
-        variables: { project_id: Number(projectId) }
-    })
+    // const [
+    //     getGithubContributors,
+    //     {
+    //         data: dataGithubContributors,
+    //         loading: loadingGithubContributors,
+    //         error: errorGithubContributors
+    //     }
+    // ] = useMutation(SYNC_PROJECT_GITHUB_CONTRIBUTORS)
+
+    // const githubContributors = getGithubContributors({
+    //     variables: { project_id: Number(projectId) }
+    // })
 
     const {
         data: dataProject,
@@ -49,14 +50,14 @@ const ProjectContributors = (props) => {
         loading: loadingContributors
     } = useQuery(GET_CONTRIBUTORS)
 
-    if (loadingProject || loadingContributors || loadingGithubContributors) {
+    if (loadingProject || loadingContributors) {
         return (
             <Grid item xs={12}>
                 Loading...
             </Grid>
         )
     }
-    if (errorProject || errorContributors || errorGithubContributors) return `Error!`
+    if (errorProject || errorContributors) return `Error!`
 
     const project = dataProject.getProjectById
     const { allocations } = project
