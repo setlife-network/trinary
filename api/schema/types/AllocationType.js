@@ -59,7 +59,7 @@ module.exports = gql`
 
         updateAllocationById(
             id:Int!,
-            updateFields: UpdateAllocationInput!,
+            updateFields: UpdateAllocationInput!
         ): Allocation
     }
 
