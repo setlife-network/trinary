@@ -27,7 +27,7 @@ export const GET_ACTIVE_PROJECTS_COUNT = gql`
 `
 
 export const GET_PROJECT = gql`
-    query Project($id: Int!, $issuesFromDate: String, $issuesToDate: String){
+    query Project($id: Int!){
         getProjectById(id: $id){
             id
             name
@@ -41,16 +41,6 @@ export const GET_PROJECT = gql`
                 id
                 name
                 currency
-            },
-            allocatedPayments {
-                amount
-                date_paid
-                date_incurred
-                client {
-                    id
-                    name
-                    currency
-                }
             }
             allocations {
                 id
@@ -61,6 +51,49 @@ export const GET_PROJECT = gql`
                     name
                 }
             }
+        }
+    }
+`
+
+export const GET_PROJECT_PAYMENTS = gql`
+    query ProjectTimeEntries($id: Int!){
+        getProjectById(id: $id){
+            id
+            allocatedPayments {
+                amount
+                date_paid
+                date_incurred
+                client {
+                    id
+                    name
+                    currency
+                }
+            }
+            client {
+                id
+                name
+                currency
+            }
+        }
+    }
+`
+export const GET_PROJECT_CONTRIBUTORS = gql`
+    query ProjectTimeEntries($id: Int!){
+        getProjectById(id: $id){
+            id
+            name
+            contributors {
+                id
+            }
+        }
+    }
+`
+
+export const GET_PROJECT_ISSUES = gql`
+    query ProjectTimeEntries($id: Int!, $issuesFromDate: String, $issuesToDate: String){
+        getProjectById(id: $id){
+            id
+            github_url
             issues {
                 id
                 github_url
@@ -68,9 +101,6 @@ export const GET_PROJECT = gql`
                 name
                 date_opened
                 date_closed
-            },
-            contributors {
-                id
             }
             githubIssuesOpened(
                 fromDate: $issuesFromDate,
@@ -80,25 +110,6 @@ export const GET_PROJECT = gql`
                 fromDate: $issuesFromDate,
                 toDate: $issuesToDate
             )
-            timeSpent(
-                fromDate: "2020-01-01",
-                toDate: "2020-12-31"
-            ) {
-                seconds
-            }
-            timeEntries{
-                id
-                seconds
-                contributor {
-                    name
-                }
-            }
-            timeSpentPerContributor {
-                seconds
-                contributor {
-                    name
-                }
-            }
         }
     }
 `

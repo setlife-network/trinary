@@ -25,9 +25,6 @@ class App extends React.Component {
 
     render() {
 
-        console.log('IS_PRODUCTION');
-        console.log(IS_PRODUCTION);
-
         return (
             <div className='App'>
                 <Authentication/>
