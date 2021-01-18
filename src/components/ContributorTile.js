@@ -9,7 +9,11 @@ import AddIcon from '@material-ui/icons/Add';
 
 const ContributorTile = (props) => {
 
-    const { active, contributor } = props
+    const { active, contributor, onAddButton } = props
+
+    const handleAddButton = () => {
+        onAddButton(true)
+    }
 
     return (
         <Box
@@ -28,6 +32,7 @@ const ContributorTile = (props) => {
                         <Fab
                             color='primary'
                             size='small'
+                            onClick={() => handleAddButton()}
                         >
                             <AddIcon color='action'/>
                         </Fab>

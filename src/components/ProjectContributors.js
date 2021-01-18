@@ -9,12 +9,18 @@ import { differenceBy, filter } from 'lodash'
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
+import AllocationAddForm from './AllocationAddForm'
 import ContributorTile from './ContributorTile'
 import ContributorsEmptyState from './ContributorsEmptyState'
 
 const ProjectContributors = (props) => {
 
     const { projectId } = props
+
+    const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
+    const handleAddAllocationClose = (value) => {
+        setOpenAddAllocationDialog(false)
+    }
 
     const [
         getGithubContributors,
@@ -69,6 +75,7 @@ const ProjectContributors = (props) => {
                     <ContributorTile
                         active={active}
                         contributor={c}
+                        onAddButton={setOpenAddAllocationDialog}
                     />
                 </Grid>
             )
@@ -121,8 +128,13 @@ const ProjectContributors = (props) => {
                 </Box>
                 <Box my={5} py={5}/>
             </Grid>
+            <AllocationAddForm
+                project={project}
+                open={openAddAllocationDialog}
+                onClose={handleAddAllocationClose}
+            />
         </Grid>
-    );
+    )
 }
 
 export default ProjectContributors
