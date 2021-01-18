@@ -13,7 +13,7 @@ module.exports = gql`
         date_last_synced: String
         client_id: Int!
         toggl_id: String
-        allocations: [Allocation]
+        allocations(contributorId: Int): [Allocation]
         allocatedPayments: [Payment]
         averageHourlyPaid(fromDate: String, toDate: String): Int
         averageIssueCost(fromDate: String, toDate: String): AverageIssueCost
