@@ -45,8 +45,7 @@ const ProjectIssues = (props) => {
             </div>
         )
     }
-    console.log('errorProjectIssues');
-    console.log(errorProjectIssues);
+
     if (errorProjectIssues) {
         return (
             <GithubAccessBlocked
