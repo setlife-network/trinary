@@ -81,6 +81,7 @@ export const GET_PROJECT_CONTRIBUTORS = gql`
     query ProjectTimeEntries($id: Int!){
         getProjectById(id: $id){
             id
+            name
             contributors {
                 id
             }
