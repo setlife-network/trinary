@@ -9,6 +9,7 @@ import { orderBy } from 'lodash'
 
 import IssueTile from './IssueTile'
 import ProjectIssuesMetrics from './ProjectIssuesMetrics'
+import GithubAccessBlocked from './GithubAccessBlocked'
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 
 const ProjectIssues = (props) => {
@@ -40,7 +41,13 @@ const ProjectIssues = (props) => {
             </div>
         )
     }
-    if (error) return `Error! ${error.message}`
+    if (error) {
+        return (
+            <GithubAccessBlocked
+                message={`You must be a Github collaborator to access this metrics`}
+            />
+        )
+    }
 
     const { getProjectById: project } = data
 

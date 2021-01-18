@@ -6,8 +6,9 @@ import {
     Typography
 } from '@material-ui/core'
 
-import { GET_PROJECT } from '../operations/queries/ProjectQueries'
+import { GET_PROJECT, GET_PROJECT_TIME_ENTRIES } from '../operations/queries/ProjectQueries'
 import { CHECK_SESSION } from '../operations/queries/ContributorQueries'
+import GithubAccessBlocked from './GithubAccessBlocked'
 import ProjectSummary from './ProjectSummary'
 import ProjectOverviewExternalLinks from './ProjectOverviewExternalLinks'
 import ProjectTimeTracking from './ProjectTimeTracking'
@@ -27,19 +28,38 @@ const ProjectOverview = (props) => {
 
     const { projectId } = props
 
-    const { data, loading, error } = useQuery(GET_PROJECT, {
+    const {
+        data: timeEntriesData,
+        loading: timeEntriesLoading,
+        error: timeEntriesError
+    } = useQuery(GET_PROJECT_TIME_ENTRIES, {
         variables: {
             id: Number(projectId)
         }
     })
 
-    if (loading) return 'Loading...'
-    if (error) return error
+    const {
+        data: projectData,
+        loading: projectLoading,
+        error: projectError
+    } = useQuery(GET_PROJECT, {
+        variables: {
+            id: Number(projectId)
+        },
+        errorPolicy: 'all'
+    })
 
-    const project = data.getProjectById
+    if (projectLoading || timeEntriesLoading) return 'Loading...'
+    // if (timeEntriesError || projectError) return 'Error..'
+
+    const project = projectData.getProjectById
 
     return (
-        <Grid container className='ProjectOverview' justify='center'>
+        <Grid
+            container
+            className='ProjectOverview'
+            justify='center'
+        >
             <Grid item xs={10} lg={5}>
                 <Box p={3}>
                     <Typography variant='h4'>
@@ -60,9 +80,5 @@ const ProjectOverview = (props) => {
         </Grid>
     )
 }
-
-ProjectOverview.defaultProps = {
-
-};
 
 export default ProjectOverview;

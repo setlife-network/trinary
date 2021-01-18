@@ -11,6 +11,7 @@ import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
 import ContributorTile from './ContributorTile'
 import ContributorsEmptyState from './ContributorsEmptyState'
+import GithubAccessBlocked from './GithubAccessBlocked'
 
 const ProjectContributors = (props) => {
 
@@ -23,14 +24,16 @@ const ProjectContributors = (props) => {
             loading: loadingGithubContributors,
             error: errorGithubContributors
         }
-    ] = useMutation(SYNC_PROJECT_GITHUB_CONTRIBUTORS)
+    ] = useMutation(SYNC_PROJECT_GITHUB_CONTRIBUTORS, {
+        errorPolicy: 'all'
+    })
 
     useEffect(() => {
 
         var githubContributors = getGithubContributors({
             variables: { project_id: Number(projectId) }
         })
-    }, []);
+    }, [])
 
     const {
         data: dataProject,
@@ -54,7 +57,14 @@ const ProjectContributors = (props) => {
             </Grid>
         )
     }
-    if (errorProject || errorContributors || errorGithubContributors) return `Error!`
+    if (errorGithubContributors) {
+        return (
+            <GithubAccessBlocked
+                message={`You must be a Github collaborator to access this metrics`}
+            />
+        )
+    }
+    if (errorProject || errorContributors) return `Error!`
 
     const project = dataProject.getProjectById
     const { allocations } = project

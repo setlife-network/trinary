@@ -30,7 +30,7 @@ const dataSyncs = module.exports = (() => {
         })
         await Promise.all(
             await githubContributors.map(async c => {
-            //we look for mathing contributors in our db, if there's none add them
+                //we look for mathing contributors in our db, if there's none add them
                 const matchingContributor = await db.models.Contributor.findOne({
                     where: {
                         github_id: c['id']
@@ -41,8 +41,8 @@ const dataSyncs = module.exports = (() => {
                         auth_key: params.auth_key,
                         username: c.login
                     })
-                    return newContributors.push(
-                        db.models.Contributor.create({
+                    newContributors.push(
+                        await db.models.Contributor.create({
                             name: contributorInfo.name ? contributorInfo.name : c.login,
                             github_id: c.id,
                             github_handle: c.html_url

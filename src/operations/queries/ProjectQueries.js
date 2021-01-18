@@ -26,6 +26,28 @@ export const GET_ACTIVE_PROJECTS_COUNT = gql`
     }
 `
 
+export const GET_PROJECT_TIME_ENTRIES = gql`
+    query ProjectTimeEntries($id: Int!){
+        getProjectById(id: $id){
+            timeSpent {
+                seconds
+            }
+            timeEntries{
+                seconds
+                contributor {
+                    name
+                }
+            }
+            timeSpentPerContributor {
+                seconds
+                contributor {
+                    name
+                }
+            }
+        }
+    }
+`
+
 export const GET_PROJECT = gql`
     query Project($id: Int!, $issuesFromDate: String, $issuesToDate: String, $githubPersonalKey: String){
         getProjectById(id: $id){
