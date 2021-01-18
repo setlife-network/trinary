@@ -23,7 +23,7 @@ const ProjectSummary = (props) => {
         setOpenEditDialog(false)
     }
 
-    const currencySymbol = selectCurrencySymbol(project.client.currency)
+    const currencySymbol = selectCurrencySymbol({ currency: project.client.currency })
 
     return (
         <Box

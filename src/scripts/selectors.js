@@ -2,8 +2,8 @@ import { find } from 'lodash'
 
 import { CURRENCIES } from '../constants'
 
-export const selectCurrencySymbol = (currency) => {
+export const selectCurrencySymbol = (props) => {
     return find(CURRENCIES, c => {
-        return c.name == currency
+        return c.name == props.currency
     })['symbol']
 }

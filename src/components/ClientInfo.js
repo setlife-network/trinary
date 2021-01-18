@@ -60,7 +60,7 @@ const ClientInfo = ({
                 <Grid container alignItems='flex-end' >
                     <Grid item>
                         <Typography variant={'h6'}>
-                            {`${selectCurrencySymbol(client.currency)}`}
+                            {`${selectCurrencySymbol({ currency: client.currency })}`}
                             {client.currency}
                         </Typography>
                     </Grid>
