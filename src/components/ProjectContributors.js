@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import {
     Box,
@@ -6,60 +6,72 @@ import {
 } from '@material-ui/core/'
 import { differenceBy, filter } from 'lodash'
 
-import { GET_PROJECT } from '../operations/queries/ProjectQueries'
+import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
 import AllocationAddForm from './AllocationAddForm'
 import ContributorTile from './ContributorTile'
 import ContributorsEmptyState from './ContributorsEmptyState'
+import GithubAccessBlocked from './GithubAccessBlocked'
 
 const ProjectContributors = (props) => {
 
     const { projectId } = props
-
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
     const handleAddAllocationClose = (value) => {
         setOpenAddAllocationDialog(false)
     }
 
-    // const [
-    //     getGithubContributors,
-    //     {
-    //         data: dataGithubContributors,
-    //         loading: loadingGithubContributors,
-    //         error: errorGithubContributors
-    //     }
-    // ] = useMutation(SYNC_PROJECT_GITHUB_CONTRIBUTORS)
-
-    // const githubContributors = getGithubContributors({
-    //     variables: { project_id: Number(projectId) }
-    // })
-
     const {
-        data: dataProject,
-        error: errorProject,
-        loading: loadingProject
-    } = useQuery(GET_PROJECT, {
+        data: dataProjectContributors,
+        loading: loadingProjectContributors,
+        error: errorProjectContributors
+    } = useQuery(GET_PROJECT_CONTRIBUTORS, {
         variables: {
             id: Number(projectId)
         }
     })
+
     const {
         data: dataContributors,
-        error: errorContributors,
-        loading: loadingContributors
+        loading: loadingContributors,
+        error: errorContributors
     } = useQuery(GET_CONTRIBUTORS)
 
-    if (loadingProject || loadingContributors) {
+    const [
+        getGithubContributors,
+        {
+            data: dataGithubContributors,
+            loading: loadingGithubContributors,
+            error: errorGithubContributors
+        }
+    ] = useMutation(SYNC_PROJECT_GITHUB_CONTRIBUTORS, {
+        errorPolicy: 'all'
+    })
+
+    useEffect(() => {
+        var githubContributors = getGithubContributors({
+            variables: { project_id: Number(projectId) }
+        })
+    }, [])
+
+    if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
         return (
             <Grid item xs={12}>
                 Loading...
             </Grid>
         )
     }
-    if (errorProject || errorContributors) return `Error!`
+    if (errorGithubContributors) {
+        return (
+            <GithubAccessBlocked
+                message={`You must be a Github collaborator to access this metrics`}
+            />
+        )
+    }
+    if (errorProjectContributors || errorContributors) return `Error!`
 
-    const project = dataProject.getProjectById
+    const project = dataProjectContributors.getProjectById
     const { allocations } = project
     const activeAllocations = filter(allocations, 'active')
     const activeContributors = activeAllocations.map(a => {

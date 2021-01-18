@@ -4,7 +4,7 @@ const { ApolloError } = require('apollo-server')
 const { col, fn, Op } = require('sequelize');
 const { split } = require('lodash')
 
-const { TOGGL } = require('../../config/credentials');
+const { GITHUB, TOGGL } = require('../../config/credentials');
 const github = require('../../handlers/github')
 const toggl = require('../../handlers/toggl')
 const { validateDatesFormat } = require('../helpers/inputValidation')
@@ -15,7 +15,13 @@ module.exports = {
 
     Project: {
         allocations: (project, args, { models }) => {
-            return models.Allocation.findAll({ where: { project_id: project.id } })
+            const whereConditions = {
+                project_id: project.id
+            }
+            if (args.contributorId) {
+                whereConditions['contributor_id'] = args.contributorId
+            }
+            return models.Allocation.findAll({ where: whereConditions })
         },
         allocatedPayments: (project, args, { models }) => {
             return models.Payment.findAll({
@@ -168,14 +174,19 @@ module.exports = {
                 }
             })
         },
-        githubIssuesOpened: async (project, args, { models }) => {
+        githubIssuesOpened: async (project, args, { models, cookies }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,
                 toDate: args.toDate
             })
+            const authContributorKey = args.githubPersonalKey
+                ? args.githubPersonalKey
+                : (await models.Contributor.findByPk(cookies.userSession, { raw: true }))['github_access_token']
             const urlSplitted = split(project.github_url, '/');
             const issues = await github.fetchRepoIssues({
-                repo: urlSplitted[urlSplitted.length - 1]
+                auth_key: authContributorKey,
+                repo: urlSplitted[urlSplitted.length - 1],
+                owner: GITHUB.OWNER
             })
             let openIssues = 0
             issues.map((i, n) => {
@@ -184,27 +195,32 @@ module.exports = {
                 // check the date ranges
                 if (
                     i.pull_request == null &&
-                    i.closed_at == null &&
-                    moment(i.created_at).isAfter(args.fromDate
-                        ? args.fromDate
-                        : moment(1)) &&
-                    moment(i.created_at).isBefore(args.toDate
-                        ? args.toDate
-                        : moment())
+                        i.closed_at == null &&
+                        moment(i.created_at).isAfter(args.fromDate
+                            ? args.fromDate
+                            : moment(1)) &&
+                        moment(i.created_at).isBefore(args.toDate
+                            ? args.toDate
+                            : moment())
                 ) {
                     openIssues += 1
                 }
             })
             return openIssues
         },
-        githubIssuesClosed: async (project, args, { models }) => {
+        githubIssuesClosed: async (project, args, { models, cookies }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,
                 toDate: args.toDate
             })
+            const authContributorKey = args.githubPersonalKey
+                ? args.githubPersonalKey
+                : (await models.Contributor.findByPk(cookies.userSession, { raw: true }))['github_access_token']
             const urlSplitted = split(project.github_url, '/');
             const issues = await github.fetchRepoIssues({
-                repo: urlSplitted[urlSplitted.length - 1]
+                auth_key: authContributorKey,
+                repo: urlSplitted[urlSplitted.length - 1],
+                owner: GITHUB.OWNER
             })
             let closedIssues = 0
             issues.map((i, n) => {
@@ -213,13 +229,13 @@ module.exports = {
                 // check the date ranges
                 if (
                     i.pull_request == null &&
-                    i.closed_at &&
-                    moment(i.closed_at).isAfter(args.fromDate
-                        ? args.fromDate
-                        : moment(1)) &&
-                    moment(i.closed_at).isBefore(args.toDate
-                        ? args.toDate
-                        : moment())
+                        i.closed_at &&
+                        moment(i.closed_at).isAfter(args.fromDate
+                            ? args.fromDate
+                            : moment(1)) &&
+                        moment(i.closed_at).isBefore(args.toDate
+                            ? args.toDate
+                            : moment())
                 ) {
                     closedIssues += 1
                 }
@@ -416,10 +432,14 @@ module.exports = {
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })
         },
-        syncProjectGithubContributors: async (root, { project_id }, { models }) => {
-            const project = await models.Project.findByPk(project_id)
+        syncProjectGithubContributors: async (root, args, { models, cookies }) => {
+            const authContributorToken = args.githubPersonalKey
+                ? args.githubPersonalKey
+                : (await models.Contributor.findByPk(cookies.userSession, { raw: true }))['github_access_token']
+            const project = await models.Project.findByPk(args.project_id)
             const repo = split(project.github_url, '/')
             return dataSyncs.syncGithubRepoContributors({
+                auth_key: authContributorToken,
                 repo: repo[repo.length - 1]
             })
         },
@@ -442,17 +462,18 @@ module.exports = {
                 contributors: projectContributors
             })
         },
-        syncProjectIssues: async (root, { project_id }, { models }) => {
-            const project = await models.Project.findByPk(project_id)
+        syncProjectIssues: async (root, args, { models }) => {
+            const project = await models.Project.findByPk(args.project_id)
             const syncedIssues = await apiModules.dataSyncs.syncGithubIssues({
-                project_id,
+                project_id: args.project_id,
                 github_url: project.github_url,
+                auth_key: args.github_personal_key
             })
             await models.Project.update({
                 date_last_synced: moment.utc()
             }, {
                 where: {
-                    id: project_id
+                    id: args.project_id
                 }
             })
             return syncedIssues

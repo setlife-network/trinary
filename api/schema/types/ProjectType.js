@@ -13,7 +13,7 @@ module.exports = gql`
         date_last_synced: String
         client_id: Int!
         toggl_id: String
-        allocations: [Allocation]
+        allocations(contributorId: Int): [Allocation]
         allocatedPayments: [Payment]
         averageHourlyPaid(fromDate: String, toDate: String): Int
         averageIssueCost(fromDate: String, toDate: String): AverageIssueCost
@@ -25,11 +25,13 @@ module.exports = gql`
         permissions: [Permission]
         githubIssuesOpened(
             fromDate: String,
-            toDate:String
+            toDate:String,
+            githubPersonalKey: String
         ): Int
         githubIssuesClosed(
             fromDate: String,
-            toDate:String
+            toDate:String,
+            githubPersonalKey: String
         ): Int
         timeEntries(
             fromDate: String
@@ -96,9 +98,13 @@ module.exports = gql`
         ): Project
         deleteProjectById(id: Int!): String
         syncProjectPermissions(project_id: Int!):[Permission]
-        syncProjectGithubContributors(project_id: Int!): [Contributor]
+        syncProjectGithubContributors(
+            project_id: Int!,
+            github_personal_key: String
+        ): [Contributor]
         syncProjectIssues(
-            project_id: Int
+            project_id: Int!,
+            github_personal_key: String
         ): [Issue]
         syncTogglProject(
             project_id: Int!

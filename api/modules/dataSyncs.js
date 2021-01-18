@@ -24,39 +24,42 @@ const dataSyncs = module.exports = (() => {
         //this func will add in the contributors table all the contributors from a github project
         const newContributors = []
         const githubContributors = await github.fetchRepoContributors({
-            auth_key: GITHUB.CLIENT_SECRET,
+            auth_key: params.auth_key,
+            repo: params.repo,
             owner: GITHUB.OWNER,
-            repo: params.repo
         })
-
-        await Promise.all(githubContributors.map(async c => {
-            //we look for mathing contributors in out db, if there's none add them
-            const matchingContributor = await db.models.Contributor.findOne({
-                where: {
-                    github_id: c['id']
+        await Promise.all(
+            await githubContributors.map(async c => {
+                //we look for mathing contributors in our db, if there's none add them
+                const matchingContributor = await db.models.Contributor.findOne({
+                    where: {
+                        github_id: c['id']
+                    }
+                })
+                if (!matchingContributor) {
+                    const contributorInfo = await github.fetchUserData({
+                        auth_key: params.auth_key,
+                        username: c.login
+                    })
+                    newContributors.push(
+                        await db.models.Contributor.create({
+                            name: contributorInfo.name ? contributorInfo.name : c.login,
+                            github_id: c.id,
+                            github_handle: c.html_url
+                        })
+                    )
                 }
             })
-            if (!matchingContributor) {
-                const contributorInfo = await github.fetchUserData({
-                    auth_key: GITHUB.CLIENT_SECRET,
-                    username: c.login
-                })
-                return newContributors.push(
-                    db.models.Contributor.create({
-                        name: contributorInfo.name ? contributorInfo.name : c.login,
-                        github_id: c.id,
-                        github_handle: c.html_url
-                    })
-                )
-            }
-        }))
+        )
         return newContributors
     }
 
     const syncGithubIssues = async (params) => {
         const newIssues = []
-        const githubUrlSplitted = split(params.github_url, '/');
+        const githubUrlSplitted = split(params.github_url, '/')
         const issues = await github.fetchRepoIssues({
+            auth_key: params.auth_key,
+            owner: githubUrlSplitted[githubUrlSplitted.length - 2],
             repo: githubUrlSplitted[githubUrlSplitted.length - 1]
         })
         await Promise.all(
@@ -118,7 +121,7 @@ const dataSyncs = module.exports = (() => {
                     }
                 })
                 const githubContributorPermission = await github.fetchUserPermission({
-                    auth_key: GITHUB.CLIENT_SECRET,
+                    auth_key: GITHUB.OAUTH_CLIENT_SECRET,
                     owner,
                     repo,
                     username: c.github_handle

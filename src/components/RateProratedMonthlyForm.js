@@ -13,10 +13,9 @@ const RateProratedMonthlyForm = (props) => {
     return (
         <Grid container className='RateProratedMonthlyForm'>
             <Grid item>
-                <Box>
-                    RateProratedMonthlyForm
+                <Box my={3}>
                     <FormControl>
-                        <Grid container justify='space-around' spacing={2}>
+                        <Grid container justify='left' spacing={1}>
                             <Grid item xs={12} md={6}>
                                 <TextField label='Expected monthly hours' variant='filled'/>
                             </Grid>

@@ -17,15 +17,6 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             unique: true
         },
-        hourly_rate: {
-            type: DataTypes.INTEGER
-        },
-        weekly_rate: {
-            type: DataTypes.INTEGER
-        },
-        monthly_rate: {
-            type: DataTypes.INTEGER
-        },
         name: {
             type: DataTypes.STRING,
             allowNull: false
@@ -38,6 +29,10 @@ module.exports = (sequelize) => {
             unique: true
         },
         github_handle: {
+            type: DataTypes.STRING,
+            unique: true
+        },
+        github_access_token: {
             type: DataTypes.STRING,
             unique: true
         }
