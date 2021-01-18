@@ -12,7 +12,7 @@ import { orderBy } from 'lodash'
 import PaymentsEmptyState from './PaymentsEmptyState'
 import PaymentTile from './PaymentTile'
 import PaymentsList from './PaymentsList'
-import { GET_PROJECT } from '../operations/queries/ProjectQueries'
+import { GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 
 const ProjectPayments = (props) => {
 
@@ -24,7 +24,7 @@ const ProjectPayments = (props) => {
 
     const { projectId } = props
 
-    const { loading, error, data } = useQuery(GET_PROJECT, {
+    const { loading, error, data } = useQuery(GET_PROJECT_PAYMENTS, {
         variables: {
             id: Number(projectId)
         }

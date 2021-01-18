@@ -26,13 +26,43 @@ export const GET_ACTIVE_PROJECTS_COUNT = gql`
     }
 `
 
+export const GET_PROJECT = gql`
+    query Project($id: Int!){
+        getProjectById(id: $id){
+            id
+            name
+            is_active
+            expected_budget
+            github_url
+            toggl_url
+            date
+            totalPaid
+            client {
+                id
+                name
+                currency
+            }
+            allocations {
+                id
+                active
+                contributor {
+                    id
+                    github_handle
+                    name
+                }
+            }
+        }
+    }
+`
+
 export const GET_PROJECT_TIME_ENTRIES = gql`
     query ProjectTimeEntries($id: Int!){
         getProjectById(id: $id){
+            id
             timeSpent {
                 seconds
             }
-            timeEntries{
+            timeEntries {
                 seconds
                 contributor {
                     name
@@ -48,22 +78,10 @@ export const GET_PROJECT_TIME_ENTRIES = gql`
     }
 `
 
-export const GET_PROJECT = gql`
-    query Project($id: Int!, $issuesFromDate: String, $issuesToDate: String, $githubPersonalKey: String){
+export const GET_PROJECT_PAYMENTS = gql`
+    query ProjectTimeEntries($id: Int!){
         getProjectById(id: $id){
             id
-            name
-            is_active
-            expected_budget
-            github_url
-            toggl_url
-            date
-            totalPaid
-            client {
-                id
-                name
-                currency
-            },
             allocatedPayments {
                 amount
                 date_paid
@@ -74,15 +92,30 @@ export const GET_PROJECT = gql`
                     currency
                 }
             }
-            allocations {
+            client {
                 id
-                active
-                contributor {
-                    id
-                    github_handle
-                    name
-                }
+                name
+                currency
             }
+        }
+    }
+`
+export const GET_PROJECT_CONTRIBUTORS = gql`
+    query ProjectTimeEntries($id: Int!){
+        getProjectById(id: $id){
+            id
+            contributors {
+                id
+            }
+        }
+    }
+`
+
+export const GET_PROJECT_ISSUES = gql`
+    query ProjectTimeEntries($id: Int!, $issuesFromDate: String, $issuesToDate: String){
+        getProjectById(id: $id){
+            id
+            github_url
             issues {
                 id
                 github_url
@@ -90,38 +123,15 @@ export const GET_PROJECT = gql`
                 name
                 date_opened
                 date_closed
-            },
-            contributors {
-                id
             }
             githubIssuesOpened(
                 fromDate: $issuesFromDate,
-                toDate: $issuesToDate,
-                githubPersonalKey: $githubPersonalKey
+                toDate: $issuesToDate
             )
             githubIssuesClosed(
                 fromDate: $issuesFromDate,
-                toDate: $issuesToDate,
-                githubPersonalKey: $githubPersonalKey
+                toDate: $issuesToDate
             )
-            timeSpent(
-                fromDate: "2020-01-01",
-                toDate: "2020-12-31"
-            ) {
-                seconds
-            }
-            timeEntries{
-                seconds
-                contributor {
-                    name
-                }
-            }
-            timeSpentPerContributor {
-                seconds
-                contributor {
-                    name
-                }
-            }
         }
     }
 `

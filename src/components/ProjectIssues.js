@@ -10,7 +10,7 @@ import { orderBy } from 'lodash'
 import IssueTile from './IssueTile'
 import ProjectIssuesMetrics from './ProjectIssuesMetrics'
 import GithubAccessBlocked from './GithubAccessBlocked'
-import { GET_PROJECT } from '../operations/queries/ProjectQueries'
+import { GET_PROJECT_ISSUES } from '../operations/queries/ProjectQueries'
 
 const ProjectIssues = (props) => {
 
@@ -28,20 +28,26 @@ const ProjectIssues = (props) => {
         })
     }
 
-    const { loading, error, data } = useQuery(GET_PROJECT, {
+    const {
+        data: dataProjectIssues,
+        loading: loadingProjectIssues,
+        error: errorProjectIssues
+    } = useQuery(GET_PROJECT_ISSUES, {
         variables: {
             id: Number(projectId)
         }
     })
 
-    if (loading) {
+    if (loadingProjectIssues) {
         return (
             <div>
                 Loading...
             </div>
         )
     }
-    if (error) {
+    console.log('errorProjectIssues');
+    console.log(errorProjectIssues);
+    if (errorProjectIssues) {
         return (
             <GithubAccessBlocked
                 message={`You must be a Github collaborator to access this metrics`}
@@ -49,7 +55,7 @@ const ProjectIssues = (props) => {
         )
     }
 
-    const { getProjectById: project } = data
+    const { getProjectById: project } = dataProjectIssues
 
     project.issues.map(i => {
         if (i['date_opened'] >= today30DaysAgo) {

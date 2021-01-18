@@ -13,25 +13,14 @@ import ProjectSummary from './ProjectSummary'
 import ProjectOverviewExternalLinks from './ProjectOverviewExternalLinks'
 import ProjectTimeTracking from './ProjectTimeTracking'
 
-const TimeTracking = ({
-    totalTimeSpent,
-    timeSpent
-}) => {
-    return (
-        <div className='TimeTracking'>
-            TimeTracking
-        </div>
-    )
-}
-
 const ProjectOverview = (props) => {
 
     const { projectId } = props
 
     const {
-        data: timeEntriesData,
-        loading: timeEntriesLoading,
-        error: timeEntriesError
+        data: dataTimeEntries,
+        loading: loadingTimeEntries,
+        error: errorTimeEntries
     } = useQuery(GET_PROJECT_TIME_ENTRIES, {
         variables: {
             id: Number(projectId)
@@ -39,20 +28,24 @@ const ProjectOverview = (props) => {
     })
 
     const {
-        data: projectData,
-        loading: projectLoading,
-        error: projectError
+        data: dataProject,
+        loading: loadingProject,
+        error: errorProject,
     } = useQuery(GET_PROJECT, {
         variables: {
             id: Number(projectId)
-        },
-        errorPolicy: 'all'
+        }
     })
 
-    if (projectLoading || timeEntriesLoading) return 'Loading...'
-    // if (timeEntriesError || projectError) return 'Error..'
+    if (loadingProject || loadingTimeEntries) return 'Loading...'
+    if (errorTimeEntries || errorProject) return 'Error..'
 
-    const project = projectData.getProjectById
+    const project = dataProject.getProjectById
+    const {
+        timeEntries,
+        timeSpent,
+        timeSpentPerContributor
+    } = dataTimeEntries.getProjectById
 
     return (
         <Grid
@@ -74,7 +67,11 @@ const ProjectOverview = (props) => {
                     toggl_url={project.toggl_url}
                 />
                 <Box mt={8}>
-                    <ProjectTimeTracking project={project}/>
+                    <ProjectTimeTracking
+                        timeEntries={timeEntries}
+                        timeSpent={timeSpent}
+                        timeSpentPerContributor={timeSpentPerContributor}
+                    />
                 </Box>
             </Grid>
         </Grid>

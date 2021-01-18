@@ -449,17 +449,18 @@ module.exports = {
                 contributors: projectContributors
             })
         },
-        syncProjectIssues: async (root, { project_id }, { models }) => {
-            const project = await models.Project.findByPk(project_id)
+        syncProjectIssues: async (root, args, { models }) => {
+            const project = await models.Project.findByPk(args.project_id)
             const syncedIssues = await apiModules.dataSyncs.syncGithubIssues({
-                project_id,
+                project_id: args.project_id,
                 github_url: project.github_url,
+                auth_key: args.github_personal_key
             })
             await models.Project.update({
                 date_last_synced: moment.utc()
             }, {
                 where: {
-                    id: project_id
+                    id: args.project_id
                 }
             })
             return syncedIssues
