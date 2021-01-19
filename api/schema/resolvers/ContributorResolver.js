@@ -23,6 +23,13 @@ module.exports = {
                     contributor_id: contributor.id
                 }
             })
+        },
+        rates: (contributor, args, { models }) => {
+            return models.Rate.findAll({
+                where: {
+                    contributor_id: contributor.id
+                }
+            })
         }
     },
     Query: {

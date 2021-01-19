@@ -13,6 +13,7 @@ module.exports = gql`
         allocations: [Allocation]
         permissions: [Permission]
         timeEntries: [TimeEntry]
+        rates: [Rate]
     }
 
     input CreateContributorInput {

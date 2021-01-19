@@ -48,3 +48,18 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
         }
     }
 `
+
+export const GET_CONTRIBUTOR_RATES = gql`
+    query ContributorAllocation($id: Int!) {
+        getContributorById(id: $id) {
+            id,
+            rates {
+                id
+                active
+                type
+                hourly_rate
+            }
+
+        }
+    }
+`
