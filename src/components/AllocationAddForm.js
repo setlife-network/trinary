@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useQuery } from '@apollo/client'
 import {
     Box,
     Button,
@@ -12,16 +13,35 @@ import { fill } from 'lodash'
 
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
+import { GET_PROJECT_CONTRIBUTOR_ALLOCATIONS } from '../operations/queries/ProjectQueries'
 
 const AllocationAddForm = (props) => {
 
     const {
+        contributor,
         project,
         onClose,
         open
     } = props
 
     const [allocationTypes, setAllocationTypes] = useState([1, 0])
+
+    // useEffect(() => {
+    // }, [dataContributorAllocation])
+
+    console.log('contributor');
+    console.log(contributor);
+
+    const {
+        data: dataContributorAllocation,
+        loading: loadingProjectContributors,
+        error: errorContributorAllocation
+    } = useQuery(GET_PROJECT_CONTRIBUTOR_ALLOCATIONS, {
+        variables: {
+            id: Number(project.id),
+            contributorId: contributor ? Number(contributor.id) : null
+        }
+    })
 
     const changeAllocationType = (props) => {
         const { allocationTypes, selectedType } = props
@@ -30,6 +50,12 @@ const AllocationAddForm = (props) => {
         allocationTypesState[selectedType] = 1
         setAllocationTypes([...allocationTypesState])
     }
+
+    if (loadingProjectContributors) return 'Loading...'
+    if (errorContributorAllocation) return `Error :${errorContributorAllocation}`
+
+    console.log('dataContributorAllocation');
+    console.log(dataContributorAllocation);
 
     return (
         <Dialog

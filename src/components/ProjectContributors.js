@@ -18,6 +18,7 @@ const ProjectContributors = (props) => {
 
     const { projectId } = props
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
+    const [contributorClicked, setContributorClicked] = useState(null)
     const handleAddAllocationClose = (value) => {
         setOpenAddAllocationDialog(false)
     }
@@ -55,6 +56,14 @@ const ProjectContributors = (props) => {
         })
     }, [])
 
+    const AddAllocation = (props) => {
+        console.log('AddAllocation');
+        console.log(props);
+        setOpenAddAllocationDialog(true)
+        setContributorClicked(props.contributor)
+
+    }
+
     if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
         return (
             <Grid item xs={12}>
@@ -88,7 +97,7 @@ const ProjectContributors = (props) => {
                     <ContributorTile
                         active={active}
                         contributor={c}
-                        onAddButton={setOpenAddAllocationDialog}
+                        onAddButton={AddAllocation}
                     />
                 </Grid>
             )
@@ -145,6 +154,7 @@ const ProjectContributors = (props) => {
                 project={project}
                 open={openAddAllocationDialog}
                 onClose={handleAddAllocationClose}
+                contributor={contributorClicked}
             />
         </Grid>
     )

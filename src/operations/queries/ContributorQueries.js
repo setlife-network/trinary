@@ -26,3 +26,11 @@ export const GET_CONTRIBUTORS = gql`
         }
     }
 `
+
+export const GET_CONTRIBUTOR_ALLOCATION = gql`
+    query Contributors {
+        getContributors{
+            id
+        }
+    }
+`

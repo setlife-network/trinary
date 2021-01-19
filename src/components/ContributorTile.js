@@ -12,7 +12,7 @@ const ContributorTile = (props) => {
     const { active, contributor, onAddButton } = props
 
     const handleAddButton = () => {
-        onAddButton(true)
+        onAddButton({ contributor })
     }
 
     return (

@@ -78,12 +78,49 @@ export const GET_PROJECT_PAYMENTS = gql`
     }
 `
 export const GET_PROJECT_CONTRIBUTORS = gql`
-    query ProjectTimeEntries($id: Int!){
+    query ProjectContributors($id: Int!){
         getProjectById(id: $id){
             id
             name
             contributors {
                 id
+                name
+                github_id
+                github_handle
+            }
+            allocations {
+                id
+                active
+                amount
+                date_paid
+                start_date
+                end_date
+                contributor {
+                    id
+                    name
+                    github_id
+                    github_handle
+                }
+            }
+        }
+    }
+`
+
+export const GET_PROJECT_CONTRIBUTOR_ALLOCATIONS = gql`
+    query ProjectContributorAllocations($id: Int!, $contributorId: Int){
+        getProjectById(id: $id){
+            id
+            name
+            allocations(
+                contributorId: $contributorId
+            ){
+                id
+                amount
+                rate {
+                    id
+                    hourly_rate
+                    type
+                }
             }
         }
     }
