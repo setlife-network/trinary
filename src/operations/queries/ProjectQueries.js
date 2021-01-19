@@ -118,6 +118,7 @@ export const GET_PROJECT_CONTRIBUTOR_ALLOCATIONS = gql`
                 amount
                 rate {
                     id
+                    monthly_hours
                     hourly_rate
                     type
                 }

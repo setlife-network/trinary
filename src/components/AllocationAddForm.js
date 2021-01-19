@@ -85,12 +85,10 @@ const AllocationAddForm = (props) => {
     }
 
     const createRate = async (rate) => {
-        console.log('rate');
-        console.log(rate);
         await newRate({
             variables: {
-                hourly_rate: toString(rate.hourly_rate),
-                monthly_hours: rate.monthly_hours,
+                hourly_rate: rate.hourly_rate.toString(),
+                monthly_hours: Number(rate.monthly_hours),
                 type: rate.type,
                 contributor_id: contributor.id
             }

@@ -24,7 +24,7 @@ const RateProratedMonthlyForm = (props) => {
 
     useEffect(() => {
         setNewAllocation({
-            current_rate: currentRateInput,
+            hourly_rate: currentRateInput,
             monthly_hours: monthlyHoursInput,
             total_amount: totalAmount,
             type: 'prorated_monthly'
