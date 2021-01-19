@@ -43,7 +43,6 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
                     active
                     type
                     hourly_rate
-
                 }
             }
         }

@@ -9,7 +9,7 @@ import {
     FormControl,
     Grid
 } from '@material-ui/core/'
-import { fill } from 'lodash'
+import { fill, findKey } from 'lodash'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 
@@ -85,6 +85,9 @@ const AllocationAddForm = (props) => {
     }
 
     const createRate = async (rate) => {
+        //check if the values are different to any rate and if ti's the case, create new rate
+        findKey()
+
         await newRate({
             variables: {
                 hourly_rate: rate.hourly_rate.toString(),
@@ -93,6 +96,7 @@ const AllocationAddForm = (props) => {
                 contributor_id: contributor.id
             }
         })
+        onClose()
     }
 
     if (loadingContributorAllocations) return ''

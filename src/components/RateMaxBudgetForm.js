@@ -20,12 +20,10 @@ const RateMaxBudgetForm = (props) => {
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'weeks'))
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
-        console.log('props');
-        console.log(props);
     }, [])
 
     useEffect(() => {
-        setTotalHours((totalAmount / currentRateInput).toFixed(2))
+        setTotalHours(totalAmount && currentRateInput ? (totalAmount / currentRateInput).toFixed(2) : 0)
         setNewAllocation({
             hourly_rate: currentRateInput,
             total_amount: totalAmount,
@@ -66,12 +64,20 @@ const RateMaxBudgetForm = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <Box>
+                <Box my={2}>
                     <Typography>
                         {`Total hours = ${totalHours ? totalHours : 0}`}
                     </Typography>
                     <Typography>
-                        {`Hours per week = ${totalHours ? (totalHours / totalWeeks).toFixed(2) : 0}`}
+                        {`Hours per week = ${
+                            totalHours
+                                ? (totalHours / (
+                                    totalWeeks
+                                        ? totalWeeks
+                                        : 1
+                                )).toFixed(2)
+                                : 0
+                        }`}
                     </Typography>
                 </Box>
             </Grid>
