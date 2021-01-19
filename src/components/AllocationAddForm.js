@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useLazyQuery, useQuery } from '@apollo/client'
 import {
     Box,
     Button,
@@ -10,10 +10,12 @@ import {
     Grid
 } from '@material-ui/core/'
 import { fill } from 'lodash'
+import moment from 'moment'
+import DatePicker from 'react-datepicker'
 
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
-import { GET_PROJECT_CONTRIBUTOR_ALLOCATIONS } from '../operations/queries/ProjectQueries'
+import { GET_CONTRIBUTOR_ALLOCATIONS } from '../operations/queries/ContributorQueries'
 
 const AllocationAddForm = (props) => {
 
@@ -25,21 +27,17 @@ const AllocationAddForm = (props) => {
     } = props
 
     const [allocationTypes, setAllocationTypes] = useState([1, 0])
-
-    // useEffect(() => {
-    // }, [dataContributorAllocation])
-
-    console.log('contributor');
-    console.log(contributor);
+    const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
+    const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month')['_d'])
+    const [endDate, setEndDate] = useState(moment().add(1, 'months').endOf('month')['_d'])
 
     const {
-        data: dataContributorAllocation,
-        loading: loadingProjectContributors,
-        error: errorContributorAllocation
-    } = useQuery(GET_PROJECT_CONTRIBUTOR_ALLOCATIONS, {
+        data: dataContributorAllocations,
+        loading: loadingContributorAllocations,
+        error: errorContributorAllocations
+    } = useQuery(GET_CONTRIBUTOR_ALLOCATIONS, {
         variables: {
-            id: Number(project.id),
-            contributorId: contributor ? Number(contributor.id) : null
+            id: contributor ? Number(contributor.id) : null
         }
     })
 
@@ -51,11 +49,44 @@ const AllocationAddForm = (props) => {
         setAllocationTypes([...allocationTypesState])
     }
 
-    if (loadingProjectContributors) return 'Loading...'
-    if (errorContributorAllocation) return `Error :${errorContributorAllocation}`
+    const getMostRecentAlloaction = (props) => {
+        const { allocations } = props
+        const mostRecentAllocation = [{ start_date: 0 }]
+        allocations.map(a => {
+            if (a.start_date > mostRecentAllocation[0].start_date) {
+                return mostRecentAllocation[0] = a
+            }
+        })
+        return mostRecentAllocation[0]
+    }
 
-    console.log('dataContributorAllocation');
-    console.log(dataContributorAllocation);
+    useEffect(() => {
+        setMostRecentAllocation(null)
+    }, [open])
+
+    useEffect(() => {
+        if (mostRecentAllocation) {
+            if (mostRecentAllocation.rate.type == 'prorated_monthly') {
+                setAllocationTypes([1, 0])
+            } else if (mostRecentAllocation.rate.type == 'max_budget') {
+                setAllocationTypes([0, 1])
+            }
+        }
+    }, [mostRecentAllocation])
+
+    const getRangedTimeEntries = (dates) => {
+        const [start, end] = dates
+        setStartDate(start)
+        setEndDate(end)
+    }
+
+    if (loadingContributorAllocations) return 'Loading...'
+    if (errorContributorAllocations) return `error ${errorContributorAllocations}`
+
+    const { allocations } = dataContributorAllocations.getContributorById
+    if (allocations[0] && !mostRecentAllocation) {
+        setMostRecentAllocation(getMostRecentAlloaction({ allocations }))
+    }
 
     return (
         <Dialog
@@ -64,36 +95,79 @@ const AllocationAddForm = (props) => {
             className='AllocationAddForm'
         >
             <Box m={5}>
+
                 <DialogTitle>
                     {`Add Allocation`}
                 </DialogTitle>
-                <ButtonGroup color='primary' aria-label='outlined primary button group'>
-                    <Button
-                        variant={`${allocationTypes[0] ? 'contained' : 'outlined'}`}
-                        color='primary'
-                        onClick={() => (changeAllocationType({ selectedType: 0, allocationTypes: allocationTypes }))}
-                    >
-                        {'Prorated monthly'}
-                    </Button>
-                    <Button
-                        variant={`${allocationTypes[1] ? 'contained' : 'outlined'}`}
-                        color='primary'
-                        onClick={() => (changeAllocationType({ selectedType: 1, allocationTypes: allocationTypes }))}
-                    >
-                        {'Max Budget'}
-                    </Button>
-                </ButtonGroup>
+                <Grid container spacing={5}>
+                    <Grid item xs={12}>
+                        <ButtonGroup color='primary' aria-label='outlined primary button group'>
+                            <Button
+                                variant={`${allocationTypes[0] ? 'contained' : 'outlined'}`}
+                                color='primary'
+                                onClick={() => (changeAllocationType({ selectedType: 0, allocationTypes: allocationTypes }))}
+                            >
+                                {'Prorated monthly'}
+                            </Button>
+                            <Button
+                                variant={`${allocationTypes[1] ? 'contained' : 'outlined'}`}
+                                color='primary'
+                                onClick={() => (changeAllocationType({ selectedType: 1, allocationTypes: allocationTypes }))}
+                            >
+                                {'Max Budget'}
+                            </Button>
+                        </ButtonGroup>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <DatePicker
+                            selected={startDate}
+                            startDate={startDate}
+                            endDate={endDate}
+                            shouldCloseOnSelect={startDate && !endDate}
+                            selectsRange
+                            onChange={(date) => getRangedTimeEntries(date)}
+                            customInput={
+                                <Box
+                                    px={2}
+                                    py={1}
+                                    boxShadow={3}
+                                    borderRadius='borderRadius'
+                                    bgcolor='primary.light'
+                                >
+                                    {`${
+                                        startDate
+                                            ? moment(startDate).format('MM/DD/YYYY')
+                                            : 'Start date'
+                                    } - ${
+                                        endDate
+                                            ? moment(endDate).format('MM/DD/YYYY')
+                                            : ' End date'
+                                    }`}
+                                </Box>
+                            }
+                        />
+                    </Grid>
+                </Grid>
                 {
                     allocationTypes[0]
                         ? (
-                            <RateProratedMonthlyForm/>
+                            <RateProratedMonthlyForm
+                                currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
+                            />
                         ) : (
                             <RateMaxBudgetForm/>
                         )
                 }
+                <Button
+                    variant={`contained`}
+                    color='primary'
+                >
+                    {'Add Allocation'}
+                </Button>
             </Box>
         </Dialog>
     )
+
 }
 
 export default AllocationAddForm

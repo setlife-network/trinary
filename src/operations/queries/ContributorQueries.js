@@ -16,7 +16,7 @@ export const CHECK_SESSION = gql`
 
 export const GET_CONTRIBUTORS = gql`
     query Contributors {
-        getContributors{
+        getContributors {
             id
             name
             github_id
@@ -27,10 +27,25 @@ export const GET_CONTRIBUTORS = gql`
     }
 `
 
-export const GET_CONTRIBUTOR_ALLOCATION = gql`
-    query Contributors {
-        getContributors{
-            id
+export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
+    query ContributorAllocation($id: Int!) {
+        getContributorById(id: $id) {
+            id,
+            allocations {
+                id
+                amount
+                active
+                start_date
+                end_date
+                date_paid
+                rate {
+                    id
+                    active
+                    type
+                    hourly_rate
+
+                }
+            }
         }
     }
 `

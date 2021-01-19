@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery, useMutation } from '@apollo/client'
+import { useLazyQuery, useQuery, useMutation } from '@apollo/client'
 import {
     Box,
     Grid
@@ -57,11 +57,8 @@ const ProjectContributors = (props) => {
     }, [])
 
     const AddAllocation = (props) => {
-        console.log('AddAllocation');
-        console.log(props);
         setOpenAddAllocationDialog(true)
         setContributorClicked(props.contributor)
-
     }
 
     if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
@@ -150,12 +147,15 @@ const ProjectContributors = (props) => {
                 </Box>
                 <Box my={5} py={5}/>
             </Grid>
-            <AllocationAddForm
-                project={project}
-                open={openAddAllocationDialog}
-                onClose={handleAddAllocationClose}
-                contributor={contributorClicked}
-            />
+            {
+                contributorClicked &&
+                <AllocationAddForm
+                    project={project}
+                    open={openAddAllocationDialog}
+                    onClose={handleAddAllocationClose}
+                    contributor={contributorClicked}
+                />
+            }
         </Grid>
     )
 }
