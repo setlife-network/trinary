@@ -16,6 +16,13 @@ module.exports = {
                     contributor_id: contributor.id
                 }
             })
+        },
+        allocations: (contributor, args, { models }) => {
+            return models.Allocation.findAll({
+                where: {
+                    contributor_id: contributor.id
+                }
+            })
         }
     },
     Query: {
