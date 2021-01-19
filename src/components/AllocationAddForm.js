@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLazyQuery, useQuery } from '@apollo/client'
+import { useLazyQuery, useQuery, useMutation } from '@apollo/client'
 import {
     Box,
     Button,
@@ -16,6 +16,7 @@ import DatePicker from 'react-datepicker'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 import { GET_CONTRIBUTOR_ALLOCATIONS } from '../operations/queries/ContributorQueries'
+import { CREATE_RATE } from '../operations/mutations/RateMutations'
 
 const AllocationAddForm = (props) => {
 
@@ -26,10 +27,13 @@ const AllocationAddForm = (props) => {
         open
     } = props
 
+    const [newRate, { dataNewRate, loadingNewRate, errorNewRate }] = useMutation(CREATE_RATE)
+
     const [allocationTypes, setAllocationTypes] = useState([1, 0])
     const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
     const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month')['_d'])
     const [endDate, setEndDate] = useState(moment().add(1, 'months').endOf('month')['_d'])
+    const [newAllocation, setNewAllocation] = useState({})
 
     const {
         data: dataContributorAllocations,
@@ -78,6 +82,19 @@ const AllocationAddForm = (props) => {
         const [start, end] = dates
         setStartDate(start)
         setEndDate(end)
+    }
+
+    const createRate = async (rate) => {
+        console.log('rate');
+        console.log(rate);
+        await newRate({
+            variables: {
+                hourly_rate: toString(rate.hourly_rate),
+                monthly_hours: rate.monthly_hours,
+                type: rate.type,
+                contributor_id: contributor.id
+            }
+        })
     }
 
     if (loadingContributorAllocations) return 'Loading...'
@@ -153,6 +170,8 @@ const AllocationAddForm = (props) => {
                         ? (
                             <RateProratedMonthlyForm
                                 currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
+                                createRate={createRate}
+                                setNewAllocation={setNewAllocation}
                             />
                         ) : (
                             <RateMaxBudgetForm/>
@@ -161,6 +180,11 @@ const AllocationAddForm = (props) => {
                 <Button
                     variant={`contained`}
                     color='primary'
+                    disabled={
+                        !newAllocation['total_amount'] == 0
+                            ? false
+                            : true}
+                    onClick={() => createRate(newAllocation)}
                 >
                     {'Add Allocation'}
                 </Button>

@@ -8,7 +8,7 @@ import {
 
 const RateProratedMonthlyForm = (props) => {
 
-    const { currentRate } = props
+    const { currentRate, createRate, setNewAllocation } = props
 
     const [totalAmount, setTotalAmount] = useState(null)
     const [monthlyHoursInput, setMonthlyhoursInput] = useState(160)
@@ -21,6 +21,15 @@ const RateProratedMonthlyForm = (props) => {
     useEffect(() => {
         setTotalAmount(currentRateInput * monthlyHoursInput)
     }, [monthlyHoursInput, currentRateInput])
+
+    useEffect(() => {
+        setNewAllocation({
+            current_rate: currentRateInput,
+            monthly_hours: monthlyHoursInput,
+            total_amount: totalAmount,
+            type: 'prorated_monthly'
+        })
+    }, [totalAmount])
 
     return (
         <Grid container className='RateProratedMonthlyForm'>
