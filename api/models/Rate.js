@@ -14,8 +14,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         monthly_hours: {
-            type: DataTypes.INTEGER,
-            allowNull: false
+            type: DataTypes.INTEGER
         },
         active: {
             type: DataTypes.BOOLEAN,

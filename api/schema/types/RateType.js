@@ -3,11 +3,11 @@ const { gql } = require('apollo-server')
 module.exports = gql`
     type Rate {
         id: Int!
-        monthly_hours: Int!
         active: Boolean!
         hourly_rate: String!
         type: String!
         contributor_id: Int!
+        monthly_hours: Int
         contributor: Contributor
     }
 

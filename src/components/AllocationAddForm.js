@@ -95,7 +95,7 @@ const AllocationAddForm = (props) => {
         })
     }
 
-    if (loadingContributorAllocations) return 'Loading...'
+    if (loadingContributorAllocations) return ''
     if (errorContributorAllocations) return `error ${errorContributorAllocations}`
 
     const { allocations } = dataContributorAllocations.getContributorById
@@ -168,20 +168,25 @@ const AllocationAddForm = (props) => {
                         ? (
                             <RateProratedMonthlyForm
                                 currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
-                                createRate={createRate}
                                 setNewAllocation={setNewAllocation}
                             />
                         ) : (
-                            <RateMaxBudgetForm/>
+                            <RateMaxBudgetForm
+                                currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
+                                setNewAllocation={setNewAllocation}
+                                startDate={moment(startDate)}
+                                endDate={moment(endDate)}
+                            />
                         )
                 }
                 <Button
                     variant={`contained`}
                     color='primary'
                     disabled={
-                        !newAllocation['total_amount'] == 0
-                            ? false
-                            : true}
+                        !newAllocation['total_amount'] || !newAllocation['hourly_rate']
+                            ? true
+                            : false
+                    }
                     onClick={() => createRate(newAllocation)}
                 >
                     {'Add Allocation'}

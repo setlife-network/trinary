@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const CREATE_RATE = gql`
-    mutation createRate($monthly_hours: Int!, $hourly_rate: String!, $type: String!, $contributor_id: Int!){
+    mutation createRate($monthly_hours: Int, $hourly_rate: String!, $type: String!, $contributor_id: Int!){
         createRate(createFields: {
             active: true
             monthly_hours: $monthly_hours
