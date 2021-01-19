@@ -11,7 +11,11 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            allowNull: false,
+            allowNull: false
+        },
+        monthly_hours: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
         active: {
             type: DataTypes.BOOLEAN,
