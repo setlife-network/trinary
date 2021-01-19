@@ -7,14 +7,17 @@ import {
 
 const RateProratedMonthlyForm = (props) => {
 
-    const { currentRate, setNewAllocation } = props
+    const { currentRate, setNewAllocationRate } = props
 
     const [totalAmount, setTotalAmount] = useState(null)
-    const [monthlyHoursInput, setMonthlyhoursInput] = useState(160)
+    const [monthlyHoursInput, setMonthlyhoursInput] = useState(null)
     const [currentRateInput, setCurrentRateInput] = useState(null)
 
     useEffect(() => {
+        console.log('currentRate');
+        console.log(currentRate);
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
+        setMonthlyhoursInput(currentRate ? currentRate.monthly_hours : 160)
     }, [])
 
     useEffect(() => {
@@ -22,7 +25,7 @@ const RateProratedMonthlyForm = (props) => {
     }, [monthlyHoursInput, currentRateInput])
 
     useEffect(() => {
-        setNewAllocation({
+        setNewAllocationRate({
             hourly_rate: currentRateInput,
             monthly_hours: monthlyHoursInput,
             total_amount: totalAmount,

@@ -10,7 +10,7 @@ import moment from 'moment'
 
 const RateMaxBudgetForm = (props) => {
 
-    const { currentRate, createRate, setNewAllocation, startDate, endDate } = props
+    const { currentRate, createRate, setNewAllocationRate, startDate, endDate } = props
 
     const [totalAmount, setTotalAmount] = useState(0)
     const [currentRateInput, setCurrentRateInput] = useState(null)
@@ -24,7 +24,7 @@ const RateMaxBudgetForm = (props) => {
 
     useEffect(() => {
         setTotalHours(totalAmount && currentRateInput ? (totalAmount / currentRateInput).toFixed(2) : 0)
-        setNewAllocation({
+        setNewAllocationRate({
             hourly_rate: currentRateInput,
             total_amount: totalAmount,
             type: 'max_budget'

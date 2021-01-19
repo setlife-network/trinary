@@ -15,7 +15,7 @@ import DatePicker from 'react-datepicker'
 
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
-import { GET_CONTRIBUTOR_ALLOCATIONS } from '../operations/queries/ContributorQueries'
+import { GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 
 const AllocationAddForm = (props) => {
@@ -33,13 +33,37 @@ const AllocationAddForm = (props) => {
     const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
     const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month')['_d'])
     const [endDate, setEndDate] = useState(moment().add(1, 'months').endOf('month')['_d'])
-    const [newAllocation, setNewAllocation] = useState({})
+    const [newAllocationRate, setNewAllocationRate] = useState({})
+
+    useEffect(() => {
+        setMostRecentAllocation(null)
+    }, [open])
+
+    useEffect(() => {
+        if (mostRecentAllocation) {
+            if (mostRecentAllocation.rate.type == 'prorated_monthly') {
+                setAllocationTypes([1, 0])
+            } else if (mostRecentAllocation.rate.type == 'max_budget') {
+                setAllocationTypes([0, 1])
+            }
+        }
+    }, [mostRecentAllocation])
 
     const {
         data: dataContributorAllocations,
         loading: loadingContributorAllocations,
         error: errorContributorAllocations
     } = useQuery(GET_CONTRIBUTOR_ALLOCATIONS, {
+        variables: {
+            id: contributor ? Number(contributor.id) : null
+        }
+    })
+
+    const {
+        data: dataContributorRates,
+        loading: loadingContributorRates,
+        error: errorContributorRates
+    } = useQuery(GET_CONTRIBUTOR_RATES, {
         variables: {
             id: contributor ? Number(contributor.id) : null
         }
@@ -64,45 +88,44 @@ const AllocationAddForm = (props) => {
         return mostRecentAllocation[0]
     }
 
-    useEffect(() => {
-        setMostRecentAllocation(null)
-    }, [open])
-
-    useEffect(() => {
-        if (mostRecentAllocation) {
-            if (mostRecentAllocation.rate.type == 'prorated_monthly') {
-                setAllocationTypes([1, 0])
-            } else if (mostRecentAllocation.rate.type == 'max_budget') {
-                setAllocationTypes([0, 1])
-            }
-        }
-    }, [mostRecentAllocation])
-
     const getRangedTimeEntries = (dates) => {
         const [start, end] = dates
         setStartDate(start)
         setEndDate(end)
     }
 
-    const createRate = async (rate) => {
+    const createRate = async (rate, contributorRates) => {
         //check if the values are different to any rate and if ti's the case, create new rate
-        findKey()
-
-        await newRate({
-            variables: {
-                hourly_rate: rate.hourly_rate.toString(),
-                monthly_hours: Number(rate.monthly_hours),
-                type: rate.type,
-                contributor_id: contributor.id
+        const existingRate = findKey(
+            contributorRates,
+            {
+                'hourly_rate': rate.hourly_rate.toString(),
+                'monthly_hours': Number(rate.monthly_hours),
+                'type': rate.type
             }
-        })
+        )
+
+        if (existingRate != null) {
+            //create only allocation referencing contributorRates[existingRate].id
+        } else {
+            await newRate({
+                variables: {
+                    hourly_rate: rate.hourly_rate.toString(),
+                    monthly_hours: Number(rate.monthly_hours),
+                    type: rate.type,
+                    contributor_id: contributor.id
+                }
+            })
+        }
         onClose()
     }
 
-    if (loadingContributorAllocations) return ''
-    if (errorContributorAllocations) return `error ${errorContributorAllocations}`
+    if (loadingContributorAllocations || loadingContributorRates) return ''
+    if (errorContributorAllocations || errorContributorRates) return `error`
 
     const { allocations } = dataContributorAllocations.getContributorById
+    const { rates } = dataContributorRates.getContributorById
+
     if (allocations[0] && !mostRecentAllocation) {
         setMostRecentAllocation(getMostRecentAlloaction({ allocations }))
     }
@@ -172,12 +195,12 @@ const AllocationAddForm = (props) => {
                         ? (
                             <RateProratedMonthlyForm
                                 currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
-                                setNewAllocation={setNewAllocation}
+                                setNewAllocationRate={setNewAllocationRate}
                             />
                         ) : (
                             <RateMaxBudgetForm
                                 currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
-                                setNewAllocation={setNewAllocation}
+                                setNewAllocationRate={setNewAllocationRate}
                                 startDate={moment(startDate)}
                                 endDate={moment(endDate)}
                             />
@@ -187,11 +210,11 @@ const AllocationAddForm = (props) => {
                     variant={`contained`}
                     color='primary'
                     disabled={
-                        !newAllocation['total_amount'] || !newAllocation['hourly_rate']
+                        !newAllocationRate['total_amount'] || !newAllocationRate['hourly_rate']
                             ? true
                             : false
                     }
-                    onClick={() => createRate(newAllocation)}
+                    onClick={() => createRate(newAllocationRate, rates)}
                 >
                     {'Add Allocation'}
                 </Button>
