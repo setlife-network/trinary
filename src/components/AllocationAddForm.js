@@ -247,6 +247,8 @@ const AllocationAddForm = (props) => {
                             <RateProratedMonthlyForm
                                 currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
                                 setNewAllocationRate={setNewAllocationRate}
+                                startDate={moment(startDate)}
+                                endDate={moment(endDate)}
                             />
                         ) : (
                             <RateMaxBudgetForm

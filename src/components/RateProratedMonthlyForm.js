@@ -2,18 +2,22 @@ import React, { useEffect, useState } from 'react'
 import {
     Box,
     Grid,
-    TextField
+    TextField,
+    Typography
 } from '@material-ui/core/'
 
 const RateProratedMonthlyForm = (props) => {
 
-    const { currentRate, setNewAllocationRate } = props
+    const { currentRate, setNewAllocationRate, startDate, endDate } = props
 
     const [totalAmount, setTotalAmount] = useState(null)
     const [monthlyHoursInput, setMonthlyhoursInput] = useState(null)
     const [currentRateInput, setCurrentRateInput] = useState(null)
+    const [totalWeeks, setTotalWeeks] = useState(null)
+    const [totalHours, setTotalHours] = useState(0)
 
     useEffect(() => {
+        setTotalWeeks(endDate.diff(startDate, 'weeks'))
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
         setMonthlyhoursInput(currentRate ? currentRate.monthly_hours : 160)
     }, [])
@@ -23,6 +27,7 @@ const RateProratedMonthlyForm = (props) => {
     }, [monthlyHoursInput, currentRateInput])
 
     useEffect(() => {
+        setTotalHours(totalAmount && currentRateInput ? (totalAmount / currentRateInput).toFixed(2) : 0)
         setNewAllocationRate({
             hourly_rate: currentRateInput,
             monthly_hours: monthlyHoursInput,
@@ -30,6 +35,10 @@ const RateProratedMonthlyForm = (props) => {
             type: 'prorated_monthly'
         })
     }, [totalAmount])
+
+    useEffect(() => {
+        setTotalWeeks(endDate.diff(startDate, 'weeks'))
+    }, [startDate, endDate])
 
     return (
         <Grid container className='RateProratedMonthlyForm'>
@@ -63,6 +72,13 @@ const RateProratedMonthlyForm = (props) => {
                             />
                         </Grid>
                     </Grid>
+                </Box>
+            </Grid>
+            <Grid item xs={12}>
+                <Box mb={2} mt={1}>
+                    <Typography>
+                        {`Total hours per week = ${(totalHours / totalWeeks).toFixed(2)}`}
+                    </Typography>
                 </Box>
             </Grid>
         </Grid>
