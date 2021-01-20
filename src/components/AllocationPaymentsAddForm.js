@@ -9,36 +9,67 @@ import {
     FormControl,
     Grid
 } from '@material-ui/core/'
-import { fill, findKey } from 'lodash'
+import { differenceBy, fill, filter, findKey } from 'lodash'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 import AllocationAddSpecifics from './AllocationAddSpecifics'
-import { GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
-import { GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
+import { GET_CONTRIBUTORS, GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
+import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 
-const AllocationAddForm = (props) => {
+const AllocationPaymentsAddForm = (props) => {
 
     const {
         contributor,
+        payment,
         project,
         onClose,
         open
     } = props
 
+    const {
+        data: dataContributors,
+        loading: loadingContributors,
+        error: errorContributors
+    } = useQuery(GET_CONTRIBUTORS)
+
+    const [getContributorAllocations, {
+        data: dataContributorAllocations,
+        loading: loadingContributorAllocations,
+        error: errorContributorAllocations
+    }] = useLazyQuery(GET_CONTRIBUTOR_ALLOCATIONS)
+
+    const [getContributorRates, {
+        data: dataContributorRates,
+        loading: loadingContributorRates,
+        error: errorContributorRates
+    }] = useLazyQuery(GET_CONTRIBUTOR_RATES)
+
+    const {
+        data: dataProjectContributors,
+        loading: loadingProjectContributors,
+        error: errorProjectContributors
+    } = useQuery(GET_PROJECT_CONTRIBUTORS, {
+        variables: {
+            id: project.id
+        }
+    })
+
     const [createRate, { dataNewRate, loadingNewRate, errorNewRate }] = useMutation(CREATE_RATE)
     const [createAllocation, { dataNewAllocations, loadingNewAllocation, errorNewAllocation }] = useMutation(CREATE_ALLOCATION)
 
     const [allocationTypes, setAllocationTypes] = useState([1, 0])
+    const [contributorAllocations, setContributorAllocations] = useState(null)
     const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
     const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month')['_d'])
     const [endDate, setEndDate] = useState(moment().add(1, 'months').endOf('month')['_d'])
     const [newAllocationRate, setNewAllocationRate] = useState({})
     const [newAllocation, setNewAllocation] = useState({})
+    const [selectedContributor, setSelectedContributor] = useState({})
 
     useEffect(() => {
         setMostRecentAllocation(null)
@@ -54,35 +85,23 @@ const AllocationAddForm = (props) => {
         }
     }, [mostRecentAllocation])
 
-    const {
-        data: dataContributorAllocations,
-        loading: loadingContributorAllocations,
-        error: errorContributorAllocations
-    } = useQuery(GET_CONTRIBUTOR_ALLOCATIONS, {
-        variables: {
-            id: contributor ? Number(contributor.id) : null
-        }
-    })
+    useEffect(async() => {
+        console.log('selectedContributor');
+        console.log(selectedContributor.id);
+        setContributorAllocations(await getContributorAllocations({
+            variables: {
+                id: selectedContributor.id
+            }
+        }))
+        console.log('contributorAllocations');
+        console.log(contributorAllocations);
+    }, [selectedContributor])
 
-    const {
-        data: dataContributorRates,
-        loading: loadingContributorRates,
-        error: errorContributorRates
-    } = useQuery(GET_CONTRIBUTOR_RATES, {
-        variables: {
-            id: contributor ? Number(contributor.id) : null
-        }
-    })
+    useEffect(() => {
+        console.log('contributorAllocations');
+        console.log(contributorAllocations);
 
-    const {
-        data: dataProjectPayments,
-        loading: loadingProjectPayments,
-        error: errorProjectPayments
-    } = useQuery(GET_PROJECT_PAYMENTS, {
-        variables: {
-            id: project.id
-        }
-    })
+    }, [contributorAllocations])
 
     const changeAllocationType = (props) => {
         const { allocationTypes, selectedType } = props
@@ -157,16 +176,17 @@ const AllocationAddForm = (props) => {
         onClose()
     }
 
-    if (loadingContributorAllocations || loadingContributorRates || loadingProjectPayments) return ''
-    if (errorContributorAllocations || errorContributorRates || errorProjectPayments) return `error`
+    if (loadingProjectContributors || loadingContributors) return ''
+    if (errorProjectContributors || errorContributors) return `error`
 
-    const { allocations } = dataContributorAllocations.getContributorById
-    const { rates } = dataContributorRates.getContributorById
-    const { allocatedPayments } = dataProjectPayments.getProjectById
-
-    if (allocations[0] && !mostRecentAllocation) {
-        setMostRecentAllocation(getMostRecentAlloaction({ allocations }))
-    }
+    const { allocations } = dataProjectContributors.getProjectById
+    const { getContributors: contributors } = dataContributors
+    const activeAllocations = filter(allocations, 'active')
+    const activeContributors = activeAllocations.map(a => {
+        return a.contributor
+    })
+    const contributorsToAdd = differenceBy(contributors, activeContributors, 'id')
+    const rates = dataContributorRates ? dataContributorRates.getContributorById.rates : null
 
     return (
         <Dialog
@@ -181,10 +201,11 @@ const AllocationAddForm = (props) => {
                 <Grid container spacing={5} justify='center'>
                     <Grid item xs={12}>
                         <AllocationAddSpecifics
-                            contributor={contributor}
-                            payments={allocatedPayments}
+                            contributors={contributorsToAdd}
+                            payment={payment}
                             project={project}
                             setNewAllocation={setNewAllocation}
+                            setContributor={setSelectedContributor}
                         />
                         <hr/>
                     </Grid>
@@ -277,4 +298,4 @@ const AllocationAddForm = (props) => {
 
 }
 
-export default AllocationAddForm
+export default AllocationPaymentsAddForm

@@ -56,7 +56,7 @@ const ProjectContributors = (props) => {
         })
     }, [])
 
-    const AddAllocation = (props) => {
+    const addAllocation = (props) => {
         setOpenAddAllocationDialog(true)
         setContributorClicked(props.contributor)
     }
@@ -94,7 +94,7 @@ const ProjectContributors = (props) => {
                     <ContributorTile
                         active={active}
                         contributor={c}
-                        onAddButton={AddAllocation}
+                        onAddButton={addAllocation}
                     />
                 </Grid>
             )

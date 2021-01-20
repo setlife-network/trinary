@@ -25,30 +25,45 @@ const AllocationAddSpecifics = (props) => {
 
     const {
         contributor,
+        contributors,
         project,
+        payment,
         payments,
-        setNewAllocation
+        setNewAllocation,
+        setContributor
     } = props
 
-    const [selectedPayment, setSelectedPayment] = useState(payments[0])
-    const [open, setOpen] = useState(false)
+    const [selectedPayment, setSelectedPayment] = useState(payments ? payments[0] : payment)
+    const [selectedContributor, setSelectedContributor] = useState(contributors ? contributors[0] : contributor)
+    const [openContributors, setOpenContributors] = useState(false)
+    const [openPayments, setOpenPayments] = useState(false)
     const [projectGithubRepo, setProjectGithubRepo] = useState(null)
     const [contributorGithubUser, setContributorGithubUser] = useState(null)
 
-    const handleClick = () => {
-        setOpen(!open)
+    const handleClickContributors = () => {
+        setOpenContributors(!openContributors)
+    }
+
+    const handleClickPayments = () => {
+        setOpenPayments(!openPayments)
     }
 
     useEffect(() => {
         setProjectGithubRepo(last(split(project.github_url, '/')))
-        setContributorGithubUser(last(split(contributor.github_handle, '/')))
+        setContributorGithubUser(last(split(selectedContributor.github_handle, '/')))
     }, [])
 
     useEffect(() => {
-        selectLatestPayment({ payments })
+        setContributorGithubUser(last(split(selectedContributor.github_handle, '/')))
+    }, [selectedContributor])
+
+    useEffect(() => {
+        if (payments) {
+            selectLatestPayment({ payments })
+        }
         setNewAllocation({
             payment_id: selectedPayment.id,
-            contributor_id: contributor.id
+            contributor_id: selectedContributor.id
         })
     }, [selectedPayment])
 
@@ -62,7 +77,13 @@ const AllocationAddSpecifics = (props) => {
 
     const onClickPayment = (payment) => {
         setSelectedPayment(payment)
-        setOpen(false)
+        setOpenPayments(false)
+    }
+
+    const onClickContributor = (contributor) => {
+        setSelectedContributor(contributor)
+        setContributor(contributor)
+        setOpenContributors(false)
     }
 
     const listPayments = (payments) => {
@@ -89,9 +110,36 @@ const AllocationAddSpecifics = (props) => {
         })
     }
 
+    const listContributors = (contributors) => {
+        const contributorsList = differenceWith(contributors, [selectedContributor])
+        return contributorsList.map(c => {
+            return (
+                <List component='div' disablePadding>
+                    <ListItem button onClick={() => onClickContributor(c)}>
+                        <Grid container>
+                            <Grid item xs={3}/>
+                            <Grid item xs={3}>
+                                <ListItemText primary={`${c.name}`}/>
+                            </Grid>
+                            <Grid item xs={3} align='center'>
+                                <Typography variant='caption' color='secondary'>
+                                    {`${last(split(c.github_handle, '/'))}`}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <GitHubIcon color='secondary' fontSize='small'/>
+                            </Grid>
+                        </Grid>
+                    </ListItem>
+                </List>
+            )
+        })
+    }
+
     return (
         <Box className='AllocationAddSpecifics'>
             <Grid container justify='center'>
+
                 <ListItem button>
                     <Grid item xs={3}>
                         <AssessmentIcon color='primary'/>
@@ -110,27 +158,47 @@ const AllocationAddSpecifics = (props) => {
                         <GitHubIcon color='secondary' fontSize='small'/>
                     </Grid>
                 </ListItem>
-                <ListItem button>
-                    <Grid item xs={3}>
-                        <PeopleIcon color='primary'/>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Typography>
-                            {contributor.name}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={3} align='center'>
-                        <Typography variant='caption' color='secondary'>
-                            {contributorGithubUser}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={3} align='right'>
-                        <GitHubIcon color='secondary' fontSize='small'/>
-                    </Grid>
-                </ListItem>
+
                 <Grid item xs={12}>
                     <List component='nav'>
-                        <ListItem button onClick={handleClick}>
+                        <ListItem button onClick={handleClickContributors}>
+                            <Grid container>
+                                <Grid item xs={3}>
+                                    <PeopleIcon color='primary'/>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <Typography>
+                                        {selectedContributor.name}
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={3} align='center'>
+                                    <Typography variant='caption' color='secondary'>
+                                        {contributorGithubUser}
+                                    </Typography>
+                                </Grid>
+                                {
+                                    !contributor &&
+                                    <Grid item xs={3} align='right'>
+                                        {openContributors
+                                            ? <ExpandLess />
+                                            : <ExpandMore />
+                                        }
+                                    </Grid>
+                                }
+                            </Grid>
+                        </ListItem>
+                        {
+                            !contributor &&
+                            <Collapse in={openContributors} timeout='auto' unmountOnExit>
+                                {listContributors(contributors)}
+                            </Collapse>
+                        }
+                    </List>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <List component='nav'>
+                        <ListItem button onClick={handleClickPayments}>
                             <Grid container>
                                 <Grid item xs={3}>
                                     <PaymentIcon color='primary'/>
@@ -143,14 +211,23 @@ const AllocationAddSpecifics = (props) => {
                                         {`${moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')}`}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={3} align='right'>
-                                    {open ? <ExpandLess /> : <ExpandMore />}
-                                </Grid>
+                                {
+                                    !payment &&
+                                    <Grid item xs={3} align='right'>
+                                        {openPayments
+                                            ? <ExpandLess />
+                                            : <ExpandMore />
+                                        }
+                                    </Grid>
+                                }
                             </Grid>
                         </ListItem>
-                        <Collapse in={open} timeout='auto' unmountOnExit>
-                            {listPayments(payments)}
-                        </Collapse>
+                        {
+                            !payment &&
+                            <Collapse in={openPayments} timeout='auto' unmountOnExit>
+                                {listPayments(payments)}
+                            </Collapse>
+                        }
                     </List>
                 </Grid>
 

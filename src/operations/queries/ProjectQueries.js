@@ -59,6 +59,8 @@ export const GET_PROJECT_PAYMENTS = gql`
     query ProjectTimeEntries($id: Int!){
         getProjectById(id: $id){
             id
+            name
+            github_url
             allocatedPayments {
                 id
                 amount
