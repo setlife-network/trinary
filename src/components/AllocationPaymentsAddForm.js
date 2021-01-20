@@ -93,8 +93,6 @@ const AllocationPaymentsAddForm = (props) => {
                 id: selectedContributor.id
             }
         }))
-        console.log('contributorAllocations');
-        console.log(contributorAllocations);
     }, [selectedContributor])
 
     useEffect(() => {
