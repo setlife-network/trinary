@@ -147,15 +147,17 @@ const ProjectContributors = (props) => {
                 </Box>
                 <Box my={5} py={5}/>
             </Grid>
-            {
-                contributorClicked &&
-                <AllocationAddForm
-                    project={project}
-                    open={openAddAllocationDialog}
-                    onClose={handleAddAllocationClose}
-                    contributor={contributorClicked}
-                />
-            }
+            <Grid item xs={12}>
+                {
+                    contributorClicked &&
+                    <AllocationAddForm
+                        project={project}
+                        open={openAddAllocationDialog}
+                        onClose={handleAddAllocationClose}
+                        contributor={contributorClicked}
+                    />
+                }
+            </Grid>
         </Grid>
     )
 }

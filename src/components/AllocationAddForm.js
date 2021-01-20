@@ -15,8 +15,11 @@ import DatePicker from 'react-datepicker'
 
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
+import AllocationAddSpecifics from './AllocationAddSpecifics'
 import { GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
+import { GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
+import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 
 const AllocationAddForm = (props) => {
 
@@ -27,13 +30,15 @@ const AllocationAddForm = (props) => {
         open
     } = props
 
-    const [newRate, { dataNewRate, loadingNewRate, errorNewRate }] = useMutation(CREATE_RATE)
+    const [createRate, { dataNewRate, loadingNewRate, errorNewRate }] = useMutation(CREATE_RATE)
+    const [createAllocation, { dataNewAllocations, loadingNewAllocation, errorNewAllocation }] = useMutation(CREATE_ALLOCATION)
 
     const [allocationTypes, setAllocationTypes] = useState([1, 0])
     const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
     const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month')['_d'])
     const [endDate, setEndDate] = useState(moment().add(1, 'months').endOf('month')['_d'])
     const [newAllocationRate, setNewAllocationRate] = useState({})
+    const [newAllocation, setNewAllocation] = useState({})
 
     useEffect(() => {
         setMostRecentAllocation(null)
@@ -69,6 +74,16 @@ const AllocationAddForm = (props) => {
         }
     })
 
+    const {
+        data: dataProjectPayments,
+        loading: loadingProjectPayments,
+        error: errorProjectPayments
+    } = useQuery(GET_PROJECT_PAYMENTS, {
+        variables: {
+            id: project.id
+        }
+    })
+
     const changeAllocationType = (props) => {
         const { allocationTypes, selectedType } = props
         const allocationTypesState = allocationTypes
@@ -94,7 +109,18 @@ const AllocationAddForm = (props) => {
         setEndDate(end)
     }
 
-    const createRate = async (rate, contributorRates) => {
+    const createRateAndAllocation = async (props) => {
+        const {
+            allocation,
+            contributorRates,
+            rate
+        } = props
+
+        console.log('rate');
+        console.log(rate);
+        console.log('allocation');
+        console.log(allocation);
+        const allocationRate = {}
         //check if the values are different to any rate and if ti's the case, create new rate
         const existingRate = findKey(
             contributorRates,
@@ -107,24 +133,56 @@ const AllocationAddForm = (props) => {
 
         if (existingRate != null) {
             //create only allocation referencing contributorRates[existingRate].id
+            console.log(`contributorRates['existingRate'].id`);
+            console.log(contributorRates[`${existingRate}`].id);
+            allocationRate['id'] = contributorRates[`${existingRate}`].id
         } else {
-            await newRate({
+            allocationRate['id'] = (await createRate({
                 variables: {
                     hourly_rate: rate.hourly_rate.toString(),
                     monthly_hours: Number(rate.monthly_hours),
                     type: rate.type,
                     contributor_id: contributor.id
                 }
-            })
+            })).data.createRate.id
+            console.log(`allocationRate['id']`);
+            console.log(allocationRate['id']);
         }
+        //create allocation with that rate id
+        const variables = {
+            amount: rate.total_amount,
+            start_date: moment(startDate).format('YYYY-MM-DD'),
+            end_date: moment(endDate).format('YYYY-MM-DD'),
+            date_paid: null,
+            payment_id: allocation.payment_id,
+            project_id: project.id,
+            contributor_id: allocation.contributor_id,
+            rate_id: allocationRate.id
+        }
+        console.log('r variables');
+        console.log(variables);
+        await createAllocation({
+            variables: {
+                amount: rate.total_amount,
+                start_date: moment(startDate).format('YYYY-MM-DD'),
+                end_date: moment(endDate).format('YYYY-MM-DD'),
+                date_paid: null,
+                payment_id: allocation.payment_id,
+                project_id: project.id,
+                contributor_id: allocation.contributor_id,
+                rate_id: allocationRate.id
+            }
+        })
+
         onClose()
     }
 
-    if (loadingContributorAllocations || loadingContributorRates) return ''
-    if (errorContributorAllocations || errorContributorRates) return `error`
+    if (loadingContributorAllocations || loadingContributorRates || loadingProjectPayments) return ''
+    if (errorContributorAllocations || errorContributorRates || errorProjectPayments) return `error`
 
     const { allocations } = dataContributorAllocations.getContributorById
     const { rates } = dataContributorRates.getContributorById
+    const { allocatedPayments } = dataProjectPayments.getProjectById
 
     if (allocations[0] && !mostRecentAllocation) {
         setMostRecentAllocation(getMostRecentAlloaction({ allocations }))
@@ -137,11 +195,20 @@ const AllocationAddForm = (props) => {
             className='AllocationAddForm'
         >
             <Box m={5}>
-
                 <DialogTitle>
                     {`Add Allocation`}
                 </DialogTitle>
-                <Grid container spacing={5}>
+                <Grid container spacing={5} justify='center'>
+                    <Grid item xs={12}>
+                        <AllocationAddSpecifics
+                            contributor={contributor}
+                            payments={allocatedPayments}
+                            project={project}
+                            setNewAllocation={setNewAllocation}
+                        />
+                        <hr/>
+                    </Grid>
+
                     <Grid item xs={12}>
                         <ButtonGroup color='primary' aria-label='outlined primary button group'>
                             <Button
@@ -214,7 +281,11 @@ const AllocationAddForm = (props) => {
                             ? true
                             : false
                     }
-                    onClick={() => createRate(newAllocationRate, rates)}
+                    onClick={() => createRateAndAllocation({
+                        allocation: newAllocation,
+                        rate: newAllocationRate,
+                        contributorRates: rates
+                    })}
                 >
                     {'Add Allocation'}
                 </Button>

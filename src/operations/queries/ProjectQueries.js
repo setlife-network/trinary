@@ -60,6 +60,7 @@ export const GET_PROJECT_PAYMENTS = gql`
         getProjectById(id: $id){
             id
             allocatedPayments {
+                id
                 amount
                 date_paid
                 date_incurred
@@ -82,6 +83,7 @@ export const GET_PROJECT_CONTRIBUTORS = gql`
         getProjectById(id: $id){
             id
             name
+            github_url
             contributors {
                 id
                 name

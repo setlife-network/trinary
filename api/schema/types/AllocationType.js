@@ -19,8 +19,6 @@ module.exports = gql`
 
     input CreateAllocationInput {
         amount: Int!
-        rate_unit: Int
-        rate_type: String!
         active: Boolean!
         start_date: String!
         end_date: String
@@ -33,8 +31,6 @@ module.exports = gql`
 
     input UpdateAllocationInput {
         amount: Int
-        rate_unit: Int
-        rate_type: String
         active: Boolean
         start_date: String
         end_date: String
