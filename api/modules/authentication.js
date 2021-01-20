@@ -16,11 +16,12 @@ const authentication = module.exports = (() => {
         }
     }
 
-    const createContributor = async ({ githubContributor }) => {
+    const createContributor = async (githubContributor) => {
         return db.models.Contributor.create({
             name: githubContributor.name,
             github_id: githubContributor.id,
-            github_handle: githubContributor.githubUrl
+            github_handle: githubContributor.githubUrl,
+            github_access_token: githubContributor.accessToken
         })
     }
 

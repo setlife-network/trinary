@@ -3,8 +3,13 @@ import { gql } from '@apollo/client'
 export const CHECK_SESSION = gql`
     query CheckSession{
         checkSession {
-            id,
+            id
             name
+            github_id
+            github_handle
+            github_acces_key
+            toggl_id
+            external_data_url
         }
     }
 `

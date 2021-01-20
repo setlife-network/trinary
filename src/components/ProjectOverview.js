@@ -6,40 +6,55 @@ import {
     Typography
 } from '@material-ui/core'
 
-import { GET_PROJECT } from '../operations/queries/ProjectQueries'
+import { GET_PROJECT, GET_PROJECT_TIME_ENTRIES } from '../operations/queries/ProjectQueries'
+import { CHECK_SESSION } from '../operations/queries/ContributorQueries'
+import GithubAccessBlocked from './GithubAccessBlocked'
 import ProjectSummary from './ProjectSummary'
 import ProjectOverviewExternalLinks from './ProjectOverviewExternalLinks'
 import ProjectTimeTracking from './ProjectTimeTracking'
-
-const TimeTracking = ({
-    totalTimeSpent,
-    timeSpent
-}) => {
-    return (
-        <div className='TimeTracking'>
-            TimeTracking
-        </div>
-    )
-}
 
 const ProjectOverview = (props) => {
 
     const { projectId } = props
 
-    const { data, loading, error } = useQuery(GET_PROJECT, {
+    const {
+        data: dataTimeEntries,
+        loading: loadingTimeEntries,
+        error: errorTimeEntries
+    } = useQuery(GET_PROJECT_TIME_ENTRIES, {
         variables: {
             id: Number(projectId)
         }
     })
 
-    if (loading) return 'Loading...'
-    if (error) return error
+    const {
+        data: dataProject,
+        loading: loadingProject,
+        error: errorProject,
+    } = useQuery(GET_PROJECT, {
+        variables: {
+            id: Number(projectId)
+        }
+    })
 
-    const project = data.getProjectById
+    if (loadingProject || loadingTimeEntries) return 'Loading...'
+    if (errorTimeEntries || errorProject) return 'Error..'
+
+    const project = dataProject.getProjectById
+    const {
+        id,
+        timeEntries,
+        timeSpent,
+        timeSpentPerContributor
+    } = dataTimeEntries.getProjectById
 
     return (
-        <Grid container className='ProjectOverview' justify='center'>
-            <Grid item xs={12}>
+        <Grid
+            container
+            className='ProjectOverview'
+            justify='center'
+        >
+            <Grid item xs={10} lg={5}>
                 <Box p={3}>
                     <Typography variant='h4'>
                         <strong>
@@ -53,15 +68,16 @@ const ProjectOverview = (props) => {
                     toggl_url={project.toggl_url}
                 />
                 <Box mt={8}>
-                    <ProjectTimeTracking project={project}/>
+                    <ProjectTimeTracking
+                        projectId={id}
+                        timeEntries={timeEntries}
+                        timeSpent={timeSpent}
+                        timeSpentPerContributor={timeSpentPerContributor}
+                    />
                 </Box>
             </Grid>
         </Grid>
     )
 }
-
-ProjectOverview.defaultProps = {
-
-};
 
 export default ProjectOverview;

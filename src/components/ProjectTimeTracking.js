@@ -15,21 +15,25 @@ import { GET_PROJECT_TIME_ENTRIES } from '../operations/queries/ProjectQueries'
 
 const ProjectTimeTracking = (props) => {
 
-    const { project } = props
+    const { projectId } = props
 
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
 
     const [
         getProjectTimeEntries,
-        { data: rangedTimeData, loading: rangedTimeLoading, error: rangedTimeError }
+        {
+            data: dataRangedTime,
+            loading: loadingRangedTime,
+            error: errorRangedTime
+        }
     ] = useLazyQuery(GET_PROJECT_TIME_ENTRIES)
 
     const clearDateInput = () => {
         setStartDate(null)
         setEndDate(null)
         getProjectTimeEntries({ variables: {
-            id: project.id,
+            id: projectId,
             fromDate: null,
             toDate: null
         } })
@@ -41,7 +45,7 @@ const ProjectTimeTracking = (props) => {
         setEndDate(end)
         if (end) {
             getProjectTimeEntries({ variables: {
-                id: project.id,
+                id: projectId,
                 fromDate: moment(startDate).format('YYYY-MM-DD'),
                 toDate: moment(end).format('YYYY-MM-DD')
             } })
@@ -49,26 +53,26 @@ const ProjectTimeTracking = (props) => {
     }
 
     const {
-        data: allTimeEntriesData,
-        loading: allTimeEntriesLoading,
-        error: allTimeEntriesError
+        data: dataAllTimeEntries,
+        loading: loadingAllTimeEntries,
+        error: errorAllTimeEntries
     } = useQuery(GET_PROJECT_TIME_ENTRIES, {
         variables: {
-            id: project.id,
+            id: projectId,
             fromDate: null,
             toDate: null
         }
     })
-    if (allTimeEntriesLoading || rangedTimeLoading) return 'Loading...'
-    if (allTimeEntriesError || rangedTimeError) return 'error!'
+    if (loadingAllTimeEntries || loadingRangedTime) return 'Loading...'
+    if (errorAllTimeEntries || errorRangedTime) return 'error!'
 
     const {
         timeEntries,
         timeSpent,
         timeSpentPerContributor
-    } = rangedTimeData
-        ? rangedTimeData.getProjectById
-        : allTimeEntriesData.getProjectById
+    } = dataRangedTime
+        ? dataRangedTime.getProjectById
+        : props
 
     const projectHoursSpent = timeSpent.seconds
         ? Math.trunc(timeSpent.seconds / 3600)

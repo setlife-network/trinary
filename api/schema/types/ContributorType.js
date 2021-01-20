@@ -5,13 +5,11 @@ module.exports = gql`
     type Contributor {
         id: Int!
         toggl_id: Int
-        hourly_rate: Int
-        weekly_rate: Int
-        monthlyRate: Int
         name: String!
         external_data_url: String
         github_id: String!
         github_handle: String!
+        github_acces_key: String
         permissions: [Permission]
         timeEntries: [TimeEntry]
     }
