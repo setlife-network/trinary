@@ -33,30 +33,33 @@ const RateProratedMonthlyForm = (props) => {
 
     return (
         <Grid container className='RateProratedMonthlyForm'>
-            <Grid item>
+            <Grid item xs={12}>
                 <Box my={3}>
                     <Grid container justify='left' spacing={1}>
-                        <Grid item xs={12} lg={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 label='Expected monthly hours'
                                 variant='filled'
                                 value={`${monthlyHoursInput}`}
+                                fullWidth
                                 onChange={(event) => setMonthlyhoursInput(event.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={12} lg={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 label='Hourly rate'
                                 variant='filled'
                                 value={`${currentRateInput}`}
+                                fullWidth
                                 onChange={(event) => setCurrentRateInput(event.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={12} lg={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 label='Total amount'
                                 variant='filled'
                                 value={`${totalAmount}`}
+                                fullWidth
                             />
                         </Grid>
                     </Grid>

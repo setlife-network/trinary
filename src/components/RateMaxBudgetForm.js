@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
     Box,
-    FormControl,
     Grid,
     TextField,
     Typography
@@ -39,32 +38,31 @@ const RateMaxBudgetForm = (props) => {
         <Grid container className='RateMaxBudgetForm'>
             <Grid item xs={12}>
                 <Box my={3}>
-                    <FormControl>
-                        <Grid container justify='left' spacing={1}>
-
-                            <Grid item xs={12} lg={6}>
-                                <TextField
-                                    label='Hourly rate'
-                                    variant='filled'
-                                    value={`${currentRateInput}`}
-                                    onChange={(event) => setCurrentRateInput(event.target.value)}
-                                />
-                            </Grid>
-                            <Grid item xs={12} lg={6}>
-                                <TextField
-                                    label='Total amount'
-                                    variant='filled'
-                                    defautltValue='0'
-                                    value={`${totalAmount ? totalAmount : ''}`}
-                                    onChange={(event) => setTotalAmount(event.target.value)}
-                                />
-                            </Grid>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                label='Hourly rate'
+                                variant='filled'
+                                value={`${currentRateInput}`}
+                                fullWidth
+                                onChange={(event) => setCurrentRateInput(event.target.value)}
+                            />
                         </Grid>
-                    </FormControl>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                label='Total amount'
+                                variant='filled'
+                                defautltValue='0'
+                                value={`${totalAmount ? totalAmount : ''}`}
+                                fullWidth
+                                onChange={(event) => setTotalAmount(event.target.value)}
+                            />
+                        </Grid>
+                    </Grid>
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <Box my={2}>
+                <Box mb={2} mt={1}>
                     <Typography>
                         {`Total hours = ${totalHours ? totalHours : 0}`}
                     </Typography>
