@@ -14,8 +14,6 @@ const RateProratedMonthlyForm = (props) => {
     const [currentRateInput, setCurrentRateInput] = useState(null)
 
     useEffect(() => {
-        console.log('currentRate');
-        console.log(currentRate);
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
         setMonthlyhoursInput(currentRate ? currentRate.monthly_hours : 160)
     }, [])
