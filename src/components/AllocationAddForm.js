@@ -133,8 +133,6 @@ const AllocationAddForm = (props) => {
 
         if (existingRate != null) {
             //create only allocation referencing contributorRates[existingRate].id
-            console.log(`contributorRates['existingRate'].id`);
-            console.log(contributorRates[`${existingRate}`].id);
             allocationRate['id'] = contributorRates[`${existingRate}`].id
         } else {
             allocationRate['id'] = (await createRate({
@@ -145,22 +143,8 @@ const AllocationAddForm = (props) => {
                     contributor_id: contributor.id
                 }
             })).data.createRate.id
-            console.log(`allocationRate['id']`);
-            console.log(allocationRate['id']);
         }
         //create allocation with that rate id
-        const variables = {
-            amount: rate.total_amount,
-            start_date: moment(startDate).format('YYYY-MM-DD'),
-            end_date: moment(endDate).format('YYYY-MM-DD'),
-            date_paid: null,
-            payment_id: allocation.payment_id,
-            project_id: project.id,
-            contributor_id: allocation.contributor_id,
-            rate_id: allocationRate.id
-        }
-        console.log('r variables');
-        console.log(variables);
         await createAllocation({
             variables: {
                 amount: rate.total_amount,

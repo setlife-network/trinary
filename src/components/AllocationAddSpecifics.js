@@ -43,12 +43,6 @@ const AllocationAddSpecifics = (props) => {
         setProjectGithubRepo(last(split(project.github_url, '/')))
         setContributorGithubUser(last(split(contributor.github_handle, '/')))
     }, [])
-    useEffect(() => {
-        console.log('contributorGithubUser');
-        console.log(contributorGithubUser);
-        console.log('projectGithubRepo');
-        console.log(projectGithubRepo);
-    }, [contributorGithubUser])
 
     useEffect(() => {
         selectLatestPayment({ payments })
@@ -56,8 +50,6 @@ const AllocationAddSpecifics = (props) => {
             payment_id: selectedPayment.id,
             contributor_id: contributor.id
         })
-        console.log('selectedPayment');
-        console.log(selectedPayment);
     }, [selectedPayment])
 
     const selectLatestPayment = (props) => {
@@ -79,15 +71,17 @@ const AllocationAddSpecifics = (props) => {
             return (
                 <List component='div' disablePadding>
                     <ListItem button onClick={() => onClickPayment(p)}>
-                        <Grid conatiner>
-                            <Grid item>
+                        <Grid container>
+                            <Grid item xs={3}/>
+                            <Grid item xs={3}>
                                 <ListItemText primary={`$${p.amount}`}/>
                             </Grid>
-                            <Grid item>
-                                <Typography>
-                                    {`${moment(selectedPayment.date_paid).format('MM/DD/YYYY')}`}
+                            <Grid item xs={3} align='center'>
+                                <Typography variant='caption' color='secondary'>
+                                    {`${moment(p.date_paid, 'x').format('MM/DD/YYYY')}`}
                                 </Typography>
                             </Grid>
+                            <Grid item xs={3}/>
                         </Grid>
                     </ListItem>
                 </List>
@@ -98,57 +92,58 @@ const AllocationAddSpecifics = (props) => {
     return (
         <Box className='AllocationAddSpecifics'>
             <Grid container justify='center'>
-
-                <Grid item xs={3}>
-                    <AssessmentIcon color='primary'/>
-                </Grid>
-                <Grid item xs={3}>
-                    <Typography>
-                        {project.name}
-                    </Typography>
-                </Grid>
-                <Grid item xs={3}>
-                    <Typography>
-                        {projectGithubRepo}
-                    </Typography>
-                    <GitHubIcon color='secondary' fontSize='small'/>
-                </Grid>
-                <Grid item xs={3}>
-                </Grid>
-
-                <Grid item xs={3}>
-                    <PeopleIcon color='primary'/>
-                </Grid>
-                <Grid item xs={3}>
-                    <Typography>
-                        {contributor.name}
-                    </Typography>
-                </Grid>
-                <Grid item xs={3}>
-                    <Typography>
-                        {contributorGithubUser}
-                    </Typography>
-                    <GitHubIcon color='secondary' fontSize='small'/>
-                </Grid>
-                <Grid item xs={3}>
-                </Grid>
-
-                <Grid item xs={3}>
-                    <PaymentIcon color='primary'/>
-                </Grid>
-                <Grid item xs={3}>
+                <ListItem button>
+                    <Grid item xs={3}>
+                        <AssessmentIcon color='primary'/>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Typography>
+                            {project.name}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={3} align='center'>
+                        <Typography variant='caption' color='secondary'>
+                            {projectGithubRepo}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={3} align='right'>
+                        <GitHubIcon color='secondary' fontSize='small'/>
+                    </Grid>
+                </ListItem>
+                <ListItem button>
+                    <Grid item xs={3}>
+                        <PeopleIcon color='primary'/>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Typography>
+                            {contributor.name}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={3} align='center'>
+                        <Typography variant='caption' color='secondary'>
+                            {contributorGithubUser}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={3} align='right'>
+                        <GitHubIcon color='secondary' fontSize='small'/>
+                    </Grid>
+                </ListItem>
+                <Grid item xs={12}>
                     <List component='nav'>
                         <ListItem button onClick={handleClick}>
                             <Grid container>
-                                <Grid item>
+                                <Grid item xs={3}>
+                                    <PaymentIcon color='primary'/>
+                                </Grid>
+                                <Grid item xs={3}>
                                     <ListItemText primary={`$${selectedPayment.amount}`}/>
                                 </Grid>
-                                <Grid item>
-                                    <Typography>
-                                        {`${moment(selectedPayment.date_paid).format('MM/DD/YYYY')}`}
+                                <Grid item xs={3} align='center'>
+                                    <Typography variant='caption' color='secondary'>
+                                        {`${moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')}`}
                                     </Typography>
                                 </Grid>
-                                <Grid item>
+                                <Grid item xs={3} align='right'>
                                     {open ? <ExpandLess /> : <ExpandMore />}
                                 </Grid>
                             </Grid>
@@ -157,10 +152,6 @@ const AllocationAddSpecifics = (props) => {
                             {listPayments(payments)}
                         </Collapse>
                     </List>
-                </Grid>
-                <Grid item xs={3}>
-                </Grid>
-                <Grid item xs={3}>
                 </Grid>
 
             </Grid>
