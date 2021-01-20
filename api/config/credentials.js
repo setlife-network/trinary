@@ -10,7 +10,7 @@ module.exports = {
     GITHUB: {
         OWNER: `${process.env.GITHUB_OWNER}`,
         OAUTH_CLIENT_ID: process.env.GITHUB_OAUTH_CLIENT_ID,
-        OAUTH_CLIENT_SECRET: process.env.GITHUB_OAUTH_CLIENT_SECRET,
+        OAUTH_CLIENT_SECRET: process.env.GITHUB_OAUTH_CLIENT_SECRET
     },
     STRIPE: {
         API_KEY: process.env.STRIPE_API_KEY,

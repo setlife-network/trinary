@@ -1,16 +1,20 @@
 export const API_ROOT = process.env.REACT_APP_API_URL
 export const CURRENCIES = [
     {
-        name: 'USD'
+        name: 'USD',
+        symbol: '$'
     },
     {
-        name: 'MXN'
+        name: 'MXN',
+        symbol: 'Mex$'
     },
     {
-        name: 'EUR'
+        name: 'EUR',
+        symbol: '€'
     },
     {
-        name: 'BTC'
+        name: 'BTC',
+        symbol: '₿'
     }
 ]
 export const IS_PRODUCTION = process.env.NODE_ENV == 'production' ? true : false
