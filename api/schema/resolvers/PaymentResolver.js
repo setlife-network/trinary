@@ -1,5 +1,6 @@
 const { UserInputError } = require('apollo-server');
 const moment = require('moment')
+const { fn, col, Op } = require('sequelize')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules');
@@ -9,6 +10,19 @@ module.exports = {
     Payment: {
         client: (payment, args, { models }) => {
             return models.Client.findByPk(payment.client_id)
+        },
+        totalAllocated: async (payment, args, { models }) => {
+            const allocations = await models.Allocation.findAll({
+                attributes: [
+                    'amount',
+                    [fn('sum', col('amount')), 'total_amount'],
+                ],
+                where: {
+                    payment_id: payment.id
+                },
+                raw: true
+            })
+            return allocations[0].total_amount
         }
     },
     Query: {

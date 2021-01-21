@@ -8,6 +8,7 @@ module.exports = gql`
         date_incurred: String!
         date_paid: String
         client_id: Int!
+        totalAllocated: Int
         client: Client
     }
 
