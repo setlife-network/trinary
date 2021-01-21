@@ -231,10 +231,9 @@ const AllocationAddForm = (props) => {
     const activeContributors = activeAllocations.map(a => {
         return a.contributor
     })
-    const contributorsToAdd = differenceBy(contributors, activeContributors, 'id')
 
     if (!selectedContributor && !contributor) {
-        setSelectedContributor(contributorsToAdd[0])
+        setSelectedContributor(contributors[0])
     }
 
     return (
@@ -251,7 +250,7 @@ const AllocationAddForm = (props) => {
                     <Grid item xs={12}>
                         <AllocationAddSpecifics
                             contributor={contributor}
-                            contributors={contributorsToAdd}
+                            contributors={contributors}
                             payment={payment}
                             payments={payments}
                             project={project}
