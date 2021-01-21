@@ -5,6 +5,7 @@ import {
     Grid
 } from '@material-ui/core/'
 import { differenceBy, filter } from 'lodash'
+import moment from 'moment'
 
 import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
@@ -61,6 +62,10 @@ const ProjectContributors = (props) => {
         setContributorClicked(props.contributor)
     }
 
+    const selectActiveAllocations = (allocation) => {
+        return moment(allocation['end_date'], 'x').isAfter(moment())
+    }
+
     if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
         return (
             <Grid item xs={12}>
@@ -79,7 +84,7 @@ const ProjectContributors = (props) => {
 
     const project = dataProjectContributors.getProjectById
     const { allocations } = project
-    const activeAllocations = filter(allocations, 'active')
+    const activeAllocations = filter(allocations, (allocation) => selectActiveAllocations(allocation))
     const activeContributors = activeAllocations.map(a => {
         return a.contributor
     })
