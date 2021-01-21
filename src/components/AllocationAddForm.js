@@ -30,30 +30,6 @@ const AllocationAddForm = (props) => {
         open
     } = props
 
-    const [createRate, { dataNewRate, loadingNewRate, errorNewRate }] = useMutation(CREATE_RATE)
-    const [createAllocation, { dataNewAllocations, loadingNewAllocation, errorNewAllocation }] = useMutation(CREATE_ALLOCATION)
-
-    const [allocationTypes, setAllocationTypes] = useState([1, 0])
-    const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
-    const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month')['_d'])
-    const [endDate, setEndDate] = useState(moment().add(1, 'months').endOf('month')['_d'])
-    const [newAllocationRate, setNewAllocationRate] = useState({})
-    const [newAllocation, setNewAllocation] = useState({})
-
-    useEffect(() => {
-        setMostRecentAllocation(null)
-    }, [open])
-
-    useEffect(() => {
-        if (mostRecentAllocation) {
-            if (mostRecentAllocation.rate.type == 'prorated_monthly') {
-                setAllocationTypes([1, 0])
-            } else if (mostRecentAllocation.rate.type == 'max_budget') {
-                setAllocationTypes([0, 1])
-            }
-        }
-    }, [mostRecentAllocation])
-
     const {
         data: dataContributorAllocations,
         loading: loadingContributorAllocations,
@@ -83,6 +59,30 @@ const AllocationAddForm = (props) => {
             id: project.id
         }
     })
+
+    const [createRate, { dataNewRate, loadingNewRate, errorNewRate }] = useMutation(CREATE_RATE)
+    const [createAllocation, { dataNewAllocations, loadingNewAllocation, errorNewAllocation }] = useMutation(CREATE_ALLOCATION)
+
+    const [allocationTypes, setAllocationTypes] = useState([1, 0])
+    const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
+    const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month')['_d'])
+    const [endDate, setEndDate] = useState(moment().add(1, 'months').endOf('month')['_d'])
+    const [newAllocationRate, setNewAllocationRate] = useState({})
+    const [newAllocation, setNewAllocation] = useState({})
+
+    useEffect(() => {
+        setMostRecentAllocation(null)
+    }, [open])
+
+    useEffect(() => {
+        if (mostRecentAllocation) {
+            if (mostRecentAllocation.rate.type == 'prorated_monthly') {
+                setAllocationTypes([1, 0])
+            } else if (mostRecentAllocation.rate.type == 'max_budget') {
+                setAllocationTypes([0, 1])
+            }
+        }
+    }, [mostRecentAllocation])
 
     const changeAllocationType = (props) => {
         const { allocationTypes, selectedType } = props
@@ -153,7 +153,6 @@ const AllocationAddForm = (props) => {
                 rate_id: allocationRate.id
             }
         })
-
         onClose()
     }
 

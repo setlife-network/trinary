@@ -41,7 +41,11 @@ const AllocationPaymentsAddForm = (props) => {
         data: dataContributorAllocations,
         loading: loadingContributorAllocations,
         error: errorContributorAllocations
-    }] = useLazyQuery(GET_CONTRIBUTOR_ALLOCATIONS)
+    }] = useLazyQuery(GET_CONTRIBUTOR_ALLOCATIONS, {
+        onCompleted: dataContributorAllocations => {
+            setContributorAllocations(dataContributorAllocations)
+        }
+    })
 
     const [getContributorRates, {
         data: dataContributorRates,
@@ -69,11 +73,23 @@ const AllocationPaymentsAddForm = (props) => {
     const [endDate, setEndDate] = useState(moment().add(1, 'months').endOf('month')['_d'])
     const [newAllocationRate, setNewAllocationRate] = useState({})
     const [newAllocation, setNewAllocation] = useState({})
-    const [selectedContributor, setSelectedContributor] = useState({})
+    const [selectedContributor, setSelectedContributor] = useState(null)
 
     useEffect(() => {
-        setMostRecentAllocation(null)
-    }, [open])
+        if (selectedContributor) {
+            getContributorAllocations({
+                variables: {
+                    id: selectedContributor.id
+                }
+            })
+        }
+    }, [selectedContributor])
+
+    useEffect(() => {
+        if (contributorAllocations) {
+            setMostRecentAllocation(getMostRecentAlloaction(contributorAllocations.getContributorById))
+        }
+    }, [contributorAllocations])
 
     useEffect(() => {
         if (mostRecentAllocation) {
@@ -84,22 +100,6 @@ const AllocationPaymentsAddForm = (props) => {
             }
         }
     }, [mostRecentAllocation])
-
-    useEffect(async() => {
-        console.log('selectedContributor');
-        console.log(selectedContributor.id);
-        setContributorAllocations(await getContributorAllocations({
-            variables: {
-                id: selectedContributor.id
-            }
-        }))
-    }, [selectedContributor])
-
-    useEffect(() => {
-        console.log('contributorAllocations');
-        console.log(contributorAllocations);
-
-    }, [contributorAllocations])
 
     const changeAllocationType = (props) => {
         const { allocationTypes, selectedType } = props
@@ -153,14 +153,14 @@ const AllocationPaymentsAddForm = (props) => {
                     hourly_rate: rate.hourly_rate.toString(),
                     monthly_hours: Number(rate.monthly_hours),
                     type: rate.type,
-                    contributor_id: contributor.id
+                    contributor_id: selectedContributor.id
                 }
             })).data.createRate.id
         }
         //create allocation with that rate id
         await createAllocation({
             variables: {
-                amount: rate.total_amount,
+                amount: Number(rate.total_amount),
                 start_date: moment(startDate).format('YYYY-MM-DD'),
                 end_date: moment(endDate).format('YYYY-MM-DD'),
                 date_paid: null,
@@ -185,6 +185,9 @@ const AllocationPaymentsAddForm = (props) => {
     })
     const contributorsToAdd = differenceBy(contributors, activeContributors, 'id')
     const rates = dataContributorRates ? dataContributorRates.getContributorById.rates : null
+    if (!selectedContributor) {
+        setSelectedContributor(contributorsToAdd[0])
+    }
 
     return (
         <Dialog
