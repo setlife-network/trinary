@@ -19,7 +19,12 @@ import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 
 import { GET_CONTRIBUTORS, GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
-import { GET_PROJECT_CONTRIBUTORS, GET_PROJECT_PAYMENTS, GET_PROJECT_CLIENT_PAYMENTS } from '../operations/queries/ProjectQueries'
+import {
+    GET_PROJECT_CONTRIBUTORS,
+    GET_PROJECT_PAYMENTS,
+    GET_PROJECT_CLIENT_PAYMENTS
+} from '../operations/queries/ProjectQueries'
+import { GET_PAYMENT_TOTAL_ALLOCATED } from '../operations/queries/PaymentQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 
@@ -151,6 +156,16 @@ const AllocationAddForm = (props) => {
         }
     })
 
+    const [getTotalAllocatedFromPayment, {
+        data: dataTotalAllocated,
+        loading: loadingTotalAllocated,
+        error: errorTotalAllocated
+    }] = useLazyQuery(GET_PAYMENT_TOTAL_ALLOCATED, {
+        onCompleted: dataTotalAllocated => {
+            setTotalAllocatedFromPayment(dataTotalAllocated)
+        }
+    })
+
     const [createRate, { dataNewRate, loadingNewRate, errorNewRate }] = useMutation(CREATE_RATE)
     const [createAllocation, { dataNewAllocations, loadingNewAllocation, errorNewAllocation }] = useMutation(CREATE_ALLOCATION)
 
@@ -164,6 +179,7 @@ const AllocationAddForm = (props) => {
     const [selectedContributor, setSelectedContributor] = useState(null)
     const [selectedPayment, setSelectedPayment] = useState(null)
     const [contributorRates, setContributorRates] = useState(null)
+    const [totalAllocatedFromPayment, setTotalAllocatedFromPayment] = useState(null)
 
     useEffect(() => {
         if (contributor) {
@@ -174,6 +190,7 @@ const AllocationAddForm = (props) => {
     }, [open])
 
     useEffect(() => {
+        //getAllocatedTotalFromPayment()
         if (contributor) {
             setSelectedContributor(contributor)
         } else if (payment) {
@@ -213,7 +230,13 @@ const AllocationAddForm = (props) => {
     }, [contributorAllocations])
 
     useEffect(() => {
-
+        if (selectedPayment) {
+            getTotalAllocatedFromPayment({
+                variables: {
+                    paymentId: selectedPayment.id
+                }
+            })
+        }
     }, [newAllocationRate])
 
     if (loadingProjectContributors || loadingContributors || loadingContributorAllocations || loadingContributorRates || loadingClientPayments) return ''
@@ -329,11 +352,14 @@ const AllocationAddForm = (props) => {
                         )
                 }
                 {
-                    selectedPayment &&
-                        selectedPayment['amount'] < newAllocationRate['total_amount'] &&
+                    (totalAllocatedFromPayment && selectedPayment) &&
+                        (Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])) > Number(selectedPayment['amount']) &&
                         <Box color='red' mb={2}>
                             <Typography>
-                                {`Warning: The total allocated is bigger that the amoun of the payment`}
+                                {`Warning: The total allocated is bigger that the amount of the payment`}
+                            </Typography>
+                            <Typography>
+                                {`The total allocated for this payment would be ${Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])} monetary units`}
                             </Typography>
                         </Box>
 
