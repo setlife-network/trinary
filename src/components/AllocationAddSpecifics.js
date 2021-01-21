@@ -30,7 +30,8 @@ const AllocationAddSpecifics = (props) => {
         payment,
         payments,
         setNewAllocation,
-        setContributor
+        setContributor,
+        setPayment
     } = props
 
     const [selectedPayment, setSelectedPayment] = useState(payment ? payment : payments[0])
@@ -68,6 +69,7 @@ const AllocationAddSpecifics = (props) => {
             payment_id: selectedPayment ? selectedPayment.id : null,
             contributor_id: selectedContributor.id
         })
+        setPayment(selectedPayment)
     }, [selectedPayment])
 
     const selectLatestPayment = (props) => {

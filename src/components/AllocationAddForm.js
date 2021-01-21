@@ -7,7 +7,8 @@ import {
     Dialog,
     DialogTitle,
     FormControl,
-    Grid
+    Grid,
+    Typography
 } from '@material-ui/core/'
 import { differenceBy, fill, filter, findKey } from 'lodash'
 import moment from 'moment'
@@ -21,6 +22,8 @@ import { GET_CONTRIBUTORS, GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } 
 import { GET_PROJECT_CONTRIBUTORS, GET_PROJECT_PAYMENTS, GET_PROJECT_CLIENT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
+
+import { red } from '../styles/colors.scss'
 
 const AllocationAddForm = (props) => {
 
@@ -118,16 +121,6 @@ const AllocationAddForm = (props) => {
         }
     })
 
-    // const {
-    //     data: dataProjectPayments,
-    //     loading: loadingProjectPayments,
-    //     error: errorProjectPayments
-    // } = useQuery(GET_PROJECT_PAYMENTS, {
-    //     variables: {
-    //         id: project.id
-    //     }
-    // })
-
     const {
         data: dataClientPayments,
         loading: loadingClientPayments,
@@ -219,12 +212,20 @@ const AllocationAddForm = (props) => {
         }
     }, [contributorAllocations])
 
+    useEffect(() => {
+
+    }, [newAllocationRate])
+
     if (loadingProjectContributors || loadingContributors || loadingContributorAllocations || loadingContributorRates || loadingClientPayments) return ''
     if (errorProjectContributors || errorContributors || errorContributorAllocations || errorContributorAllocations || errorContributorRates || errorClientPayments) return `error`
 
-    const { allocations } = dataContributorAllocations && contributor ? dataContributorAllocations.getContributorById : dataProjectContributors.getProjectById
+    const { allocations } = dataContributorAllocations && contributor
+        ? dataContributorAllocations.getContributorById
+        : dataProjectContributors.getProjectById
     const payments = dataClientPayments.getProjectById.client.payments
-    const rates = contributorRates ? dataContributorRates.getContributorById.rates : null
+    const rates = contributorRates
+        ? dataContributorRates.getContributorById.rates
+        : null
 
     const contributors = contributor ? null : dataContributors.getContributors
     const activeAllocations = filter(allocations, 'active')
@@ -256,6 +257,7 @@ const AllocationAddForm = (props) => {
                             project={project}
                             setNewAllocation={setNewAllocation}
                             setContributor={setSelectedContributor}
+                            setPayment={setSelectedPayment}
                         />
                         <hr/>
                     </Grid>
@@ -325,6 +327,16 @@ const AllocationAddForm = (props) => {
                                 endDate={moment(endDate)}
                             />
                         )
+                }
+                {
+                    selectedPayment &&
+                        selectedPayment['amount'] < newAllocationRate['total_amount'] &&
+                        <Box color='red' mb={2}>
+                            <Typography>
+                                {`Warning: The total allocated is bigger that the amoun of the payment`}
+                            </Typography>
+                        </Box>
+
                 }
                 <Button
                     variant={`contained`}
