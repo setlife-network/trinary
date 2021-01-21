@@ -102,7 +102,7 @@ const AllocationAddSpecifics = (props) => {
                             </Grid>
                             <Grid item xs={3} align='center'>
                                 <Typography variant='caption' color='secondary'>
-                                    {`${moment(p.date_paid, 'x').format('MM/DD/YYYY')}`}
+                                    {`${p.date_paid ? moment(p.date_paid, 'x').format('MM/DD/YYYY') : ''}`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}/>
@@ -212,6 +212,11 @@ const AllocationAddSpecifics = (props) => {
                                 <Grid item xs={3} align='center'>
                                     <Typography variant='caption' color='secondary'>
                                         {`${selectedPayment.date_paid ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY') : ''}`}
+                                        {`${
+                                            !selectedPayment.date_paid && selectedPayment.date_incurred
+                                                ? 'Warning: This payment has not been paid'
+                                                : ''
+                                        }`}
                                     </Typography>
                                 </Grid>
                                 {

@@ -190,6 +190,7 @@ export const GET_PROJECT_CLIENT_PAYMENTS = gql`
                     id
                     amount
                     date_paid
+                    date_incurred
                 }
             }
         }
