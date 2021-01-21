@@ -18,7 +18,7 @@ import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 
 import { GET_CONTRIBUTORS, GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
-import { GET_PROJECT_CONTRIBUTORS, GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
+import { GET_PROJECT_CONTRIBUTORS, GET_PROJECT_PAYMENTS, GET_PROJECT_CLIENT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 
@@ -118,11 +118,21 @@ const AllocationAddForm = (props) => {
         }
     })
 
+    // const {
+    //     data: dataProjectPayments,
+    //     loading: loadingProjectPayments,
+    //     error: errorProjectPayments
+    // } = useQuery(GET_PROJECT_PAYMENTS, {
+    //     variables: {
+    //         id: project.id
+    //     }
+    // })
+
     const {
-        data: dataProjectPayments,
-        loading: loadingProjectPayments,
-        error: errorProjectPayments
-    } = useQuery(GET_PROJECT_PAYMENTS, {
+        data: dataClientPayments,
+        loading: loadingClientPayments,
+        error: errorClientPayments
+    } = useQuery(GET_PROJECT_CLIENT_PAYMENTS, {
         variables: {
             id: project.id
         }
@@ -180,11 +190,14 @@ const AllocationAddForm = (props) => {
 
     useEffect(() => {
         if (mostRecentAllocation) {
-            if (mostRecentAllocation.rate.type == 'prorated_monthly') {
-                setAllocationTypes([1, 0])
-            } else if (mostRecentAllocation.rate.type == 'max_budget') {
-                setAllocationTypes([0, 1])
+            if (mostRecentAllocation.rate) {
+                if (mostRecentAllocation.rate.type == 'prorated_monthly') {
+                    setAllocationTypes([1, 0])
+                } else if (mostRecentAllocation.rate.type == 'max_budget') {
+                    setAllocationTypes([0, 1])
+                }
             }
+
         }
     }, [mostRecentAllocation])
 
@@ -206,11 +219,12 @@ const AllocationAddForm = (props) => {
         }
     }, [contributorAllocations])
 
-    if (loadingProjectContributors || loadingContributors || loadingContributorAllocations || loadingContributorRates || loadingProjectPayments) return ''
-    if (errorProjectContributors || errorContributors || errorContributorAllocations || errorContributorAllocations || errorContributorRates || errorProjectPayments) return `error`
+    if (loadingProjectContributors || loadingContributors || loadingContributorAllocations || loadingContributorRates || loadingClientPayments) return ''
+    if (errorProjectContributors || errorContributors || errorContributorAllocations || errorContributorAllocations || errorContributorRates || errorClientPayments) return `error`
 
     const { allocations } = dataContributorAllocations && contributor ? dataContributorAllocations.getContributorById : dataProjectContributors.getProjectById
-    const allocatedPayments = contributor ? dataProjectPayments.getProjectById.allocatedPayments : null
+    //const allocatedPayments = contributor ? dataProjectPayments.getProjectById.allocatedPayments : null
+    const payments = dataClientPayments.getProjectById.client.payments
     const rates = contributorRates ? dataContributorRates.getContributorById.rates : null
 
     const contributors = contributor ? null : dataContributors.getContributors
@@ -240,7 +254,7 @@ const AllocationAddForm = (props) => {
                             contributor={contributor}
                             contributors={contributorsToAdd}
                             payment={payment}
-                            payments={allocatedPayments}
+                            payments={payments}
                             project={project}
                             setNewAllocation={setNewAllocation}
                             setContributor={setSelectedContributor}

@@ -179,3 +179,18 @@ export const GET_PROJECT_TIME_ENTRIES = gql`
         }
     }
 `
+
+export const GET_PROJECT_CLIENT_PAYMENTS = gql`
+    query ProjectClientPayments($id: Int!){
+        getProjectById(id: $id) {
+            id
+            client {
+                id
+                payments {
+                    id
+                    amount
+                }
+            }
+        }
+    }
+`
