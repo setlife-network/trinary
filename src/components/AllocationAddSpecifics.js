@@ -34,7 +34,7 @@ const AllocationAddSpecifics = (props) => {
     } = props
 
     const [selectedPayment, setSelectedPayment] = useState(payments ? payments[0] : payment)
-    const [selectedContributor, setSelectedContributor] = useState(contributors ? contributors[0] : contributor)
+    const [selectedContributor, setSelectedContributor] = useState(contributor ? contributor : contributors[0])
     const [openContributors, setOpenContributors] = useState(false)
     const [openPayments, setOpenPayments] = useState(false)
     const [projectGithubRepo, setProjectGithubRepo] = useState(null)
@@ -49,6 +49,9 @@ const AllocationAddSpecifics = (props) => {
     }
 
     useEffect(() => {
+        if (contributor) {
+            setSelectedContributor(contributor)
+        }
         setProjectGithubRepo(last(split(project.github_url, '/')))
         setContributorGithubUser(last(split(selectedContributor.github_handle, '/')))
     }, [])
@@ -168,7 +171,7 @@ const AllocationAddSpecifics = (props) => {
                                 </Grid>
                                 <Grid item xs={3}>
                                     <Typography>
-                                        {selectedContributor.name}
+                                        {selectedContributor ? selectedContributor.name : ''}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={3} align='center'>

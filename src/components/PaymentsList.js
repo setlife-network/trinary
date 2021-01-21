@@ -4,7 +4,7 @@ import {
     Grid
 } from '@material-ui/core'
 
-import AllocationPaymentsAddForm from './AllocationPaymentsAddForm'
+import AllocationAddForm from './AllocationAddForm'
 import PaymentTile from './PaymentTile'
 
 const PaymentsList = (props) => {
@@ -47,7 +47,7 @@ const PaymentsList = (props) => {
             <Grid item xs={12}>
                 {
                     paymentClicked &&
-                    <AllocationPaymentsAddForm
+                    <AllocationAddForm
                         project={project}
                         open={openAddAllocationDialog}
                         onClose={handleAddAllocationClose}
