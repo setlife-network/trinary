@@ -223,7 +223,6 @@ const AllocationAddForm = (props) => {
     if (errorProjectContributors || errorContributors || errorContributorAllocations || errorContributorAllocations || errorContributorRates || errorClientPayments) return `error`
 
     const { allocations } = dataContributorAllocations && contributor ? dataContributorAllocations.getContributorById : dataProjectContributors.getProjectById
-    //const allocatedPayments = contributor ? dataProjectPayments.getProjectById.allocatedPayments : null
     const payments = dataClientPayments.getProjectById.client.payments
     const rates = contributorRates ? dataContributorRates.getContributorById.rates : null
 

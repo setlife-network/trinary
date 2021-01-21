@@ -189,6 +189,7 @@ export const GET_PROJECT_CLIENT_PAYMENTS = gql`
                 payments {
                     id
                     amount
+                    date_paid
                 }
             }
         }

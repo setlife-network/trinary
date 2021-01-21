@@ -33,7 +33,7 @@ const AllocationAddSpecifics = (props) => {
         setContributor
     } = props
 
-    const [selectedPayment, setSelectedPayment] = useState(payments ? payments[0] : payment)
+    const [selectedPayment, setSelectedPayment] = useState(payment ? payment : payments[0])
     const [selectedContributor, setSelectedContributor] = useState(contributor ? contributor : contributors[0])
     const [openContributors, setOpenContributors] = useState(false)
     const [openPayments, setOpenPayments] = useState(false)
@@ -61,11 +61,11 @@ const AllocationAddSpecifics = (props) => {
     }, [selectedContributor])
 
     useEffect(() => {
-        if (payments) {
+        if (!payment && !selectedPayment) {
             selectLatestPayment({ payments })
         }
         setNewAllocation({
-            payment_id: selectedPayment.id,
+            payment_id: selectedPayment ? selectedPayment.id : null,
             contributor_id: selectedContributor.id
         })
     }, [selectedPayment])
@@ -207,11 +207,11 @@ const AllocationAddSpecifics = (props) => {
                                     <PaymentIcon color='primary'/>
                                 </Grid>
                                 <Grid item xs={3}>
-                                    <ListItemText primary={`$${selectedPayment.amount}`}/>
+                                    <ListItemText primary={`${selectedPayment.amount ? `$${selectedPayment.amount}` : 'Propose'}`}/>
                                 </Grid>
                                 <Grid item xs={3} align='center'>
                                     <Typography variant='caption' color='secondary'>
-                                        {`${moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')}`}
+                                        {`${selectedPayment.date_paid ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY') : ''}`}
                                     </Typography>
                                 </Grid>
                                 {
@@ -229,6 +229,19 @@ const AllocationAddSpecifics = (props) => {
                             !payment &&
                             <Collapse in={openPayments} timeout='auto' unmountOnExit>
                                 {listPayments(payments)}
+                                {payments &&
+                                    <List component='div' disablePadding>
+                                        <ListItem button onClick={() => onClickPayment({})}>
+                                            <Grid container>
+                                                <Grid item xs={3}/>
+                                                <Grid item xs={3}>
+                                                    <ListItemText primary={`Propose`}/>
+                                                </Grid>
+                                                <Grid item xs={6}/>
+                                            </Grid>
+                                        </ListItem>
+                                    </List>
+                                }
                             </Collapse>
                         }
                     </List>
