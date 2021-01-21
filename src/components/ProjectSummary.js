@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core'
 
 import ProjectEditDialog from './ProjectEditDialog'
+import { selectCurrencySymbol } from '../scripts/selectors'
 
 const ProjectSummary = (props) => {
 
@@ -23,6 +24,8 @@ const ProjectSummary = (props) => {
     const handleEditClose = (value) => {
         setOpenEditDialog(false)
     }
+
+    const currencySymbol = selectCurrencySymbol({ currency: project.client.currency })
 
     return (
         <Box
@@ -50,7 +53,7 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-wallet' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-                                    {`Expected budget - $${project.expected_budget}`}
+                                    {`Expected budget - ${currencySymbol}${project.expected_budget}`}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -61,7 +64,7 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-money-bill-wave-alt' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-                                    {`Total paid - $${project.totalPaid}`}
+                                    {`Total paid - ${currencySymbol}${project.totalPaid}`}
                                 </Grid>
                             </Grid>
                         </Grid>
