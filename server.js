@@ -40,6 +40,7 @@ var whitelist = [
     'http://localhost:6001',
     'http://localhost:6002',
     'http://github.com/',
+    'https://github.com/',
     'https://project-trinary.herokuapp.com/',
     'https://trinary.setlife.tech',
 ];
@@ -112,7 +113,7 @@ const server = new ApolloServer({
 server.applyMiddleware({
     app,
     path: '/api/graph',
-    cors: false
+    cors: corsOptions
 });
 
 app.listen(port, () => {
