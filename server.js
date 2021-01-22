@@ -66,10 +66,6 @@ app.use(cookieSession({
     expires: moment().add(180, 'days').toDate()
 }))
 
-app.get('/api/v/:vid/ping', (req, res) => {
-    res.send('Hello World')
-})
-
 app.get('/api/login', (req, res) => {
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.OAUTH_CLIENT_ID}&scope=repo`)
 })
@@ -102,6 +98,11 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         })
 })
 
+app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
+    console.log(`Incoming API v${req.params.vid} request on worker PID ${process.pid}`)
+    next()
+})
+
 const server = new ApolloServer({
     schema,
     context: ({ req }) => ({
@@ -112,7 +113,7 @@ const server = new ApolloServer({
 
 server.applyMiddleware({
     app,
-    path: '/api/graph',
+    path: '/api/graph/v/:vid',
     cors: corsOptions
 });
 
