@@ -108,7 +108,14 @@ const server = new ApolloServer({
     context: ({ req }) => ({
         ...db,
         cookies: req.session
-    })
+    }),
+    introspection: true,
+    playground: {
+        settings: {
+            'editor.theme': 'dark',
+            'request.credentials': 'include',
+        },
+    },
 })
 
 server.applyMiddleware({
