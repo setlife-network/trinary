@@ -3,8 +3,8 @@ require('dotenv').config()
 module.exports = {
     // 3rd Party App Access Keys
     AMAZON_AWS: {
-        ACCESS_KEY: process.env.AWS_ACCESS_KEY,
-        SECRET: process.env.AWS_SECRET,
+        ACCESS_KEY: process.env.AWS_ACCESS_KEY_ID,
+        SECRET: process.env.AWS_SECRET_ACCESS_KEY,
         S3_BUCKET_URL: process.env.AWS_S3_BUCKET_URL,
     },
     GITHUB: {
