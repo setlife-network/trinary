@@ -46,7 +46,7 @@ const PaymentsList = (props) => {
             {renderPaymentTiles(payments)}
             <Grid item xs={12}>
                 {
-                    paymentClicked &&
+                    (paymentClicked && project) &&
                     <AllocationAddForm
                         project={project}
                         open={openAddAllocationDialog}
