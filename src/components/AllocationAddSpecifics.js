@@ -136,7 +136,11 @@ const AllocationAddSpecifics = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
-                                <GitHubIcon color='secondary' fontSize='small'/>
+                                {
+                                    c.github_access_token &&
+                                    <GitHubIcon color='secondary' fontSize='small'/>
+                                }
+
                             </Grid>
                         </Grid>
                     </ListItem>

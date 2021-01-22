@@ -9,7 +9,7 @@ module.exports = gql`
         external_data_url: String
         github_id: String!
         github_handle: String!
-        github_acces_key: String
+        github_access_token: String
         allocations: [Allocation]
         permissions: [Permission]
         timeEntries: [TimeEntry]

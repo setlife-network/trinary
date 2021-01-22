@@ -7,7 +7,7 @@ export const CHECK_SESSION = gql`
             name
             github_id
             github_handle
-            github_acces_key
+            github_access_token
             toggl_id
             external_data_url
         }
@@ -23,6 +23,7 @@ export const GET_CONTRIBUTORS = gql`
             github_handle
             toggl_id
             external_data_url
+            github_access_token
         }
     }
 `
@@ -30,7 +31,7 @@ export const GET_CONTRIBUTORS = gql`
 export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
     query ContributorAllocation($id: Int!) {
         getContributorById(id: $id) {
-            id,
+            id
             allocations {
                 id
                 amount
@@ -53,7 +54,8 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
 export const GET_CONTRIBUTOR_RATES = gql`
     query ContributorAllocation($id: Int!) {
         getContributorById(id: $id) {
-            id,
+            id
+            github_access_token
             rates {
                 id
                 active

@@ -91,6 +91,7 @@ export const GET_PROJECT_CONTRIBUTORS = gql`
                 name
                 github_id
                 github_handle
+                github_access_token
             }
             allocations {
                 id
