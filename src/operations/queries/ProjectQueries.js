@@ -59,7 +59,10 @@ export const GET_PROJECT_PAYMENTS = gql`
     query ProjectTimeEntries($id: Int!){
         getProjectById(id: $id){
             id
+            name
+            github_url
             allocatedPayments {
+                id
                 amount
                 date_paid
                 date_incurred
@@ -78,12 +81,52 @@ export const GET_PROJECT_PAYMENTS = gql`
     }
 `
 export const GET_PROJECT_CONTRIBUTORS = gql`
-    query ProjectTimeEntries($id: Int!){
+    query ProjectContributors($id: Int!){
         getProjectById(id: $id){
             id
             name
+            github_url
             contributors {
                 id
+                name
+                github_id
+                github_handle
+                github_access_token
+            }
+            allocations {
+                id
+                active
+                amount
+                date_paid
+                start_date
+                end_date
+                contributor {
+                    id
+                    name
+                    github_id
+                    github_handle
+                }
+            }
+        }
+    }
+`
+
+export const GET_PROJECT_CONTRIBUTOR_ALLOCATIONS = gql`
+    query ProjectContributorAllocations($id: Int!, $contributorId: Int){
+        getProjectById(id: $id){
+            id
+            name
+            allocations(
+                contributorId: $contributorId
+            ){
+                id
+                amount
+                rate {
+                    id
+                    monthly_hours
+                    hourly_rate
+                    type
+                }
             }
         }
     }
@@ -132,6 +175,24 @@ export const GET_PROJECT_TIME_ENTRIES = gql`
                 seconds
                 contributor {
                     name
+                }
+            }
+        }
+    }
+`
+
+export const GET_PROJECT_CLIENT_PAYMENTS = gql`
+    query ProjectClientPayments($id: Int!){
+        getProjectById(id: $id) {
+            id
+            client {
+                id
+                payments {
+                    id
+                    amount
+                    date_paid
+                    date_incurred
+                    totalAllocated
                 }
             }
         }

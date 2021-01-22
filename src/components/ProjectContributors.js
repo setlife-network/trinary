@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery, useMutation } from '@apollo/client'
+import { useLazyQuery, useQuery, useMutation } from '@apollo/client'
 import {
     Box,
     Grid
 } from '@material-ui/core/'
 import { differenceBy, filter } from 'lodash'
+import moment from 'moment'
 
 import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
+import AllocationAddForm from './AllocationAddForm'
 import ContributorTile from './ContributorTile'
 import ContributorsEmptyState from './ContributorsEmptyState'
 import GithubAccessBlocked from './GithubAccessBlocked'
@@ -16,6 +18,11 @@ import GithubAccessBlocked from './GithubAccessBlocked'
 const ProjectContributors = (props) => {
 
     const { projectId } = props
+    const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
+    const [contributorClicked, setContributorClicked] = useState(null)
+    const handleAddAllocationClose = (value) => {
+        setOpenAddAllocationDialog(false)
+    }
 
     const {
         data: dataProjectContributors,
@@ -32,7 +39,7 @@ const ProjectContributors = (props) => {
         loading: loadingContributors,
         error: errorContributors
     } = useQuery(GET_CONTRIBUTORS)
-    
+
     const [
         getGithubContributors,
         {
@@ -49,6 +56,15 @@ const ProjectContributors = (props) => {
             variables: { project_id: Number(projectId) }
         })
     }, [])
+
+    const addAllocation = (props) => {
+        setOpenAddAllocationDialog(true)
+        setContributorClicked(props.contributor)
+    }
+
+    const selectActiveAllocations = (allocation) => {
+        return moment(allocation['start_date'], 'x').isBefore(moment()) && moment(allocation['end_date'], 'x').isAfter(moment())
+    }
 
     if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
         return (
@@ -68,7 +84,7 @@ const ProjectContributors = (props) => {
 
     const project = dataProjectContributors.getProjectById
     const { allocations } = project
-    const activeAllocations = filter(allocations, 'active')
+    const activeAllocations = filter(allocations, (allocation) => selectActiveAllocations(allocation))
     const activeContributors = activeAllocations.map(a => {
         return a.contributor
     })
@@ -83,6 +99,7 @@ const ProjectContributors = (props) => {
                     <ContributorTile
                         active={active}
                         contributor={c}
+                        onAddButton={addAllocation}
                     />
                 </Grid>
             )
@@ -135,8 +152,19 @@ const ProjectContributors = (props) => {
                 </Box>
                 <Box my={5} py={5}/>
             </Grid>
+            <Grid item xs={12}>
+                {
+                    contributorClicked &&
+                    <AllocationAddForm
+                        project={project}
+                        open={openAddAllocationDialog}
+                        onClose={handleAddAllocationClose}
+                        contributor={contributorClicked}
+                    />
+                }
+            </Grid>
         </Grid>
-    );
+    )
 }
 
 export default ProjectContributors

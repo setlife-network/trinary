@@ -7,11 +7,13 @@ module.exports = gql`
         hourly_rate: String!
         type: String!
         contributor_id: Int!
+        monthly_hours: Int
         contributor: Contributor
     }
 
     input RateInput {
         active: Boolean
+        monthly_hours: Int
         hourly_rate: String
         type: String
         contributor_id: Int

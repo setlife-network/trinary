@@ -13,8 +13,10 @@ import { selectCurrencySymbol } from '../scripts/selectors'
 
 const ProjectSummary = (props) => {
 
-    const { project } = props
-    const { projectId } = props
+    const {
+        project,
+        projectId
+    } = props
     const [openEditDialog, setOpenEditDialog] = useState(false)
     const handleEditOpen = () => {
         setOpenEditDialog(true)

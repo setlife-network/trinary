@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core/'
 
 import { CREATE_CLIENT } from '../operations/mutations/ClientMutations'
-import { CURRENCIES } from '../constants/'
+import { CURRENCIES } from '../constants'
 
 const ClientAddForm = ({
     history

@@ -68,7 +68,10 @@ const ProjectPayments = (props) => {
                 </Box>
                 {allocatedPayments.length != 0
                     ? (
-                        <PaymentsList payments={payments}/>
+                        <PaymentsList
+                            payments={payments}
+                            project={getProjectById}
+                        />
                     )
                     : (
                         <PaymentsEmptyState/>

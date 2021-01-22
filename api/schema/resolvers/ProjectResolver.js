@@ -15,7 +15,13 @@ module.exports = {
 
     Project: {
         allocations: (project, args, { models }) => {
-            return models.Allocation.findAll({ where: { project_id: project.id } })
+            const whereConditions = {
+                project_id: project.id
+            }
+            if (args.contributorId) {
+                whereConditions['contributor_id'] = args.contributorId
+            }
+            return models.Allocation.findAll({ where: whereConditions })
         },
         allocatedPayments: (project, args, { models }) => {
             return models.Payment.findAll({
