@@ -120,7 +120,7 @@ const server = new ApolloServer({
 
 server.applyMiddleware({
     app,
-    path: '/api/graph/v/:vid',
+    path: ['/api/graph/v/:vid', '/api/graph'],
     cors: corsOptions
 });
 
