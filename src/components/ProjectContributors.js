@@ -63,7 +63,7 @@ const ProjectContributors = (props) => {
     }
 
     const selectActiveAllocations = (allocation) => {
-        return moment(allocation['end_date'], 'x').isAfter(moment())
+        return moment(allocation['start_date'], 'x').isBefore(moment()) && moment(allocation['end_date'], 'x').isAfter(moment())
     }
 
     if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
