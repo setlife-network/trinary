@@ -93,6 +93,8 @@ const dataSyncs = module.exports = (() => {
 
     const syncInvoicelyCSV = async () => {
         const invoiceFile = INVOICELY_CSV_PATH
+        console.log('invoiceFile')
+        console.log(invoiceFile)
         return (
             amazon.fetchFile({ file: invoiceFile })
                 .then(file => {

@@ -12,6 +12,10 @@ const amazon = module.exports = (() => {
             Key: params.file
         }
 
+        console.log('fileBucket')
+        console.log(fileBucket)
+        console.log(params.file)
+
         const s3 = new AWS.S3();
         return new Promise((resolve, reject) => {
             s3.getObject(fileBucket, function(err, data) {
