@@ -10,7 +10,12 @@ import {
     Grid,
     Typography
 } from '@material-ui/core/'
-import { differenceBy, fill, filter, findKey } from 'lodash'
+import {
+    differenceBy,
+    fill,
+    filter,
+    findKey
+} from 'lodash'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 
@@ -18,7 +23,11 @@ import AllocationAddSpecifics from './AllocationAddSpecifics'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 
-import { GET_CONTRIBUTORS, GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
+import {
+    GET_CONTRIBUTORS,
+    GET_CONTRIBUTOR_ALLOCATIONS,
+    GET_CONTRIBUTOR_RATES
+} from '../operations/queries/ContributorQueries'
 import {
     GET_PROJECT_CONTRIBUTORS,
     GET_PROJECT_PAYMENTS,
@@ -166,11 +175,20 @@ const AllocationAddForm = (props) => {
         }
     })
 
-    const [createRate, { dataNewRate, loadingNewRate, errorNewRate }] = useMutation(CREATE_RATE)
-    const [createAllocation, { dataNewAllocations, loadingNewAllocation, errorNewAllocation }] = useMutation(CREATE_ALLOCATION)
+    const [createRate, {
+        dataNewRate,
+        loadingNewRate,
+        errorNewRate
+    }] = useMutation(CREATE_RATE)
+    const [createAllocation, {
+        dataNewAllocations,
+        loadingNewAllocation,
+        errorNewAllocation
+    }] = useMutation(CREATE_ALLOCATION)
 
     const [allocationTypes, setAllocationTypes] = useState([1, 0])
     const [contributorAllocations, setContributorAllocations] = useState(null)
+    const [contributorRates, setContributorRates] = useState(null)
     const [endDate, setEndDate] = useState(moment().add(1, 'months').endOf('month')['_d'])
     const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
     const [newAllocationRate, setNewAllocationRate] = useState({})
@@ -178,7 +196,6 @@ const AllocationAddForm = (props) => {
     const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month')['_d'])
     const [selectedContributor, setSelectedContributor] = useState(null)
     const [selectedPayment, setSelectedPayment] = useState(null)
-    const [contributorRates, setContributorRates] = useState(null)
     const [totalAllocatedFromPayment, setTotalAllocatedFromPayment] = useState(null)
 
     useEffect(() => {
@@ -239,8 +256,12 @@ const AllocationAddForm = (props) => {
         }
     }, [newAllocationRate])
 
-    if (loadingProjectContributors || loadingContributors || loadingContributorAllocations || loadingContributorRates || loadingClientPayments) return ''
-    if (errorProjectContributors || errorContributors || errorContributorAllocations || errorContributorAllocations || errorContributorRates || errorClientPayments) return `error`
+    if (loadingProjectContributors || loadingContributors || loadingContributorAllocations || loadingContributorRates || loadingClientPayments) {
+        return ''
+    }
+    if (errorProjectContributors || errorContributors || errorContributorAllocations || errorContributorAllocations || errorContributorRates || errorClientPayments) {
+        return `error`
+    }
 
     const { allocations } = dataContributorAllocations && contributor
         ? dataContributorAllocations.getContributorById
@@ -290,14 +311,25 @@ const AllocationAddForm = (props) => {
                             <Button
                                 variant={`${allocationTypes[0] ? 'contained' : 'outlined'}`}
                                 color='primary'
-                                onClick={() => (changeAllocationType({ selectedType: 0, allocationTypes: allocationTypes }))}
+                                onClick={() => (
+                                    changeAllocationType({
+                                        selectedType: 0,
+                                        allocationTypes:
+                                        allocationTypes
+                                    })
+                                )}
                             >
                                 {'Prorated monthly'}
                             </Button>
                             <Button
                                 variant={`${allocationTypes[1] ? 'contained' : 'outlined'}`}
                                 color='primary'
-                                onClick={() => (changeAllocationType({ selectedType: 1, allocationTypes: allocationTypes }))}
+                                onClick={() => (
+                                    changeAllocationType({
+                                        selectedType: 1,
+                                        allocationTypes: allocationTypes
+                                    })
+                                )}
                             >
                                 {'Max Budget'}
                             </Button>

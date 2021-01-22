@@ -19,7 +19,11 @@ import GitHubIcon from '@material-ui/icons/GitHub'
 import PaymentIcon from '@material-ui/icons/Payment'
 import PeopleIcon from '@material-ui/icons/Group'
 import moment from 'moment'
-import { differenceWith, last, split } from 'lodash'
+import {
+    differenceWith,
+    last,
+    split
+} from 'lodash'
 
 const AllocationAddSpecifics = (props) => {
 
@@ -34,12 +38,12 @@ const AllocationAddSpecifics = (props) => {
         setPayment
     } = props
 
-    const [selectedPayment, setSelectedPayment] = useState(payment ? payment : payments[0])
-    const [selectedContributor, setSelectedContributor] = useState(contributor ? contributor : contributors[0])
+    const [contributorGithubUser, setContributorGithubUser] = useState(null)
     const [openContributors, setOpenContributors] = useState(false)
     const [openPayments, setOpenPayments] = useState(false)
     const [projectGithubRepo, setProjectGithubRepo] = useState(null)
-    const [contributorGithubUser, setContributorGithubUser] = useState(null)
+    const [selectedPayment, setSelectedPayment] = useState(payment ? payment : payments[0])
+    const [selectedContributor, setSelectedContributor] = useState(contributor ? contributor : contributors[0])
 
     const handleClickContributors = () => {
         setOpenContributors(!openContributors)
@@ -209,11 +213,16 @@ const AllocationAddSpecifics = (props) => {
                                     <PaymentIcon color='primary'/>
                                 </Grid>
                                 <Grid item xs={3}>
-                                    <ListItemText primary={`${selectedPayment.amount ? `$${selectedPayment.amount}` : 'Propose'}`}/>
+                                    <ListItemText primary={`${selectedPayment.amount
+                                        ? `$${selectedPayment.amount}`
+                                        : 'Propose'}`}
+                                    />
                                 </Grid>
                                 <Grid item xs={3} align='center'>
                                     <Typography variant='caption' color='secondary'>
-                                        {`${selectedPayment.date_paid ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY') : ''}`}
+                                        {`${selectedPayment.date_paid
+                                            ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
+                                            : ''}`}
                                         {`${
                                             !selectedPayment.date_paid && selectedPayment.date_incurred
                                                 ? 'Warning: This payment has not been paid'
@@ -253,7 +262,6 @@ const AllocationAddSpecifics = (props) => {
                         }
                     </List>
                 </Grid>
-
             </Grid>
         </Box>
     )
