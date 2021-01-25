@@ -143,7 +143,8 @@ const PaymentTile = (props) => {
                                         color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary'}`}
                                     >
                                         {`
-                                        ${currencySymbol}${totalAllocated} allocated to ${numberOfContributorsAllocated}
+                                        ${currencySymbol}${totalAllocated}
+                                        ${numberOfContributorsAllocated && `allocated to ${numberOfContributorsAllocated}`}
                                         ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}
                                     `}
                                     </Box>
