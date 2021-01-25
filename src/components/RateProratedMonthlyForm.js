@@ -19,7 +19,7 @@ const RateProratedMonthlyForm = (props) => {
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'weeks'))
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
-        setMonthlyhoursInput(currentRate ? currentRate.monthly_hours : 160)
+        setMonthlyhoursInput(currentRate ? currentRate.total_expected_hours : 160)
     }, [currentRate])
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const RateProratedMonthlyForm = (props) => {
         setTotalHours(totalAmount && currentRateInput ? (totalAmount / currentRateInput).toFixed(2) : 0)
         setNewAllocationRate({
             hourly_rate: currentRateInput,
-            monthly_hours: monthlyHoursInput,
+            total_expected_hours: monthlyHoursInput,
             total_amount: totalAmount,
             type: 'prorated_monthly'
         })
