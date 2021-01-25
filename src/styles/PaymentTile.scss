@@ -1,0 +1,9 @@
+.PaymentTile {
+    background-color: red;
+    .disabled-tile {
+        background-color: $white !important;
+    }
+    .MuiAccordionSummary-root.Mui-disabled{
+        opacity: 1 !important;
+    }
+}

@@ -21,9 +21,6 @@ const PaymentsList = (props) => {
         project
     } = props
 
-    console.log('props PL');
-    console.log(props);
-
     const addAllocation = (props) => {
         setOpenAddAllocationDialog(true)
         setPaymentClicked(props.payment)
@@ -35,11 +32,13 @@ const PaymentsList = (props) => {
                 <Grid item xs={12} lg={4}>
                     <Box
                         my={2}
-                        // onClick={() => addAllocation({ payment: p })}
+                        //onClick={() => addAllocation({ payment: p })}
                     >
                         <PaymentTile
                             payment={p}
                             client={p.client}
+                            addAllocation={addAllocation}
+                            project={project}
                         />
                     </Box>
                 </Grid>

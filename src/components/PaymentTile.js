@@ -22,7 +22,7 @@ import { red } from '../styles/colors.scss'
 
 const PaymentTile = (props) => {
 
-    const { client, payment } = props
+    const { client, payment, project } = props
 
     const { loading: loadingPaymentAllocations, error: errorPaymentAllocations, data: dataPaymentAllocations } = useQuery(GET_PAYMENT_ALLOCATIONS, {
         variables: { paymentId: Number(payment.id) }
@@ -55,7 +55,7 @@ const PaymentTile = (props) => {
                                 {`${contributor.name}`}
                             </Typography>
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={2} align='right'>
                             <Typography color='secondary'>
                                 {`${currencySymbol}${amount}`}
                             </Typography>
@@ -67,7 +67,7 @@ const PaymentTile = (props) => {
                                 )`}
                             </Typography>
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={4} align='right'>
                             <Typography color='secondary'>
                                 {`Ends ${moment(end_date, 'x').format('MM/DD/YYYY')} `}
                             </Typography>
@@ -85,10 +85,14 @@ const PaymentTile = (props) => {
             mx={1}
             className='PaymentTile'
         >
-            <Accordion>
+            <Accordion
+                disabled={!project}
+                className={!project && 'disabled-tile'}
+            >
                 <AccordionSummary
                     expandIcon={
-                        <ExpandMoreIcon />
+                        project &&
+                            <ExpandMoreIcon />
                     }
                 >
                     <Grid container alignItems='center'>
@@ -117,37 +121,45 @@ const PaymentTile = (props) => {
                                 color={`${paymentHasBeenMade ? 'primary' : 'secondary'}`}
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant='subtitle1'>
-                                <Box color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary'}`}>
-                                    {`
+                        {project &&
+
+                            <Grid item xs={12}>
+                                <Typography variant='subtitle1'>
+                                    <Box
+                                        align='left'
+                                        color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary'}`}
+                                    >
+                                        {`
                                         ${currencySymbol}${totalAllocated} allocated to ${numberOfContributorsAllocated}
                                         ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}
                                     `}
-                                </Box>
-                            </Typography>
-                        </Grid>
+                                    </Box>
+                                </Typography>
+                            </Grid>
+                        }
                     </Grid>
                 </AccordionSummary>
-                <AccordionDetails>
-                    <Grid container>
-                        <Grid item xs={12}>
-                            {renderPaymentAllocations(allocations)}
+                {project &&
+                    <AccordionDetails>
+                        <Grid container>
+                            <Grid item xs={12}>
+                                {renderPaymentAllocations(allocations)}
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button
+                                    fullWidth
+                                    color='primary'
+                                    variant='outlined'
+                                    onClick={() => (console.log('Click'))}
+                                >
+                                    <Typography>
+                                        {`Allocate`}
+                                    </Typography>
+                                </Button>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Button
-                                fullWidth
-                                color='primary'
-                                variant='outlined'
-                                onClick={() => (console.log('CClick'))}
-                            >
-                                <Typography>
-                                    {`Allocate`}
-                                </Typography>
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </AccordionDetails>
+                    </AccordionDetails>
+                }
             </Accordion>
         </Box>
     )
