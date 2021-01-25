@@ -140,7 +140,7 @@ const PaymentTile = (props) => {
                                 <Typography variant='subtitle1'>
                                     <Box
                                         align='left'
-                                        color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary'}`}
+                                        color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
                                     >
                                         {`
                                         ${currencySymbol}${totalAllocated}
