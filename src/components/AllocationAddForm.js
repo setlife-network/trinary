@@ -204,16 +204,12 @@ const AllocationAddForm = (props) => {
         } else if (payment) {
             setSelectedPayment(payment)
         }
-    }, [open])
-
-    useEffect(() => {
-        //getAllocatedTotalFromPayment()
-        if (contributor) {
-            setSelectedContributor(contributor)
-        } else if (payment) {
-            setSelectedPayment(payment)
+        if (dataContributors) {
+            if (!contributor && !selectedContributor) {
+                setSelectedContributor(contributors[0])
+            }
         }
-    }, [])
+    }, [open])
 
     useEffect(() => {
         if (mostRecentAllocation) {
@@ -277,10 +273,6 @@ const AllocationAddForm = (props) => {
         return a.contributor
     })
 
-    if (!selectedContributor && !contributor) {
-        setSelectedContributor(contributors[0])
-    }
-
     return (
         <Dialog
             onClose={onClose}
@@ -300,6 +292,7 @@ const AllocationAddForm = (props) => {
                             payments={payments}
                             project={project}
                             setNewAllocation={setNewAllocation}
+                            selectedContributor={selectedContributor ? selectedContributor : contributors[0]}
                             setContributor={setSelectedContributor}
                             setPayment={setSelectedPayment}
                         />

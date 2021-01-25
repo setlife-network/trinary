@@ -33,6 +33,7 @@ const AllocationAddSpecifics = (props) => {
         project,
         payment,
         payments,
+        selectedContributor,
         setNewAllocation,
         setContributor,
         setPayment
@@ -43,7 +44,7 @@ const AllocationAddSpecifics = (props) => {
     const [openPayments, setOpenPayments] = useState(false)
     const [projectGithubRepo, setProjectGithubRepo] = useState(null)
     const [selectedPayment, setSelectedPayment] = useState(payment ? payment : payments[0])
-    const [selectedContributor, setSelectedContributor] = useState(contributor ? contributor : contributors[0])
+    //const [selectedContributor, setSelectedContributor] = useState(contributor ? contributor : contributors[0])
 
     const handleClickContributors = () => {
         setOpenContributors(!openContributors)
@@ -54,9 +55,6 @@ const AllocationAddSpecifics = (props) => {
     }
 
     useEffect(() => {
-        if (contributor) {
-            setSelectedContributor(contributor)
-        }
         setProjectGithubRepo(last(split(project.github_url, '/')))
         setContributorGithubUser(last(split(selectedContributor.github_handle, '/')))
     }, [])
@@ -90,7 +88,6 @@ const AllocationAddSpecifics = (props) => {
     }
 
     const onClickContributor = (contributor) => {
-        setSelectedContributor(contributor)
         setContributor(contributor)
         setOpenContributors(false)
     }
@@ -208,7 +205,6 @@ const AllocationAddSpecifics = (props) => {
                         }
                     </List>
                 </Grid>
-
                 <Grid item xs={12}>
                     <List component='nav'>
                         <ListItem button onClick={handleClickPayments}>
@@ -217,9 +213,12 @@ const AllocationAddSpecifics = (props) => {
                                     <PaymentIcon color='primary'/>
                                 </Grid>
                                 <Grid item xs={3}>
-                                    <ListItemText primary={`${selectedPayment.amount
-                                        ? `$${selectedPayment.amount}`
-                                        : 'Propose'}`}
+                                    <ListItemText primary={
+                                        `${selectedPayment.amount
+                                            ? `$${selectedPayment.amount}`
+                                            : 'Propose'
+                                        }`
+                                    }
                                     />
                                 </Grid>
                                 <Grid item xs={3} align='center'>
@@ -245,8 +244,7 @@ const AllocationAddSpecifics = (props) => {
                                 }
                             </Grid>
                         </ListItem>
-                        {
-                            !payment &&
+                        {!payment &&
                             <Collapse in={openPayments} timeout='auto' unmountOnExit>
                                 {listPayments(payments)}
                                 {payments &&
