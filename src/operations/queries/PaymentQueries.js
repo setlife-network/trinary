@@ -33,9 +33,21 @@ export const GET_PAYMENT_ALLOCATIONS = gql`
         getPaymentById(id: $paymentId){
             id
             allocations {
-              id
-              amount
-          }
+                id
+                amount
+                start_date
+                end_date
+                contributor {
+                    id
+                    name
+                }
+                rate {
+                    id
+                    hourly_rate
+                    monthly_hours
+                    type
+                }
+            }
         }
     }
 `
