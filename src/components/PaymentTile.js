@@ -13,6 +13,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 
+import AllocationAddForm from './AllocationAddForm'
 import {
     GET_PAYMENT_ALLOCATIONS,
     GET_PAYMENT_TOTAL_ALLOCATED
@@ -24,6 +25,11 @@ const PaymentTile = (props) => {
 
     const { client, payment, project } = props
 
+    const formattedDatePaid = moment(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
+    const formattedDateIncurred = moment(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
+    const paymentHasBeenMade = payment.date_paid != null
+    const currencySymbol = selectCurrencySymbol({ currency: client.currency })
+
     const { loading: loadingPaymentAllocations, error: errorPaymentAllocations, data: dataPaymentAllocations } = useQuery(GET_PAYMENT_ALLOCATIONS, {
         variables: { paymentId: Number(payment.id) }
     })
@@ -31,10 +37,17 @@ const PaymentTile = (props) => {
         variables: { paymentId: Number(payment.id) }
     })
 
-    const formattedDatePaid = moment(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
-    const formattedDateIncurred = moment(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
-    const paymentHasBeenMade = payment.date_paid != null
-    const currencySymbol = selectCurrencySymbol({ currency: client.currency })
+    const [paymentClicked, setPaymentClicked] = useState(null)
+    const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
+
+    const addAllocation = (props) => {
+        setOpenAddAllocationDialog(true)
+        setPaymentClicked(props.payment)
+    }
+
+    const handleAddAllocationClose = (value) => {
+        setOpenAddAllocationDialog(false)
+    }
 
     if (loadingTotalAllocated || loadingPaymentAllocations) return 'Loading...'
     if (errorTotalAllocated || errorPaymentAllocations) return `An error ocurred`
@@ -50,25 +63,25 @@ const PaymentTile = (props) => {
             return (
                 <Box mb={3}>
                     <Grid container>
-                        <Grid items xs={10}>
-                            <Typography color='secondary'>
+                        <Grid items xs={10} >
+                            <Typography color='secondary' variant='caption'>
                                 {`${contributor.name}`}
                             </Typography>
                         </Grid>
                         <Grid item xs={2} align='right'>
-                            <Typography color='secondary'>
+                            <Typography color='secondary' variant='caption'>
                                 {`${currencySymbol}${amount}`}
                             </Typography>
                         </Grid>
-                        <Grid items xs={8}>
-                            <Typography color='secondary'>
+                        <Grid items xs={7}>
+                            <Typography color='secondary' variant='caption'>
                                 {`${currencySymbol}${rate.hourly_rate}/hr (
                                     ${rate.type == 'monthly_rate' ? 'monthly rate' : 'max budget'}
                                 )`}
                             </Typography>
                         </Grid>
-                        <Grid item xs={4} align='right'>
-                            <Typography color='secondary'>
+                        <Grid item xs={5} align='right'>
+                            <Typography color='secondary' variant='caption'>
                                 {`Ends ${moment(end_date, 'x').format('MM/DD/YYYY')} `}
                             </Typography>
                         </Grid>
@@ -150,7 +163,7 @@ const PaymentTile = (props) => {
                                     fullWidth
                                     color='primary'
                                     variant='outlined'
-                                    onClick={() => (console.log('Click'))}
+                                    onClick={() => addAllocation({ payment })}
                                 >
                                     <Typography>
                                         {`Allocate`}
@@ -161,6 +174,15 @@ const PaymentTile = (props) => {
                     </AccordionDetails>
                 }
             </Accordion>
+            {
+                (paymentClicked && project) &&
+                <AllocationAddForm
+                    project={project}
+                    open={openAddAllocationDialog}
+                    onClose={handleAddAllocationClose}
+                    payment={paymentClicked}
+                />
+            }
         </Box>
     )
 }
