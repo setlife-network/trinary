@@ -27,3 +27,15 @@ export const GET_PAYMENT_TOTAL_ALLOCATED = gql`
         }
     }
 `
+
+export const GET_PAYMENT_ALLOCATIONS = gql`
+    query PaymentAllocations($paymentId: Int!){
+        getPaymentById(id: $paymentId){
+            id
+            allocations {
+              id
+              amount
+          }
+        }
+    }
+`

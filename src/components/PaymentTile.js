@@ -13,12 +13,19 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 
-import { GET_PAYMENT_TOTAL_ALLOCATED } from '../operations/queries/PaymentQueries'
+import {
+    GET_PAYMENT_ALLOCATIONS,
+    GET_PAYMENT_TOTAL_ALLOCATED
+} from '../operations/queries/PaymentQueries'
+import { selectCurrencySymbol } from '../scripts/selectors'
 
 const PaymentTile = (props) => {
 
     const { client, payment } = props
 
+    const { loading: loadingPaymentAllocations, error: errorPaymentAllocations, data: dataPaymentAllocations } = useQuery(GET_PAYMENT_ALLOCATIONS, {
+        variables: { paymentId: Number(payment.id) }
+    })
     const { loading: loadingTotalAllocated, error: errorTotalAllocated, data: dataTotalAllocated } = useQuery(GET_PAYMENT_TOTAL_ALLOCATED, {
         variables: { paymentId: Number(payment.id) }
     })
@@ -27,10 +34,16 @@ const PaymentTile = (props) => {
     const formattedDateIncurred = moment(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
     const paymentHasBeenMade = payment.date_paid != null
 
-    if (loadingTotalAllocated) return 'Loading...'
-    if (errorTotalAllocated) return `An error ocurred: ${errorTotalAllocated}`
+    if (loadingTotalAllocated || loadingPaymentAllocations) return 'Loading...'
+    if (errorTotalAllocated || errorPaymentAllocations) return `An error ocurred`
 
     const { totalAllocated } = dataTotalAllocated.getPaymentById
+    const { allocations } = dataPaymentAllocations.getPaymentById
+
+    console.log('allocations');
+    console.log(allocations);
+
+    const numberOfContributorsAllocated = allocations.length
 
     return (
         <Box
@@ -49,10 +62,7 @@ const PaymentTile = (props) => {
                         <Grid item xs={5} align='left'>
                             <Typography variant='h6'>
                                 {
-                                    `${client.currency != 'USD'
-                                        ? ''
-                                        : '$'}
-                            ${payment.amount}`
+                                    `${selectCurrencySymbol({ currency: client.currency })}${payment.amount}`
                                 }
                             </Typography>
                         </Grid>
@@ -76,7 +86,9 @@ const PaymentTile = (props) => {
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant='subtitle1' color='primary'>
-                                {`$${totalAllocated} allocated`}
+                                {`
+                                    ${selectCurrencySymbol({ currency: client.currency })}${totalAllocated} allocated to ${numberOfContributorsAllocated}
+                                    ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}`}
                             </Typography>
                         </Grid>
                     </Grid>
