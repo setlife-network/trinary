@@ -10,6 +10,7 @@ module.exports = gql`
         client_id: Int!
         totalAllocated: Int
         client: Client
+        allocations: [Allocation]
     }
 
     input PaymentInput {
