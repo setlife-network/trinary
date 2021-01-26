@@ -204,9 +204,10 @@ const AllocationAddForm = (props) => {
         } else if (payment) {
             setSelectedPayment(payment)
         }
+
         if (dataContributors) {
             if (!contributor && !selectedContributor) {
-                setSelectedContributor(contributors[0])
+                setSelectedContributor(dataContributors[0])
             }
         }
     }, [open])
@@ -391,13 +392,10 @@ const AllocationAddForm = (props) => {
                 }
                 {
                     (totalAllocatedFromPayment && selectedPayment) &&
-                        (Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])) > Number(selectedPayment['amount'] ) &&
+                        (Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])) > Number(selectedPayment['amount']) &&
                         <Box color='red' mb={2}>
                             <Typography>
                                 {`Warning: The total allocated is bigger that the amount of the payment`}
-                            </Typography>
-                            <Typography>
-                                {`The total allocated for this payment would be ${Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])} monetary units`}
                             </Typography>
                         </Box>
 

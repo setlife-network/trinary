@@ -8,7 +8,12 @@ import {
 
 const RateProratedMonthlyForm = (props) => {
 
-    const { currentRate, setNewAllocationRate, startDate, endDate } = props
+    const {
+        currentRate,
+        endDate,
+        setNewAllocationRate,
+        startDate
+    } = props
 
     const [totalAmount, setTotalAmount] = useState(null)
     const [monthlyHoursInput, setMonthlyhoursInput] = useState(null)
