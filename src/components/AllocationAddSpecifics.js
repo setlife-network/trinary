@@ -20,7 +20,9 @@ import PaymentIcon from '@material-ui/icons/Payment'
 import PeopleIcon from '@material-ui/icons/Group'
 import moment from 'moment'
 import {
+    difference,
     differenceWith,
+    isEqual,
     last,
     split
 } from 'lodash'
@@ -76,11 +78,13 @@ const AllocationAddSpecifics = (props) => {
     }, [selectedPayment])
 
     const selectLatestPayment = (props) => {
-        props.payments.map(p => {
-            if (p.date_paid > selectedPayment) {
-                setSelectedPayment(p)
-            }
-        })
+        if (props) {
+            props.payments.map(p => {
+                if (p.date_paid > selectedPayment) {
+                    setSelectedPayment(p)
+                }
+            })
+        }
     }
 
     const onClickPayment = (payment) => {
@@ -94,7 +98,7 @@ const AllocationAddSpecifics = (props) => {
     }
 
     const listPayments = (payments) => {
-        const paymentsList = differenceWith(payments, [selectedPayment])
+        const paymentsList = differenceWith(payments, [selectedPayment], isEqual)
         return paymentsList.map(p => {
             return (
                 <List component='div' disablePadding>
@@ -102,11 +106,20 @@ const AllocationAddSpecifics = (props) => {
                         <Grid container>
                             <Grid item xs={3}/>
                             <Grid item xs={3}>
-                                <ListItemText primary={`$${p.amount}`}/>
+                                <ListItemText primary={
+                                    `${p.amount
+                                        ? `$${p.amount}`
+                                        : 'Propose'
+                                    }`
+                                }
+                                />
                             </Grid>
                             <Grid item xs={3} align='center'>
                                 <Typography variant='caption' color='secondary'>
-                                    {`${p.date_paid ? moment(p.date_paid, 'x').format('MM/DD/YYYY') : ''}`}
+                                    {`${p.date_paid
+                                        ? moment(p.date_paid, 'x').format('MM/DD/YYYY')
+                                        : ''
+                                    }`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}/>
@@ -150,7 +163,6 @@ const AllocationAddSpecifics = (props) => {
     return (
         <Box className='AllocationAddSpecifics'>
             <Grid container justify='center'>
-
                 <ListItem button>
                     <Grid item xs={3}>
                         <AssessmentIcon color='primary'/>
@@ -226,11 +238,14 @@ const AllocationAddSpecifics = (props) => {
                                     <Typography variant='caption' color='secondary'>
                                         {`${selectedPayment.date_paid
                                             ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
-                                            : ''}`}
+                                            : ''
+                                        }`}
                                         {`${
-                                            !selectedPayment.date_paid && selectedPayment.date_incurred
-                                                ? 'Warning: This payment has not been paid'
-                                                : ''
+                                            selectedPayment && (
+                                                !selectedPayment.date_paid && selectedPayment.date_incurred
+                                                    ? 'Warning: This payment has not been paid'
+                                                    : ''
+                                            )
                                         }`}
                                     </Typography>
                                 </Grid>
@@ -247,20 +262,8 @@ const AllocationAddSpecifics = (props) => {
                         </ListItem>
                         {!payment &&
                             <Collapse in={openPayments} timeout='auto' unmountOnExit>
-                                {listPayments(payments)}
-                                {payments &&
-                                    <List component='div' disablePadding>
-                                        <ListItem button onClick={() => onClickPayment({})}>
-                                            <Grid container>
-                                                <Grid item xs={3}/>
-                                                <Grid item xs={3}>
-                                                    <ListItemText primary={`Propose`}/>
-                                                </Grid>
-                                                <Grid item xs={6}/>
-                                            </Grid>
-                                        </ListItem>
-                                    </List>
-                                }
+                                {payments.length > 1 &&
+                                    listPayments(payments)}
                             </Collapse>
                         }
                     </List>
