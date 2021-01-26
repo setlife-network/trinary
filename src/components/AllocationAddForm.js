@@ -244,6 +244,20 @@ const AllocationAddForm = (props) => {
 
     useEffect(() => {
         if (selectedPayment) {
+            if (selectedPayment.id) {
+                getTotalAllocatedFromPayment({
+                    variables: {
+                        paymentId: selectedPayment.id
+                    }
+                })
+            } else {
+                setSelectedPayment(null)
+            }
+        }
+    }, [selectedPayment])
+
+    useEffect(() => {
+        if (selectedPayment) {
             getTotalAllocatedFromPayment({
                 variables: {
                     paymentId: selectedPayment.id
@@ -377,7 +391,7 @@ const AllocationAddForm = (props) => {
                 }
                 {
                     (totalAllocatedFromPayment && selectedPayment) &&
-                        (Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])) > Number(selectedPayment['amount']) &&
+                        (Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])) > Number(selectedPayment['amount'] ) &&
                         <Box color='red' mb={2}>
                             <Typography>
                                 {`Warning: The total allocated is bigger that the amount of the payment`}
