@@ -25,9 +25,20 @@ const authentication = module.exports = (() => {
         })
     }
 
+    const updateGithubAccessTokenContributor = async (githubContributor) => {
+        const contributor = await db.models.Contributor.findOne({
+            where: {
+                github_id: githubContributor.id
+            }
+        })
+        contributor.github_access_token = githubContributor.accessToken
+        return contributor.save()
+    }
+
     return {
         createContributor,
-        getContributor
+        getContributor,
+        updateGithubAccessTokenContributor
     }
 
 })()
