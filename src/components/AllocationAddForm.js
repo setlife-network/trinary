@@ -199,6 +199,8 @@ const AllocationAddForm = (props) => {
     const [totalAllocatedFromPayment, setTotalAllocatedFromPayment] = useState(null)
 
     useEffect(() => {
+        console.log('contributoropen');
+        console.log(contributor);
         if (contributor) {
             setSelectedContributor(contributor)
         } else if (payment) {
@@ -266,8 +268,7 @@ const AllocationAddForm = (props) => {
     const rates = contributorRates
         ? dataContributorRates.getContributorById.rates
         : null
-
-    const contributors = contributor ? null : dataContributors.getContributors
+    const contributors = dataContributors.getContributors
     const activeAllocations = filter(allocations, 'active')
     const activeContributors = activeAllocations.map(a => {
         return a.contributor

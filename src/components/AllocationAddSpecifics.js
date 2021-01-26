@@ -25,6 +25,8 @@ import {
     split
 } from 'lodash'
 
+import { selectCurrencySymbol } from '../scripts/selectors'
+
 const AllocationAddSpecifics = (props) => {
 
     const {
@@ -44,7 +46,6 @@ const AllocationAddSpecifics = (props) => {
     const [openPayments, setOpenPayments] = useState(false)
     const [projectGithubRepo, setProjectGithubRepo] = useState(null)
     const [selectedPayment, setSelectedPayment] = useState(payment ? payment : payments[0])
-    //const [selectedContributor, setSelectedContributor] = useState(contributor ? contributor : contributors[0])
 
     const handleClickContributors = () => {
         setOpenContributors(!openContributors)
