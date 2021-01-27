@@ -278,6 +278,7 @@ const AllocationAddForm = (props) => {
         ? dataContributorAllocations.getContributorById
         : dataProjectContributors.getProjectById
     const payments = [...dataClientPayments.getProjectById.client.payments, { amount: null, date_paid: null }]
+    const currency = dataClientPayments.getProjectById.client.currency
     const rates = contributorRates
         ? dataContributorRates.getContributorById.rates
         : null
@@ -302,6 +303,7 @@ const AllocationAddForm = (props) => {
                         <AllocationAddSpecifics
                             contributor={contributor}
                             contributors={contributors}
+                            currency={currency}
                             payment={payment}
                             payments={payments}
                             project={project}

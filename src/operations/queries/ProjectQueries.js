@@ -187,6 +187,7 @@ export const GET_PROJECT_CLIENT_PAYMENTS = gql`
             id
             client {
                 id
+                currency
                 payments {
                     id
                     amount

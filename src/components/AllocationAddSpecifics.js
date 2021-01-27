@@ -34,6 +34,7 @@ const AllocationAddSpecifics = (props) => {
     const {
         contributor,
         contributors,
+        currency,
         project,
         payment,
         payments,
@@ -108,7 +109,7 @@ const AllocationAddSpecifics = (props) => {
                             <Grid item xs={3}>
                                 <ListItemText primary={
                                     `${p.amount
-                                        ? `$${p.amount}`
+                                        ? `${selectCurrencySymbol({ currency: currency })}${p.amount}`
                                         : 'Propose'
                                     }`
                                 }
@@ -228,7 +229,7 @@ const AllocationAddSpecifics = (props) => {
                                 <Grid item xs={3}>
                                     <ListItemText primary={
                                         `${selectedPayment.amount
-                                            ? `$${selectedPayment.amount}`
+                                            ? `${selectCurrencySymbol({ currency: currency })}${selectedPayment.amount}`
                                             : 'Propose'
                                         }`
                                     }
