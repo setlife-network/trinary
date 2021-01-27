@@ -44,12 +44,12 @@ const ProjectsListManager = ({
                 justify='space-between'
                 alignItems='flex-end'
             >
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <Box
                         bgcolor='primary.black'
                         color='primary.light'
                         borderRadius='borderRadius'
-                        px={5}
+                        px={4}
                         py={1}
                     >
                         {
@@ -62,7 +62,7 @@ const ProjectsListManager = ({
                 </Grid>
                 {
                     !home &&
-                    <Grid item>
+                    <Grid item xs={4} align='right'>
                         <Fab
                             color='primary'
                             onClick={() => addClient()}
