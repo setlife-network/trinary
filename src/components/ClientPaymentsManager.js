@@ -32,7 +32,7 @@ const ClientPaymentsManager = ({
     const { getClientById } = data
 
     return (
-        <Box mt={3} mx={1} className='ClientPaymentsManager'>
+        <Box mt={3} mx={0} className='ClientPaymentsManager'>
             <Grid
                 container
                 justify='space-between'
