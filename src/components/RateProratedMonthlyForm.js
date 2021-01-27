@@ -17,7 +17,7 @@ const RateProratedMonthlyForm = (props) => {
     const [totalHours, setTotalHours] = useState(0)
 
     useEffect(() => {
-        setTotalWeeks(endDate.diff(startDate, 'weeks'))
+        setTotalWeeks(endDate.diff(startDate, 'days') / 7)
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
         setMonthlyhoursInput(currentRate ? currentRate.monthly_hours : 160)
     }, [currentRate])
@@ -37,7 +37,7 @@ const RateProratedMonthlyForm = (props) => {
     }, [totalAmount])
 
     useEffect(() => {
-        setTotalWeeks(endDate.diff(startDate, 'weeks'))
+        setTotalWeeks(endDate.diff(startDate, 'days') / 7)
     }, [startDate, endDate])
 
     return (
@@ -49,6 +49,7 @@ const RateProratedMonthlyForm = (props) => {
                             <TextField
                                 label='Expected monthly hours'
                                 variant='filled'
+                                defaultValue='0'
                                 value={`${monthlyHoursInput}`}
                                 fullWidth
                                 onChange={(event) => setMonthlyhoursInput(event.target.value)}
@@ -77,7 +78,7 @@ const RateProratedMonthlyForm = (props) => {
             <Grid item xs={12}>
                 <Box mb={2} mt={1}>
                     <Typography>
-                        {`Total hours per week = ${(totalHours / totalWeeks).toFixed(2)}`}
+                        {`Total hours per week = ${Math.trunc((totalHours / totalWeeks))}`}
                     </Typography>
                 </Box>
             </Grid>
