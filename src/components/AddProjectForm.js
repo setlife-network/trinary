@@ -17,6 +17,7 @@ import {
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
+import { split } from 'lodash'
 
 import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
 import { red } from '../styles/colors.scss'
@@ -64,7 +65,37 @@ const AddProjectForm = ({
         setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
     }
 
+    const verifyGithubURL = (url) => {
+
+        const githubLinkInformation = split(url, '/')
+        console.log(githubLinkInformation.length);
+        if (githubLinkInformation.length != 5) {
+            return 0
+        }
+        return 1
+    }
+
+    const verifyTogglURL = (url) => {
+        const togglLinkInformation = split(url, '/')
+        if (togglLinkInformation.length != 6) {
+            return 0
+        }
+        return 1
+    }
+
     const createProject = async () => {
+        if (!verifyGithubURL(projectGithub)) {
+            setCreateProjectError('The Github URL is invalid')
+            setDisplayError(true)
+            return
+        }
+        if (projectToggl) {
+            if (!verifyTogglURL(projectToggl)) {
+                setCreateProjectError('The Toggl URL is invalid')
+                setDisplayError(true)
+                return
+            }
+        }
         const variables = {
             client_id: parseInt(clientId, 10),
             name: projectName,
@@ -79,12 +110,11 @@ const AddProjectForm = ({
         const newProject = await addProject({ variables })
         if (loading) return <span>loading...</span>
         if (newProject.errors) {
-            setCreateProjectError(`${Object.keys(newProject.errors[0].extensions.exception.fields)[0]}`)
+            setCreateProjectError(`${Object.keys(newProject.errors[0].extensions.exception.fields)[0]} already exists`)
             setDisplayError(true)
         } else {
             history.push(`/projects/${newProject.data.createProject.id}`)
         }
-
     }
 
     return (
@@ -171,17 +201,17 @@ const AddProjectForm = ({
                         disabled={disableAdd}
                         onClick={createProject}
                     >
-                        Add Project
+                        {`Add Project`}
                     </Button>
                 </Box>
             </Grid>
             <Snackbar
                 open={displayError}
-                autoHideDuration={3600}
+                autoHideDuration={4000}
                 onClose={handleAlertClose}
             >
                 <Alert severity='error'>
-                    {`${createProjectError} already exists`}
+                    {`${createProjectError}`}
                 </Alert>
             </Snackbar>
         </FormControl>
