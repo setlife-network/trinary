@@ -29,7 +29,7 @@ const PaymentsList = (props) => {
     const renderPaymentTiles = (payments) => {
         return payments.map(p => {
             return (
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} md={4}>
                     <Box mt={2} onClick={() => addAllocation({ payment: p })}>
                         <PaymentTile
                             payment={p}
