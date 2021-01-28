@@ -7,3 +7,9 @@ export const selectCurrencySymbol = (props) => {
         return c.name == props.currency
     })['symbol']
 }
+
+export const selectCurrencyInformation = (props) => {
+    return find(CURRENCIES, c => {
+        return c.name == props.currency
+    })
+}
