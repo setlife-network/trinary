@@ -39,7 +39,9 @@ const AddProjectForm = ({
     const [displayError, setDisplayError] = useState(false)
 
     useEffect(() => {
-        if (projectName && projectGithub && projectBudget && projectDate) {
+        if (!projectName || !projectGithub || !projectDate) {
+            setDisableAdd(true)
+        } else {
             setDisableAdd(false)
         }
     })
