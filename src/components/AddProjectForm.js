@@ -66,9 +66,7 @@ const AddProjectForm = ({
     }
 
     const verifyGithubURL = (url) => {
-
         const githubLinkInformation = split(url, '/')
-        console.log(githubLinkInformation.length);
         if (githubLinkInformation.length != 5) {
             return 0
         }
@@ -77,7 +75,7 @@ const AddProjectForm = ({
 
     const verifyTogglURL = (url) => {
         const togglLinkInformation = split(url, '/')
-        if (togglLinkInformation.length != 6) {
+        if (togglLinkInformation.length != 7) {
             return 0
         }
         return 1

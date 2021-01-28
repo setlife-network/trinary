@@ -14,6 +14,7 @@ import {
     Snackbar,
     TextField
 } from '@material-ui/core/'
+import { split } from 'lodash'
 
 import { UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
 
@@ -36,6 +37,18 @@ const ProjectEditDialog = (props) => {
     const [togglURL, setTogglURL] = useState(project.toggl_url)
 
     const onEditProject = async () => {
+        if (!verifyGithubURL(githubURL)) {
+            setEditProjectError('The Github URL is invalid')
+            setDisplayError(true)
+            return
+        }
+        if (togglURL) {
+            if (!verifyTogglURL(togglURL)) {
+                setEditProjectError('The Toggl URL is invalid')
+                setDisplayError(true)
+                return
+            }
+        }
         const projectInfoToEdit = {
             project_id: project.id,
             name: projectName,
@@ -48,11 +61,27 @@ const ProjectEditDialog = (props) => {
         const projectEdited = await updateProject({ variables: projectInfoToEdit })
         if (loading) return <span>loading...</span>
         else if (projectEdited.errors) {
-            setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}`)
+            setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}  already exists`)
             setDisplayError(true)
         } else {
             onClose()
         }
+    }
+
+    const verifyGithubURL = (url) => {
+        const githubLinkInformation = split(url, '/')
+        if (githubLinkInformation.length != 5) {
+            return 0
+        }
+        return 1
+    }
+
+    const verifyTogglURL = (url) => {
+        const togglLinkInformation = split(url, '/')
+        if (togglLinkInformation.length != 7) {
+            return 0
+        }
+        return 1
     }
 
     const handleAlertClose = (event, reason) => {
@@ -64,7 +93,7 @@ const ProjectEditDialog = (props) => {
 
     useEffect(() => {
         if (
-            expectedBudget == project.expected_budget && 
+            expectedBudget == project.expected_budget &&
             githubURL == project.github_url &&
             projectName == project.name &&
             togglURL == project.toggl_url
@@ -160,7 +189,7 @@ const ProjectEditDialog = (props) => {
                         onClose={handleAlertClose}
                     >
                         <Alert severity='error'>
-                            {`${editProjectError} already exists`}
+                            {`${editProjectError}`}
                         </Alert>
                     </Snackbar>
                 </FormControl>
