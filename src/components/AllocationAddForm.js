@@ -258,7 +258,11 @@ const AllocationAddForm = (props) => {
     }, [newAllocationRate])
 
     if (loadingProjectContributors || loadingContributors || loadingContributorAllocations || loadingContributorRates || loadingClientPayments) {
-        return <AllocationAddForm/>
+        return (
+            <>
+                <LoadingProgress/>
+            </>
+        )
     }
     if (errorProjectContributors || errorContributors || errorContributorAllocations || errorContributorAllocations || errorContributorRates || errorClientPayments) {
         return `error`
