@@ -23,7 +23,11 @@ import { red } from '../styles/colors.scss'
 
 const PaymentTile = (props) => {
 
-    const { client, payment, project } = props
+    const {
+        client,
+        payment,
+        project
+    } = props
 
     const formattedDatePaid = moment(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
     const formattedDateIncurred = moment(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')

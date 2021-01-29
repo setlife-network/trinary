@@ -22,7 +22,7 @@
     "apollo-server": "^2.18.2",
     "apollo-server-express": "^2.18.2",
     "aws-sdk": "^2.771.0",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-stage-2": "^6.24.1",
