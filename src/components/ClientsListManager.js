@@ -25,7 +25,7 @@ const ClientListManager = ({
             </Grid>
         )
     }
-    if (error) return `Error! ${error.message}`;
+    if (error) return `Error! ${error.message}`
     return (
         <Box
             mb={3}
@@ -38,7 +38,7 @@ const ClientListManager = ({
                 justify='space-between'
                 alignItems='flex-end'
             >
-                <Grid item>
+                <Grid item xs={8} sm={6} md={4}>
                     <Box
                         bgcolor='primary.black'
                         color='primary.light'
@@ -55,7 +55,7 @@ const ClientListManager = ({
                         }
                     </Box>
                 </Grid>
-                <Grid item>
+                <Grid item xs={4} align='right'>
                     <Fab
                         color='primary'
                         onClick={() => addClient()}

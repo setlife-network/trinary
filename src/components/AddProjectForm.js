@@ -93,7 +93,7 @@ const AddProjectForm = ({
             align='left'
         >
             <Grid container justify='space-between'>
-                <Grid item xs={12} lg={5}>
+                <Grid item xs={12} md={5}>
                     <Box xs={10} my={2}>
                         <TextField
                             label='Project name'
@@ -105,7 +105,7 @@ const AddProjectForm = ({
                         />
                     </Box>
                 </Grid>
-                <Grid item xs={12} lg={5}>
+                <Grid item xs={12} md={5}>
                     <Box xs={10} my={2}>
                         <TextField
                             label='Github URL'
@@ -120,7 +120,7 @@ const AddProjectForm = ({
             </Grid>
 
             <Grid container justify='space-between'>
-                <Grid item xs={12} lg={5}>
+                <Grid item xs={12} md={5}>
                     <Box xs={10} my={2}>
                         <TextField
                             label='Toggl URL'
@@ -131,7 +131,7 @@ const AddProjectForm = ({
                         />
                     </Box>
                 </Grid>
-                <Grid item xs={12} lg={5}>
+                <Grid item xs={12} md={5}>
                     <Box xs={10} my={2}>
                         <TextField
                             error={invalidBudgetInput}
@@ -145,7 +145,6 @@ const AddProjectForm = ({
                     </Box>
                 </Grid>
             </Grid>
-
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={MomentUtils}>
                     <KeyboardDatePicker

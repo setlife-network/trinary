@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import moment from 'moment'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
+import MonetizationOnTwoToneIcon from '@material-ui/icons/MonetizationOnTwoTone'
+
+import { selectCurrencySymbol } from '../scripts/selectors'
 
 const PaymentTile = (props) => {
 
-    const { client, payment } = props
+    const {
+        client,
+        payment
+    } = props
 
     const formattedDatePaid = moment(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
     const formattedDateIncurred = moment(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
@@ -20,18 +25,15 @@ const PaymentTile = (props) => {
             borderRadius='borderRadius'
             bgcolor='primary.light'
             px={3}
-            py={1}
+            py={2}
             mx={1}
             className='PaymentTile'
         >
-            <Grid container alignItems='baseline'>
+            <Grid container alignItems='center'>
                 <Grid item xs={5} align='left'>
                     <Typography variant='h6'>
                         {
-                            `${client.currency != 'USD'
-                                ? ''
-                                : '$'}
-                            ${payment.amount}`
+                            `${selectCurrencySymbol({ currency: client.currency })} ${payment.amount}`
                         }
                     </Typography>
                 </Grid>
@@ -49,7 +51,7 @@ const PaymentTile = (props) => {
                     </Typography>
                 </Grid>
                 <Grid item xs={6} align='right'>
-                    <MonetizationOnIcon
+                    <MonetizationOnTwoToneIcon
                         color={`${paymentHasBeenMade ? 'primary' : 'secondary'}`}
                     />
                 </Grid>
@@ -58,8 +60,4 @@ const PaymentTile = (props) => {
     )
 }
 
-PaymentTile.defaultProps = {
-
-};
-
-export default PaymentTile;
+export default PaymentTile
