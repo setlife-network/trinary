@@ -19,7 +19,7 @@ const RateMaxBudgetForm = (props) => {
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'weeks'))
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
-    }, [])
+    }, [currentRate])
 
     useEffect(() => {
         setTotalHours(totalAmount && currentRateInput ? (totalAmount / currentRateInput).toFixed(2) : 0)
