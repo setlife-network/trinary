@@ -44,7 +44,7 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
                     active
                     type
                     hourly_rate
-                    monthly_hours
+                    total_expected_hours
                 }
             }
         }
@@ -61,7 +61,7 @@ export const GET_CONTRIBUTOR_RATES = gql`
                 active
                 type
                 hourly_rate
-                monthly_hours
+                total_expected_hours
             }
 
         }

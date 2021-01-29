@@ -69,7 +69,7 @@ const AllocationAddForm = (props) => {
             contributorRates,
             {
                 'hourly_rate': rate.hourly_rate.toString(),
-                'monthly_hours': Number(rate.monthly_hours),
+                'total_expected_hours': Number(rate.total_expected_hours),
                 'type': rate.type
             }
         )
@@ -80,7 +80,7 @@ const AllocationAddForm = (props) => {
             allocationRate['id'] = (await createRate({
                 variables: {
                     hourly_rate: rate.hourly_rate.toString(),
-                    monthly_hours: Number(rate.monthly_hours),
+                    total_expected_hours: Number(rate.total_expected_hours),
                     type: rate.type,
                     contributor_id: selectedContributor.id
                 }
