@@ -44,7 +44,7 @@ export const GET_PAYMENT_ALLOCATIONS = gql`
                 rate {
                     id
                     hourly_rate
-                    monthly_hours
+                    total_expected_hours
                     type
                 }
             }

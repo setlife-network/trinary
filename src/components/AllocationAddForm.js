@@ -77,6 +77,8 @@ const AllocationAddForm = (props) => {
             //create only allocation referencing contributorRates[existingRate].id
             allocationRate['id'] = contributorRates[`${existingRate}`].id
         } else {
+            console.log('selectedContributor');
+            console.log(selectedContributor);
             allocationRate['id'] = (await createRate({
                 variables: {
                     hourly_rate: rate.hourly_rate.toString(),
@@ -204,13 +206,20 @@ const AllocationAddForm = (props) => {
         } else if (payment) {
             setSelectedPayment(payment)
         }
-
         if (dataContributors) {
             if (!contributor && !selectedContributor) {
                 setSelectedContributor(dataContributors[0])
             }
         }
     }, [open])
+
+    useEffect(() => {
+        if (dataContributors) {
+            if (!contributor && !selectedContributor) {
+                setSelectedContributor(dataContributors.getContributors[0])
+            }
+        }
+    }, [dataContributors])
 
     useEffect(() => {
         if (mostRecentAllocation) {
@@ -226,6 +235,8 @@ const AllocationAddForm = (props) => {
     }, [mostRecentAllocation])
 
     useEffect(() => {
+        console.log('selectedContributor');
+        console.log(selectedContributor);
         if (selectedContributor) {
             getContributorAllocations({
                 variables: {
