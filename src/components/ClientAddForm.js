@@ -50,7 +50,9 @@ const ClientAddForm = ({
     }
 
     useEffect(() => {
-        if (clientName && clientCurrency) {
+        if (!clientName || !clientCurrency) {
+            setDisableAdd(true)
+        } else {
             setDisableAdd(false)
         }
     })
