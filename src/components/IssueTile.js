@@ -24,7 +24,7 @@ const IssueTile = (props) => {
                 <Grid
                     item
                     xs={12}
-                    lg={10}
+                    sm={10}
                     align='left'
                 >
                     <Box overflow='hidden' textOverflow='ellipsis'>

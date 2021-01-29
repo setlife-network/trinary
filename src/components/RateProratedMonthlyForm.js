@@ -8,7 +8,12 @@ import {
 
 const RateProratedMonthlyForm = (props) => {
 
-    const { currentRate, setNewAllocationRate, startDate, endDate } = props
+    const {
+        currentRate,
+        endDate,
+        setNewAllocationRate,
+        startDate
+    } = props
 
     const [totalAmount, setTotalAmount] = useState(null)
     const [monthlyHoursInput, setMonthlyhoursInput] = useState(null)
@@ -17,9 +22,9 @@ const RateProratedMonthlyForm = (props) => {
     const [totalHours, setTotalHours] = useState(0)
 
     useEffect(() => {
-        setTotalWeeks(endDate.diff(startDate, 'weeks'))
+        setTotalWeeks(endDate.diff(startDate, 'days') / 7)
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
-        setMonthlyhoursInput(currentRate ? currentRate.monthly_hours : 160)
+        setMonthlyhoursInput(currentRate ? currentRate.total_expected_hours : 160)
     }, [currentRate])
 
     useEffect(() => {
@@ -30,14 +35,14 @@ const RateProratedMonthlyForm = (props) => {
         setTotalHours(totalAmount && currentRateInput ? (totalAmount / currentRateInput).toFixed(2) : 0)
         setNewAllocationRate({
             hourly_rate: currentRateInput,
-            monthly_hours: monthlyHoursInput,
+            total_expected_hours: monthlyHoursInput,
             total_amount: totalAmount,
             type: 'prorated_monthly'
         })
     }, [totalAmount])
 
     useEffect(() => {
-        setTotalWeeks(endDate.diff(startDate, 'weeks'))
+        setTotalWeeks(endDate.diff(startDate, 'days') / 7)
     }, [startDate, endDate])
 
     return (
@@ -49,6 +54,7 @@ const RateProratedMonthlyForm = (props) => {
                             <TextField
                                 label='Expected monthly hours'
                                 variant='filled'
+                                defaultValue='0'
                                 value={`${monthlyHoursInput}`}
                                 fullWidth
                                 onChange={(event) => setMonthlyhoursInput(event.target.value)}
@@ -77,7 +83,7 @@ const RateProratedMonthlyForm = (props) => {
             <Grid item xs={12}>
                 <Box mb={2} mt={1}>
                     <Typography>
-                        {`Total hours per week = ${(totalHours / totalWeeks).toFixed(2)}`}
+                        {`Total hours per week = ${Math.trunc((totalHours / totalWeeks))}`}
                     </Typography>
                 </Box>
             </Grid>

@@ -57,7 +57,7 @@ const ProjectOverview = (props) => {
             className='ProjectOverview'
             justify='center'
         >
-            <Grid item xs={10} lg={5}>
+            <Grid item xs={12}>
                 <Box p={3}>
                     <Typography variant='h4'>
                         <strong>

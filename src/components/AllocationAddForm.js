@@ -70,7 +70,7 @@ const AllocationAddForm = (props) => {
             contributorRates,
             {
                 'hourly_rate': rate.hourly_rate.toString(),
-                'monthly_hours': Number(rate.monthly_hours),
+                'total_expected_hours': Number(rate.total_expected_hours),
                 'type': rate.type
             }
         )
@@ -81,7 +81,7 @@ const AllocationAddForm = (props) => {
             allocationRate['id'] = (await createRate({
                 variables: {
                     hourly_rate: rate.hourly_rate.toString(),
-                    monthly_hours: Number(rate.monthly_hours),
+                    total_expected_hours: Number(rate.total_expected_hours),
                     type: rate.type,
                     contributor_id: selectedContributor.id
                 }
@@ -205,16 +205,13 @@ const AllocationAddForm = (props) => {
         } else if (payment) {
             setSelectedPayment(payment)
         }
-    }, [open])
 
-    useEffect(() => {
-        //getAllocatedTotalFromPayment()
-        if (contributor) {
-            setSelectedContributor(contributor)
-        } else if (payment) {
-            setSelectedPayment(payment)
+        if (dataContributors) {
+            if (!contributor && !selectedContributor) {
+                setSelectedContributor(dataContributors[0])
+            }
         }
-    }, [])
+    }, [open])
 
     useEffect(() => {
         if (mostRecentAllocation) {
@@ -249,6 +246,20 @@ const AllocationAddForm = (props) => {
 
     useEffect(() => {
         if (selectedPayment) {
+            if (selectedPayment.id) {
+                getTotalAllocatedFromPayment({
+                    variables: {
+                        paymentId: selectedPayment.id
+                    }
+                })
+            } else {
+                setSelectedPayment(null)
+            }
+        }
+    }, [selectedPayment])
+
+    useEffect(() => {
+        if (selectedPayment) {
             getTotalAllocatedFromPayment({
                 variables: {
                     paymentId: selectedPayment.id
@@ -271,20 +282,16 @@ const AllocationAddForm = (props) => {
     const { allocations } = dataContributorAllocations && contributor
         ? dataContributorAllocations.getContributorById
         : dataProjectContributors.getProjectById
-    const payments = dataClientPayments.getProjectById.client.payments
+    const payments = [...dataClientPayments.getProjectById.client.payments, { amount: null, date_paid: null }]
+    const currency = dataClientPayments.getProjectById.client.currency
     const rates = contributorRates
         ? dataContributorRates.getContributorById.rates
         : null
-
-    const contributors = contributor ? null : dataContributors.getContributors
+    const contributors = dataContributors.getContributors
     const activeAllocations = filter(allocations, 'active')
     const activeContributors = activeAllocations.map(a => {
         return a.contributor
     })
-
-    if (!selectedContributor && !contributor) {
-        setSelectedContributor(contributors[0])
-    }
 
     return (
         <Dialog
@@ -301,10 +308,12 @@ const AllocationAddForm = (props) => {
                         <AllocationAddSpecifics
                             contributor={contributor}
                             contributors={contributors}
+                            currency={currency}
                             payment={payment}
                             payments={payments}
                             project={project}
                             setNewAllocation={setNewAllocation}
+                            selectedContributor={selectedContributor ? selectedContributor : contributors[0]}
                             setContributor={setSelectedContributor}
                             setPayment={setSelectedPayment}
                         />
@@ -394,9 +403,6 @@ const AllocationAddForm = (props) => {
                         <Box color='red' mb={2}>
                             <Typography>
                                 {`Warning: The total allocated is bigger that the amount of the payment`}
-                            </Typography>
-                            <Typography>
-                                {`The total allocated for this payment would be ${Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])} monetary units`}
                             </Typography>
                         </Box>
 

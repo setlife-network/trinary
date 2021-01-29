@@ -182,11 +182,11 @@ module.exports = {
             const authContributorKey = args.githubPersonalKey
                 ? args.githubPersonalKey
                 : (await models.Contributor.findByPk(cookies.userSession, { raw: true }))['github_access_token']
-            const urlSplitted = split(project.github_url, '/');
+            const repoInformation = split(project.github_url, '/');
             const issues = await github.fetchRepoIssues({
                 auth_key: authContributorKey,
-                repo: urlSplitted[urlSplitted.length - 1],
-                owner: GITHUB.OWNER
+                repo: repoInformation[repoInformation.length - 1],
+                owner: repoInformation[repoInformation.length - 2]
             })
             let openIssues = 0
             issues.map((i, n) => {
@@ -216,11 +216,11 @@ module.exports = {
             const authContributorKey = args.githubPersonalKey
                 ? args.githubPersonalKey
                 : (await models.Contributor.findByPk(cookies.userSession, { raw: true }))['github_access_token']
-            const urlSplitted = split(project.github_url, '/');
+            const repoInformation = split(project.github_url, '/');
             const issues = await github.fetchRepoIssues({
                 auth_key: authContributorKey,
-                repo: urlSplitted[urlSplitted.length - 1],
-                owner: GITHUB.OWNER
+                repo: repoInformation[repoInformation.length - 1],
+                owner: repoInformation[repoInformation.length - 2]
             })
             let closedIssues = 0
             issues.map((i, n) => {
@@ -440,6 +440,7 @@ module.exports = {
             const repo = split(project.github_url, '/')
             return dataSyncs.syncGithubRepoContributors({
                 auth_key: authContributorToken,
+                owner: repo[repo.length - 2],
                 repo: repo[repo.length - 1]
             })
         },
