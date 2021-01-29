@@ -235,8 +235,6 @@ const AllocationAddForm = (props) => {
     }, [mostRecentAllocation])
 
     useEffect(() => {
-        console.log('selectedContributor');
-        console.log(selectedContributor);
         if (selectedContributor) {
             getContributorAllocations({
                 variables: {
