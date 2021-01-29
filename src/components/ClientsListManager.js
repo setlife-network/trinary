@@ -6,6 +6,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { gql, useQuery } from '@apollo/client';
 
+import LoadingProgress from './LoadingProgress'
 import { GET_ACTIVE_CLIENTS_COUNT } from '../operations/queries/ClientQueries'
 
 const ClientListManager = ({
@@ -18,13 +19,7 @@ const ClientListManager = ({
 
     const { loading, error, data } = useQuery(GET_ACTIVE_CLIENTS_COUNT);
 
-    if (loading) {
-        return (
-            <Grid item xs={12}>
-                Loading...
-            </Grid>
-        )
-    }
+    if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`;
     return (
         <Box

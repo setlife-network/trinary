@@ -7,13 +7,14 @@ import {
 import { differenceBy, filter } from 'lodash'
 import moment from 'moment'
 
-import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
-import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
-import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
 import AllocationAddForm from './AllocationAddForm'
+import LoadingProgress from './LoadingProgress'
 import ContributorTile from './ContributorTile'
 import ContributorsEmptyState from './ContributorsEmptyState'
 import GithubAccessBlocked from './GithubAccessBlocked'
+import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
+import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
+import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
 
 const ProjectContributors = (props) => {
 
@@ -67,11 +68,7 @@ const ProjectContributors = (props) => {
     }
 
     if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
-        return (
-            <Grid item xs={12}>
-                Loading...
-            </Grid>
-        )
+        return <LoadingProgress/>
     }
     if (errorGithubContributors) {
         return (

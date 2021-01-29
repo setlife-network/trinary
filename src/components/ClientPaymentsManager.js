@@ -8,6 +8,8 @@ import {
 } from '@material-ui/core'
 import { gql, useQuery } from '@apollo/client'
 
+import LoadingProgress from './LoadingProgress'
+
 import { GET_CLIENT_TOTAL_PAID } from '../operations/queries/ClientQueries'
 
 const ClientPaymentsManager = ({
@@ -21,14 +23,9 @@ const ClientPaymentsManager = ({
             toDate: null
         }
     })
-    if (loading) {
-        return (
-            <Grid item xs={12}>
-                Loading...
-            </Grid>
-        )
-    }
-    if (error) return `Error! ${error.message}`;
+    if (loading) return <LoadingProgress/>
+    if (error) return `Error! ${error.message}`
+    
     const { getClientById } = data
 
     return (

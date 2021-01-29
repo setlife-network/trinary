@@ -15,6 +15,7 @@ import {
     TextField
 } from '@material-ui/core/'
 
+import LoadingProgress from './LoadingProgress'
 import { UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
 
 const ProjectEditDialog = (props) => {
@@ -46,7 +47,7 @@ const ProjectEditDialog = (props) => {
             projectInfoToEdit['toggl_url'] = togglURL
         }
         const projectEdited = await updateProject({ variables: projectInfoToEdit })
-        if (loading) return <span>loading...</span>
+        if (loading) return <LoadingProgress/>
         else if (projectEdited.errors) {
             setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}`)
             setDisplayError(true)
@@ -64,7 +65,7 @@ const ProjectEditDialog = (props) => {
 
     useEffect(() => {
         if (
-            expectedBudget == project.expected_budget && 
+            expectedBudget == project.expected_budget &&
             githubURL == project.github_url &&
             projectName == project.name &&
             togglURL == project.toggl_url

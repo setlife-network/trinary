@@ -18,6 +18,8 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
 
+import LoadingProgress from './LoadingProgress'
+
 import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
 import { red } from '../styles/colors.scss'
 
@@ -77,7 +79,7 @@ const AddProjectForm = ({
         }
 
         const newProject = await addProject({ variables })
-        if (loading) return <span>loading...</span>
+        if (loading) return <LoadingProgress/>
         if (newProject.errors) {
             setCreateProjectError(`${Object.keys(newProject.errors[0].extensions.exception.fields)[0]}`)
             setDisplayError(true)
