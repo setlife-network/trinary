@@ -26,7 +26,7 @@ const dataSyncs = module.exports = (() => {
         const githubContributors = await github.fetchRepoContributors({
             auth_key: params.auth_key,
             repo: params.repo,
-            owner: GITHUB.OWNER,
+            owner: params.owner
         })
         await Promise.all(
             await githubContributors.map(async c => {
@@ -56,11 +56,11 @@ const dataSyncs = module.exports = (() => {
 
     const syncGithubIssues = async (params) => {
         const newIssues = []
-        const githubUrlSplitted = split(params.github_url, '/')
+        const repoInformation = split(params.github_url, '/')
         const issues = await github.fetchRepoIssues({
             auth_key: params.auth_key,
-            owner: githubUrlSplitted[githubUrlSplitted.length - 2],
-            repo: githubUrlSplitted[githubUrlSplitted.length - 1]
+            owner: repoInformation[repoInformation.length - 2],
+            repo: repoInformation[repoInformation.length - 1]
         })
         await Promise.all(
             issues.map(async i => {
