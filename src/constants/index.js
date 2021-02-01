@@ -3,14 +3,14 @@ export const CURRENCIES = [
     {
         name: 'USD',
         symbol: '$',
-        decimal: ',',
-        thousand: '.'
+        decimal: '.',
+        thousand: ','
     },
     {
         name: 'MXN',
         symbol: 'Mex$',
-        decimal: ',',
-        thousand: '.'
+        decimal: '.',
+        thousand: ','
     },
     {
         name: 'EUR',
@@ -21,8 +21,8 @@ export const CURRENCIES = [
     {
         name: 'BTC',
         symbol: '₿',
-        decimal: ',',
-        thousand: '.'
+        decimal: '.',
+        thousand: ','
     }
 ]
 export const IS_PRODUCTION = process.env.NODE_ENV == 'production' ? true : false
