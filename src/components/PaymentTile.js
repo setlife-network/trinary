@@ -43,7 +43,7 @@ const PaymentTile = (props) => {
             mx={1}
             className='PaymentTile'
         >
-            <Grid container alignItems='baseline'>
+            <Grid container alignItems='center'>
                 <Grid item xs={7} align='left'>
                     <Box overflow='hidden' textOverflow='ellipsis'>
                         <Typography variant='h6'>
