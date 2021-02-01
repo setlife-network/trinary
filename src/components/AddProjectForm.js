@@ -20,6 +20,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
 import accounting from 'accounting-js'
+import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import { selectCurrencyInformation } from '../scripts/selectors'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
@@ -65,12 +66,10 @@ const AddProjectForm = ({
     }
 
     const handleBudgetChange = (input) => {
-        if (!/^[0-9]*$/.test(input)) {
-            setInvalidBudgetInput(true)
-        } else {
-            setInvalidBudgetInput(false)
-            setProjectBudget(input)
-        }
+        setInvalidBudgetInput(false)
+        const amount = Number(input.replace(/\D/g, ''))
+        setProjectBudget(amount)
+
     }
 
     const handleDateChange = (date) => {
@@ -83,7 +82,7 @@ const AddProjectForm = ({
             name: projectName,
             github_url: projectGithub,
             date: projectDate,
-            expected_budget: parseInt(projectBudget, 10) * 100
+            expected_budget: parseInt(projectBudget, 10)
         }
         if (projectToggl) {
             variables['toggl_url'] = projectToggl
@@ -102,9 +101,6 @@ const AddProjectForm = ({
 
     if (errorClient) return 'Somenthing went wrong'
     if (loadingClient) return 'loading...'
-
-    console.log('dataClient');
-    console.log(dataClient);
 
     const currencyInformation = selectCurrencyInformation({
         currency: dataClient.getClientById.currency
@@ -156,19 +152,15 @@ const AddProjectForm = ({
                 </Grid>
                 <Grid item xs={12} md={5}>
                     <Box xs={10} my={2}>
-
-                        <TextField
-                            error={invalidBudgetInput}
-                            label='Expected Budget'
-                            id='projectBudget'
-                            variant='outlined'
+                        <CurrencyTextField
                             fullWidth
-                            required
-                            startAdornment={
-                                <InputAdornment position='start'>
-                                    $
-                                </InputAdornment>
-                            }
+                            label='Expected Budget'
+                            variant='outlined'
+                            currencySymbol={`${currencyInformation['symbol']}`}
+                            minimumValue='0'
+                            outputFormat='string'
+                            decimalCharacter={`${currencyInformation['decimal']}`}
+                            digitGroupSeparator={`${currencyInformation['thousand']}`}
                             onChange={(event) => handleBudgetChange(event.target.value)}
                         />
 
