@@ -8,7 +8,7 @@ export const CURRENCIES = [
     },
     {
         name: 'MXN',
-        symbol: 'Mex$',
+        symbol: '$',
         decimal: '.',
         thousand: ','
     },
