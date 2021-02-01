@@ -19,7 +19,19 @@ const PaymentTile = (props) => {
     const formattedDatePaid = moment(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
     const formattedDateIncurred = moment(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
     const paymentHasBeenMade = payment.date_paid != null
-    const currencyInformation = selectCurrencyInformation({ currency: client.currency })
+    const currencyInformation = selectCurrencyInformation({
+        currency: client.currency
+    })
+
+    const paymentAmount = accounting.formatMoney(
+        payment.amount / 100,
+        {
+            symbol: currencyInformation['symbol'],
+            thousand: currencyInformation['thousand'],
+            decimal: currencyInformation['decimal'],
+            format: '%s %v'
+        }
+    )
 
     return (
         <Box
@@ -36,11 +48,7 @@ const PaymentTile = (props) => {
                     <Box overflow='hidden' textOverflow='ellipsis'>
                         <Typography variant='h6'>
                             {
-                                `${accounting.formatMoney(payment.amount / 100, {
-                                    symbol: currencyInformation['symbol'],
-                                    thousand: currencyInformation['thousand'],
-                                    decimal: currencyInformation['decimal']
-                                })}`
+                                `${paymentAmount}`
                             }
                         </Typography>
                     </Box>

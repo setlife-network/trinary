@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import Alert from '@material-ui/lab/Alert'
 import {
     Box,
@@ -7,8 +7,10 @@ import {
     FormControl,
     FormHelperText,
     Grid,
+    InputAdornment,
     InputLabel,
     MenuItem,
+    OutlinedInput,
     Select,
     Snackbar,
     TextField,
@@ -17,7 +19,10 @@ import {
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
+import accounting from 'accounting-js'
 
+import { selectCurrencyInformation } from '../scripts/selectors'
+import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
 import { red } from '../styles/colors.scss'
 
@@ -25,6 +30,12 @@ const AddProjectForm = ({
     clientId,
     history
 }) => {
+
+    const { loading: loadingClient, error: errorClient, data: dataClient } = useQuery(GET_CLIENT_INFO, {
+        variables: {
+            id: Number(clientId)
+        }
+    })
 
     const [addProject, { data, loading, error }] = useMutation(ADD_PROJECT, { errorPolicy: 'all' })
 
@@ -72,7 +83,7 @@ const AddProjectForm = ({
             name: projectName,
             github_url: projectGithub,
             date: projectDate,
-            expected_budget: parseInt(projectBudget, 10)
+            expected_budget: parseInt(projectBudget, 10) * 100
         }
         if (projectToggl) {
             variables['toggl_url'] = projectToggl
@@ -88,6 +99,16 @@ const AddProjectForm = ({
         }
 
     }
+
+    if (errorClient) return 'Somenthing went wrong'
+    if (loadingClient) return 'loading...'
+
+    console.log('dataClient');
+    console.log(dataClient);
+
+    const currencyInformation = selectCurrencyInformation({
+        currency: dataClient.getClientById.currency
+    })
 
     return (
         <FormControl
@@ -135,6 +156,7 @@ const AddProjectForm = ({
                 </Grid>
                 <Grid item xs={12} md={5}>
                     <Box xs={10} my={2}>
+
                         <TextField
                             error={invalidBudgetInput}
                             label='Expected Budget'
@@ -142,8 +164,14 @@ const AddProjectForm = ({
                             variant='outlined'
                             fullWidth
                             required
+                            startAdornment={
+                                <InputAdornment position='start'>
+                                    $
+                                </InputAdornment>
+                            }
                             onChange={(event) => handleBudgetChange(event.target.value)}
                         />
+
                     </Box>
                 </Grid>
             </Grid>

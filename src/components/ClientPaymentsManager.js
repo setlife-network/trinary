@@ -32,9 +32,20 @@ const ClientPaymentsManager = ({
     }
     if (error) return `Error! ${error.message}`;
     const { getClientById } = data
-    console.log('data');
-    console.log(data);
-    const currencyInformation = selectCurrencyInformation({ currency: getClientById.currency })
+
+    const currencyInformation = selectCurrencyInformation({
+        currency: getClientById.currency
+    })
+
+    const totalPaid = accounting.formatMoney(
+        getClientById.totalPaid / 100,
+        {
+            symbol: currencyInformation['symbol'],
+            thousand: currencyInformation['thousand'],
+            decimal: currencyInformation['decimal'],
+            format: '%s %v'
+        }
+    )
 
     return (
         <Box mt={3} mx={0} className='ClientPaymentsManager'>
@@ -55,17 +66,12 @@ const ClientPaymentsManager = ({
                         <Grid item>
                             <Typography align='left' variant='h4'>
                                 <strong>
-                                    {`${accounting.formatMoney(getClientById.totalPaid / 100, {
-                                        symbol: currencyInformation['symbol'],
-                                        thousand: currencyInformation['thousand'],
-                                        decimal: currencyInformation['decimal']
-                                    })} Total`}
+                                    {`${totalPaid} Total`}
                                 </strong>
                             </Typography>
                         </Grid>
                     )
                 }
-
             </Grid>
         </Box>
     )

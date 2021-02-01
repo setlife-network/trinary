@@ -39,7 +39,7 @@ const ProjectEditDialog = (props) => {
         const projectInfoToEdit = {
             project_id: project.id,
             name: projectName,
-            expected_budget: Number(expectedBudget),
+            expected_budget: Number(expectedBudget) * 100,
             github_url: githubURL
         }
         if (togglURL) {
