@@ -37,7 +37,7 @@ const ClientPaymentsManager = ({
     const currencyInformation = selectCurrencyInformation({ currency: getClientById.currency })
 
     return (
-        <Box mt={3} mx={1} className='ClientPaymentsManager'>
+        <Box mt={3} mx={0} className='ClientPaymentsManager'>
             <Grid
                 container
                 justify='space-between'

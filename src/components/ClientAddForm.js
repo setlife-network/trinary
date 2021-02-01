@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useMutation } from '@apollo/client';
+import React, { useState, useEffect } from 'react'
+import { useMutation } from '@apollo/client'
 import {
     Box,
     Button,
@@ -50,7 +50,9 @@ const ClientAddForm = ({
     }
 
     useEffect(() => {
-        if (clientName && clientCurrency) {
+        if (!clientName || !clientCurrency) {
+            setDisableAdd(true)
+        } else {
             setDisableAdd(false)
         }
     })
@@ -66,7 +68,7 @@ const ClientAddForm = ({
                 justify='space-between'
                 alignItems='center'
             >
-                <Grid item xs={12} lg={5}>
+                <Grid item xs={12} md={5}>
                     <Box my={2}>
                         <TextField
                             label='Client name'
@@ -78,7 +80,7 @@ const ClientAddForm = ({
                         />
                     </Box>
                 </Grid>
-                <Grid item xs={12} lg={5}>
+                <Grid item xs={12} md={5}>
                     <Box my={2}>
                         <TextField
                             label='Email'
@@ -89,7 +91,7 @@ const ClientAddForm = ({
                         />
                     </Box>
                 </Grid>
-                <Grid item xs={12} lg={5}>
+                <Grid item xs={12} md={5}>
                     <Box width={1} mt={5}>
                         <Select
                             name='Currency'

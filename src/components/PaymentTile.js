@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import moment from 'moment'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
@@ -11,7 +11,10 @@ import { selectCurrencyInformation } from '../scripts/selectors'
 
 const PaymentTile = (props) => {
 
-    const { client, payment } = props
+    const {
+        client,
+        payment
+    } = props
 
     const formattedDatePaid = moment(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
     const formattedDateIncurred = moment(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
@@ -24,7 +27,7 @@ const PaymentTile = (props) => {
             borderRadius='borderRadius'
             bgcolor='primary.light'
             px={3}
-            py={1}
+            py={2}
             mx={1}
             className='PaymentTile'
         >
@@ -65,4 +68,4 @@ const PaymentTile = (props) => {
     )
 }
 
-export default PaymentTile;
+export default PaymentTile
