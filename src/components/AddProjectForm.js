@@ -5,18 +5,15 @@ import {
     Box,
     Button,
     FormControl,
-    FormHelperText,
     Grid,
-    InputAdornment,
-    InputLabel,
-    MenuItem,
-    OutlinedInput,
-    Select,
     Snackbar,
     TextField,
     Typography
 } from '@material-ui/core'
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker
+} from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
 import accounting from 'accounting-js'
@@ -69,7 +66,6 @@ const AddProjectForm = ({
         setInvalidBudgetInput(false)
         const amount = Number(input.replace(/\D/g, ''))
         setProjectBudget(amount)
-
     }
 
     const handleDateChange = (date) => {
@@ -163,7 +159,6 @@ const AddProjectForm = ({
                             digitGroupSeparator={`${currencyInformation['thousand']}`}
                             onChange={(event) => handleBudgetChange(event.target.value)}
                         />
-
                     </Box>
                 </Grid>
             </Grid>
