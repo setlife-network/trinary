@@ -187,7 +187,7 @@ const AddProjectForm = ({
                         disabled={disableAdd}
                         onClick={createProject}
                     >
-                        Add Project
+                        {`Add Project`}
                     </Button>
                 </Box>
             </Grid>
