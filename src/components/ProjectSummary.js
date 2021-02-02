@@ -7,9 +7,10 @@ import {
     Icon,
     Typography
 } from '@material-ui/core'
+import accounting from 'accounting-js'
 
+import { selectCurrencyInformation, selectCurrencySymbol } from '../scripts/selectors'
 import ProjectEditDialog from './ProjectEditDialog'
-import { selectCurrencySymbol } from '../scripts/selectors'
 
 const ProjectSummary = (props) => {
 
@@ -25,7 +26,25 @@ const ProjectSummary = (props) => {
         setOpenEditDialog(false)
     }
 
-    const currencySymbol = selectCurrencySymbol({ currency: project.client.currency })
+    const currencyInformation = selectCurrencyInformation({ currency: project.client.currency })
+    const expectedBudgetAmount = accounting.formatMoney(
+        project.expected_budget / 100,
+        {
+            symbol: currencyInformation['symbol'],
+            thousand: currencyInformation['thousand'],
+            decimal: currencyInformation['decimal'],
+            format: '%s %v'
+        }
+    )
+    const totalPaidAmount = accounting.formatMoney(
+        project.totalPaid / 100,
+        {
+            symbol: currencyInformation['symbol'],
+            thousand: currencyInformation['thousand'],
+            decimal: currencyInformation['decimal'],
+            format: '%s %v'
+        }
+    )
 
     return (
         <Box
@@ -33,6 +52,7 @@ const ProjectSummary = (props) => {
             borderRadius='borderRadius'
             bgcolor='primary.light_blue'
             fontWeight='fontWeightBold'
+            className='ProjectSummary'
         >
             <Grid container justify='center' spacing={2}>
                 <Grid item xs={12} sm={10}>
@@ -53,7 +73,7 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-wallet' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-                                    {`Expected budget - ${currencySymbol}${project.expected_budget}`}
+                                    {`Expected budget - ${expectedBudgetAmount}`}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -64,7 +84,7 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-money-bill-wave-alt' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-                                    {`Total paid - ${currencySymbol}${project.totalPaid}`}
+                                    {`Total paid - ${totalPaidAmount}`}
                                 </Grid>
                             </Grid>
                         </Grid>

@@ -108,15 +108,20 @@ module.exports = (() => {
                     !matchingPayments({ total: total, dateIssued: d['Date Issued'] })
                 ) {
                     //3:
-                    await db.models.Payment.create({
-                        amount: convertToCents(total),
-                        external_uuid: d['Statement ID'],
-                        date_incurred: moment.utc(d['Date Issued'], 'MMM D YYYY'),
-                        date_paid: d['Date Paid']
-                            ? moment.utc(d['Date Paid'], 'MMM D YYYY')
-                            : null,
-                        client_id: matchClients[0].id
-                    })
+                    try {
+                        await db.models.Payment.create({
+                            amount: convertToCents(total),
+                            external_uuid: d['Statement ID'],
+                            date_incurred: moment.utc(d['Date Issued'], 'MMM D YYYY'),
+                            date_paid: d['Date Paid']
+                                ? moment.utc(d['Date Paid'], 'MMM D YYYY')
+                                : null,
+                            client_id: matchClients[0].id
+                        })
+                    } catch (e) {
+                        console.log(`An error ocurred: ${e}`);
+                    }
+
                 }
             }
 
