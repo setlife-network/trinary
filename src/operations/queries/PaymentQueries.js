@@ -19,7 +19,7 @@ export const GET_CLIENT_PAYMENTS = gql`
 `
 
 export const GET_PAYMENT_TOTAL_ALLOCATED = gql`
-    query PaymentTotallAllocated($paymentId: Int!){
+    query PaymentTotalAllocated($paymentId: Int!){
         getPaymentById(id: $paymentId){
             id
             amount
