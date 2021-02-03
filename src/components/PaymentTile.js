@@ -12,13 +12,15 @@ import {
 } from '@material-ui/core/'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
+import accounting from 'accounting-js'
 
 import AllocationAddForm from './AllocationAddForm'
 import {
     GET_PAYMENT_ALLOCATIONS,
     GET_PAYMENT_TOTAL_ALLOCATED
 } from '../operations/queries/PaymentQueries'
-import { selectCurrencySymbol } from '../scripts/selectors'
+import { selectCurrencySymbol, selectCurrencyInformation } from '../scripts/selectors'
+
 import { red } from '../styles/colors.scss'
 
 const PaymentTile = (props) => {
@@ -52,6 +54,20 @@ const PaymentTile = (props) => {
     const handleAddAllocationClose = (value) => {
         setOpenAddAllocationDialog(false)
     }
+
+    const currencyInformation = selectCurrencyInformation({
+        currency: client.currency
+    })
+
+    const paymentAmount = accounting.formatMoney(
+        payment.amount / 100,
+        {
+            symbol: currencyInformation['symbol'],
+            thousand: currencyInformation['thousand'],
+            decimal: currencyInformation['decimal'],
+            format: '%s %v'
+        }
+    )
 
     if (loadingTotalAllocated || loadingPaymentAllocations) return 'Loading...'
     if (errorTotalAllocated || errorPaymentAllocations) return `An error ocurred`
@@ -116,7 +132,7 @@ const PaymentTile = (props) => {
                         <Grid item xs={5} align='left'>
                             <Typography variant='h6'>
                                 {
-                                    `${currencySymbol}${payment.amount}`
+                                    `${paymentAmount}`
                                 }
                             </Typography>
                         </Grid>
@@ -147,7 +163,7 @@ const PaymentTile = (props) => {
                                         color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
                                     >
                                         {`
-                                        ${currencySymbol}${totalAllocated}
+                                        ${paymentAmount}
                                         ${numberOfContributorsAllocated && `allocated to ${numberOfContributorsAllocated}`}
                                         ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}
                                     `}
