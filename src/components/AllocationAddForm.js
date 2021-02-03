@@ -88,7 +88,7 @@ const AllocationAddForm = (props) => {
             })).data.createRate.id
         }
         //create allocation with that rate id
-        await createAllocation({
+        const allocationCreated = await createAllocation({
             variables: {
                 amount: Number(rate.total_amount),
                 start_date: moment(startDate).format('YYYY-MM-DD'),
@@ -100,7 +100,12 @@ const AllocationAddForm = (props) => {
                 rate_id: allocationRate.id
             }
         })
-        onClose()
+        if (loadingNewAllocation) return <span>loading...</span>
+        else if (allocationCreated.errors) {
+            console.log('Error adding the allocation');
+        } else {
+            onClose()
+        }
     }
 
     const getMostRecentAlloaction = (props) => {
@@ -185,7 +190,15 @@ const AllocationAddForm = (props) => {
         dataNewAllocations,
         loadingNewAllocation,
         errorNewAllocation
-    }] = useMutation(CREATE_ALLOCATION)
+    }] = useMutation(CREATE_ALLOCATION,
+        {
+            refetchQueries: [{
+                query: GET_PROJECT_CONTRIBUTORS,
+                variables: {
+                    id: project.id
+                }
+            }]
+        })
 
     const [allocationTypes, setAllocationTypes] = useState([1, 0])
     const [contributorAllocations, setContributorAllocations] = useState(null)
