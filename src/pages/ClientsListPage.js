@@ -3,6 +3,7 @@ import { Grid } from '@material-ui/core'
 
 import ClientsListManager from '../components/ClientsListManager'
 import ClientsList from '../components/ClientsList'
+import { pageName } from '../reactivities/variables'
 
 class ClientListPage extends React.Component {
 
@@ -11,7 +12,7 @@ class ClientListPage extends React.Component {
         const {
             history
         } = this.props
-
+        pageName('Clients')
         return (
             <div>
                 <Grid

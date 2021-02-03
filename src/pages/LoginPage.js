@@ -6,6 +6,7 @@ import { API_ROOT } from '../constants'
 import Grid from '@material-ui/core/Grid'
 import Header from '../components/Header'
 import { setlifeBlue } from '../styles/colors.scss'
+import { pageName } from '../reactivities/variables'
 
 const loggedInUser = [{
     id: null,
@@ -13,22 +14,21 @@ const loggedInUser = [{
 }]
 
 class LoginPage extends React.Component {
-    componentDidMount () {}
 
     handleGithubLogin = () => {
         window.open(`${API_ROOT}/login`, '_self')
     }
 
     render() {
+        pageName('LogIn')
         return (
             <Grid container className='LoginPage'>
-
                 <Grid item xs={12}>
-                    <Header
-                        title='Login'
-                    />
+                    {// <Header
+                    //     title='Login'
+                    // />
+                    }
                 </Grid>
-
                 <div className='image-button'>
                     {loggedInUser.id !== null && (
                         <Button
@@ -38,8 +38,7 @@ class LoginPage extends React.Component {
                             href='#contained-buttons'
                             style={{ backgroundColor: setlifeBlue }}
                         >
-                            <h3>Log in with your Github Account</h3>
-
+                            <h3>{`Log in with your Github Account`}</h3>
                             <GitHubIcon className='githubIcon' />
                         </Button>
                     )}

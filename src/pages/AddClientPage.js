@@ -14,9 +14,7 @@ import { pageName } from '../reactivities/variables'
 class AddClientPage extends React.Component {
 
     render() {
-
         pageName('Add Client')
-
         return (
             <Grid
                 container

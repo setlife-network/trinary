@@ -5,25 +5,27 @@ import Typography from '@material-ui/core/Typography'
 
 import AddProjectForm from '../components/AddProjectForm'
 import Header from '../components/Header'
+import { pageName } from '../reactivities/variables'
 
 class AddProjectPage extends React.Component {
 
     render() {
 
         const { clientId } = this.props.match.params
-
+        pageName('Add Project')
         return (
             <Grid
                 container
                 justify='center'
                 className='AddProjectPage'
             >
-                <Header
-                    title='Add Project'
-                    direction='row'
-                    justify='center'
-                    alignItems='center'
-                />
+                {// <Header
+                //     title='Add Project'
+                //     direction='row'
+                //     justify='center'
+                //     alignItems='center'
+                // />
+                }
                 <Grid item align='center' xs={8}>
                     <Typography align='left'>
                         <strong>
