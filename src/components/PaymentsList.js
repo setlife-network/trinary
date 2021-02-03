@@ -4,36 +4,24 @@ import {
     Grid
 } from '@material-ui/core'
 
-import AllocationAddForm from './AllocationAddForm'
 import PaymentTile from './PaymentTile'
 
 const PaymentsList = (props) => {
-
-    const [paymentClicked, setPaymentClicked] = useState(null)
-    const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
-
-    const handleAddAllocationClose = (value) => {
-        setOpenAddAllocationDialog(false)
-    }
 
     const {
         payments,
         project
     } = props
 
-    const addAllocation = (props) => {
-        setOpenAddAllocationDialog(true)
-        setPaymentClicked(props.payment)
-    }
-
     const renderPaymentTiles = (payments) => {
         return payments.map(p => {
             return (
-                <Grid item xs={12} md={4}>
-                    <Box mt={2} onClick={() => addAllocation({ payment: p })}>
+                <Grid item xs={12} md={6} lg={4}>
+                    <Box mt={2}>
                         <PaymentTile
                             payment={p}
                             client={p.client}
+                            project={project}
                         />
                     </Box>
                 </Grid>
@@ -44,17 +32,6 @@ const PaymentsList = (props) => {
     return (
         <Grid container justify='flex-start' className='PaymentsList'>
             {renderPaymentTiles(payments)}
-            <Grid item xs={12}>
-                {
-                    (paymentClicked && project) &&
-                    <AllocationAddForm
-                        project={project}
-                        open={openAddAllocationDialog}
-                        onClose={handleAddAllocationClose}
-                        payment={paymentClicked}
-                    />
-                }
-            </Grid>
         </Grid>
     )
 }

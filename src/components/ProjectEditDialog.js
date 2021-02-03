@@ -14,7 +14,11 @@ import {
     Snackbar,
     TextField
 } from '@material-ui/core/'
+import accounting from 'accounting-js'
+import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
+import LoadingProgress from './LoadingProgress'
+import { selectCurrencyInformation } from '../scripts/selectors'
 import { UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
 
 const ProjectEditDialog = (props) => {
@@ -46,7 +50,7 @@ const ProjectEditDialog = (props) => {
             projectInfoToEdit['toggl_url'] = togglURL
         }
         const projectEdited = await updateProject({ variables: projectInfoToEdit })
-        if (loading) return <span>loading...</span>
+        if (loading) return <LoadingProgress/>
         else if (projectEdited.errors) {
             setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}`)
             setDisplayError(true)
@@ -62,6 +66,11 @@ const ProjectEditDialog = (props) => {
         setDisplayError(false)
     }
 
+    const handleBudgetChange = (input) => {
+        const amount = Number(input.replace(/\D/g, ''))
+        setExpectedBudget(amount)
+    }
+
     useEffect(() => {
         if (
             expectedBudget == project.expected_budget &&
@@ -75,6 +84,10 @@ const ProjectEditDialog = (props) => {
         } else {
             setDisableEdit(false)
         }
+    })
+
+    const currencyInformation = selectCurrencyInformation({
+        currency: project.client.currency
     })
 
     return (
@@ -107,13 +120,17 @@ const ProjectEditDialog = (props) => {
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <Box my={2} pl={1}>
-                                <TextField
+                                <CurrencyTextField
+                                    fullWidth
                                     label='Expected Budget'
                                     variant='outlined'
-                                    type='number'
+                                    currencySymbol={`${currencyInformation['symbol']}`}
+                                    minimumValue='0'
+                                    outputFormat='string'
+                                    decimalCharacter={`${currencyInformation['decimal']}`}
+                                    digitGroupSeparator={`${currencyInformation['thousand']}`}
                                     defaultValue={project.expected_budget}
-                                    fullWidth
-                                    onChange={(event) => setExpectedBudget(event.target.value)}
+                                    onChange={(event) => handleBudgetChange(event.target.value)}
                                 />
                             </Box>
                         </Grid>

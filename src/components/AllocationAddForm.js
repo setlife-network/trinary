@@ -20,6 +20,7 @@ import moment from 'moment'
 import DatePicker from 'react-datepicker'
 
 import AllocationAddSpecifics from './AllocationAddSpecifics'
+import LoadingProgress from './LoadingProgress'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 
@@ -204,13 +205,20 @@ const AllocationAddForm = (props) => {
         } else if (payment) {
             setSelectedPayment(payment)
         }
-
         if (dataContributors) {
             if (!contributor && !selectedContributor) {
                 setSelectedContributor(dataContributors[0])
             }
         }
     }, [open])
+
+    useEffect(() => {
+        if (dataContributors) {
+            if (!contributor && !selectedContributor) {
+                setSelectedContributor(dataContributors.getContributors[0])
+            }
+        }
+    }, [dataContributors])
 
     useEffect(() => {
         if (mostRecentAllocation) {
@@ -268,7 +276,11 @@ const AllocationAddForm = (props) => {
     }, [newAllocationRate])
 
     if (loadingProjectContributors || loadingContributors || loadingContributorAllocations || loadingContributorRates || loadingClientPayments) {
-        return ''
+        return (
+            <>
+                <LoadingProgress/>
+            </>
+        )
     }
     if (errorProjectContributors || errorContributors || errorContributorAllocations || errorContributorAllocations || errorContributorRates || errorClientPayments) {
         return `error`
@@ -378,6 +390,7 @@ const AllocationAddForm = (props) => {
                     allocationTypes[0]
                         ? (
                             <RateProratedMonthlyForm
+                                currency={currency}
                                 currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
                                 setNewAllocationRate={setNewAllocationRate}
                                 startDate={moment(startDate)}
@@ -385,6 +398,7 @@ const AllocationAddForm = (props) => {
                             />
                         ) : (
                             <RateMaxBudgetForm
+                                currency={currency}
                                 currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
                                 setNewAllocationRate={setNewAllocationRate}
                                 startDate={moment(startDate)}

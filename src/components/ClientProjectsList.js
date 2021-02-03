@@ -3,9 +3,10 @@ import { useQuery } from '@apollo/client'
 import Grid from '@material-ui/core/Grid'
 import { orderBy } from 'lodash'
 
-import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
+import LoadingProgress from './LoadingProgress'
 import ProjectsList from './ProjectsList'
 import ProjectsEmptyState from './ProjectsEmptyState'
+import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 
 const ClientProjectsList = ({
     clientId,
@@ -16,13 +17,7 @@ const ClientProjectsList = ({
         variables: { id: Number(clientId) }
     })
 
-    if (loading) {
-        return (
-            <Grid item xs={12}>
-                Loading...
-            </Grid>
-        )
-    }
+    if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`
 
     const projects = orderBy(data.getClientById.projects, ['is_active'], ['desc'])

@@ -11,6 +11,7 @@ import {
 import moment from 'moment'
 
 import ContributorTimeTrackedTile from './ContributorTimeTrackedTile'
+import LoadingProgress from './LoadingProgress'
 import { GET_PROJECT_TIME_ENTRIES } from '../operations/queries/ProjectQueries'
 
 const ProjectTimeTracking = (props) => {
@@ -63,7 +64,7 @@ const ProjectTimeTracking = (props) => {
             toDate: null
         }
     })
-    if (loadingAllTimeEntries || loadingRangedTime) return 'Loading...'
+    if (loadingAllTimeEntries || loadingRangedTime) return <LoadingProgress/>
     if (errorAllTimeEntries || errorRangedTime) return 'error!'
 
     const {
