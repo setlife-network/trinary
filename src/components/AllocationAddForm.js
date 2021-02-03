@@ -204,13 +204,20 @@ const AllocationAddForm = (props) => {
         } else if (payment) {
             setSelectedPayment(payment)
         }
-
         if (dataContributors) {
             if (!contributor && !selectedContributor) {
                 setSelectedContributor(dataContributors[0])
             }
         }
     }, [open])
+
+    useEffect(() => {
+        if (dataContributors) {
+            if (!contributor && !selectedContributor) {
+                setSelectedContributor(dataContributors.getContributors[0])
+            }
+        }
+    }, [dataContributors])
 
     useEffect(() => {
         if (mostRecentAllocation) {
