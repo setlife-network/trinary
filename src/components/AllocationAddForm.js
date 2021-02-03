@@ -77,8 +77,6 @@ const AllocationAddForm = (props) => {
             //create only allocation referencing contributorRates[existingRate].id
             allocationRate['id'] = contributorRates[`${existingRate}`].id
         } else {
-            console.log('selectedContributor');
-            console.log(selectedContributor);
             allocationRate['id'] = (await createRate({
                 variables: {
                     hourly_rate: rate.hourly_rate.toString(),
