@@ -9,10 +9,13 @@ import Typography from '@material-ui/core/Typography'
 
 import ClientAddForm from '../components/ClientAddForm'
 import Header from '../components/Header'
+import { pageName } from '../reactivities/variables'
 
 class AddClientPage extends React.Component {
 
     render() {
+
+        pageName('Add Client')
 
         return (
             <Grid
@@ -20,12 +23,6 @@ class AddClientPage extends React.Component {
                 className='AddClientPage'
                 justify='center'
             >
-                <Header
-                    title='Add Client'
-                    direction='row'
-                    justify='center'
-                    alignItems='center'
-                />
                 <Grid item xs={8}>
                     <Typography align='left'>
                         <strong>

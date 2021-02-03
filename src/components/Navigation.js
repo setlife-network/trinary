@@ -1,32 +1,55 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
+import { useReactiveVar } from '@apollo/client'
 import {
+    AppBar,
     Box,
     Grid
 } from '@material-ui/core'
+import { split } from 'lodash'
 
+import { lightBlue } from '../styles/colors.scss'
 import { LOGO_URL } from '../constants'
+import { capitalizeWord } from '../scripts/selectors'
+import { pageName } from '../reactivities/variables'
 
 const Navigation = (props) => {
-    const history = useHistory()
 
+    const history = useHistory()
     const redirectToHome = () => {
         history.push('/')
     }
+    const location = useLocation()
+    const urlInformation = split(location.pathname, '/')
+    const title = useReactiveVar(pageName)
 
     return (
-        <Grid container className='Navigation'>
-            <Grid item xs={12} sm={3}>
-                <Box my={2} align='center'>
-                    <img
-                        src={LOGO_URL}
-                        alt='Home'
-                        onClick={() => redirectToHome()}
-                        className='icon-image'
-                    />
-                </Box>
-            </Grid>
-        </Grid>
+        <Box bgcolor={lightBlue} mb={5}>
+            <AppBar className='Navigation' position='sticky' color='transparent'>
+                <Grid container>
+                    <Grid item xs={12} sm={3}>
+                        <Box my={2} align='center'>
+                            <img
+                                src={LOGO_URL}
+                                alt='Home'
+                                onClick={() => redirectToHome()}
+                                className='icon-image'
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <h2>
+                            {title
+                                ? capitalizeWord({ word: title })
+                                : capitalizeWord({ word: urlInformation[1] })
+                            }
+                        </h2>
+                    </Grid>
+                </Grid>
+
+            </AppBar>
+        </Box>
+
     )
 }
 

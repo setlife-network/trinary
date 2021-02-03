@@ -29,12 +29,13 @@ class HomePage extends React.Component {
                 alignItems='center'
                 className='HomePage'
             >
-                <Header
-                    title='Home'
-                    direction='row'
-                    justify='center'
-                    alignItems='center'
-                />
+                {// <Header
+                //     title='Home'
+                //     direction='row'
+                //     justify='center'
+                //     alignItems='center'
+                // />
+                }
                 <Grid item xs={8}>
                     <Grid
                         container

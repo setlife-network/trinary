@@ -12,6 +12,7 @@ import GithubAccessBlocked from './GithubAccessBlocked'
 import ProjectSummary from './ProjectSummary'
 import ProjectOverviewExternalLinks from './ProjectOverviewExternalLinks'
 import ProjectTimeTracking from './ProjectTimeTracking'
+import { pageName } from '../reactivities/variables'
 
 const ProjectOverview = (props) => {
 
@@ -41,6 +42,7 @@ const ProjectOverview = (props) => {
     if (errorTimeEntries || errorProject) return 'Error..'
 
     const project = dataProject.getProjectById
+    pageName(project.name)
     const {
         id,
         timeEntries,

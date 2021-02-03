@@ -7,3 +7,11 @@ export const selectCurrencySymbol = (props) => {
         return c.name == props.currency
     })['symbol']
 }
+
+export const capitalizeWord = (props) => {
+    const {
+        word
+    } = props
+    if (typeof word !== 'string') return ''
+    return word.charAt(0).toUpperCase() + word.slice(1)
+}

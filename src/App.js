@@ -31,7 +31,7 @@ class App extends React.Component {
                 {
                     IS_PRODUCTION
                         ? <Navigation/>
-                        : <SwipeableNavigation/>
+                        : <Navigation pageName={''}/>
                 }
                 <ThemeProvider theme={theme}>
                     <PrivateRoute

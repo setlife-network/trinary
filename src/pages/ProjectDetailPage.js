@@ -5,10 +5,10 @@ import {
     BottomNavigationAction,
     Grid
 } from '@material-ui/core'
-import AssessmentIcon from '@material-ui/icons/Assessment';
-import PeopleIcon from '@material-ui/icons/People';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
+import AssessmentIcon from '@material-ui/icons/Assessment'
+import PeopleIcon from '@material-ui/icons/People'
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
 
 import ProjectOverview from '../components/ProjectOverview'
 import ProjectPayments from '../components/ProjectPayments'
