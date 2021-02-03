@@ -30,7 +30,7 @@ class ClientDetailPage extends React.Component {
                     />
                 </Grid>
                 <Grid item xs={8}>
-                    <Box mt={5}>
+                    <Box my={5}>
                         <Typography align='left' variant='h4'>
                             <strong>
                                 Projects

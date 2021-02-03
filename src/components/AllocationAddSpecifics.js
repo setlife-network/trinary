@@ -26,8 +26,9 @@ import {
     last,
     split
 } from 'lodash'
+import accounting from 'accounting-js'
 
-import { selectCurrencySymbol } from '../scripts/selectors'
+import { selectCurrencyInformation, selectCurrencySymbol } from '../scripts/selectors'
 
 const AllocationAddSpecifics = (props) => {
 
@@ -78,6 +79,9 @@ const AllocationAddSpecifics = (props) => {
         setPayment(selectedPayment)
     }, [selectedPayment])
 
+    const currencyInformation = selectCurrencyInformation({
+        currency: currency
+    })
     const selectLatestPayment = (props) => {
         if (props) {
             props.payments.map(p => {
@@ -86,6 +90,18 @@ const AllocationAddSpecifics = (props) => {
                 }
             })
         }
+    }
+    const formatPaymentAmount = (props) => {
+        const { amount, currencyInformation } = props
+        return accounting.formatMoney(
+            amount,
+            {
+                symbol: currencyInformation['symbol'],
+                thousand: currencyInformation['thousand'],
+                decimal: currencyInformation['decimal'],
+                format: '%s %v'
+            }
+        )
     }
 
     const onClickPayment = (payment) => {
@@ -101,6 +117,10 @@ const AllocationAddSpecifics = (props) => {
     const listPayments = (payments) => {
         const paymentsList = differenceWith(payments, [selectedPayment], isEqual)
         return paymentsList.map(p => {
+            const paymentAmount = formatPaymentAmount({
+                amount: p.amount,
+                currencyInformation: currencyInformation
+            })
             return (
                 <List component='div' disablePadding>
                     <ListItem button onClick={() => onClickPayment(p)}>
@@ -109,7 +129,7 @@ const AllocationAddSpecifics = (props) => {
                             <Grid item xs={3}>
                                 <ListItemText primary={
                                     `${p.amount
-                                        ? `${selectCurrencySymbol({ currency: currency })}${p.amount}`
+                                        ? `${selectCurrencySymbol({ currency: currency })}${paymentAmount}`
                                         : 'Propose'
                                     }`
                                 }
@@ -229,7 +249,10 @@ const AllocationAddSpecifics = (props) => {
                                 <Grid item xs={3}>
                                     <ListItemText primary={
                                         `${selectedPayment.amount
-                                            ? `${selectCurrencySymbol({ currency: currency })}${selectedPayment.amount}`
+                                            ? `${formatPaymentAmount({
+                                                amount: selectedPayment.amount,
+                                                currencyInformation: currencyInformation
+                                            })}`
                                             : 'Propose'
                                         }`
                                     }

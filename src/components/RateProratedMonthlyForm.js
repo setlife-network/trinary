@@ -5,10 +5,14 @@ import {
     TextField,
     Typography
 } from '@material-ui/core/'
+import accounting from 'accounting-js'
+
+import { selectCurrencyInformation } from '../scripts/selectors'
 
 const RateProratedMonthlyForm = (props) => {
 
     const {
+        currency,
         currentRate,
         endDate,
         setNewAllocationRate,
@@ -32,11 +36,15 @@ const RateProratedMonthlyForm = (props) => {
     }, [monthlyHoursInput, currentRateInput])
 
     useEffect(() => {
-        setTotalHours(totalAmount && currentRateInput ? (totalAmount / currentRateInput).toFixed(2) : 0)
+        setTotalHours(
+            totalAmount && currentRateInput
+                ? (totalAmount / currentRateInput).toFixed(2)
+                : 0
+        )
         setNewAllocationRate({
             hourly_rate: currentRateInput,
             total_expected_hours: monthlyHoursInput,
-            total_amount: totalAmount,
+            total_amount: totalAmount * 100,
             type: 'prorated_monthly'
         })
     }, [totalAmount])
@@ -44,6 +52,19 @@ const RateProratedMonthlyForm = (props) => {
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
     }, [startDate, endDate])
+
+    const currencyInformation = selectCurrencyInformation({
+        currency: currency
+    })
+    const paymentAmount = accounting.formatMoney(
+        totalAmount,
+        {
+            symbol: currencyInformation['symbol'],
+            thousand: currencyInformation['thousand'],
+            decimal: currencyInformation['decimal'],
+            format: '%s %v'
+        }
+    )
 
     return (
         <Grid container className='RateProratedMonthlyForm'>
@@ -73,7 +94,7 @@ const RateProratedMonthlyForm = (props) => {
                             <TextField
                                 label='Total amount'
                                 variant='filled'
-                                value={`${totalAmount}`}
+                                value={`${paymentAmount}`}
                                 fullWidth
                             />
                         </Grid>
