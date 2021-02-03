@@ -21,7 +21,6 @@ const Authentication = () => {
     if (loading) {
         return (
             <>
-                Loading...
             </>
         )
     }

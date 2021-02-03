@@ -1,12 +1,26 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import { useReactiveVar } from '@apollo/client'
+import { useReactiveVar, useQuery } from '@apollo/client'
 
 import { authUser } from '../reactivities/variables'
+import { CHECK_SESSION } from '../operations/queries/ContributorQueries'
 
 const PrivateRoute = (props) => {
 
-    const isLoggedIn = useReactiveVar(authUser)
+    const { error, loading, data } = useQuery(CHECK_SESSION)
+
+    if (loading) {
+        return (
+            <>
+            </>
+        )
+    }
+
+    if (error) return `Error! ${error.message}`
+
+    //const isLoggedIn = useReactiveVar(authUser)
+
+    const isLoggedIn = data.checkSession ? true : false
 
     const { component: Component, ...rest } = props
 
@@ -22,4 +36,5 @@ const PrivateRoute = (props) => {
         </Route>
     )
 }
+
 export default PrivateRoute
