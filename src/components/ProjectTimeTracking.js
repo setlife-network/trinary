@@ -97,7 +97,7 @@ const ProjectTimeTracking = (props) => {
                     </strong>
                 </Typography>
             </Grid>
-            <Grid item xs={12} md={4} align='left'>
+            <Grid item xs={12} sm={5} lg={4} align='left'>
                 <Box mt={2}>
                     <DatePicker
                         selected={startDate}
@@ -140,7 +140,7 @@ const ProjectTimeTracking = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}/>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} sm={4}>
                 <Box
                     bgcolor='primary.black'
                     color='primary.light'

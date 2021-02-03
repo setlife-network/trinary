@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             allowNull: false
         },
-        monthly_hours: {
+        total_expected_hours: {
             type: DataTypes.INTEGER
         },
         active: {

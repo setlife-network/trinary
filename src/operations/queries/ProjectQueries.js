@@ -123,7 +123,7 @@ export const GET_PROJECT_CONTRIBUTOR_ALLOCATIONS = gql`
                 amount
                 rate {
                     id
-                    monthly_hours
+                    total_expected_hours
                     hourly_rate
                     type
                 }
@@ -187,6 +187,7 @@ export const GET_PROJECT_CLIENT_PAYMENTS = gql`
             id
             client {
                 id
+                currency
                 payments {
                     id
                     amount

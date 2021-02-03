@@ -7,7 +7,9 @@ import {
     Typography
 } from '@material-ui/core'
 import { gql, useQuery } from '@apollo/client'
+import accounting from 'accounting-js'
 
+import { selectCurrencyInformation } from '../scripts/selectors'
 import { GET_CLIENT_TOTAL_PAID } from '../operations/queries/ClientQueries'
 
 const ClientPaymentsManager = ({
@@ -31,8 +33,22 @@ const ClientPaymentsManager = ({
     if (error) return `Error! ${error.message}`;
     const { getClientById } = data
 
+    const currencyInformation = selectCurrencyInformation({
+        currency: getClientById.currency
+    })
+
+    const totalPaid = accounting.formatMoney(
+        getClientById.totalPaid / 100,
+        {
+            symbol: currencyInformation['symbol'],
+            thousand: currencyInformation['thousand'],
+            decimal: currencyInformation['decimal'],
+            format: '%s %v'
+        }
+    )
+
     return (
-        <Box mt={3} mx={1} className='ClientPaymentsManager'>
+        <Box mt={3} mx={0} className='ClientPaymentsManager'>
             <Grid
                 container
                 justify='space-between'
@@ -50,13 +66,12 @@ const ClientPaymentsManager = ({
                         <Grid item>
                             <Typography align='left' variant='h4'>
                                 <strong>
-                                    {`${getClientById.totalPaid} ${getClientById.currency} Total`}
+                                    {`${totalPaid} Total`}
                                 </strong>
                             </Typography>
                         </Grid>
                     )
                 }
-
             </Grid>
         </Box>
     )

@@ -6,10 +6,20 @@ import {
     Typography
 } from '@material-ui/core/'
 import moment from 'moment'
+import CurrencyTextField from '@unicef/material-ui-currency-textfield'
+
+import { selectCurrencyInformation } from '../scripts/selectors'
 
 const RateMaxBudgetForm = (props) => {
 
-    const { currentRate, createRate, setNewAllocationRate, startDate, endDate } = props
+    const {
+        currency,
+        currentRate,
+        createRate,
+        endDate,
+        setNewAllocationRate,
+        startDate
+    } = props
 
     const [totalAmount, setTotalAmount] = useState(0)
     const [currentRateInput, setCurrentRateInput] = useState(null)
@@ -17,9 +27,9 @@ const RateMaxBudgetForm = (props) => {
     const [totalHours, setTotalHours] = useState(0)
 
     useEffect(() => {
-        setTotalWeeks(endDate.diff(startDate, 'weeks'))
+        setTotalWeeks(endDate.diff(startDate, 'days') / 7)
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
-    }, [])
+    }, [currentRate])
 
     useEffect(() => {
         setTotalHours(totalAmount && currentRateInput ? (totalAmount / currentRateInput).toFixed(2) : 0)
@@ -31,8 +41,17 @@ const RateMaxBudgetForm = (props) => {
     }, [totalAmount, currentRateInput])
 
     useEffect(() => {
-        setTotalWeeks(endDate.diff(startDate, 'weeks'))
+        setTotalWeeks(endDate.diff(startDate, 'days') / 7)
     }, [startDate, endDate])
+
+    const handleTotalAmountChange = (input) => {
+        const amount = Number(input.replace(/\D/g, ''))
+        setTotalAmount(amount)
+    }
+
+    const currencyInformation = selectCurrencyInformation({
+        currency: currency
+    })
 
     return (
         <Grid container className='RateMaxBudgetForm'>
@@ -49,13 +68,17 @@ const RateMaxBudgetForm = (props) => {
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <TextField
+                            <CurrencyTextField
+                                fullWidth
                                 label='Total amount'
                                 variant='filled'
+                                currencySymbol={`${currencyInformation['symbol']}`}
+                                minimumValue='0'
                                 defautltValue='0'
-                                value={`${totalAmount ? totalAmount : ''}`}
-                                fullWidth
-                                onChange={(event) => setTotalAmount(event.target.value)}
+                                outputFormat='string'
+                                decimalCharacter={`${currencyInformation['decimal']}`}
+                                digitGroupSeparator={`${currencyInformation['thousand']}`}
+                                onChange={(event) => handleTotalAmountChange(event.target.value)}
                             />
                         </Grid>
                     </Grid>

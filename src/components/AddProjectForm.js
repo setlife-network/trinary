@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import Alert from '@material-ui/lab/Alert'
 import {
     Box,
     Button,
     FormControl,
-    FormHelperText,
     Grid,
-    InputLabel,
-    MenuItem,
-    Select,
     Snackbar,
     TextField,
     Typography
 } from '@material-ui/core'
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker
+} from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
 import { split } from 'lodash'
+import accounting from 'accounting-js'
+import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
+import { selectCurrencyInformation } from '../scripts/selectors'
+import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
 import { red } from '../styles/colors.scss'
 
@@ -26,6 +29,12 @@ const AddProjectForm = ({
     clientId,
     history
 }) => {
+
+    const { loading: loadingClient, error: errorClient, data: dataClient } = useQuery(GET_CLIENT_INFO, {
+        variables: {
+            id: Number(clientId)
+        }
+    })
 
     const [addProject, { data, loading, error }] = useMutation(ADD_PROJECT, { errorPolicy: 'all' })
 
@@ -40,7 +49,9 @@ const AddProjectForm = ({
     const [displayError, setDisplayError] = useState(false)
 
     useEffect(() => {
-        if (projectName && projectGithub && projectBudget && projectDate) {
+        if (!projectName || !projectGithub || !projectDate) {
+            setDisableAdd(true)
+        } else {
             setDisableAdd(false)
         }
     })
@@ -53,12 +64,9 @@ const AddProjectForm = ({
     }
 
     const handleBudgetChange = (input) => {
-        if (!/^[0-9]*$/.test(input)) {
-            setInvalidBudgetInput(true)
-        } else {
-            setInvalidBudgetInput(false)
-            setProjectBudget(input)
-        }
+        setInvalidBudgetInput(false)
+        const amount = Number(input.replace(/\D/g, ''))
+        setProjectBudget(amount)
     }
 
     const handleDateChange = (date) => {
@@ -115,13 +123,20 @@ const AddProjectForm = ({
         }
     }
 
+    if (errorClient) return 'Somenthing went wrong'
+    if (loadingClient) return 'loading...'
+
+    const currencyInformation = selectCurrencyInformation({
+        currency: dataClient.getClientById.currency
+    })
+
     return (
         <FormControl
             fullWidth
             align='left'
         >
             <Grid container justify='space-between'>
-                <Grid item xs={12} lg={5}>
+                <Grid item xs={12} md={5}>
                     <Box xs={10} my={2}>
                         <TextField
                             label='Project name'
@@ -133,7 +148,7 @@ const AddProjectForm = ({
                         />
                     </Box>
                 </Grid>
-                <Grid item xs={12} lg={5}>
+                <Grid item xs={12} md={5}>
                     <Box xs={10} my={2}>
                         <TextField
                             label='Github URL'
@@ -148,7 +163,7 @@ const AddProjectForm = ({
             </Grid>
 
             <Grid container justify='space-between'>
-                <Grid item xs={12} lg={5}>
+                <Grid item xs={12} md={5}>
                     <Box xs={10} my={2}>
                         <TextField
                             label='Toggl URL'
@@ -159,21 +174,22 @@ const AddProjectForm = ({
                         />
                     </Box>
                 </Grid>
-                <Grid item xs={12} lg={5}>
+                <Grid item xs={12} md={5}>
                     <Box xs={10} my={2}>
-                        <TextField
-                            error={invalidBudgetInput}
-                            label='Expected Budget'
-                            id='projectBudget'
-                            variant='outlined'
+                        <CurrencyTextField
                             fullWidth
-                            required
+                            label='Expected Budget'
+                            variant='outlined'
+                            currencySymbol={`${currencyInformation['symbol']}`}
+                            minimumValue='0'
+                            outputFormat='string'
+                            decimalCharacter={`${currencyInformation['decimal']}`}
+                            digitGroupSeparator={`${currencyInformation['thousand']}`}
                             onChange={(event) => handleBudgetChange(event.target.value)}
                         />
                     </Box>
                 </Grid>
             </Grid>
-
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={MomentUtils}>
                     <KeyboardDatePicker
