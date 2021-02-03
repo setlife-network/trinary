@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button'
 
 import { API_ROOT } from '../constants'
 import Grid from '@material-ui/core/Grid'
-import Header from '../components/Header'
 import { setlifeBlue } from '../styles/colors.scss'
 import { pageName } from '../reactivities/variables'
 
@@ -23,12 +22,6 @@ class LoginPage extends React.Component {
         pageName('LogIn')
         return (
             <Grid container className='LoginPage'>
-                <Grid item xs={12}>
-                    {// <Header
-                    //     title='Login'
-                    // />
-                    }
-                </Grid>
                 <div className='image-button'>
                     {loggedInUser.id !== null && (
                         <Button

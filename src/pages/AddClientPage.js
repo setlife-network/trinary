@@ -8,7 +8,6 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
 import ClientAddForm from '../components/ClientAddForm'
-import Header from '../components/Header'
 import { pageName } from '../reactivities/variables'
 
 class AddClientPage extends React.Component {
