@@ -36,10 +36,18 @@ const PaymentTile = (props) => {
     const paymentHasBeenMade = payment.date_paid != null
     const currencySymbol = selectCurrencySymbol({ currency: client.currency })
 
-    const { loading: loadingPaymentAllocations, error: errorPaymentAllocations, data: dataPaymentAllocations } = useQuery(GET_PAYMENT_ALLOCATIONS, {
+    const {
+        loading: loadingPaymentAllocations,
+        error: errorPaymentAllocations,
+        data: dataPaymentAllocations
+    } = useQuery(GET_PAYMENT_ALLOCATIONS, {
         variables: { paymentId: Number(payment.id) }
     })
-    const { loading: loadingTotalAllocated, error: errorTotalAllocated, data: dataTotalAllocated } = useQuery(GET_PAYMENT_TOTAL_ALLOCATED, {
+    const {
+        loading: loadingTotalAllocated,
+        error: errorTotalAllocated,
+        data: dataTotalAllocated
+    } = useQuery(GET_PAYMENT_TOTAL_ALLOCATED, {
         variables: { paymentId: Number(payment.id) }
     })
 
