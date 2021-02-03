@@ -7,7 +7,12 @@ export const capitalizeWord = (props) => {
         word
     } = props
     if (typeof word !== 'string') return ''
-    return word.charAt(0).toUpperCase() + word.slice(1)
+    return word.replace(
+        /\w\S*/g,
+        (txt) => {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+    )
 }
 
 export const selectCurrencySymbol = (props) => {
@@ -23,4 +28,13 @@ export const selectCurrencyInformation = (props) => {
     return find(CURRENCIES, c => {
         return c.name == props.currency
     })
+}
+
+function toTitleCase(str) {
+    return str.replace(
+        /\w\S*/g,
+        function(txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+    );
 }
