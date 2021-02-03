@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core'
 import { Route, withRouter, Redirect } from 'react-router-dom'
 
+import { white } from '../styles/colors.scss'
 import Header from '../components/Header'
 import ProjectsListPage from './ProjectsListPage'
 import ClientsListPage from './ClientsListPage'
@@ -51,13 +52,14 @@ class HomePage extends React.Component {
                                     color='primary'
                                     onClick={() => this.updateURL({ subdirectory: 'clients' })}
                                 >
-                                    <Typography variant='h6'>
-                                        <strong>
-                                            Clients
-                                        </strong>
-                                    </Typography>
+                                    <Box color={`${list == 'clients' ? 'white' : ''}`}>
+                                        <Typography variant='h6'>
+                                            <strong>
+                                                Clients
+                                            </strong>
+                                        </Typography>
+                                    </Box>
                                 </Button>
-
                             </Box>
                         </Grid>
                         <Grid item xs={6}>
@@ -68,11 +70,13 @@ class HomePage extends React.Component {
                                     color='primary'
                                     onClick={() => this.updateURL({ subdirectory: 'projects' })}
                                 >
-                                    <Typography variant='h6'>
-                                        <strong>
-                                            Projects
-                                        </strong>
-                                    </Typography>
+                                    <Box color={`${list == 'projects' ? 'white' : ''}`}>
+                                        <Typography variant='h6'>
+                                            <strong>
+                                                Projects
+                                            </strong>
+                                        </Typography>
+                                    </Box>
                                 </Button>
                             </Box>
                         </Grid>

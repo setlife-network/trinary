@@ -64,13 +64,13 @@ const ProjectEditDialog = (props) => {
 
     useEffect(() => {
         if (
-            expectedBudget == project.expected_budget && 
+            expectedBudget == project.expected_budget &&
             githubURL == project.github_url &&
             projectName == project.name &&
             togglURL == project.toggl_url
         ) {
             setDisableEdit(true)
-        } else if (expectedBudget == '' || githubURL == '' || projectName == '') {
+        } else if (!expectedBudget || !githubURL || !projectName) {
             setDisableEdit(true)
         } else {
             setDisableEdit(false)

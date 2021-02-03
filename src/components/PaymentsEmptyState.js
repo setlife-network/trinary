@@ -6,12 +6,16 @@ const PaymentsEmptyState = () => {
     return (
         <Grid container justify='center' className='EmptyState'>
             <Box mt={5}>
-                <Typography color='secondary' variant='h6'>
-                    Nothing here
-                </Typography>
-                <Box m={5} pb={5}>
-                    <Icon className='fas fa-piggy-bank empty-icon' color='secondary'/>
-                </Box>
+                <Grid item xs={12}>
+                    <Typography color='secondary' variant='h6' align='center'>
+                        Nothing here
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Box m={5} pb={5}>
+                        <Icon className='fas fa-piggy-bank empty-icon' color='secondary'/>
+                    </Box>
+                </Grid>
             </Box>
         </Grid>
     )

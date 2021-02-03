@@ -20,19 +20,25 @@ import PaymentIcon from '@material-ui/icons/Payment'
 import PeopleIcon from '@material-ui/icons/Group'
 import moment from 'moment'
 import {
+    difference,
     differenceWith,
+    isEqual,
     last,
     split
 } from 'lodash'
+
+import { selectCurrencySymbol } from '../scripts/selectors'
 
 const AllocationAddSpecifics = (props) => {
 
     const {
         contributor,
         contributors,
+        currency,
         project,
         payment,
         payments,
+        selectedContributor,
         setNewAllocation,
         setContributor,
         setPayment
@@ -43,7 +49,6 @@ const AllocationAddSpecifics = (props) => {
     const [openPayments, setOpenPayments] = useState(false)
     const [projectGithubRepo, setProjectGithubRepo] = useState(null)
     const [selectedPayment, setSelectedPayment] = useState(payment ? payment : payments[0])
-    const [selectedContributor, setSelectedContributor] = useState(contributor ? contributor : contributors[0])
 
     const handleClickContributors = () => {
         setOpenContributors(!openContributors)
@@ -54,9 +59,6 @@ const AllocationAddSpecifics = (props) => {
     }
 
     useEffect(() => {
-        if (contributor) {
-            setSelectedContributor(contributor)
-        }
         setProjectGithubRepo(last(split(project.github_url, '/')))
         setContributorGithubUser(last(split(selectedContributor.github_handle, '/')))
     }, [])
@@ -77,11 +79,13 @@ const AllocationAddSpecifics = (props) => {
     }, [selectedPayment])
 
     const selectLatestPayment = (props) => {
-        props.payments.map(p => {
-            if (p.date_paid > selectedPayment) {
-                setSelectedPayment(p)
-            }
-        })
+        if (props) {
+            props.payments.map(p => {
+                if (p.date_paid > selectedPayment) {
+                    setSelectedPayment(p)
+                }
+            })
+        }
     }
 
     const onClickPayment = (payment) => {
@@ -90,13 +94,12 @@ const AllocationAddSpecifics = (props) => {
     }
 
     const onClickContributor = (contributor) => {
-        setSelectedContributor(contributor)
         setContributor(contributor)
         setOpenContributors(false)
     }
 
     const listPayments = (payments) => {
-        const paymentsList = differenceWith(payments, [selectedPayment])
+        const paymentsList = differenceWith(payments, [selectedPayment], isEqual)
         return paymentsList.map(p => {
             return (
                 <List component='div' disablePadding>
@@ -104,11 +107,20 @@ const AllocationAddSpecifics = (props) => {
                         <Grid container>
                             <Grid item xs={3}/>
                             <Grid item xs={3}>
-                                <ListItemText primary={`$${p.amount}`}/>
+                                <ListItemText primary={
+                                    `${p.amount
+                                        ? `${selectCurrencySymbol({ currency: currency })}${p.amount}`
+                                        : 'Propose'
+                                    }`
+                                }
+                                />
                             </Grid>
                             <Grid item xs={3} align='center'>
                                 <Typography variant='caption' color='secondary'>
-                                    {`${p.date_paid ? moment(p.date_paid, 'x').format('MM/DD/YYYY') : ''}`}
+                                    {`${p.date_paid
+                                        ? moment(p.date_paid, 'x').format('MM/DD/YYYY')
+                                        : ''
+                                    }`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}/>
@@ -152,7 +164,6 @@ const AllocationAddSpecifics = (props) => {
     return (
         <Box className='AllocationAddSpecifics'>
             <Grid container justify='center'>
-
                 <ListItem button>
                     <Grid item xs={3}>
                         <AssessmentIcon color='primary'/>
@@ -208,7 +219,6 @@ const AllocationAddSpecifics = (props) => {
                         }
                     </List>
                 </Grid>
-
                 <Grid item xs={12}>
                     <List component='nav'>
                         <ListItem button onClick={handleClickPayments}>
@@ -217,20 +227,26 @@ const AllocationAddSpecifics = (props) => {
                                     <PaymentIcon color='primary'/>
                                 </Grid>
                                 <Grid item xs={3}>
-                                    <ListItemText primary={`${selectedPayment.amount
-                                        ? `$${selectedPayment.amount}`
-                                        : 'Propose'}`}
+                                    <ListItemText primary={
+                                        `${selectedPayment.amount
+                                            ? `${selectCurrencySymbol({ currency: currency })}${selectedPayment.amount}`
+                                            : 'Propose'
+                                        }`
+                                    }
                                     />
                                 </Grid>
                                 <Grid item xs={3} align='center'>
                                     <Typography variant='caption' color='secondary'>
                                         {`${selectedPayment.date_paid
                                             ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
-                                            : ''}`}
+                                            : ''
+                                        }`}
                                         {`${
-                                            !selectedPayment.date_paid && selectedPayment.date_incurred
-                                                ? 'Warning: This payment has not been paid'
-                                                : ''
+                                            selectedPayment && (
+                                                !selectedPayment.date_paid && selectedPayment.date_incurred
+                                                    ? 'Warning: This payment has not been paid'
+                                                    : ''
+                                            )
                                         }`}
                                     </Typography>
                                 </Grid>
@@ -245,23 +261,10 @@ const AllocationAddSpecifics = (props) => {
                                 }
                             </Grid>
                         </ListItem>
-                        {
-                            !payment &&
+                        {!payment &&
                             <Collapse in={openPayments} timeout='auto' unmountOnExit>
-                                {listPayments(payments)}
-                                {payments &&
-                                    <List component='div' disablePadding>
-                                        <ListItem button onClick={() => onClickPayment({})}>
-                                            <Grid container>
-                                                <Grid item xs={3}/>
-                                                <Grid item xs={3}>
-                                                    <ListItemText primary={`Propose`}/>
-                                                </Grid>
-                                                <Grid item xs={6}/>
-                                            </Grid>
-                                        </ListItem>
-                                    </List>
-                                }
+                                {payments.length > 1 &&
+                                    listPayments(payments)}
                             </Collapse>
                         }
                     </List>

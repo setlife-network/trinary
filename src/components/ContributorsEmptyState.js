@@ -17,7 +17,7 @@ const ContributorsEmptyState = (props) => {
         >
             <Box mt={5}>
                 <Typography color='secondary' variant='h6'>
-                    {`No contributors found`}
+                    {`No active contributors found`}
                 </Typography>
                 {
                     active &&
