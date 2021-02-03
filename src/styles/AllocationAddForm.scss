@@ -1,0 +1,11 @@
+.AllocationAddForm {
+    .react-datepicker-popper {
+        z-index: 2
+    }
+}
+
+@media screen and (min-width: $sm) {
+    .AllocationAddForm {
+
+    }
+}
