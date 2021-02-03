@@ -10,7 +10,7 @@ import { pageName } from '../reactivities/variables'
 
 const loggedInUser = [{
     id: null,
-    email: '',
+    email: ''
 }]
 
 class LoginPage extends React.Component {
