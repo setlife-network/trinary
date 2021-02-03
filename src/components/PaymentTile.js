@@ -77,9 +77,24 @@ const PaymentTile = (props) => {
 
     const numberOfContributorsAllocated = allocations.length
 
-    const renderPaymentAllocations = (allocations) => {
+    const renderPaymentAllocations = (props) => {
+
+        const {
+            allocations,
+            currencyInformation
+        } = props
+
         return allocations.map(a => {
             const { amount, contributor, end_date, rate } = a
+            const paymentAmount = accounting.formatMoney(
+                amount / 100,
+                {
+                    symbol: currencyInformation['symbol'],
+                    thousand: currencyInformation['thousand'],
+                    decimal: currencyInformation['decimal'],
+                    format: '%s %v'
+                }
+            )
             return (
                 <Box mb={3}>
                     <Grid container>
@@ -90,7 +105,7 @@ const PaymentTile = (props) => {
                         </Grid>
                         <Grid item xs={2} align='right'>
                             <Typography color='secondary' variant='caption'>
-                                {`${currencySymbol}${amount}`}
+                                {`${paymentAmount}`}
                             </Typography>
                         </Grid>
                         <Grid items xs={7}>
@@ -177,7 +192,10 @@ const PaymentTile = (props) => {
                     <AccordionDetails>
                         <Grid container>
                             <Grid item xs={12}>
-                                {renderPaymentAllocations(allocations)}
+                                {renderPaymentAllocations({
+                                    allocations: allocations,
+                                    currencyInformation: currencyInformation
+                                })}
                             </Grid>
                             <Grid item xs={12}>
                                 <Button
