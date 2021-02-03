@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import {
+    Backdrop,
     Box,
+    CircularProgress,
     Grid,
     Typography
 } from '@material-ui/core'
@@ -9,6 +11,7 @@ import {
 import { GET_PROJECT, GET_PROJECT_TIME_ENTRIES } from '../operations/queries/ProjectQueries'
 import { CHECK_SESSION } from '../operations/queries/ContributorQueries'
 import GithubAccessBlocked from './GithubAccessBlocked'
+import LoadingProgress from './LoadingProgress'
 import ProjectSummary from './ProjectSummary'
 import ProjectOverviewExternalLinks from './ProjectOverviewExternalLinks'
 import ProjectTimeTracking from './ProjectTimeTracking'
@@ -38,7 +41,7 @@ const ProjectOverview = (props) => {
         }
     })
 
-    if (loadingProject || loadingTimeEntries) return 'Loading...'
+    if (loadingProject || loadingTimeEntries) return <LoadingProgress/>
     if (errorTimeEntries || errorProject) return 'Error..'
 
     const project = dataProject.getProjectById

@@ -9,6 +9,7 @@ import {
 import { gql, useQuery } from '@apollo/client'
 import accounting from 'accounting-js'
 
+import LoadingProgress from './LoadingProgress'
 import { selectCurrencyInformation } from '../scripts/selectors'
 import { GET_CLIENT_TOTAL_PAID } from '../operations/queries/ClientQueries'
 
@@ -23,14 +24,9 @@ const ClientPaymentsManager = ({
             toDate: null
         }
     })
-    if (loading) {
-        return (
-            <Grid item xs={12}>
-                Loading...
-            </Grid>
-        )
-    }
-    if (error) return `Error! ${error.message}`;
+    if (loading) return <LoadingProgress/>
+    if (error) return `Error! ${error.message}`
+
     const { getClientById } = data
 
     const currencyInformation = selectCurrencyInformation({

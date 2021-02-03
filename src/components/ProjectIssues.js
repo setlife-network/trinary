@@ -7,9 +7,11 @@ import {
 import moment from 'moment'
 import { orderBy } from 'lodash'
 
-import IssueTile from './IssueTile'
-import ProjectIssuesMetrics from './ProjectIssuesMetrics'
 import GithubAccessBlocked from './GithubAccessBlocked'
+import IssueTile from './IssueTile'
+import LoadingProgress from './LoadingProgress'
+import ProjectIssuesMetrics from './ProjectIssuesMetrics'
+
 import { GET_PROJECT_ISSUES } from '../operations/queries/ProjectQueries'
 
 const ProjectIssues = (props) => {
@@ -38,13 +40,7 @@ const ProjectIssues = (props) => {
         }
     })
 
-    if (loadingProjectIssues) {
-        return (
-            <div>
-                Loading...
-            </div>
-        )
-    }
+    if (loadingProjectIssues) return <LoadingProgress/>
 
     if (errorProjectIssues) {
         return (
