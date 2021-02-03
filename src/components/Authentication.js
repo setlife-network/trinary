@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 
+import LoadingProgress from './LoadingProgress'
+
 import { authUser } from '../reactivities/variables'
 import { CHECK_SESSION } from '../operations/queries/ContributorQueries'
 
@@ -18,13 +20,7 @@ const Authentication = () => {
         }
     }, [data])
 
-    if (loading) {
-        return (
-            <>
-                Loading...
-            </>
-        )
-    }
+    if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`
     return (
         <>

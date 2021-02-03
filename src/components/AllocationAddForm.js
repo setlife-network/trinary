@@ -20,6 +20,7 @@ import moment from 'moment'
 import DatePicker from 'react-datepicker'
 
 import AllocationAddSpecifics from './AllocationAddSpecifics'
+import LoadingProgress from './LoadingProgress'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 
@@ -275,7 +276,11 @@ const AllocationAddForm = (props) => {
     }, [newAllocationRate])
 
     if (loadingProjectContributors || loadingContributors || loadingContributorAllocations || loadingContributorRates || loadingClientPayments) {
-        return ''
+        return (
+            <>
+                <LoadingProgress/>
+            </>
+        )
     }
     if (errorProjectContributors || errorContributors || errorContributorAllocations || errorContributorAllocations || errorContributorRates || errorClientPayments) {
         return `error`

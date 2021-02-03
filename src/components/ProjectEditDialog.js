@@ -17,6 +17,7 @@ import {
 import accounting from 'accounting-js'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
+import LoadingProgress from './LoadingProgress'
 import { selectCurrencyInformation } from '../scripts/selectors'
 import { UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
 
@@ -49,7 +50,7 @@ const ProjectEditDialog = (props) => {
             projectInfoToEdit['toggl_url'] = togglURL
         }
         const projectEdited = await updateProject({ variables: projectInfoToEdit })
-        if (loading) return <span>loading...</span>
+        if (loading) return <LoadingProgress/>
         else if (projectEdited.errors) {
             setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}`)
             setDisplayError(true)

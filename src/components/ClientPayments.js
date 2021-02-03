@@ -2,6 +2,7 @@ import React from 'react'
 import { gql, useQuery } from '@apollo/client';
 import { orderBy } from 'lodash'
 
+import LoadingProgress from './LoadingProgress'
 import PaymentsList from './PaymentsList'
 import PaymentsEmptyState from './PaymentsEmptyState'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/PaymentQueries'
@@ -14,14 +15,9 @@ const ClientPayments = (props) => {
         variables: { clientId: Number(clientId) }
     })
 
-    if (loading) {
-        return (
-            <div>
-                Loading...
-            </div>
-        )
-    }
-    if (error) return `Error! ${error.message}`;
+    if (loading) return <LoadingProgress/>
+    if (error) return `Error! ${error.message}`
+
     const payments = orderBy(data.getClientPaymentsByClientId, ['date_paid'], ['desc'])
 
     return (

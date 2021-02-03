@@ -12,10 +12,12 @@ import {
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
 import EuroIcon from '@material-ui/icons/Euro'
 
+import ClientEditDialog from './ClientEditDialog'
+import LoadingProgress from './LoadingProgress'
+
+import { selectCurrencySymbol } from '../scripts/selectors'
 import { lightGrey } from '../styles/colors.scss'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
-import ClientEditDialog from './ClientEditDialog'
-import { selectCurrencySymbol } from '../scripts/selectors'
 
 const ClientInfo = ({
     clientId
@@ -36,14 +38,9 @@ const ClientInfo = ({
         }
     })
 
-    if (loading) {
-        return (
-            <Grid item xs={12}>
-                Loading...
-            </Grid>
-        )
-    }
+    if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`
+    
     const client = data.getClientById
 
     return (
