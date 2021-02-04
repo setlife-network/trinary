@@ -50,7 +50,6 @@ const ProjectOverview = (props) => {
         timeSpent,
         timeSpentPerContributor
     } = dataTimeEntries.getProjectById
-
     return (
         <Grid
             container

@@ -23,6 +23,7 @@ const ProjectContributors = (props) => {
 
     const { projectId } = props
     const [contributors, setContributors] = useState([])
+    const [githubContributors, setGithubContributors] = useState([])
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
     const [contributorClicked, setContributorClicked] = useState(null)
     const handleAddAllocationClose = (value) => {
@@ -53,15 +54,26 @@ const ProjectContributors = (props) => {
             error: errorGithubContributors
         }
     ] = useMutation(SYNC_PROJECT_GITHUB_CONTRIBUTORS, {
+        onCompleted: dataGithubContributors => {
+            setGithubContributors(dataGithubContributors.syncProjectGithubContributors)
+        },
+        refetchQueries: [{
+            query: GET_CONTRIBUTORS
+        }],
         errorPolicy: 'all'
     })
 
-    useEffect(async () => {
-        const githubContributors = await getGithubContributors({
+    useEffect(() => {
+        getGithubContributors({
             variables: { project_id: Number(projectId) }
         })
-        setContributors(contributors.concat(...githubContributors.data.syncProjectGithubContributors))
     }, [])
+
+    useEffect(() => {
+        if (githubContributors.length) {
+            setContributors(contributors.concat(...githubContributors))
+        }
+    }, [githubContributors])
 
     const addAllocation = (props) => {
         setOpenAddAllocationDialog(true)
@@ -90,6 +102,7 @@ const ProjectContributors = (props) => {
     const activeContributors = activeAllocations.map(a => {
         return a.contributor
     })
+
     if (differenceBy(dataContributors.getContributors, contributors, 'id').length != 0) {
         setContributors(contributors.concat(...dataContributors.getContributors))
     }
