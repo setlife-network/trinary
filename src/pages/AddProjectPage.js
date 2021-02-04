@@ -4,14 +4,12 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
 import AddProjectForm from '../components/AddProjectForm'
-import { pageName } from '../reactivities/variables'
 
 class AddProjectPage extends React.Component {
 
     render() {
 
         const { clientId } = this.props.match.params
-        pageName('Add Project')
         return (
             <Grid
                 container

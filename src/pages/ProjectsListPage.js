@@ -4,13 +4,11 @@ import { Grid } from '@material-ui/core'
 import HomeProjects from '../components/HomeProjects'
 import ProjectsListManager from '../components/ProjectsListManager'
 import ProjectsList from '../components/ProjectsList'
-import { pageName } from '../reactivities/variables'
 
 class ProjectsListPage extends React.Component {
 
     render() {
         const { history } = this.props
-        pageName('Projects')
         return (
             <Grid
                 container

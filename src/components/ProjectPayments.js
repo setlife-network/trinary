@@ -14,6 +14,7 @@ import PaymentsEmptyState from './PaymentsEmptyState'
 import PaymentTile from './PaymentTile'
 import PaymentsList from './PaymentsList'
 import { GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
+import { pageName } from '../reactivities/variables'
 
 const ProjectPayments = (props) => {
 
@@ -36,7 +37,7 @@ const ProjectPayments = (props) => {
 
     const { getProjectById } = data
     const { allocatedPayments, client } = getProjectById
-
+    pageName(getProjectById.name)
     const payments = orderBy(allocatedPayments, ['date_paid'], ['desc'])
 
     return (

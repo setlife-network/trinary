@@ -10,7 +10,7 @@ import { split } from 'lodash'
 
 import { lightBlue } from '../styles/colors.scss'
 import { LOGO_URL } from '../constants'
-import { capitalizeWord } from '../scripts/selectors'
+import { capitalizeWord, matchTitlePage } from '../scripts/selectors'
 import { pageName } from '../reactivities/variables'
 
 const Navigation = (props) => {
@@ -20,8 +20,8 @@ const Navigation = (props) => {
         history.push('/')
     }
     const location = useLocation()
-    const urlInformation = split(location.pathname, '/')
-    const title = useReactiveVar(pageName)
+    const locationTitle = matchTitlePage({ location: location.pathname })
+    const optionalLocationTitle = useReactiveVar(pageName)
 
     return (
         <Box bgcolor={lightBlue} mb={5}>
@@ -39,9 +39,10 @@ const Navigation = (props) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <h2>
-                            {title
-                                ? capitalizeWord({ word: title })
-                                : capitalizeWord({ word: urlInformation[1] })
+                            {
+                                capitalizeWord({
+                                    word: locationTitle.title || optionalLocationTitle
+                                })
                             }
                         </h2>
                     </Grid>

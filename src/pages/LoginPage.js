@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button'
 import { API_ROOT } from '../constants'
 import Grid from '@material-ui/core/Grid'
 import { setlifeBlue } from '../styles/colors.scss'
-import { pageName } from '../reactivities/variables'
 
 const loggedInUser = [{
     id: null,
@@ -19,7 +18,6 @@ class LoginPage extends React.Component {
     }
 
     render() {
-        pageName('LogIn')
         return (
             <Grid container className='LoginPage'>
                 <div className='image-button'>

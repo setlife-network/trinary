@@ -27,7 +27,6 @@ class ProjectDetailPage extends React.Component {
             location,
             match
         } = this.props
-
         // Convert URL `/projects/1/payments` to `payments`
         const selectedTab = location.pathname.replace(match.url, '').slice(1)
 

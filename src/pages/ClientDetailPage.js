@@ -10,14 +10,12 @@ import ClientProjectsList from '../components/ClientProjectsList'
 import ProjectsListManager from '../components/ProjectsListManager'
 import ClientPaymentsManager from '../components/ClientPaymentsManager'
 import ClientPayments from '../components/ClientPayments'
-import { pageName } from '../reactivities/variables'
 
 class ClientDetailPage extends React.Component {
 
     render() {
 
         const { clientId } = this.props.match.params
-        pageName('Client')
         return (
             <Grid
                 container

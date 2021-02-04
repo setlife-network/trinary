@@ -1,6 +1,6 @@
 import { find } from 'lodash'
 
-import { CURRENCIES } from '../constants'
+import { CURRENCIES, NAV_TITLES } from '../constants'
 
 export const capitalizeWord = (props) => {
     const {
@@ -30,11 +30,12 @@ export const selectCurrencyInformation = (props) => {
     })
 }
 
-function toTitleCase(str) {
-    return str.replace(
-        /\w\S*/g,
-        function(txt) {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        }
-    );
+export const matchTitlePage = (props) => {
+    const {
+        location
+    } = props
+    const locationTitle = NAV_TITLES.find(tl => {
+        return tl.locations.find(l => location.match(l))
+    })
+    return locationTitle
 }
