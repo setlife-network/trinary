@@ -16,12 +16,15 @@ import {
 } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
-import { split } from 'lodash'
 import accounting from 'accounting-js'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import LoadingProgress from './LoadingProgress'
-import { selectCurrencyInformation } from '../scripts/selectors'
+import {
+    selectCurrencyInformation,
+    verifyGithubURL,
+    verifyTogglURL
+} from '../scripts/selectors'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
 import { red } from '../styles/colors.scss'
@@ -72,22 +75,6 @@ const AddProjectForm = ({
 
     const handleDateChange = (date) => {
         setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
-    }
-
-    const verifyGithubURL = (url) => {
-        const githubLinkInformation = split(url, '/')
-        if (githubLinkInformation.length != 5) {
-            return 0
-        }
-        return 1
-    }
-
-    const verifyTogglURL = (url) => {
-        const togglLinkInformation = split(url, '/')
-        if (togglLinkInformation.length != 7) {
-            return 0
-        }
-        return 1
     }
 
     const createProject = async () => {
@@ -162,7 +149,6 @@ const AddProjectForm = ({
                     </Box>
                 </Grid>
             </Grid>
-
             <Grid container justify='space-between'>
                 <Grid item xs={12} md={5}>
                     <Box xs={10} my={2}>

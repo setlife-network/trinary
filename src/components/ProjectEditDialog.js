@@ -19,7 +19,11 @@ import accounting from 'accounting-js'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import LoadingProgress from './LoadingProgress'
-import { selectCurrencyInformation } from '../scripts/selectors'
+import {
+    selectCurrencyInformation,
+    verifyGithubURL,
+    verifyTogglURL
+} from '../scripts/selectors'
 import { UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
 
 const ProjectEditDialog = (props) => {
@@ -70,22 +74,6 @@ const ProjectEditDialog = (props) => {
         } else {
             onClose()
         }
-    }
-
-    const verifyGithubURL = (url) => {
-        const githubLinkInformation = split(url, '/')
-        if (githubLinkInformation.length != 5) {
-            return 0
-        }
-        return 1
-    }
-
-    const verifyTogglURL = (url) => {
-        const togglLinkInformation = split(url, '/')
-        if (togglLinkInformation.length != 7) {
-            return 0
-        }
-        return 1
     }
 
     const handleAlertClose = (event, reason) => {
