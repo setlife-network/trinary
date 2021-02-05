@@ -136,19 +136,19 @@ const ContributorTile = (props) => {
             align='left'
         >
             <Accordion>
-                <AccordionSummary>
-                    <Grid container>
 
-                        <Grid item xs={2}>
-                            <Fab
-                                color={`${active ? 'secondary' : 'primary'}`}
-                                size='small'
-                                onClick={() => handleAddButton()}
-                            >
-                                <AddIcon color='action'/>
-                            </Fab>
-                        </Grid>
-
+                <Grid container alignItems='center'>
+                    <Grid item xs={'auto'}>
+                        <Fab
+                            color={`${active ? 'secondary' : 'primary'}`}
+                            size='small'
+                            onClick={() => handleAddButton()}
+                            className={`${active && 'outlined-add-icon'}`}
+                        >
+                            <AddIcon color='action'/>
+                        </Fab>
+                    </Grid>
+                    <AccordionSummary>
                         <Grid item xs={10}>
                             <Typography>
                                 <strong>
@@ -157,8 +157,9 @@ const ContributorTile = (props) => {
                             </Typography>
                             {contributor.github_handle}
                         </Grid>
-                    </Grid>
-                </AccordionSummary>
+                    </AccordionSummary>
+                </Grid>
+
                 <AccordionDetails>
 
                     {
