@@ -4,20 +4,25 @@ import {
     Box,
     Grid
 } from '@material-ui/core/'
-import { differenceBy, filter } from 'lodash'
+import {
+    differenceBy,
+    filter
+} from 'lodash'
 import moment from 'moment'
 
-import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
-import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
-import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
 import AllocationAddForm from './AllocationAddForm'
+import LoadingProgress from './LoadingProgress'
 import ContributorTile from './ContributorTile'
 import ContributorsEmptyState from './ContributorsEmptyState'
 import GithubAccessBlocked from './GithubAccessBlocked'
+import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
+import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
+import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
 
 const ProjectContributors = (props) => {
 
     const { projectId } = props
+    const [contributors, setContributors] = useState([])
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
     const [contributorClicked, setContributorClicked] = useState(null)
     const handleAddAllocationClose = (value) => {
@@ -51,10 +56,11 @@ const ProjectContributors = (props) => {
         errorPolicy: 'all'
     })
 
-    useEffect(() => {
-        var githubContributors = getGithubContributors({
+    useEffect(async () => {
+        const githubContributors = await getGithubContributors({
             variables: { project_id: Number(projectId) }
         })
+        setContributors(contributors.concat(...githubContributors.data.syncProjectGithubContributors))
     }, [])
 
     const addAllocation = (props) => {
@@ -67,11 +73,7 @@ const ProjectContributors = (props) => {
     }
 
     if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
-        return (
-            <Grid item xs={12}>
-                Loading...
-            </Grid>
-        )
+        return <LoadingProgress/>
     }
     if (errorGithubContributors) {
         return (
@@ -88,11 +90,12 @@ const ProjectContributors = (props) => {
     const activeContributors = activeAllocations.map(a => {
         return a.contributor
     })
-    const { getContributors: contributors } = dataContributors
+    if (differenceBy(dataContributors.getContributors, contributors, 'id').length != 0) {
+        setContributors(contributors.concat(...dataContributors.getContributors))
+    }
     const contributorsToAdd = differenceBy(contributors, activeContributors, 'id')
 
     const renderContributors = (active, contributors) => {
-
         return contributors.map(c => {
             return (
                 <Grid item xs={12} md={6}>
@@ -139,7 +142,9 @@ const ProjectContributors = (props) => {
                 </Box>
                 <hr/>
             </Grid>
-            <h1>{`Add new contributors to the project`}</h1>
+            <h1>
+                {`Add new contributors to the project`}
+            </h1>
             <Grid item xs={12}>
                 <Box>
                     <Grid container>

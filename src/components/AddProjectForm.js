@@ -20,6 +20,7 @@ import { split } from 'lodash'
 import accounting from 'accounting-js'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
+import LoadingProgress from './LoadingProgress'
 import { selectCurrencyInformation } from '../scripts/selectors'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
@@ -114,7 +115,7 @@ const AddProjectForm = ({
         }
 
         const newProject = await addProject({ variables })
-        if (loading) return <span>loading...</span>
+        if (loading) return <LoadingProgress/>
         if (newProject.errors) {
             setCreateProjectError(`${Object.keys(newProject.errors[0].extensions.exception.fields)[0]} already exists`)
             setDisplayError(true)

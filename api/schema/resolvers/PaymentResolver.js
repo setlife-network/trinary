@@ -8,6 +8,13 @@ const apiModules = require('../../modules');
 module.exports = {
 
     Payment: {
+        allocations: (payment, args, { models }) => {
+            return models.Allocation.findAll({
+                where: {
+                    payment_id: payment.id
+                }
+            })
+        },
         client: (payment, args, { models }) => {
             return models.Client.findByPk(payment.client_id)
         },

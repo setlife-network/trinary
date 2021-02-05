@@ -26,12 +26,16 @@ code {
 @import './HomePage.scss';
 @import './IssueTile.scss';
 @import './LoginPage.scss';
+@import './PaymentTile.scss';
 @import './ProjectDetailPage.scss';
 @import './ProjectIssuesMetrics.scss';
+@import './ProjectOverview.scss';
 @import './ProjectPayments.scss';
 
 //Components
+@import './AllocationAddForm.scss';
 @import './EmptyState.scss';
 @import './Header.scss';
+@import './LoadingProgress.scss';
 @import './Navigation.scss';
-@import './ProjectTimeTracking'
+@import './ProjectTimeTracking';

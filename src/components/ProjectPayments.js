@@ -9,6 +9,7 @@ import {
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import { orderBy } from 'lodash'
 
+import LoadingProgress from './LoadingProgress'
 import PaymentsEmptyState from './PaymentsEmptyState'
 import PaymentTile from './PaymentTile'
 import PaymentsList from './PaymentsList'
@@ -30,13 +31,7 @@ const ProjectPayments = (props) => {
         }
     })
 
-    if (loading) {
-        return (
-            <div>
-                Loading...
-            </div>
-        )
-    }
+    if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`
 
     const { getProjectById } = data

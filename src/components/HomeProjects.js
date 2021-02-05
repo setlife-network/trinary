@@ -3,8 +3,9 @@ import { gql, useQuery } from '@apollo/client';
 import { Grid } from '@material-ui/core'
 import { orderBy } from 'lodash'
 
-import { GET_ALL_PROJECTS } from '../operations/queries/ProjectQueries'
+import LoadingProgress from './LoadingProgress'
 import ProjectsList from './ProjectsList'
+import { GET_ALL_PROJECTS } from '../operations/queries/ProjectQueries'
 
 const HomeProjects = ({
     history
@@ -12,13 +13,7 @@ const HomeProjects = ({
 
     const { loading, error, data } = useQuery(GET_ALL_PROJECTS);
 
-    if (loading) {
-        return (
-            <Grid item xs={12}>
-                Loading...
-            </Grid>
-        )
-    }
+    if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`;
     const projects = orderBy(data.getProjects, ['is_active'], ['desc'])
 
