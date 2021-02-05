@@ -19,7 +19,9 @@ import {
     GET_PAYMENT_ALLOCATIONS,
     GET_PAYMENT_TOTAL_ALLOCATED
 } from '../operations/queries/PaymentQueries'
-import { selectCurrencySymbol, selectCurrencyInformation } from '../scripts/selectors'
+import {
+    selectCurrencyInformation
+} from '../scripts/selectors'
 
 import { red } from '../styles/colors.scss'
 
@@ -34,7 +36,6 @@ const PaymentTile = (props) => {
     const formattedDatePaid = moment(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
     const formattedDateIncurred = moment(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
     const paymentHasBeenMade = payment.date_paid != null
-    const currencySymbol = selectCurrencySymbol({ currency: client.currency })
 
     const {
         loading: loadingPaymentAllocations,
@@ -118,7 +119,7 @@ const PaymentTile = (props) => {
                         </Grid>
                         <Grid items xs={7}>
                             <Typography color='secondary' variant='caption'>
-                                {`${currencySymbol}${rate.hourly_rate}/hr (
+                                {`${currencyInformation['symbol']}${rate.hourly_rate}/hr (
                                     ${rate.type == 'monthly_rate' ? 'monthly rate' : 'max budget'}
                                 )`}
                             </Typography>

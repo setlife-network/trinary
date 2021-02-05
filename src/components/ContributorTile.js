@@ -10,8 +10,13 @@ import {
     Typography
 } from '@material-ui/core/'
 import AddIcon from '@material-ui/icons/Add'
+import moment from 'moment'
 
 import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
+import {
+    formatAmount,
+    selectCurrencyInformation
+} from '../scripts/selectors'
 
 const ContributorTile = (props) => {
 
@@ -37,40 +42,76 @@ const ContributorTile = (props) => {
         }
     })
 
+    console.log('project');
+    console.log(project);
+
+    const currencyInformation = selectCurrencyInformation({
+        currency: 'USD'
+    })
+
     const renderContributorAllocations = (props) => {
         const {
             allocations
         } = props
+        console.log('allocations');
+        console.log(allocations);
 
         return allocations.map(a => {
+
+            const allocationAmount = formatAmount({
+                amount: a.amount / 100,
+                currencyInformation: currencyInformation
+            })
+            const hourlyRateAmount = formatAmount({
+                amount: a.rate.hourly_rate,
+                currencyInformation: currencyInformation
+            })
+
             return (
                 <Grid container>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Typography color='secondary' variant='caption'>
-                            {`Total allocated:`}
+                            <strong>
+                                {`Total allocated:`}
+                            </strong>
                             <br/>
-                            {`${a.amount}`}
+                            {`${allocationAmount}`}
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Typography color='secondary' variant='caption'>
-                            {`Rate:`}
+                            <strong>
+                                {`Rate:`}
+                            </strong>
                             <br/>
-                            {`${a.rate.hourly_rate} ${a.rate.type}`}
+                            {`${hourlyRateAmount} /h.`}
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Typography color='secondary' variant='caption'>
-                            {`Start date:`}
+                            <strong>
+                                {`Expected hours:`}
+                            </strong>
                             <br/>
-                            {`${a.start_date}`}
+                            {`${a.rate.total_expected_hours}`}
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Typography color='secondary' variant='caption'>
-                            {`End date:`}
+                            <strong>
+                                {`Start date:`}
+                            </strong>
                             <br/>
-                            {`${a.end_date}`}
+                            {`${moment(a.start_date, 'x').format('MM/DD/YYYY')}`}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Typography color='secondary' variant='caption'>
+                            <strong>
+                                {`End date:`}
+                            </strong>
+                            <br/>
+                            {`${moment(a.end_date, 'x').format('MM/DD/YYYY')}`}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -81,9 +122,6 @@ const ContributorTile = (props) => {
 
     if (loadingAllocation) return ''
     if (errorAllocation) return `An error ocurred ${errorAllocation}`
-
-    console.log('dataAllocation');
-    console.log(dataAllocation);
 
     const { getAllocations: allocations } = dataAllocation
 
@@ -100,18 +138,17 @@ const ContributorTile = (props) => {
             <Accordion>
                 <AccordionSummary>
                     <Grid container>
-                        {
-                            !active &&
-                            <Grid item xs={2}>
-                                <Fab
-                                    color='primary'
-                                    size='small'
-                                    onClick={() => handleAddButton()}
-                                >
-                                    <AddIcon color='action'/>
-                                </Fab>
-                            </Grid>
-                        }
+
+                        <Grid item xs={2}>
+                            <Fab
+                                color={`${active ? 'secondary' : 'primary'}`}
+                                size='small'
+                                onClick={() => handleAddButton()}
+                            >
+                                <AddIcon color='action'/>
+                            </Fab>
+                        </Grid>
+
                         <Grid item xs={10}>
                             <Typography>
                                 <strong>
@@ -123,12 +160,13 @@ const ContributorTile = (props) => {
                     </Grid>
                 </AccordionSummary>
                 <AccordionDetails>
+
                     {
-                        active &&
                         renderContributorAllocations({
                             allocations: allocations
                         })
                     }
+
                 </AccordionDetails>
             </Accordion>
         </Box>
