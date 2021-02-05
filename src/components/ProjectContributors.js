@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client'
 import {
     Box,
-    Grid
+    Grid,
+    Typography
 } from '@material-ui/core/'
 import {
     differenceBy,
@@ -18,19 +19,14 @@ import GithubAccessBlocked from './GithubAccessBlocked'
 import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
-import { selectActiveAndUpcomingAllocations } from '../scripts/selectors'
+import {
+    getAllocationsContributors,
+    selectActiveAndUpcomingAllocations
+} from '../scripts/selectors'
 
 const ProjectContributors = (props) => {
 
     const { projectId } = props
-
-    const getActiveContributors = ({ activeContributors, allocations }) => {
-        return allocations.map(a => {
-            if (!activeContributors.includes(a.contributor)) {
-                activeContributors.push(a.contributor)
-            }
-        })
-    }
 
     const [contributors, setContributors] = useState([])
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
@@ -97,15 +93,29 @@ const ProjectContributors = (props) => {
             allocation: allocation
         })
     ))
-    const activeContributors = []
-    getActiveContributors({
-        activeContributors: activeContributors,
-        allocations: activeAndUpcomingAllocations
-    })
+    const activeAllocations = filter(activeAndUpcomingAllocations, (allocation) => (
+        selectActiveAndUpcomingAllocations({
+            activeOnly: true,
+            allocation: allocation
+        })
+    ))
+    const upcomingAllocations = filter(activeAndUpcomingAllocations, (allocation) => (
+        selectActiveAndUpcomingAllocations({
+            upcomingOnly: true,
+            allocation: allocation
+        })
+    ))
+    const activeContributorsAllocated = getAllocationsContributors({ allocations: activeAllocations })
+    const upcomingContributorsAllocated = getAllocationsContributors({ allocations: upcomingAllocations })
+
+    // getActiveAndUpcomingContributors({
+    //     contributorsAllocated: contributorsAllocated,
+    //     allocations: activeAndUpcomingAllocations
+    // })
     if (differenceBy(dataContributors.getContributors, contributors, 'id').length != 0) {
         setContributors(contributors.concat(...dataContributors.getContributors))
     }
-    const contributorsToAdd = differenceBy(contributors, activeContributors, 'id')
+    const contributorsToAdd = differenceBy(contributors, [...activeContributorsAllocated, ...upcomingContributorsAllocated], 'id')
 
     const renderContributors = (props) => {
         const {
@@ -142,7 +152,7 @@ const ProjectContributors = (props) => {
                     py={1}
                 >
                     {
-                        `${activeContributors.length} active ${activeContributors.length == 1
+                        `${activeContributorsAllocated.length} active ${activeContributorsAllocated.length == 1
                             ? 'contributor'
                             : 'contributors'
                         }`
@@ -151,12 +161,32 @@ const ProjectContributors = (props) => {
             </Grid>
             <Grid item xs={12}>
                 <Box my={5}>
+                    <Typography align='left' variant='h5'>
+                        {`Active contributors`}
+                    </Typography>
                     <Grid container>
                         {
-                            activeContributors.length != 0
+                            activeContributorsAllocated.length != 0
                                 ? renderContributors({
                                     active: true,
-                                    contributors: activeContributors,
+                                    contributors: activeContributorsAllocated,
+                                    project: project
+                                })
+                                : <ContributorsEmptyState active/>
+
+                        }
+                    </Grid>
+                </Box>
+                <Box my={5}>
+                    <Typography align='left' variant='h5'>
+                        {`Upcoming contributors`}
+                    </Typography>
+                    <Grid container>
+                        {
+                            upcomingContributorsAllocated.length != 0
+                                ? renderContributors({
+                                    active: true,
+                                    contributors: upcomingContributorsAllocated,
                                     project: project
                                 })
                                 : <ContributorsEmptyState active/>
