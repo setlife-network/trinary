@@ -82,7 +82,7 @@ const ProjectContributors = (props) => {
             />
         )
     }
-    if (errorProjectContributors || errorContributors) return `Error!`
+    if (errorProjectContributors || errorContributors) return `Error! ${errorProjectContributors} ${errorContributors}`
 
     const project = dataProjectContributors.getProjectById
     const { allocations } = project
@@ -95,7 +95,12 @@ const ProjectContributors = (props) => {
     }
     const contributorsToAdd = differenceBy(contributors, activeContributors, 'id')
 
-    const renderContributors = (active, contributors) => {
+    const renderContributors = (props) => {
+        const {
+            active,
+            contributors,
+            project
+        } = props
         return contributors.map(c => {
             return (
                 <Grid item xs={12} md={6}>
@@ -103,6 +108,7 @@ const ProjectContributors = (props) => {
                         active={active}
                         contributor={c}
                         onAddButton={addAllocation}
+                        project={project}
                     />
                 </Grid>
             )
@@ -134,7 +140,11 @@ const ProjectContributors = (props) => {
                     <Grid container>
                         {
                             activeContributors.length != 0
-                                ? renderContributors(true, activeContributors)
+                                ? renderContributors({
+                                    active: true,
+                                    contributors: activeContributors,
+                                    project: project
+                                })
                                 : <ContributorsEmptyState active/>
 
                         }
@@ -150,7 +160,11 @@ const ProjectContributors = (props) => {
                     <Grid container>
                         {
                             contributorsToAdd.length != 0
-                                ? renderContributors(false, contributorsToAdd)
+                                ? renderContributors({
+                                    active: false,
+                                    contributors: contributorsToAdd,
+                                    project: project
+                                })
                                 : <ContributorsEmptyState/>
                         }
                     </Grid>

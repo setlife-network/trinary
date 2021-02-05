@@ -1,4 +1,5 @@
 import React from 'react'
+import { useQuery } from '@apollo/client'
 import {
     Accordion,
     AccordionDetails,
@@ -8,19 +9,39 @@ import {
     Grid,
     Typography
 } from '@material-ui/core/'
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/Add'
+
+import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
 
 const ContributorTile = (props) => {
 
     const {
         active,
         contributor,
-        onAddButton
+        onAddButton,
+        project
     } = props
 
     const handleAddButton = () => {
         onAddButton({ contributor })
     }
+
+    const {
+        data: dataAllocation,
+        error: errorAllocation,
+        loading: loadingAllocation
+    } = useQuery(GET_ALLOCATIONS, {
+        variables: {
+            projectId: project.id,
+            contributorId: contributor.id
+        }
+    })
+
+    if (loadingAllocation) return ''
+    if (errorAllocation) return `An error ocurred ${errorAllocation}`
+
+    console.log('dataAllocation');
+    console.log(dataAllocation);
 
     return (
         <Box
