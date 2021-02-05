@@ -15,6 +15,14 @@ export const GET_ALLOCATIONS = gql`
                 type
                 total_expected_hours
             }
+            payment {
+                id
+                client {
+                    id
+                    name
+                    currency
+                }
+            }
         }
     }
 `

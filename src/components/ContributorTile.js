@@ -42,21 +42,16 @@ const ContributorTile = (props) => {
         }
     })
 
-    console.log('project');
-    console.log(project);
-
-    const currencyInformation = selectCurrencyInformation({
-        currency: 'USD'
-    })
-
     const renderContributorAllocations = (props) => {
         const {
             allocations
         } = props
-        console.log('allocations');
-        console.log(allocations);
 
         return allocations.map(a => {
+
+            const currencyInformation = selectCurrencyInformation({
+                currency: a.payment.client.currency
+            })
 
             const allocationAmount = formatAmount({
                 amount: a.amount / 100,
@@ -93,7 +88,7 @@ const ContributorTile = (props) => {
                                 {`Expected hours:`}
                             </strong>
                             <br/>
-                            {`${a.rate.total_expected_hours}`}
+                            {`${a.rate.total_expected_hours} h.`}
                         </Typography>
                     </Grid>
                     <Grid item xs={4}>

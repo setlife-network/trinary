@@ -22,6 +22,7 @@ import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/Projec
 const ProjectContributors = (props) => {
 
     const { projectId } = props
+
     const [contributors, setContributors] = useState([])
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
     const [contributorClicked, setContributorClicked] = useState(null)
@@ -82,7 +83,7 @@ const ProjectContributors = (props) => {
             />
         )
     }
-    if (errorProjectContributors || errorContributors) return `Error! ${errorProjectContributors} ${errorContributors}`
+    if (errorProjectContributors || errorContributors) return `Error!`
 
     const project = dataProjectContributors.getProjectById
     const { allocations } = project
