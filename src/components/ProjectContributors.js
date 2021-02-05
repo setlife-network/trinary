@@ -18,10 +18,19 @@ import GithubAccessBlocked from './GithubAccessBlocked'
 import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
+import { selectActiveAndUpcomingAllocations } from '../scripts/selectors'
 
 const ProjectContributors = (props) => {
 
     const { projectId } = props
+
+    const getActiveContributors = ({ activeContributors, allocations }) => {
+        return allocations.map(a => {
+            if (!activeContributors.includes(a.contributor)) {
+                activeContributors.push(a.contributor)
+            }
+        })
+    }
 
     const [contributors, setContributors] = useState([])
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
@@ -69,10 +78,6 @@ const ProjectContributors = (props) => {
         setContributorClicked(props.contributor)
     }
 
-    const selectActiveAllocations = (allocation) => {
-        return moment(allocation['end_date'], 'x').isAfter(moment())
-    }
-
     if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
         return <LoadingProgress/>
     }
@@ -87,9 +92,15 @@ const ProjectContributors = (props) => {
 
     const project = dataProjectContributors.getProjectById
     const { allocations } = project
-    const activeAllocations = filter(allocations, (allocation) => selectActiveAllocations(allocation))
-    const activeContributors = activeAllocations.map(a => {
-        return a.contributor
+    const activeAndUpcomingAllocations = filter(allocations, (allocation) => (
+        selectActiveAndUpcomingAllocations({
+            allocation: allocation
+        })
+    ))
+    const activeContributors = []
+    getActiveContributors({
+        activeContributors: activeContributors,
+        allocations: activeAndUpcomingAllocations
     })
     if (differenceBy(dataContributors.getContributors, contributors, 'id').length != 0) {
         setContributors(contributors.concat(...dataContributors.getContributors))
@@ -118,7 +129,9 @@ const ProjectContributors = (props) => {
 
     return (
         <Grid container className='ProjectContributors'>
-            <h1>{`${project.name} Contributors`}</h1>
+            <h1>
+                {`${project.name} Contributors`}
+            </h1>
             <Grid xs={12}/>
             <Grid item xs={12} sm={5}>
                 <Box

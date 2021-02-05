@@ -11,10 +11,12 @@ import {
 } from '@material-ui/core/'
 import AddIcon from '@material-ui/icons/Add'
 import moment from 'moment'
+import { filter, sortBy } from 'lodash'
 
 import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
 import {
     formatAmount,
+    selectActiveAndUpcomingAllocations,
     selectCurrencyInformation
 } from '../scripts/selectors'
 
@@ -47,7 +49,14 @@ const ContributorTile = (props) => {
             allocations
         } = props
 
-        return allocations.map(a => {
+        const currenctAndUpcomingAllocations = filter(allocations, (allocation) => (
+            selectActiveAndUpcomingAllocations({
+                allocation: allocation
+            })
+        ))
+        const sortedAllocations = sortBy(currenctAndUpcomingAllocations, ['start_date'])
+        
+        return sortedAllocations.map(a => {
 
             const currencyInformation = selectCurrencyInformation({
                 currency: a.payment.client.currency
@@ -61,54 +70,75 @@ const ContributorTile = (props) => {
                 amount: a.rate.hourly_rate,
                 currencyInformation: currencyInformation
             })
+            const isActiveAllocation = moment(a.start_date, 'x').isBefore(moment())
 
             return (
-                <Grid container>
-                    <Grid item xs={4}>
-                        <Typography color='secondary' variant='caption'>
-                            <strong>
-                                {`Total allocated:`}
-                            </strong>
-                            <br/>
-                            {`${allocationAmount}`}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Typography color='secondary' variant='caption'>
-                            <strong>
-                                {`Rate:`}
-                            </strong>
-                            <br/>
-                            {`${hourlyRateAmount} /h.`}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Typography color='secondary' variant='caption'>
-                            <strong>
-                                {`Expected hours:`}
-                            </strong>
-                            <br/>
-                            {`${a.rate.total_expected_hours} h.`}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Typography color='secondary' variant='caption'>
-                            <strong>
-                                {`Start date:`}
-                            </strong>
-                            <br/>
-                            {`${moment(a.start_date, 'x').format('MM/DD/YYYY')}`}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Typography color='secondary' variant='caption'>
-                            <strong>
-                                {`End date:`}
-                            </strong>
-                            <br/>
-                            {`${moment(a.end_date, 'x').format('MM/DD/YYYY')}`}
-                        </Typography>
-                    </Grid>
+                <Grid item xs={12}>
+                    <hr/>
+                    <Box my={1}>
+                        <Grid container>
+                            <Grid item xs={4}>
+                                <Typography
+                                    color={`${!isActiveAllocation && 'secondary'}`}
+                                    variant='caption'
+                                >
+                                    <strong>
+                                        {`Total allocated:`}
+                                    </strong>
+                                    <br/>
+                                    {`${allocationAmount}`}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Typography
+                                    color={`${!isActiveAllocation && 'secondary'}`}
+                                    variant='caption'
+                                >
+                                    <strong>
+                                        {`Rate:`}
+                                    </strong>
+                                    <br/>
+                                    {`${hourlyRateAmount} /h.`}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Typography
+                                    color={`${!isActiveAllocation && 'secondary'}`}
+                                    variant='caption'
+                                >
+                                    <strong>
+                                        {`Expected hours:`}
+                                    </strong>
+                                    <br/>
+                                    {`${a.rate.total_expected_hours} h.`}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Typography
+                                    color={`${!isActiveAllocation && 'secondary'}`}
+                                    variant='caption'
+                                >
+                                    <strong>
+                                        {`Start date:`}
+                                    </strong>
+                                    <br/>
+                                    {`${moment(a.start_date, 'x').format('MM/DD/YYYY')}`}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Typography
+                                    color={`${!isActiveAllocation && 'secondary'}`}
+                                    variant='caption'
+                                >
+                                    <strong>
+                                        {`End date:`}
+                                    </strong>
+                                    <br/>
+                                    {`${moment(a.end_date, 'x').format('MM/DD/YYYY')}`}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Box>
                 </Grid>
             )
         })
@@ -156,13 +186,13 @@ const ContributorTile = (props) => {
                 </Grid>
 
                 <AccordionDetails>
-
-                    {
-                        renderContributorAllocations({
-                            allocations: allocations
-                        })
-                    }
-
+                    <Grid container>
+                        {
+                            renderContributorAllocations({
+                                allocations: allocations
+                            })
+                        }
+                    </Grid>
                 </AccordionDetails>
             </Accordion>
         </Box>
