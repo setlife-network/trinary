@@ -1,5 +1,8 @@
 import React from 'react'
 import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
     Box,
     Fab,
     Grid,
@@ -9,7 +12,11 @@ import AddIcon from '@material-ui/icons/Add';
 
 const ContributorTile = (props) => {
 
-    const { active, contributor, onAddButton } = props
+    const {
+        active,
+        contributor,
+        onAddButton
+    } = props
 
     const handleAddButton = () => {
         onAddButton({ contributor })
@@ -25,29 +32,42 @@ const ContributorTile = (props) => {
             mx={active ? 1 : 0}
             align='left'
         >
-            <Grid container>
-                {
-                    !active &&
-                    <Grid item xs={2}>
-                        <Fab
-                            color='primary'
-                            size='small'
-                            onClick={() => handleAddButton()}
-                        >
-                            <AddIcon color='action'/>
-                        </Fab>
+            <Accordion>
+                <AccordionSummary>
+                    <Grid container>
+                        {
+                            !active &&
+                            <Grid item xs={2}>
+                                <Fab
+                                    color='primary'
+                                    size='small'
+                                    onClick={() => handleAddButton()}
+                                >
+                                    <AddIcon color='action'/>
+                                </Fab>
+                            </Grid>
+                        }
+                        <Grid item xs={10}>
+                            <Typography>
+                                <strong>
+                                    {contributor.name}
+                                </strong>
+                            </Typography>
+                            {contributor.github_handle}
+                        </Grid>
                     </Grid>
-                }
-                <Grid item xs={10}>
-                    <Typography>
-                        <strong>
-                            {contributor.name}
-                        </strong>
-                    </Typography>
-                    {contributor.github_handle}
-                </Grid>
-            </Grid>
+                </AccordionSummary>
+                <AccordionDetails>
+                    {
+                        active &&
+                        <>
+
+                        </>
+                    }
+                </AccordionDetails>
+            </Accordion>
         </Box>
+
     )
 }
 
