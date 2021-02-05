@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GET_ALLOCATIONS = gql`
-    query Allocations($clientId: Int, $projectId: Int) {
-        getAllocations(clientId: $clientId, projectId: $projectId) {
+    query Allocations($contributorId: Int, $projectId: Int) {
+        getAllocations(contributorId: $contributorId, projectId: $projectId) {
             id
             amount
             start_date

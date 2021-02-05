@@ -37,11 +37,55 @@ const ContributorTile = (props) => {
         }
     })
 
+    const renderContributorAllocations = (props) => {
+        const {
+            allocations
+        } = props
+
+        return allocations.map(a => {
+            return (
+                <Grid container>
+                    <Grid item xs={6}>
+                        <Typography color='secondary' variant='caption'>
+                            {`Total allocated:`}
+                            <br/>
+                            {`${a.amount}`}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography color='secondary' variant='caption'>
+                            {`Rate:`}
+                            <br/>
+                            {`${a.rate.hourly_rate} ${a.rate.type}`}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography color='secondary' variant='caption'>
+                            {`Start date:`}
+                            <br/>
+                            {`${a.start_date}`}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography color='secondary' variant='caption'>
+                            {`End date:`}
+                            <br/>
+                            {`${a.end_date}`}
+                        </Typography>
+                    </Grid>
+                </Grid>
+            )
+        })
+
+    }
+
     if (loadingAllocation) return ''
     if (errorAllocation) return `An error ocurred ${errorAllocation}`
 
     console.log('dataAllocation');
     console.log(dataAllocation);
+
+    const { getAllocations: allocations } = dataAllocation
 
     return (
         <Box
@@ -81,9 +125,9 @@ const ContributorTile = (props) => {
                 <AccordionDetails>
                     {
                         active &&
-                        <>
-
-                        </>
+                        renderContributorAllocations({
+                            allocations: allocations
+                        })
                     }
                 </AccordionDetails>
             </Accordion>
