@@ -14,11 +14,16 @@ import {
     Snackbar,
     TextField
 } from '@material-ui/core/'
+import { split } from 'lodash'
 import accounting from 'accounting-js'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import LoadingProgress from './LoadingProgress'
-import { selectCurrencyInformation } from '../scripts/selectors'
+import {
+    selectCurrencyInformation,
+    verifyGithubURL,
+    verifyTogglURL
+} from '../scripts/selectors'
 import { UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
 
 const ProjectEditDialog = (props) => {
@@ -40,6 +45,18 @@ const ProjectEditDialog = (props) => {
     const [togglURL, setTogglURL] = useState(project.toggl_url)
 
     const onEditProject = async () => {
+        if (!verifyGithubURL(githubURL)) {
+            setEditProjectError('The Github URL is invalid')
+            setDisplayError(true)
+            return
+        }
+        if (togglURL) {
+            if (!verifyTogglURL(togglURL)) {
+                setEditProjectError('The Toggl URL is invalid')
+                setDisplayError(true)
+                return
+            }
+        }
         const projectInfoToEdit = {
             project_id: project.id,
             name: projectName,
@@ -52,7 +69,7 @@ const ProjectEditDialog = (props) => {
         const projectEdited = await updateProject({ variables: projectInfoToEdit })
         if (loading) return <LoadingProgress/>
         else if (projectEdited.errors) {
-            setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}`)
+            setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}  already exists`)
             setDisplayError(true)
         } else {
             onClose()
@@ -177,7 +194,7 @@ const ProjectEditDialog = (props) => {
                         onClose={handleAlertClose}
                     >
                         <Alert severity='error'>
-                            {`${editProjectError} already exists`}
+                            {`${editProjectError}`}
                         </Alert>
                     </Snackbar>
                 </FormControl>
