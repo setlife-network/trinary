@@ -35,6 +35,7 @@ import {
     GET_PROJECT_CLIENT_PAYMENTS
 } from '../operations/queries/ProjectQueries'
 import { GET_PAYMENT_TOTAL_ALLOCATED } from '../operations/queries/PaymentQueries'
+import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 
@@ -196,6 +197,14 @@ const AllocationAddForm = (props) => {
                 query: GET_PROJECT_CONTRIBUTORS,
                 variables: {
                     id: project.id
+                }
+            },
+            {
+                query: GET_ALLOCATIONS,
+                variables: {
+                    contributorId: contributor.id,
+                    projectId: project.id
+
                 }
             }]
         })
