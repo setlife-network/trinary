@@ -1,0 +1,27 @@
+$backgroud-white: #f7f9fa;
+$black: #000000;
+$blue: #2196f3;
+$dark-blue: #009BAD;
+$green: #4caf50;
+$grey: #828282;
+$light_blue: #d9f6f8;
+$light_grey: #F1F1F1;
+$orange: #ff9800;
+$red: #f44336;
+$setlife-blue: #00C2D4;
+$white: #FFFFFF;
+
+
+:export {
+    setlifeBlue: $setlife-blue;
+    lightBlue: $light_blue;
+    darkBlue: $dark-blue;
+    grey: $grey;
+    lightGrey: $light_grey;
+    white: $white;
+    black: $black;
+    red: $red;
+    orange: $orange;
+    blue: $blue;
+    green: $green
+}

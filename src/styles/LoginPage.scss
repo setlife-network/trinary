@@ -1,0 +1,24 @@
+.LoginPage {
+
+    h3 {
+        text-transform: none;
+        margin-right: 0.5rem;
+    }
+
+    .githubIcon {
+        padding-left: 1rem;
+    }
+
+    .image-button {
+        margin: auto;
+
+    }
+
+
+}
+
+@media screen and (min-width: $sm) {
+    .LoginPage {
+
+    }
+}

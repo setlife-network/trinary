@@ -1,0 +1,14 @@
+.EmptyState {
+    .empty-icon {
+        font-size: $small-icon !important;
+    }
+}
+
+
+@media screen and (min-width: $sm) {
+    .EmptyState {
+        .empty-icon {
+            font-size: $large-icon !important;
+        }
+    }
+}

@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+// Globals
+@import './colors.scss';
+@import './flex.scss';
+@import './sizes.scss';
+
+//Pages
+@import './App.scss';
+@import './AddClientPage.scss';
+@import './AddProjectPage.scss';
+@import './ClientDetailPage.scss';
+@import './ClientsListPage.scss';
+@import './HomePage.scss';
+@import './IssueTile.scss';
+@import './LoginPage.scss';
+@import './PaymentTile.scss';
+@import './ProjectDetailPage.scss';
+@import './ProjectIssuesMetrics.scss';
+@import './ProjectOverview.scss';
+@import './ProjectPayments.scss';
+
+//Components
+@import './AllocationAddForm.scss';
+@import './EmptyState.scss';
+@import './Header.scss';
+@import './LoadingProgress.scss';
+@import './Navigation.scss';
+@import './ProjectTimeTracking';
