@@ -1,4 +1,8 @@
-import { filter, find } from 'lodash'
+import {
+    filter,
+    find,
+    split
+} from 'lodash'
 import accounting from 'accounting-js'
 import moment from 'moment'
 
@@ -71,4 +75,20 @@ export const selectCurrencyInformation = (props) => {
     return find(CURRENCIES, c => {
         return c.name == props.currency
     })
+}
+
+export const verifyGithubURL = (url) => {
+    const githubLinkInformation = split(url, '/')
+    if (githubLinkInformation.length != 5) {
+        return 0
+    }
+    return 1
+}
+
+export const verifyTogglURL = (url) => {
+    const togglLinkInformation = split(url, '/')
+    if (togglLinkInformation.length != 7) {
+        return 0
+    }
+    return 1
 }
