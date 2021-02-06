@@ -20,6 +20,7 @@ import {
     GET_PAYMENT_TOTAL_ALLOCATED
 } from '../operations/queries/PaymentQueries'
 import {
+    formatAmount,
     selectCurrencyInformation
 } from '../scripts/selectors'
 
@@ -68,22 +69,18 @@ const PaymentTile = (props) => {
         currency: client.currency
     })
 
-    const paymentAmount = accounting.formatMoney(
-        payment.amount / 100,
-        {
-            symbol: currencyInformation['symbol'],
-            thousand: currencyInformation['thousand'],
-            decimal: currencyInformation['decimal'],
-            format: '%s %v'
-        }
-    )
-
     if (loadingTotalAllocated || loadingPaymentAllocations) return 'Loading...'
     if (errorTotalAllocated || errorPaymentAllocations) return `An error ocurred`
 
-    const { totalAllocated } = dataTotalAllocated.getPaymentById
     const { allocations } = dataPaymentAllocations.getPaymentById
-
+    const totalAllocated = formatAmount({
+        amount: dataTotalAllocated.getPaymentById.totalAllocated / 100,
+        currencyInformation: currencyInformation
+    })
+    const paymentAmount = formatAmount({
+        amount: payment.amount / 100,
+        currencyInformation: currencyInformation
+    })
     const numberOfContributorsAllocated = allocations.length
 
     const renderPaymentAllocations = (props) => {
@@ -94,16 +91,17 @@ const PaymentTile = (props) => {
         } = props
 
         return allocations.map(a => {
-            const { amount, contributor, end_date, rate } = a
-            const paymentAmount = accounting.formatMoney(
-                amount / 100,
-                {
-                    symbol: currencyInformation['symbol'],
-                    thousand: currencyInformation['thousand'],
-                    decimal: currencyInformation['decimal'],
-                    format: '%s %v'
-                }
-            )
+            const {
+                amount,
+                contributor,
+                end_date,
+                rate
+            } = a
+            const paymentAmount = formatAmount({
+                amount: amount / 100,
+                currencyInformation: currencyInformation
+            })
+
             return (
                 <Box mb={3}>
                     <Grid container>
@@ -187,7 +185,7 @@ const PaymentTile = (props) => {
                                         color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
                                     >
                                         {`
-                                        ${paymentAmount}
+                                        ${totalAllocated}
                                         ${numberOfContributorsAllocated && `allocated to ${numberOfContributorsAllocated}`}
                                         ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}
                                     `}
