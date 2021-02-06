@@ -55,7 +55,7 @@ const ContributorTile = (props) => {
             })
         ))
         const sortedAllocations = sortBy(currenctAndUpcomingAllocations, ['start_date'])
-        
+
         return sortedAllocations.map(a => {
 
             const currencyInformation = selectCurrencyInformation({
@@ -137,6 +137,21 @@ const ContributorTile = (props) => {
                                     {`${moment(a.end_date, 'x').format('MM/DD/YYYY')}`}
                                 </Typography>
                             </Grid>
+                            <Grid item xs={4}>
+                                <Typography
+                                    color={`${!isActiveAllocation && 'secondary'}`}
+                                    variant='caption'
+                                >
+                                    <strong>
+                                        {`Date paid:`}
+                                    </strong>
+                                    <br/>
+                                    {`${a.date_paid
+                                        ? moment(a.date_paid, 'x').format('MM/DD/YYYY')
+                                        : 'Proposed'
+                                    }`}
+                                </Typography>
+                            </Grid>
                         </Grid>
                     </Box>
                 </Grid>
@@ -161,9 +176,8 @@ const ContributorTile = (props) => {
             align='left'
         >
             <Accordion>
-
                 <Grid container alignItems='center'>
-                    <Grid item xs={'auto'}>
+                    <Grid item xs={2}>
                         <Fab
                             color={`${active ? 'secondary' : 'primary'}`}
                             size='small'
@@ -173,18 +187,23 @@ const ContributorTile = (props) => {
                             <AddIcon color='action'/>
                         </Fab>
                     </Grid>
-                    <AccordionSummary>
-                        <Grid item xs={10}>
-                            <Typography>
-                                <strong>
-                                    {contributor.name}
-                                </strong>
-                            </Typography>
-                            {contributor.github_handle}
-                        </Grid>
-                    </AccordionSummary>
+                    <Grid item xs={10}>
+                        <AccordionSummary>
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    <Typography>
+                                        <strong>
+                                            {contributor.name}
+                                        </strong>
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    {contributor.github_handle}
+                                </Grid>
+                            </Grid>
+                        </AccordionSummary>
+                    </Grid>
                 </Grid>
-
                 <AccordionDetails>
                     <Grid container>
                         {
