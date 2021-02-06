@@ -20,7 +20,7 @@ export const formatAmount = (props) => {
     )
 }
 
-export const getAllocationsContributors = ({ allocations }) => {
+export const getAllocatedContributors = ({ allocations }) => {
     const contributorsAllocated = []
     allocations.map(a => {
         if (!contributorsAllocated.includes(a.contributor)) {
@@ -28,6 +28,24 @@ export const getAllocationsContributors = ({ allocations }) => {
         }
     })
     return contributorsAllocated
+}
+
+export const getActiveAndUpcomingAllocations = ({ activeOnly, allocations, upcomingOnly }) => {
+    const desiredAllocations = []
+    allocations.map(a => {
+        if (activeOnly) {
+            if (moment(a['start_date'], 'x').isBefore(moment()) && moment(a['end_date'], 'x').isAfter(moment())) {
+                desiredAllocations.push(a)
+            }
+        } else if (upcomingOnly) {
+            if (moment(a['start_date'], 'x').isAfter(moment())) {
+                desiredAllocations.push(a)
+            }
+        } else if (moment(a['end_date'], 'x').isAfter(moment())) {
+            desiredAllocations.push(a)
+        }
+    })
+    return desiredAllocations
 }
 
 export const selectActiveAndUpcomingAllocations = ({ activeOnly, allocation, upcomingOnly }) => {

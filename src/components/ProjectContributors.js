@@ -20,8 +20,8 @@ import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
 import {
-    getAllocationsContributors,
-    selectActiveAndUpcomingAllocations
+    getAllocatedContributors,
+    getActiveAndUpcomingAllocations
 } from '../scripts/selectors'
 
 const ProjectContributors = (props) => {
@@ -88,34 +88,29 @@ const ProjectContributors = (props) => {
 
     const project = dataProjectContributors.getProjectById
     const { allocations } = project
-    const activeAndUpcomingAllocations = filter(allocations, (allocation) => (
-        selectActiveAndUpcomingAllocations({
-            allocation: allocation
-        })
-    ))
-    const activeAllocations = filter(activeAndUpcomingAllocations, (allocation) => (
-        selectActiveAndUpcomingAllocations({
-            activeOnly: true,
-            allocation: allocation
-        })
-    ))
-    const upcomingAllocations = filter(activeAndUpcomingAllocations, (allocation) => (
-        selectActiveAndUpcomingAllocations({
-            upcomingOnly: true,
-            allocation: allocation
-        })
-    ))
-    const activeContributorsAllocated = getAllocationsContributors({ allocations: activeAllocations })
-    const upcomingContributorsAllocated = getAllocationsContributors({ allocations: upcomingAllocations })
 
-    // getActiveAndUpcomingContributors({
-    //     contributorsAllocated: contributorsAllocated,
-    //     allocations: activeAndUpcomingAllocations
-    // })
+    const activeAllocations = getActiveAndUpcomingAllocations({
+        allocations: allocations,
+        activeOnly: true
+    })
+    const activeContributorsAllocated = getAllocatedContributors({
+        allocations: activeAllocations
+    })
+    const upcomingAllocations = getActiveAndUpcomingAllocations({
+        allocations: allocations,
+        upcomingOnly: true
+    })
+    const upcomingContributorsAllocatedOnly = differenceBy(
+        getAllocatedContributors({ allocations: upcomingAllocations }),
+        activeContributorsAllocated,
+        'id'
+    )
+
     if (differenceBy(dataContributors.getContributors, contributors, 'id').length != 0) {
         setContributors(contributors.concat(...dataContributors.getContributors))
     }
-    const contributorsToAdd = differenceBy(contributors, [...activeContributorsAllocated, ...upcomingContributorsAllocated], 'id')
+
+    const contributorsToAdd = differenceBy(contributors, [...activeContributorsAllocated, ...upcomingContributorsAllocatedOnly], 'id')
 
     const renderContributors = (props) => {
         const {
@@ -183,10 +178,10 @@ const ProjectContributors = (props) => {
                     </Typography>
                     <Grid container>
                         {
-                            upcomingContributorsAllocated.length != 0
+                            upcomingContributorsAllocatedOnly.length != 0
                                 ? renderContributors({
                                     active: true,
-                                    contributors: upcomingContributorsAllocated,
+                                    contributors: upcomingContributorsAllocatedOnly,
                                     project: project
                                 })
                                 : <ContributorsEmptyState active/>
