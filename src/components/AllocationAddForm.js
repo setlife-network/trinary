@@ -202,7 +202,7 @@ const AllocationAddForm = (props) => {
             {
                 query: GET_ALLOCATIONS,
                 variables: {
-                    contributorId: contributor.id,
+                    contributorId: contributor ? contributor.id : null,
                     projectId: project.id
 
                 }
