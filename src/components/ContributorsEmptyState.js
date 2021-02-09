@@ -5,7 +5,7 @@ import {
     Icon,
     Typography
 } from '@material-ui/core'
-import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle'
 
 const ContributorsEmptyState = (props) => {
     const { active } = props
