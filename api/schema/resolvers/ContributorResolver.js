@@ -17,6 +17,15 @@ module.exports = {
                 }
             })
         },
+        total_paid: async (contributor, args, { models }) => {
+            const totalPaid = await models.Allocation.sum('amount', {
+                where: {
+                    contributor_id: contributor.id
+                }
+            })
+            if (!totalPaid) return 0
+            return totalPaid
+        },
         allocations: (contributor, args, { models }) => {
             return models.Allocation.findAll({
                 where: {
