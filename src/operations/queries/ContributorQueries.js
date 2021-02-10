@@ -67,3 +67,15 @@ export const GET_CONTRIBUTOR_RATES = gql`
         }
     }
 `
+
+export const GET_CONTRIBUTOR_INFO = gql`
+    query ContributorInfo($id: Int!){
+        getContributorById(id: $id){
+            id
+            name
+            github_id
+            github_handle
+            github_access_token
+        }
+    }
+`
