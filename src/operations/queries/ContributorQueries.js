@@ -51,6 +51,19 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
     }
 `
 
+export const GET_CONTRIBUTOR_INFO = gql`
+    query ContributorInfo($id: Int!){
+        getContributorById(id: $id){
+            id
+            name
+            github_id
+            github_handle
+            github_access_token
+            total_paid
+        }
+    }
+`
+
 export const GET_CONTRIBUTOR_RATES = gql`
     query ContributorAllocation($id: Int!) {
         getContributorById(id: $id) {
@@ -64,18 +77,6 @@ export const GET_CONTRIBUTOR_RATES = gql`
                 total_expected_hours
             }
 
-        }
-    }
-`
-
-export const GET_CONTRIBUTOR_INFO = gql`
-    query ContributorInfo($id: Int!){
-        getContributorById(id: $id){
-            id
-            name
-            github_id
-            github_handle
-            github_access_token
         }
     }
 `
