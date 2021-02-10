@@ -1,9 +1,11 @@
 import React from 'react'
 import {
     Box,
-    Grid
+    Grid,
+    Typography
 } from '@material-ui/core'
 
+import ContributorAllocations from '../components/ContributorAllocations'
 import ContributorInfoTile from '../components/ContributorInfoTile'
 import ContributorProjectsCollab from '../components/ContributorProjectsCollab'
 import Header from '../components/Header'
@@ -38,9 +40,28 @@ class ContributorDetailPage extends React.Component {
                     </Box>
                 </Grid>
                 <Grid item xs={10}>
-                    <ContributorProjectsCollab
-                        contributorId={contributorId}
-                    />
+                    <Box
+                        p={4}
+                        bgcolor='white'
+                        borderRadius='borderRadius'
+                        className='ContributorProjectsCollab'
+                    >
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <ContributorProjectsCollab
+                                    contributorId={contributorId}
+                                />
+                            </Grid>
+                            <Grid item xs={11}>
+                                <hr/>
+                            </Grid>
+                            <Grid item xs={12} align='left'>
+                                <ContributorAllocations
+                                    contributorId={contributorId}
+                                />
+                            </Grid>
+                        </Grid>
+                    </Box>
                 </Grid>
             </Grid>
         )

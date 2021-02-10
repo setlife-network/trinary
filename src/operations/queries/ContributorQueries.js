@@ -46,6 +46,14 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
                     hourly_rate
                     total_expected_hours
                 }
+                project {
+                    id
+                    name
+                    client {
+                        id
+                        name
+                    }
+                }
             }
         }
     }

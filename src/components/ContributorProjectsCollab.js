@@ -50,38 +50,19 @@ const ContributorProjectsCollab = (props) => {
     })
 
     return (
-        <Box
-            p={4}
-            bgcolor='white'
-            borderRadius='borderRadius'
-            className='ContributorProjectsCollab'
-        >
-            <Grid contianer>
-                <Grid item xs={12} align='left'>
-                    <Box my={5} mx={3}>
-                        <Typography variant='h5' color='primary'>
-                            <strong>
-                                {`Project Involvment`}
-                            </strong>
-                        </Typography>
-                        {renderProjects({ projects: projects })}
-                    </Box>
-                </Grid>
-                <Grid item xs={11}>
-                    <hr/>
-                </Grid>
-                <Grid item xs={12} align='left'>
-                    <Box my={5} mx={3}>
-                        <Typography variant='h5' color='primary'>
-                            <strong>
-                                {`Allocations`}
-                            </strong>
-                        </Typography>
-                    </Box>
-                </Grid>
-            </Grid>
-        </Box>
 
+        <Grid contianer>
+            <Grid item xs={12} align='left'>
+                <Box my={5} mx={3}>
+                    <Typography variant='h5' color='primary'>
+                        <strong>
+                            {`Project Involvment`}
+                        </strong>
+                    </Typography>
+                    {renderProjects({ projects: projects })}
+                </Box>
+            </Grid>
+        </Grid>
     )
 }
 
