@@ -57,8 +57,6 @@ const ContributorInfoTile = (props) => {
         amount: contributor.total_paid / 100,
         currencyInformation: currencyInformation
     })
-    console.log('contributor');
-    console.log(contributor);
 
     return (
         <Card variant='outlined' className='ContributorInfoTile'>

@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import { spacing, boxShadow, borders } from '@material-ui/system'
-import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
+import { useHistory } from 'react-router-dom'
+import {
+    Box,
+    Button,
+    Grid,
+    Typography
+} from '@material-ui/core'
+import { boxShadow, borders, spacing } from '@material-ui/system'
 import CodeIcon from '@material-ui/icons/Code'
 
 const ProjectTile = ({
-    history,
     project
 }) => {
+
+    const history = useHistory()
 
     const redirectProjectPage = (project) => {
         history.push(`/projects/${project.id}`)

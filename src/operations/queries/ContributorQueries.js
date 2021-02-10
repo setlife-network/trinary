@@ -80,3 +80,23 @@ export const GET_CONTRIBUTOR_RATES = gql`
         }
     }
 `
+
+export const GET_CONTRIBUTOR_PROJECTS = gql`
+    query ContributorProjects($id: Int!) {
+        getContributorById(id: $id) {
+            id
+            allocations {
+                id
+                project {
+                    id
+                    name
+                    is_active
+                    client {
+                        id
+                        name
+                    }
+                }
+            }
+        }
+    }
+`
