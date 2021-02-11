@@ -91,6 +91,8 @@ const AllocationProposeSpecifics = (props) => {
         }
     }, [clientPayments])
     useEffect(() => {
+        console.log('selectedPayment');
+        console.log(selectedPayment);
         if (selectedProject) {
             setNewAllocation({
                 payment_id: selectedPayment ? selectedPayment.id : null,
@@ -141,7 +143,7 @@ const AllocationProposeSpecifics = (props) => {
         const unselectedPayments = differenceBy(payments, [selectedPayment], 'id')
         return unselectedPayments.map(payment => {
             const paymentAmount = formatPaymentAmount({
-                amount: payment.amount,
+                amount: payment.amount / 100,
                 currencyInformation: clientCurrency ? clientCurrency : 'USD'
             })
             return (
@@ -203,7 +205,7 @@ const AllocationProposeSpecifics = (props) => {
     const { getProjects: projects } = dataProjects
 
     const paymentAmount = formatPaymentAmount({
-        amount: selectedPayment.amount,
+        amount: selectedPayment.amount / 100,
         currencyInformation: clientCurrency ? clientCurrency : 'USD'
     })
 

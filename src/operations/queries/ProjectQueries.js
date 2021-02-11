@@ -194,6 +194,10 @@ export const GET_PROJECT_CLIENT_PAYMENTS = gql`
                     date_paid
                     date_incurred
                     totalAllocated
+                    client {
+                        id
+                        currency
+                    }
                 }
             }
         }
