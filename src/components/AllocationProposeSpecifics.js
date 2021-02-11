@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery, useLazyQuery } from '@apollo/client'
 import {
     Box,
     Button,
@@ -30,7 +30,7 @@ import {
 } from 'lodash'
 import accounting from 'accounting-js'
 
-import { GET_ALL_PROJECTS } from '../operations/queries/ProjectQueries'
+import { GET_ALL_PROJECTS, GET_PROJECT_CLIENT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { selectCurrencyInformation, selectCurrencySymbol } from '../scripts/selectors'
 
 const AllocationProposeSpecifics = (props) => {
@@ -45,19 +45,121 @@ const AllocationProposeSpecifics = (props) => {
         loading: loadingProjects
     } = useQuery(GET_ALL_PROJECTS)
 
-    const [selectedProject, setSelectedProject] = useState(null)
-    const [openProjectsList, setOpenProjectsList] = useState(false)
+    const [getClientPayments, {
+        data: dataClientPayments,
+        error: errorClientPayments,
+        loading: loadingClientPayments
+    }] = useLazyQuery(GET_PROJECT_CLIENT_PAYMENTS, {
+        onCompleted: dataClientPayments => {
+            setClienCurrency(
+                selectCurrencyInformation({
+                    currency: dataClientPayments.getProjectById.client.currency
+                })
+            )
+            setClientPayments([...dataClientPayments.getProjectById.client.payments, { amount: null, date_paid: null }])
+        }
+    })
 
+    const [clientPayments, setClientPayments] = useState([{ amount: null, date_paid: null }])
+    const [clientCurrency, setClienCurrency] = useState(null)
+    const [openPaymentsList, setOpenPaymentsList] = useState(false)
+    const [openProjectsList, setOpenProjectsList] = useState(false)
+    const [selectedPayment, setSelectedPayment] = useState(null)
+    const [selectedProject, setSelectedProject] = useState(null)
+
+    useEffect(() => {
+        if (selectedProject) {
+            getClientPayments({
+                variables: {
+                    id: Number(selectedProject.id)
+                }
+            })
+
+        }
+    }, [selectedProject])
+    useEffect(() => {
+        setSelectedPayment({ amount: null, date_paid: null })
+        if (clientPayments) {
+            selectLatestPayment({ payments: clientPayments })
+        }
+    }, [clientPayments])
+
+    //TODO: Replace this funtion with selector on merge branch
+    const formatPaymentAmount = (props) => {
+        const { amount, currencyInformation } = props
+        return accounting.formatMoney(
+            amount,
+            {
+                symbol: currencyInformation['symbol'],
+                thousand: currencyInformation['thousand'],
+                decimal: currencyInformation['decimal'],
+                format: '%s %v'
+            }
+        )
+    }
+    const handleClickPaymentsList = () => {
+        setOpenPaymentsList(!openPaymentsList)
+    }
     const handleClickProjectsList = () => {
         setOpenProjectsList(!openProjectsList)
+    }
+    const onClickPayment = ({ payment }) => {
+        setSelectedPayment(payment)
+        setOpenPaymentsList(false)
     }
     const onClickProject = ({ project }) => {
         setSelectedProject(project)
         setOpenProjectsList(false)
     }
+    const selectLatestPayment = ({ payments }) => {
+        if (payments) {
+            payments.map(p => {
+                if (p.date_paid > selectedPayment) {
+                    setSelectedPayment(p)
+                }
+            })
+        }
+    }
+
+    const listPayments = ({ payments, selectedPayment }) => {
+        const unselectedPayments = differenceBy(payments, [selectedPayment], 'id')
+        return unselectedPayments.map(payment => {
+            const paymentAmount = formatPaymentAmount({
+                amount: payment.amount,
+                currencyInformation: clientCurrency ? clientCurrency : 'USD'
+            })
+            return (
+                <List component='div' disablePadding>
+                    <ListItem button onClick={() => onClickPayment({ payment })}>
+                        <Grid container>
+                            <Grid item xs={3}/>
+                            <Grid item xs={3}>
+                                <ListItemText primary={
+                                    `${payment.amount
+                                        ? `${paymentAmount}`
+                                        : 'Propose'
+                                    }`
+                                }
+                                />
+                            </Grid>
+                            <Grid item xs={3} align='center'>
+                                <Typography variant='caption' color='secondary'>
+                                    {`${payment.date_paid
+                                        ? moment(payment.date_paid, 'x').format('MM/DD/YYYY')
+                                        : ''
+                                    }`}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={3}/>
+                        </Grid>
+                    </ListItem>
+                </List>
+            )
+        })
+    }
 
     const listProjects = ({ projects, selectedProject }) => {
-        const unselectedProjects = differenceBy(projects, selectedProject, 'id')
+        const unselectedProjects = differenceBy(projects, [selectedProject], 'id')
         return unselectedProjects.map(project => {
             return (
                 <List component='div' disablePadding>
@@ -83,6 +185,11 @@ const AllocationProposeSpecifics = (props) => {
     if (errorProjects) return 'Error!'
 
     const { getProjects: projects } = dataProjects
+
+    const paymentAmount = formatPaymentAmount({
+        amount: selectedPayment.amount,
+        currencyInformation: clientCurrency ? clientCurrency : 'USD'
+    })
 
     return (
         <Box className='AllocationProposeSpecifics'>
@@ -141,9 +248,58 @@ const AllocationProposeSpecifics = (props) => {
                         <Collapse in={openProjectsList} timeout='auto' unmountOnExit>
                             {listProjects({
                                 projects,
-                                selectedProject: [selectedProject]
+                                selectedProject: selectedProject
                             })}
                         </Collapse>
+                    </List>
+                </Grid>
+                <Grid item xs={12}>
+                    <List component='nav'>
+                        <ListItem button onClick={handleClickPaymentsList}>
+                            <Grid container>
+                                <Grid item xs={3}>
+                                    <PaymentIcon color='primary'/>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <ListItemText primary={
+                                        `${selectedPayment.amount
+                                            ? `${paymentAmount}`
+                                            : 'Propose'
+                                        }`
+                                    }
+                                    />
+                                </Grid>
+                                <Grid item xs={3} align='center'>
+                                    <Typography variant='caption' color='secondary'>
+                                        {`${selectedPayment &&
+                                            selectedPayment.date_paid
+                                            ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
+                                            : ''
+                                        }`}
+                                        {`${
+                                            selectedPayment && (
+                                                !selectedPayment.date_paid && selectedPayment.date_incurred
+                                                    ? 'Warning: This payment has not been paid'
+                                                    : ''
+                                            )
+                                        }`}
+                                    </Typography>
+                                </Grid>
+
+                                <Grid item xs={3} align='right'>
+                                    {openPaymentsList
+                                        ? <ExpandLess />
+                                        : <ExpandMore />
+                                    }
+                                </Grid>
+
+                            </Grid>
+                        </ListItem>
+                        <Collapse in={openPaymentsList} timeout='auto' unmountOnExit>
+                            { clientPayments.length > 0 &&
+                                    listPayments({ payments: clientPayments, selectedPayment: selectedPayment })}
+                        </Collapse>
+
                     </List>
                 </Grid>
             </Grid>
