@@ -303,9 +303,11 @@ const AllocationAddForm = (props) => {
         return `error`
     }
 
-    const { allocations } = dataContributorAllocations && contributor
-        ? dataContributorAllocations.getContributorById
-        : dataProjectContributors.getProjectById
+    const allocations = dataContributorAllocations && contributor
+        ? dataContributorAllocations.getContributorById.allocations
+        : dataProjectContributors
+            ? dataProjectContributors.allocations
+            : null
     const payments = dataClientPayments
         ? [...dataClientPayments.getProjectById.client.payments, { amount: null, date_paid: null }]
         : [null]
