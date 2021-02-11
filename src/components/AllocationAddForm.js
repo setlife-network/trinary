@@ -373,7 +373,6 @@ const AllocationAddForm = (props) => {
                                     />
                                 )
                         }
-
                         <hr/>
                     </Grid>
                     {
@@ -439,14 +438,11 @@ const AllocationAddForm = (props) => {
                                     }
                                 />
                             </Grid>
-
                         </>
                     }
-
                 </Grid>
                 {
                     selectedProject &&
-
                     <>
                         {
                             allocationTypes[0]
@@ -496,7 +492,6 @@ const AllocationAddForm = (props) => {
                         </Button>
                     </>
                 }
-
             </Box>
         </Dialog>
     )

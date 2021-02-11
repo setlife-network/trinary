@@ -10,7 +10,7 @@ import accounting from 'accounting-js'
 import moment from 'moment'
 
 import { selectCurrencyInformation } from '../scripts/selectors'
-import { orange, red } from '../styles/colors.scss'
+import { grey, orange, red, setlifeBlue } from '../styles/colors.scss'
 
 const AllocationTile = (props) => {
 
@@ -65,13 +65,15 @@ const AllocationTile = (props) => {
                 </Grid>
                 <Box my={5}/>
                 <Grid item xs={6}>
-                    <Box color={
-                        `${!allocation.date_paid
-                            ? 'seccondary.light'
-                            : futureAllocation
-                                ? `${orange}`
-                                : 'primary.main'
-                        }`}
+                    <Box
+                        color={
+                            `${!allocation.date_paid
+                                ? `${grey}`
+                                : futureAllocation
+                                    ? `${orange}`
+                                    : `${setlifeBlue}`
+                            }`
+                        }
                     >
                         <Typography
                             variant='subtitle1'
@@ -85,15 +87,17 @@ const AllocationTile = (props) => {
                     </Box>
                 </Grid>
                 <Grid item xs={6}>
-                    <Box color={
-                        `${!allocation.date_paid
-                            ? 'seccondary.light'
-                            : weeksOfdDifference == 2
-                                ? `${red}`
-                                : futureAllocation
-                                    ? `${orange}`
-                                    : 'primary.main'
-                        }`}
+                    <Box
+                        color={
+                            `${!allocation.date_paid
+                                ? `${grey}`
+                                : weeksOfdDifference == 2
+                                    ? `${red}`
+                                    : futureAllocation
+                                        ? `${orange}`
+                                        : `${setlifeBlue}`
+                            }`
+                        }
                     >
                         <Typography
                             variant='subtitle1'
