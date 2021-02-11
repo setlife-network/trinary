@@ -66,6 +66,7 @@ const AllocationAddSpecifics = (props) => {
 
     useEffect(() => {
         setContributorGithubUser(last(split(selectedContributor.github_handle, '/')))
+        setContributor(selectedContributor)
     }, [selectedContributor])
 
     useEffect(() => {

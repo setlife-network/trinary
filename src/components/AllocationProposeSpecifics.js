@@ -36,7 +36,9 @@ import { selectCurrencyInformation, selectCurrencySymbol } from '../scripts/sele
 const AllocationProposeSpecifics = (props) => {
 
     const {
-        contributor
+        contributor,
+        setNewAllocation,
+        setProject
     } = props
 
     const {
@@ -69,12 +71,16 @@ const AllocationProposeSpecifics = (props) => {
 
     useEffect(() => {
         if (selectedProject) {
+            setProject(selectedProject)
             getClientPayments({
                 variables: {
                     id: Number(selectedProject.id)
                 }
             })
-
+            setNewAllocation({
+                payment_id: selectedPayment ? selectedPayment.id : null,
+                project_id: selectedProject.id
+            })
         }
     }, [selectedProject])
     useEffect(() => {
@@ -83,6 +89,14 @@ const AllocationProposeSpecifics = (props) => {
             selectLatestPayment({ payments: clientPayments })
         }
     }, [clientPayments])
+    useEffect(() => {
+        if (selectedProject) {
+            setNewAllocation({
+                payment_id: selectedPayment ? selectedPayment.id : null,
+                project_id: selectedProject.id
+            })
+        }
+    }, [selectedPayment])
 
     //TODO: Replace this funtion with selector on merge branch
     const formatPaymentAmount = (props) => {

@@ -89,6 +89,11 @@ const AllocationAddForm = (props) => {
             })).data.createRate.id
         }
         //create allocation with that rate id
+        console.log('selectedContributor.id');
+        console.log(selectedContributor.id);
+        console.log('selectedProject.id');
+        console.log(selectedProject.id);
+        console.log(allocationRate.id);
         const allocationCreated = await createAllocation({
             variables: {
                 amount: Number(rate.total_amount),
@@ -96,8 +101,8 @@ const AllocationAddForm = (props) => {
                 end_date: moment(endDate).format('YYYY-MM-DD'),
                 date_paid: null,
                 payment_id: allocation.payment_id,
-                project_id: project.id,
-                contributor_id: allocation.contributor_id,
+                project_id: Number(selectedProject.id),
+                contributor_id: Number(selectedContributor.id),
                 rate_id: allocationRate.id
             }
         })
@@ -183,7 +188,6 @@ const AllocationAddForm = (props) => {
             setTotalAllocatedFromPayment(dataTotalAllocated)
         }
     })
-
     const [createRate, {
         dataNewRate,
         loadingNewRate,
@@ -193,16 +197,15 @@ const AllocationAddForm = (props) => {
         dataNewAllocations,
         loadingNewAllocation,
         errorNewAllocation
-    }] = useMutation(CREATE_ALLOCATION,
-        {
-            refetchQueries: [{
-                query: GET_PROJECT_CONTRIBUTORS,
-                variables: {
-                    id: project && project.id
-                },
-                skip: !project
-            }]
-        })
+    }] = useMutation(CREATE_ALLOCATION, {
+        refetchQueries: [{
+            query: GET_PROJECT_CONTRIBUTORS,
+            variables: {
+                id: project && project.id
+            },
+            skip: !project
+        }]
+    })
 
     const [allocationTypes, setAllocationTypes] = useState([1, 0])
     const [contributorAllocations, setContributorAllocations] = useState(null)
@@ -213,6 +216,7 @@ const AllocationAddForm = (props) => {
     const [newAllocation, setNewAllocation] = useState({})
     const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month')['_d'])
     const [selectedContributor, setSelectedContributor] = useState(null)
+    const [selectedProject, setSelectedProject] = useState(null)
     const [selectedPayment, setSelectedPayment] = useState(null)
     const [totalAllocatedFromPayment, setTotalAllocatedFromPayment] = useState(null)
 
@@ -226,6 +230,9 @@ const AllocationAddForm = (props) => {
             if (!contributor && !selectedContributor) {
                 setSelectedContributor(dataContributors[0])
             }
+        }
+        if (project) {
+            setSelectedProject(project)
         }
     }, [open])
 
@@ -349,7 +356,11 @@ const AllocationAddForm = (props) => {
                                         setPayment={setSelectedPayment}
                                     />
                                 ) : (
-                                    <AllocationProposeSpecifics contributor={contributor}/>
+                                    <AllocationProposeSpecifics
+                                        contributor={contributor}
+                                        setNewAllocation={setNewAllocation}
+                                        setProject={setSelectedProject}
+                                    />
                                 )
                         }
 
