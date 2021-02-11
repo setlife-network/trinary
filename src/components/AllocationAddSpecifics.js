@@ -119,7 +119,7 @@ const AllocationAddSpecifics = (props) => {
         const paymentsList = differenceWith(payments, [selectedPayment], isEqual)
         return paymentsList.map(p => {
             const paymentAmount = formatPaymentAmount({
-                amount: p.amount,
+                amount: p.amount / 100,
                 currencyInformation: currencyInformation
             })
             return (
@@ -250,7 +250,7 @@ const AllocationAddSpecifics = (props) => {
                                     <ListItemText primary={
                                         `${selectedPayment.amount
                                             ? `${formatPaymentAmount({
-                                                amount: selectedPayment.amount,
+                                                amount: selectedPayment.amount / 100,
                                                 currencyInformation: currencyInformation
                                             })}`
                                             : 'Propose'

@@ -38,6 +38,7 @@ const AllocationProposeSpecifics = (props) => {
     const {
         contributor,
         setNewAllocation,
+        setPayment,
         setProject
     } = props
 
@@ -96,6 +97,7 @@ const AllocationProposeSpecifics = (props) => {
                 project_id: selectedProject.id
             })
         }
+        setPayment(selectedPayment)
     }, [selectedPayment])
 
     //TODO: Replace this funtion with selector on merge branch

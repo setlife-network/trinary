@@ -89,11 +89,6 @@ const AllocationAddForm = (props) => {
             })).data.createRate.id
         }
         //create allocation with that rate id
-        console.log('selectedContributor.id');
-        console.log(selectedContributor.id);
-        console.log('selectedProject.id');
-        console.log(selectedProject.id);
-        console.log(allocationRate.id);
         const allocationCreated = await createAllocation({
             variables: {
                 amount: Number(rate.total_amount),
@@ -359,6 +354,7 @@ const AllocationAddForm = (props) => {
                                     <AllocationProposeSpecifics
                                         contributor={contributor}
                                         setNewAllocation={setNewAllocation}
+                                        setPayment={setSelectedPayment}
                                         setProject={setSelectedProject}
                                     />
                                 )
