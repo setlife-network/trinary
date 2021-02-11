@@ -202,7 +202,6 @@ const AllocationAddSpecifics = (props) => {
                         <GitHubIcon color='secondary' fontSize='small'/>
                     </Grid>
                 </ListItem>
-
                 <Grid item xs={12}>
                     <List component='nav'>
                         <ListItem button onClick={handleClickContributors}>

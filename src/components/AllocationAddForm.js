@@ -20,6 +20,7 @@ import moment from 'moment'
 import DatePicker from 'react-datepicker'
 
 import AllocationAddSpecifics from './AllocationAddSpecifics'
+import AllocationProposeSpecifics from './AllocationProposeSpecifics'
 import LoadingProgress from './LoadingProgress'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
@@ -137,8 +138,9 @@ const AllocationAddForm = (props) => {
         error: errorProjectContributors
     } = useQuery(GET_PROJECT_CONTRIBUTORS, {
         variables: {
-            id: project.id
-        }
+            id: project && project.id
+        },
+        skip: !project
     })
 
     const {
@@ -147,8 +149,9 @@ const AllocationAddForm = (props) => {
         error: errorClientPayments
     } = useQuery(GET_PROJECT_CLIENT_PAYMENTS, {
         variables: {
-            id: project.id
-        }
+            id: project && project.id
+        },
+        skip: !project
     })
 
     const [getContributorAllocations, {
@@ -195,8 +198,9 @@ const AllocationAddForm = (props) => {
             refetchQueries: [{
                 query: GET_PROJECT_CONTRIBUTORS,
                 variables: {
-                    id: project.id
-                }
+                    id: project && project.id
+                },
+                skip: !project
             }]
         })
 
@@ -302,8 +306,10 @@ const AllocationAddForm = (props) => {
     const { allocations } = dataContributorAllocations && contributor
         ? dataContributorAllocations.getContributorById
         : dataProjectContributors.getProjectById
-    const payments = [...dataClientPayments.getProjectById.client.payments, { amount: null, date_paid: null }]
-    const currency = dataClientPayments.getProjectById.client.currency
+    const payments = dataClientPayments
+        ? [...dataClientPayments.getProjectById.client.payments, { amount: null, date_paid: null }]
+        : [null]
+    const currency = dataClientPayments ? dataClientPayments.getProjectById.client.currency : null
     const rates = contributorRates
         ? dataContributorRates.getContributorById.rates
         : null
@@ -325,18 +331,26 @@ const AllocationAddForm = (props) => {
                 </DialogTitle>
                 <Grid container spacing={5} justify='center'>
                     <Grid item xs={12}>
-                        <AllocationAddSpecifics
-                            contributor={contributor}
-                            contributors={contributors}
-                            currency={currency}
-                            payment={payment}
-                            payments={payments}
-                            project={project}
-                            setNewAllocation={setNewAllocation}
-                            selectedContributor={selectedContributor ? selectedContributor : contributors[0]}
-                            setContributor={setSelectedContributor}
-                            setPayment={setSelectedPayment}
-                        />
+                        {
+                            project
+                                ? (
+                                    <AllocationAddSpecifics
+                                        contributor={contributor}
+                                        contributors={contributors}
+                                        currency={currency}
+                                        payment={payment}
+                                        payments={payments}
+                                        project={project}
+                                        setNewAllocation={setNewAllocation}
+                                        selectedContributor={selectedContributor ? selectedContributor : contributors[0]}
+                                        setContributor={setSelectedContributor}
+                                        setPayment={setSelectedPayment}
+                                    />
+                                ) : (
+                                    <AllocationProposeSpecifics contributor={contributor}/>
+                                )
+                        }
+
                         <hr/>
                     </Grid>
 

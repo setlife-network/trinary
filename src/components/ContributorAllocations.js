@@ -1,19 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import {
     Box,
+    Button,
     Grid,
     Typography
 } from '@material-ui/core'
 
+import AllocationAddForm from './AllocationAddForm'
 import AllocationTile from './AllocationTile'
-import { GET_CONTRIBUTOR_ALLOCATIONS } from '../operations/queries/ContributorQueries'
+import { GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_INFO } from '../operations/queries/ContributorQueries'
+import { white } from '../styles/colors.scss'
 
 const ContributorAllocations = (props) => {
 
     const {
         contributorId
     } = props
+
+    const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
 
     const {
         data: dataContributorAllocations,
@@ -24,6 +29,22 @@ const ContributorAllocations = (props) => {
             id: Number(contributorId)
         }
     })
+    const {
+        data: dataContributor,
+        loading: loadingContributor,
+        error: errorContributor
+    } = useQuery(GET_CONTRIBUTOR_INFO, {
+        variables: {
+            id: Number(contributorId)
+        }
+    })
+
+    const handleAddAllocationClose = (value) => {
+        setOpenAddAllocationDialog(false)
+    }
+    const handleProposeButton = () => {
+        setOpenAddAllocationDialog(true)
+    }
 
     const renderAllocations = ({ allocations }) => {
         return allocations.map(a => {
@@ -35,28 +56,47 @@ const ContributorAllocations = (props) => {
         })
     }
 
-    if (loadingContributorAllocations) return 'Loading...'
-    if (errorContributorAllocations) return 'Error!'
+    if (loadingContributorAllocations || loadingContributor) return 'Loading...'
+    if (errorContributorAllocations || errorContributor) return 'Error!'
 
-    const { getContributorById: contributor } = dataContributorAllocations
+    const { getContributorById: contributorAllocations } = dataContributorAllocations
+    const { getContributorById: contributor } = dataContributor
 
     return (
-        <Grid container>
-            <Grid item xs={12}>
-                <Box my={5} mx={3}>
+        <Box my={5} mx={3} className='ContributorAllocations'>
+            <Grid container spacing={4}>
+                <Grid item xs='auto'>
                     <Typography variant='h5' color='primary'>
                         <strong>
                             {`Allocations`}
                         </strong>
                     </Typography>
-                    <Box my={2}>
-                        <Grid container spacing={5}>
-                            {renderAllocations({ allocations: contributor.allocations })}
-                        </Grid>
-                    </Box>
-                </Box>
+                </Grid>
+                <Grid item xs='auto'>
+                    <Button
+                        variant='contained'
+                        color='primary'
+                        onClick={() => handleProposeButton()}
+                    >
+                        <Box color={`${white}`}>
+                            <Typography>
+                                {`Propose`}
+                            </Typography>
+                        </Box>
+                    </Button>
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid container spacing={5}>
+                        {renderAllocations({ allocations: contributorAllocations.allocations })}
+                    </Grid>
+                </Grid>
             </Grid>
-        </Grid>
+            <AllocationAddForm
+                open={openAddAllocationDialog}
+                onClose={handleAddAllocationClose}
+                contributor={contributor}
+            />
+        </Box>
     )
 }
 

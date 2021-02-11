@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import accounting from 'accounting-js'
-import { split } from 'lodash'
+import { last, split } from 'lodash'
 
 import { GET_CONTRIBUTOR_INFO } from '../operations/queries/ContributorQueries'
 import { selectCurrencyInformation } from '../scripts/selectors'
@@ -35,8 +35,8 @@ const ContributorInfoTile = (props) => {
     if (errorContributor) return ''
 
     const { getContributorById: contributor } = dataContributor
-    const githubHandleDivided = split(contributor.github_handle, '/')
-    const githubUser = githubHandleDivided[githubHandleDivided.length - 1]
+
+    const githubUser = last(split(contributor.github_handle, '/'))
     const currencyInformation = selectCurrencyInformation({
         currency: 'USD'
     })

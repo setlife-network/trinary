@@ -66,11 +66,11 @@ const AllocationTile = (props) => {
                 <Box my={5}/>
                 <Grid item xs={6}>
                     <Box color={
-                        `${allocation.date_paid
-                            ? 'primary'
+                        `${!allocation.date_paid
+                            ? 'seccondary.light'
                             : futureAllocation
-                                ? 'yellow'
-                                : 'secondary'
+                                ? `${orange}`
+                                : 'primary.main'
                         }`}
                     >
                         <Typography
