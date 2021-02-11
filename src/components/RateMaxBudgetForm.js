@@ -21,9 +21,6 @@ const RateMaxBudgetForm = (props) => {
         startDate
     } = props
 
-    console.log('currency');
-    console.log(currency);
-
     const [totalAmount, setTotalAmount] = useState(0)
     const [currentRateInput, setCurrentRateInput] = useState(null)
     const [totalWeeks, setTotalWeeks] = useState(null)

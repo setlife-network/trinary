@@ -188,19 +188,6 @@ const AllocationAddForm = (props) => {
         loadingNewRate,
         errorNewRate
     }] = useMutation(CREATE_RATE)
-    const [createAllocation, {
-        dataNewAllocations,
-        loadingNewAllocation,
-        errorNewAllocation
-    }] = useMutation(CREATE_ALLOCATION, {
-        refetchQueries: [{
-            query: GET_PROJECT_CONTRIBUTORS,
-            variables: {
-                id: project && project.id
-            },
-            skip: !project
-        }]
-    })
 
     const [allocationTypes, setAllocationTypes] = useState([1, 0])
     const [contributorAllocations, setContributorAllocations] = useState(null)
@@ -214,6 +201,19 @@ const AllocationAddForm = (props) => {
     const [selectedProject, setSelectedProject] = useState(null)
     const [selectedPayment, setSelectedPayment] = useState(null)
     const [totalAllocatedFromPayment, setTotalAllocatedFromPayment] = useState(null)
+
+    const [createAllocation, {
+        dataNewAllocations,
+        loadingNewAllocation,
+        errorNewAllocation
+    }] = useMutation(CREATE_ALLOCATION, {
+        refetchQueries: [{
+            query: GET_PROJECT_CONTRIBUTORS,
+            variables: {
+                id: selectedProject ? Number(selectedProject.id) : null
+            }
+        }]
+    })
 
     useEffect(() => {
         if (contributor) {
@@ -313,7 +313,13 @@ const AllocationAddForm = (props) => {
     const payments = dataClientPayments
         ? [...dataClientPayments.getProjectById.client.payments, { amount: null, date_paid: null }]
         : [null]
-    const currency = dataClientPayments ? dataClientPayments.getProjectById.client.currency : null
+    const currency = (
+        dataClientPayments
+            ? dataClientPayments.getProjectById.client.currency
+            : selectedProject
+                ? selectedProject.client.currency
+                : null
+    )
     const rates = contributorRates
         ? dataContributorRates.getContributorById.rates
         : null

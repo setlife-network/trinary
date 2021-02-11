@@ -54,11 +54,6 @@ const AllocationProposeSpecifics = (props) => {
         loading: loadingClientPayments
     }] = useLazyQuery(GET_PROJECT_CLIENT_PAYMENTS, {
         onCompleted: dataClientPayments => {
-            setClienCurrency(
-                selectCurrencyInformation({
-                    currency: dataClientPayments.getProjectById.client.currency
-                })
-            )
             setClientPayments([...dataClientPayments.getProjectById.client.payments, { amount: null, date_paid: null }])
         }
     })
@@ -73,6 +68,11 @@ const AllocationProposeSpecifics = (props) => {
     useEffect(() => {
         if (selectedProject) {
             setProject(selectedProject)
+            setClienCurrency(
+                selectCurrencyInformation({
+                    currency: selectedProject.client.currency
+                })
+            )
             getClientPayments({
                 variables: {
                     id: Number(selectedProject.id)
@@ -91,8 +91,6 @@ const AllocationProposeSpecifics = (props) => {
         }
     }, [clientPayments])
     useEffect(() => {
-        console.log('selectedPayment');
-        console.log(selectedPayment);
         if (selectedProject) {
             setNewAllocation({
                 payment_id: selectedPayment ? selectedPayment.id : null,
