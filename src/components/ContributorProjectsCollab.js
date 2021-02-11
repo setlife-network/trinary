@@ -29,7 +29,7 @@ const ContributorProjectsCollab = (props) => {
     const renderProjects = ({ propjects }) => {
         return projects.map(p => {
             return (
-                <Grid item xs={3} className>
+                <Grid item xs={12} sm={6} md={3}>
                     <Box my={2}>
                         <ProjectTile project={p}/>
                     </Box>
@@ -50,8 +50,7 @@ const ContributorProjectsCollab = (props) => {
     })
 
     return (
-
-        <Grid contianer>
+        <Grid container className='ContributorProjectsCollab'>
             <Grid item xs={12} align='left'>
                 <Box my={5} mx={3}>
                     <Typography variant='h5' color='primary'>
@@ -59,7 +58,9 @@ const ContributorProjectsCollab = (props) => {
                             {`Project Involvment`}
                         </strong>
                     </Typography>
-                    {renderProjects({ projects: projects })}
+                    <Grid container>
+                        {renderProjects({ projects: projects })}
+                    </Grid>
                 </Box>
             </Grid>
         </Grid>

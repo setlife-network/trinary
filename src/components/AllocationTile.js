@@ -45,15 +45,15 @@ const AllocationTile = (props) => {
 
         <Box p={2} boxShadow={3} borderRadius='borderRadius'>
             <Grid container alignItems='center'>
-                <Grid item xs={1}>
+                <Grid item xs={4} md={1}>
                     <AccountBalanceWalletIcon color='primary'/>
                 </Grid>
-                <Grid item xs={5}>
+                <Grid item xs={8} md={5}>
                     <Typography variant={'h6'}>
                         {`${paymentAmount}`}
                     </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <Typography variant='subtitle1' color='secondary'>
                         <strong>
                             {`${allocation.project.name}`}

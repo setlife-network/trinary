@@ -41,10 +41,10 @@ class ContributorDetailPage extends React.Component {
                 </Grid>
                 <Grid item xs={10}>
                     <Box
-                        p={4}
+                        p={1}
                         bgcolor='white'
                         borderRadius='borderRadius'
-                        className='ContributorProjectsCollab'
+                        mb={5}
                     >
                         <Grid container>
                             <Grid item xs={12}>
