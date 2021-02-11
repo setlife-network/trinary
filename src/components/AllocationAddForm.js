@@ -228,6 +228,8 @@ const AllocationAddForm = (props) => {
         }
         if (project) {
             setSelectedProject(project)
+        } else {
+            setSelectedProject(null)
         }
     }, [open])
 
@@ -368,112 +370,127 @@ const AllocationAddForm = (props) => {
 
                         <hr/>
                     </Grid>
+                    {
+                        selectedProject &&
 
-                    <Grid item xs={12}>
-                        <ButtonGroup color='primary' aria-label='outlined primary button group'>
-                            <Button
-                                variant={`${allocationTypes[0] ? 'contained' : 'outlined'}`}
-                                color='primary'
-                                onClick={() => (
-                                    changeAllocationType({
-                                        selectedType: 0,
-                                        allocationTypes:
-                                        allocationTypes
-                                    })
-                                )}
-                            >
-                                {'Prorated monthly'}
-                            </Button>
-                            <Button
-                                variant={`${allocationTypes[1] ? 'contained' : 'outlined'}`}
-                                color='primary'
-                                onClick={() => (
-                                    changeAllocationType({
-                                        selectedType: 1,
-                                        allocationTypes: allocationTypes
-                                    })
-                                )}
-                            >
-                                {'Max Budget'}
-                            </Button>
-                        </ButtonGroup>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <DatePicker
-                            selected={startDate}
-                            startDate={startDate}
-                            endDate={endDate}
-                            shouldCloseOnSelect={startDate && !endDate}
-                            selectsRange
-                            onChange={(date) => getRangedTimeEntries(date)}
-                            customInput={
-                                <Box
-                                    px={2}
-                                    py={1}
-                                    boxShadow={3}
-                                    borderRadius='borderRadius'
-                                    bgcolor='primary.light'
-                                >
-                                    {`${
-                                        startDate
-                                            ? moment(startDate).format('MM/DD/YYYY')
-                                            : 'Start date'
-                                    } - ${
-                                        endDate
-                                            ? moment(endDate).format('MM/DD/YYYY')
-                                            : ' End date'
-                                    }`}
-                                </Box>
-                            }
-                        />
-                    </Grid>
+                        <>
+
+                            <Grid item xs={12}>
+                                <ButtonGroup color='primary' aria-label='outlined primary button group'>
+                                    <Button
+                                        variant={`${allocationTypes[0] ? 'contained' : 'outlined'}`}
+                                        color='primary'
+                                        onClick={() => (
+                                            changeAllocationType({
+                                                selectedType: 0,
+                                                allocationTypes:
+                                            allocationTypes
+                                            })
+                                        )}
+                                    >
+                                        {'Prorated monthly'}
+                                    </Button>
+                                    <Button
+                                        variant={`${allocationTypes[1] ? 'contained' : 'outlined'}`}
+                                        color='primary'
+                                        onClick={() => (
+                                            changeAllocationType({
+                                                selectedType: 1,
+                                                allocationTypes: allocationTypes
+                                            })
+                                        )}
+                                    >
+                                        {'Max Budget'}
+                                    </Button>
+                                </ButtonGroup>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <DatePicker
+                                    selected={startDate}
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    shouldCloseOnSelect={startDate && !endDate}
+                                    selectsRange
+                                    onChange={(date) => getRangedTimeEntries(date)}
+                                    customInput={
+                                        <Box
+                                            px={2}
+                                            py={1}
+                                            boxShadow={3}
+                                            borderRadius='borderRadius'
+                                            bgcolor='primary.light'
+                                        >
+                                            {`${
+                                                startDate
+                                                    ? moment(startDate).format('MM/DD/YYYY')
+                                                    : 'Start date'
+                                            } - ${
+                                                endDate
+                                                    ? moment(endDate).format('MM/DD/YYYY')
+                                                    : ' End date'
+                                            }`}
+                                        </Box>
+                                    }
+                                />
+                            </Grid>
+
+                        </>
+                    }
+
                 </Grid>
                 {
-                    allocationTypes[0]
-                        ? (
-                            <RateProratedMonthlyForm
-                                currency={currency}
-                                currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
-                                setNewAllocationRate={setNewAllocationRate}
-                                startDate={moment(startDate)}
-                                endDate={moment(endDate)}
-                            />
-                        ) : (
-                            <RateMaxBudgetForm
-                                currency={currency}
-                                currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
-                                setNewAllocationRate={setNewAllocationRate}
-                                startDate={moment(startDate)}
-                                endDate={moment(endDate)}
-                            />
-                        )
-                }
-                {
-                    (totalAllocatedFromPayment && selectedPayment) &&
-                        (Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])) > Number(selectedPayment['amount']) &&
-                        <Box color='red' mb={2}>
-                            <Typography>
-                                {`Warning: The total allocated is bigger that the amount of the payment`}
-                            </Typography>
-                        </Box>
+                    selectedProject &&
 
+                    <>
+                        {
+                            allocationTypes[0]
+                                ? (
+                                    <RateProratedMonthlyForm
+                                        currency={currency}
+                                        currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
+                                        setNewAllocationRate={setNewAllocationRate}
+                                        startDate={moment(startDate)}
+                                        endDate={moment(endDate)}
+                                    />
+                                ) : (
+                                    <RateMaxBudgetForm
+                                        currency={currency}
+                                        currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
+                                        setNewAllocationRate={setNewAllocationRate}
+                                        startDate={moment(startDate)}
+                                        endDate={moment(endDate)}
+                                    />
+                                )
+                        }
+                        {
+                            (totalAllocatedFromPayment && selectedPayment) &&
+                            (Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])) > Number(selectedPayment['amount']) &&
+                            <Box color='red' mb={2}>
+                                <Typography>
+                                    {`Warning: The total allocated is bigger that the amount of the payment`}
+                                </Typography>
+                            </Box>
+
+                        }
+                        <Button
+                            variant={`contained`}
+                            color='primary'
+                            disabled={
+                                !newAllocationRate['total_amount'] || !newAllocationRate['hourly_rate']
+                                    ? true
+                                    : false
+                            }
+                            onClick={() => createRateAndAllocation({
+                                allocation: newAllocation,
+                                rate: newAllocationRate,
+                                contributorRates: rates
+                            })}
+                        >
+                            {'Add Allocation'}
+                        </Button>
+                    </>
                 }
-                <Button
-                    variant={`contained`}
-                    color='primary'
-                    disabled={
-                        !newAllocationRate['total_amount'] || !newAllocationRate['hourly_rate']
-                            ? true
-                            : false
-                    }
-                    onClick={() => createRateAndAllocation({
-                        allocation: newAllocation,
-                        rate: newAllocationRate,
-                        contributorRates: rates
-                    })}
-                >
-                    {'Add Allocation'}
-                </Button>
+
             </Box>
         </Dialog>
     )

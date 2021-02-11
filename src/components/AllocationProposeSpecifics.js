@@ -203,7 +203,7 @@ const AllocationProposeSpecifics = (props) => {
     const { getProjects: projects } = dataProjects
 
     const paymentAmount = formatPaymentAmount({
-        amount: selectedPayment.amount / 100,
+        amount: selectedPayment ? selectedPayment.amount / 100 : null,
         currencyInformation: clientCurrency ? clientCurrency : 'USD'
     })
 
@@ -251,14 +251,12 @@ const AllocationProposeSpecifics = (props) => {
                                         }`}
                                     </Typography>
                                 </Grid>
-
                                 <Grid item xs={3} align='right'>
                                     {openProjectsList
                                         ? <ExpandLess />
                                         : <ExpandMore />
                                     }
                                 </Grid>
-
                             </Grid>
                         </ListItem>
                         <Collapse in={openProjectsList} timeout='auto' unmountOnExit>
@@ -278,7 +276,7 @@ const AllocationProposeSpecifics = (props) => {
                                 </Grid>
                                 <Grid item xs={3}>
                                     <ListItemText primary={
-                                        `${selectedPayment.amount
+                                        `${selectedPayment && selectedPayment.amount
                                             ? `${paymentAmount}`
                                             : 'Propose'
                                         }`
