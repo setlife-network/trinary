@@ -183,6 +183,7 @@ const AllocationAddForm = (props) => {
             setTotalAllocatedFromPayment(dataTotalAllocated)
         }
     })
+
     const [createRate, {
         dataNewRate,
         loadingNewRate,
@@ -211,6 +212,11 @@ const AllocationAddForm = (props) => {
             query: GET_PROJECT_CONTRIBUTORS,
             variables: {
                 id: selectedProject ? Number(selectedProject.id) : null
+            }
+        }, {
+            query: GET_CONTRIBUTOR_ALLOCATIONS,
+            variables: {
+                id: selectedContributor ? Number(selectedContributor.id) : null
             }
         }]
     })
