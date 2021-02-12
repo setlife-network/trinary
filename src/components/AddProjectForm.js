@@ -112,7 +112,7 @@ const AddProjectForm = ({
     }
 
     if (errorClient) return 'Somenthing went wrong'
-    if (loadingClient) return 'loading...'
+    if (loadingClient) return <LoadingProgress/>
 
     const currencyInformation = selectCurrencyInformation({
         currency: dataClient.getClientById.currency
