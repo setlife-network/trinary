@@ -242,7 +242,6 @@ const AllocationAddForm = (props) => {
                     setAllocationTypes([0, 1])
                 }
             }
-
         }
     }, [mostRecentAllocation])
 
