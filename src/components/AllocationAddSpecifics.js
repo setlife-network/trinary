@@ -20,7 +20,6 @@ import PaymentIcon from '@material-ui/icons/Payment'
 import PeopleIcon from '@material-ui/icons/Group'
 import moment from 'moment'
 import {
-    difference,
     differenceWith,
     isEqual,
     last,

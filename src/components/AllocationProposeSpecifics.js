@@ -16,15 +16,11 @@ import {
     ExpandMore
 } from '@material-ui/icons'
 import AssessmentIcon from '@material-ui/icons/Assessment'
-import GitHubIcon from '@material-ui/icons/GitHub'
 import PaymentIcon from '@material-ui/icons/Payment'
 import PeopleIcon from '@material-ui/icons/Group'
 import moment from 'moment'
 import {
-    difference,
     differenceBy,
-    differenceWith,
-    isEqual,
     last,
     split
 } from 'lodash'

@@ -6,12 +6,10 @@ import {
     ButtonGroup,
     Dialog,
     DialogTitle,
-    FormControl,
     Grid,
     Typography
 } from '@material-ui/core/'
 import {
-    differenceBy,
     fill,
     filter,
     findKey
@@ -32,7 +30,6 @@ import {
 } from '../operations/queries/ContributorQueries'
 import {
     GET_PROJECT_CONTRIBUTORS,
-    GET_PROJECT_PAYMENTS,
     GET_PROJECT_CLIENT_PAYMENTS
 } from '../operations/queries/ProjectQueries'
 import { GET_PAYMENT_TOTAL_ALLOCATED } from '../operations/queries/PaymentQueries'
@@ -164,15 +161,15 @@ const AllocationAddForm = (props) => {
         }
     })
 
-    const [getContributorRates, {
-        data: dataContributorRates,
-        loading: loadingContributorRates,
-        error: errorContributorRates
-    }] = useLazyQuery(GET_CONTRIBUTOR_RATES, {
-        onCompleted: dataContributorRates => {
-            setContributorRates(dataContributorRates)
-        }
-    })
+    // const [getContributorRates, {
+    //     data: dataContributorRates,
+    //     loading: loadingContributorRates,
+    //     error: errorContributorRates
+    // }] = useLazyQuery(GET_CONTRIBUTOR_RATES, {
+    //     onCompleted: dataContributorRates => {
+    //         setContributorRates(dataContributorRates)
+    //     }
+    // })
 
     const [getTotalAllocatedFromPayment, {
         data: dataTotalAllocated,
@@ -467,7 +464,7 @@ const AllocationAddForm = (props) => {
                         {
                             (totalAllocatedFromPayment && selectedPayment) &&
                             (Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])) > Number(selectedPayment['amount']) &&
-                            <Box color='red' mb={2}>
+                            <Box color={`${red}`} mb={2}>
                                 <Typography>
                                     {`Warning: The total allocated is bigger that the amount of the payment`}
                                 </Typography>
