@@ -7,6 +7,7 @@ import {
     Typography
 } from '@material-ui/core'
 
+import LoadingProgress from './LoadingProgress'
 import ProjectTile from './ProjectTile'
 import { GET_CONTRIBUTOR_PROJECTS } from '../operations/queries/ContributorQueries'
 
@@ -38,7 +39,7 @@ const ContributorProjectsCollab = (props) => {
         })
     }
 
-    if (loadingContributorProjects) return 'Loading...'
+    if (loadingContributorProjects) return <LoadingProgress/>
     if (errorContributorProjects) return 'Error!'
 
     const { getContributorById: contributor } = dataContributorProjects

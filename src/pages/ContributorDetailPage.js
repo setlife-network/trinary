@@ -46,7 +46,11 @@ class ContributorDetailPage extends React.Component {
                         borderRadius='borderRadius'
                         mb={5}
                     >
-                        <Grid container>
+                        <Grid
+                            container
+                            justify='center'
+                            align='center'
+                        >
                             <Grid item xs={12}>
                                 <ContributorProjectsCollab
                                     contributorId={contributorId}

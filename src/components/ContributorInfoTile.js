@@ -12,6 +12,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import accounting from 'accounting-js'
 import { last, split } from 'lodash'
 
+import LoadingProgress from './LoadingProgress'
 import { GET_CONTRIBUTOR_INFO } from '../operations/queries/ContributorQueries'
 import { selectCurrencyInformation } from '../scripts/selectors'
 
@@ -31,7 +32,7 @@ const ContributorInfoTile = (props) => {
         }
     })
 
-    if (loadingContributor) return 'Loading...'
+    if (loadingContributor) return <LoadingProgress/>
     if (errorContributor) return ''
 
     const { getContributorById: contributor } = dataContributor

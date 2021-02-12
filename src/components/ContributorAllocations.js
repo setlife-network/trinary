@@ -9,6 +9,7 @@ import {
 
 import AllocationAddForm from './AllocationAddForm'
 import AllocationTile from './AllocationTile'
+import LoadingProgress from './LoadingProgress'
 import { GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_INFO } from '../operations/queries/ContributorQueries'
 import { white } from '../styles/colors.scss'
 
@@ -56,7 +57,7 @@ const ContributorAllocations = (props) => {
         })
     }
 
-    if (loadingContributorAllocations || loadingContributor) return 'Loading...'
+    if (loadingContributorAllocations || loadingContributor) return <LoadingProgress/>
     if (errorContributorAllocations || errorContributor) return 'Error!'
 
     const { getContributorById: contributorAllocations } = dataContributorAllocations

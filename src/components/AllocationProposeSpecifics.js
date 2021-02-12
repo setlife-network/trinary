@@ -30,6 +30,7 @@ import {
 } from 'lodash'
 import accounting from 'accounting-js'
 
+import LoadingProgress from './LoadingProgress'
 import { GET_ALL_PROJECTS, GET_PROJECT_CLIENT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { selectCurrencyInformation, selectCurrencySymbol } from '../scripts/selectors'
 
@@ -197,7 +198,7 @@ const AllocationProposeSpecifics = (props) => {
         })
     }
 
-    if (loadingProjects) return ''
+    if (loadingProjects) return <LoadingProgress/>
     if (errorProjects) return 'Error!'
 
     const { getProjects: projects } = dataProjects
