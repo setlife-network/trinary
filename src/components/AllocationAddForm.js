@@ -161,15 +161,15 @@ const AllocationAddForm = (props) => {
         }
     })
 
-    // const [getContributorRates, {
-    //     data: dataContributorRates,
-    //     loading: loadingContributorRates,
-    //     error: errorContributorRates
-    // }] = useLazyQuery(GET_CONTRIBUTOR_RATES, {
-    //     onCompleted: dataContributorRates => {
-    //         setContributorRates(dataContributorRates)
-    //     }
-    // })
+    const [getContributorRates, {
+        data: dataContributorRates,
+        loading: loadingContributorRates,
+        error: errorContributorRates
+    }] = useLazyQuery(GET_CONTRIBUTOR_RATES, {
+        onCompleted: dataContributorRates => {
+            setContributorRates(dataContributorRates)
+        }
+    })
 
     const [getTotalAllocatedFromPayment, {
         data: dataTotalAllocated,
