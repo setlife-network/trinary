@@ -225,7 +225,7 @@ const AddProjectForm = ({
                                 label={`Expected budget timeframe`}
                                 id='demo-simple-select'
                                 value={budgetTimeframe}
-                                onChange={e => (handleTimeframeChange(e.target.value))}
+                                onChange={(event) => (handleTimeframeChange(event.target.value))}
                             >
                                 {renderTimeframeOptions({ timeframes: EXPECTED_BUDGET_TIMEFRAME_OPTIONS })}
                             </Select>
