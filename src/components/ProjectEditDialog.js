@@ -15,7 +15,7 @@ import {
     Snackbar,
     TextField
 } from '@material-ui/core/'
-import { split } from 'lodash'
+import { findIndex, split } from 'lodash'
 import accounting from 'accounting-js'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
@@ -102,7 +102,7 @@ const ProjectEditDialog = (props) => {
             githubURL == project.github_url &&
             projectName == project.name &&
             togglURL == project.toggl_url &&
-            budgetTimeframe == project.expected_budget_timeframe
+            EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe || 0].option == project.expected_budget_timeframe
         ) {
             setDisableEdit(true)
         } else if (!expectedBudget || !githubURL || !projectName) {
@@ -111,6 +111,13 @@ const ProjectEditDialog = (props) => {
             setDisableEdit(false)
         }
     })
+
+    useEffect(() => {
+        if (project.expected_budget_timeframe) {
+            //set the index of the current expected budget timeframe
+            setBudgetTimeframe(findIndex(EXPECTED_BUDGET_TIMEFRAME_OPTIONS, ['option', `${project.expected_budget_timeframe}`]))
+        }
+    }, [])
 
     const currencyInformation = selectCurrencyInformation({
         currency: project.client.currency
@@ -197,13 +204,13 @@ const ProjectEditDialog = (props) => {
                         <Grid item xs={12} lg={6}>
                             <Box mb={2}>
                                 <FormControl fullWidth>
-                                    <InputLabel id='demo-simple-select-helper-label'>{`Expected budget timeframe`}</InputLabel>
+                                    <InputLabel>
+                                        {`Expected budget timeframe`}
+                                    </InputLabel>
                                     <Select
                                         fullWidth
                                         label={`Expected budget timeframe`}
-                                        id='demo-simple-select'
                                         value={budgetTimeframe}
-                                        defaultValue={project.expected_budget_timeframe}
                                         onChange={(event) => (handleTimeframeChange(event.target.value))}
                                     >
                                         {renderTimeframeOptions({ timeframes: EXPECTED_BUDGET_TIMEFRAME_OPTIONS })}

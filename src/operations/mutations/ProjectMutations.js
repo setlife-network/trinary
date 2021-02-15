@@ -33,6 +33,7 @@ export const UPDATE_PROJECT = gql`
             id,
             name,
             expected_budget,
+            expected_budget_timeframe,
             is_active,
             github_url,
             toggl_url
