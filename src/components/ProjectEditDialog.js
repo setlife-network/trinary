@@ -172,7 +172,7 @@ const ProjectEditDialog = (props) => {
                                     outputFormat='string'
                                     decimalCharacter={`${currencyInformation['decimal']}`}
                                     digitGroupSeparator={`${currencyInformation['thousand']}`}
-                                    defaultValue={project.expected_budget}
+                                    defaultValue={project.expected_budget / 100}
                                     onChange={(event) => handleBudgetChange(event.target.value)}
                                 />
                             </Box>
