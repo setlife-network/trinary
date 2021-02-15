@@ -9,6 +9,7 @@ import {
     FormControl,
     FormHelperText,
     Grid,
+    InputLabel,
     MenuItem,
     Select,
     Snackbar,
@@ -25,6 +26,7 @@ import {
     verifyTogglURL
 } from '../scripts/selectors'
 import { UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
+import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS } from '../constants'
 
 const ProjectEditDialog = (props) => {
 
@@ -36,6 +38,7 @@ const ProjectEditDialog = (props) => {
 
     const [updateProject, { data, loading, error }] = useMutation(UPDATE_PROJECT, { errorPolicy: 'all' })
 
+    const [budgetTimeframe, setBudgetTimeframe] = useState(null)
     const [disableEdit, setDisableEdit] = useState(true)
     const [displayError, setDisplayError] = useState(false)
     const [editProjectError, setEditProjectError] = useState('')
@@ -61,7 +64,8 @@ const ProjectEditDialog = (props) => {
             project_id: project.id,
             name: projectName,
             expected_budget: Number(expectedBudget),
-            github_url: githubURL
+            github_url: githubURL,
+            expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].option
         }
         if (togglURL) {
             projectInfoToEdit['toggl_url'] = togglURL
@@ -88,12 +92,17 @@ const ProjectEditDialog = (props) => {
         setExpectedBudget(amount)
     }
 
+    const handleTimeframeChange = (timeframe) => {
+        setBudgetTimeframe(timeframe)
+    }
+
     useEffect(() => {
         if (
             expectedBudget == project.expected_budget &&
             githubURL == project.github_url &&
             projectName == project.name &&
-            togglURL == project.toggl_url
+            togglURL == project.toggl_url &&
+            budgetTimeframe == project.expected_budget_timeframe
         ) {
             setDisableEdit(true)
         } else if (!expectedBudget || !githubURL || !projectName) {
@@ -106,6 +115,16 @@ const ProjectEditDialog = (props) => {
     const currencyInformation = selectCurrencyInformation({
         currency: project.client.currency
     })
+
+    const renderTimeframeOptions = ({ timeframes }) => {
+        return timeframes.map((timeframe, i) => {
+            return (
+                <MenuItem value={i}>
+                    {`${timeframe.option}`}
+                </MenuItem>
+            )
+        })
+    }
 
     return (
         <Dialog
@@ -176,6 +195,23 @@ const ProjectEditDialog = (props) => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} lg={6}>
+                            <Box mb={2}>
+                                <FormControl fullWidth>
+                                    <InputLabel id='demo-simple-select-helper-label'>{`Expected budget timeframe`}</InputLabel>
+                                    <Select
+                                        fullWidth
+                                        label={`Expected budget timeframe`}
+                                        id='demo-simple-select'
+                                        value={budgetTimeframe}
+                                        defaultValue={project.expected_budget_timeframe}
+                                        onChange={(event) => (handleTimeframeChange(event.target.value))}
+                                    >
+                                        {renderTimeframeOptions({ timeframes: EXPECTED_BUDGET_TIMEFRAME_OPTIONS })}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12} lg={7}>
                             <Box mt={5} pl={1}>
                                 <Button
                                     variant='contained'
