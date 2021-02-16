@@ -23,16 +23,21 @@ const ClientProjectsList = ({
     const projects = orderBy(data.getClientById.projects, ['is_active'], ['desc'])
 
     return (
-        projects.length != 0
-            ? (
-                <ProjectsList
-                    history={history}
-                    projects={projects}
-                />
-            )
-            : (
-                <ProjectsEmptyState/>
-            )
+        <Grid container>
+            {
+                projects.length != 0
+                    ? (
+                        <ProjectsList
+                            history={history}
+                            projects={projects}
+                        />
+                    )
+                    : (
+                        <ProjectsEmptyState/>
+                    )
+            }
+
+        </Grid>
     )
 }
 

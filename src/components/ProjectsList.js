@@ -5,8 +5,6 @@ import { orderBy } from 'lodash'
 
 import ProjectTile from './ProjectTile'
 
-import { GET_POJECTS } from '../operations/queries/ProjectQueries'
-
 const ProjectsList = ({
     history,
     projects
