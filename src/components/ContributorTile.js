@@ -186,7 +186,7 @@ const ContributorTile = (props) => {
                 <Accordion>
                     <Grid container alignItems='center'>
                         <Grid item xs={2}>
-                            <Box px={active ? 0 : 3}>
+                            <Box px={active ? 0 : 1}>
                                 <Fab
                                     color={`${active ? 'secondary' : 'primary'}`}
                                     size='small'
