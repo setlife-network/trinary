@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import {
     Box,
     Button,
@@ -17,7 +17,9 @@ import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 import moment from 'moment'
 import MomentUtils from '@date-io/moment'
 
+import LoadingProgress from './LoadingProgress'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
+import { CREATE_PAYMENT } from '../operations/mutations/PaymentMutations'
 import {
     selectCurrencyInformation
 } from '../scripts/selectors'
@@ -38,8 +40,27 @@ const PaymentsAddForm = (props) => {
         }
     })
 
-    const createPayment = () => {
+    const [createPayment, {
+        dataNewPayment,
+        loadingNewPayment,
+        errorNewPayment
+    }] = useMutation(CREATE_PAYMENT)
 
+    const handleCreatePayment = async () => {
+        const variables = {
+            amount: paymentAmount,
+            client_id: Number(clientId),
+            date_incurred: dateIncurred,
+            date_paid: datePaid
+        }
+        const newPayment = await createPayment({ variables })
+        if (loadingNewPayment) return <LoadingProgress/>
+        if (newPayment.errors) {
+            setCreatePaymentError(`${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`)
+            setDisplayError(true)
+        } else {
+            console.log('added');
+        }
     }
 
     const handleDateIncurredChange = (date) => {
@@ -58,9 +79,11 @@ const PaymentsAddForm = (props) => {
     //date incurred
     //date paid
 
+    const [createPaymentError, setCreatePaymentError] = useState('')
     const [dateIncurred, setDateIncurred] = useState(null)
     const [datePaid, setDatePaid] = useState(null)
     const [disableAdd, setDisableAdd] = useState(true)
+    const [displayError, setDisplayError] = useState(false)
     const [invalidPaymentAmountInput, setInvalidPaymentAmountInput] = useState(false)
     const [paymentAmount, setPaymentAmount] = useState(null)
 
@@ -131,7 +154,7 @@ const PaymentsAddForm = (props) => {
                         variant='contained'
                         color='primary'
                         disabled={disableAdd}
-                        onClick={createPayment}
+                        onClick={handleCreatePayment}
                     >
                         {`Add Payment`}
                     </Button>
