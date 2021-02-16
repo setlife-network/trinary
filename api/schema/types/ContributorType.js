@@ -8,8 +8,8 @@ module.exports = gql`
         total_paid: Int!
         name: String!
         external_data_url: String
-        github_id: String!
-        github_handle: String!
+        github_id: String
+        github_handle: String
         github_access_token: String
         allocations: [Allocation]
         permissions: [Permission]
@@ -23,8 +23,8 @@ module.exports = gql`
         monthly_rate: Int
         name: String!
         external_data_url: String
-        github_id: String!
-        github_handle: String!
+        github_id: String
+        github_handle: String
     }
 
     input UpdateContributorInput {

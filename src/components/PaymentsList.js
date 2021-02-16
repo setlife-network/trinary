@@ -16,7 +16,7 @@ const PaymentsList = (props) => {
     const renderPaymentTiles = (payments) => {
         return payments.map(p => {
             return (
-                <Grid item xs={12} md={6} lg={4}>
+                <Grid item xs={12} md={6}>
                     <Box mt={2}>
                         <PaymentTile
                             payment={p}

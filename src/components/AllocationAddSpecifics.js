@@ -27,7 +27,11 @@ import {
 } from 'lodash'
 import accounting from 'accounting-js'
 
-import { selectCurrencyInformation, selectCurrencySymbol } from '../scripts/selectors'
+import {
+    formatAmount,
+    selectCurrencyInformation,
+    selectCurrencySymbol
+} from '../scripts/selectors'
 
 const AllocationAddSpecifics = (props) => {
 
@@ -91,24 +95,10 @@ const AllocationAddSpecifics = (props) => {
             })
         }
     }
-    const formatPaymentAmount = (props) => {
-        const { amount, currencyInformation } = props
-        return accounting.formatMoney(
-            amount,
-            {
-                symbol: currencyInformation['symbol'],
-                thousand: currencyInformation['thousand'],
-                decimal: currencyInformation['decimal'],
-                format: '%s %v'
-            }
-        )
-    }
-
     const onClickPayment = (payment) => {
         setSelectedPayment(payment)
         setOpenPayments(false)
     }
-
     const onClickContributor = (contributor) => {
         setContributor(contributor)
         setOpenContributors(false)
@@ -117,7 +107,7 @@ const AllocationAddSpecifics = (props) => {
     const listPayments = (payments) => {
         const paymentsList = differenceWith(payments, [selectedPayment], isEqual)
         return paymentsList.map(p => {
-            const paymentAmount = formatPaymentAmount({
+            const paymentAmount = formatAmount({
                 amount: p.amount / 100,
                 currencyInformation: currencyInformation
             })
@@ -248,7 +238,7 @@ const AllocationAddSpecifics = (props) => {
                                 <Grid item xs={3}>
                                     <ListItemText primary={
                                         `${selectedPayment.amount
-                                            ? `${formatPaymentAmount({
+                                            ? `${formatAmount({
                                                 amount: selectedPayment.amount / 100,
                                                 currencyInformation: currencyInformation
                                             })}`
