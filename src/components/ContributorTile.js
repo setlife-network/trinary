@@ -59,9 +59,8 @@ const ContributorTile = (props) => {
         return sortedAllocations.map(a => {
 
             const currencyInformation = selectCurrencyInformation({
-                currency: a.payment.client.currency
+                currency: a.payment ? a.payment.client.currency : ''
             })
-
             const allocationAmount = formatAmount({
                 amount: a.amount / 100,
                 currencyInformation: currencyInformation
@@ -110,7 +109,10 @@ const ContributorTile = (props) => {
                                         {`Expected hours:`}
                                     </strong>
                                     <br/>
-                                    {`${a.rate.total_expected_hours} h.`}
+                                    {`${a.rate.total_expected_hours
+                                        ? `${a.rate.total_expected_hours} h.`
+                                        : `Doesn't apply`
+                                    }`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>
@@ -157,7 +159,6 @@ const ContributorTile = (props) => {
                 </Grid>
             )
         })
-
     }
 
     if (loadingAllocation) return ''
