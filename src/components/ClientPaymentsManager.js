@@ -1,11 +1,13 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import {
-    AddIcon,
     Box,
     Button,
+    Fab,
     Grid,
     Typography
 } from '@material-ui/core'
+import AddIcon from '@material-ui/icons/Add'
 import { gql, useQuery } from '@apollo/client'
 import accounting from 'accounting-js'
 
@@ -16,6 +18,8 @@ import { GET_CLIENT_TOTAL_PAID } from '../operations/queries/ClientQueries'
 const ClientPaymentsManager = ({
     clientId
 }) => {
+
+    const history = useHistory()
 
     const { loading, error, data } = useQuery(GET_CLIENT_TOTAL_PAID, {
         variables: {
@@ -44,12 +48,14 @@ const ClientPaymentsManager = ({
     )
 
     return (
-        <Box mt={3} mx={0} className='ClientPaymentsManager'>
+        <Box my={3} mx={0} className='ClientPaymentsManager'>
             <Grid
                 container
                 justify='space-between'
+                alignItems='center'
+                spacing={1}
             >
-                <Grid item>
+                <Grid item xs={7}>
                     <Typography align='left' variant='h4'>
                         <strong>
                             Payments
@@ -59,13 +65,29 @@ const ClientPaymentsManager = ({
                 {
                     getClientById.totalPaid &&
                     (
-                        <Grid item>
-                            <Typography align='left' variant='h4'>
-                                <strong>
-                                    {`${totalPaid} Total`}
-                                </strong>
-                            </Typography>
-                        </Grid>
+                        <>
+                            <Grid item xs={10} md={3}>
+                                <Typography align='left' variant='h5' >
+                                    <strong>
+                                        {`${totalPaid} Total`}
+                                    </strong>
+                                </Typography>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={2}
+                                md={1}
+                                align='right'
+                                onClick={() => history.push(`/clients/${clientId}/payments/add`)}
+                            >
+                                <Fab
+                                    color='primary'
+                                    size='medium'
+                                >
+                                    <AddIcon color='action'/>
+                                </Fab>
+                            </Grid>
+                        </>
                     )
                 }
             </Grid>

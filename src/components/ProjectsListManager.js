@@ -30,7 +30,6 @@ const ProjectsListManager = ({
     return (
         <Box
             mb={3}
-            mx={1}
             className='ProjectsListManager'
         >
             <Grid
@@ -60,6 +59,7 @@ const ProjectsListManager = ({
                     <Grid item xs={4} align='right'>
                         <Fab
                             color='primary'
+                            size='medium'
                             onClick={() => addClient()}
                         >
                             <AddIcon color='action'/>
