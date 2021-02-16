@@ -115,19 +115,23 @@ const PaymentsAddForm = (props) => {
         >
             <Grid container spacing={5}>
                 <Grid item xs={12}>
-                    <CurrencyTextField
-                        fullWidth
-                        label='Payment amount'
-                        variant='outlined'
-                        currencySymbol={`${currencyInformation['symbol']}`}
-                        minimumValue='0'
-                        outputFormat='string'
-                        decimalCharacter={`${currencyInformation['decimal']}`}
-                        digitGroupSeparator={`${currencyInformation['thousand']}`}
-                        onChange={(event) => handlePaymentAmountChange(event.target.value)}
-                    />
+                    <Grid container>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <CurrencyTextField
+                                fullWidth
+                                label='Payment amount'
+                                variant='outlined'
+                                currencySymbol={`${currencyInformation['symbol']}`}
+                                minimumValue='0'
+                                outputFormat='string'
+                                decimalCharacter={`${currencyInformation['decimal']}`}
+                                digitGroupSeparator={`${currencyInformation['thousand']}`}
+                                onChange={(event) => handlePaymentAmountChange(event.target.value)}
+                            />
+                        </Grid>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6} lg={4}>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             fullWidth
@@ -141,7 +145,7 @@ const PaymentsAddForm = (props) => {
                         />
                     </MuiPickersUtilsProvider>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6} lg={4}>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             fullWidth
