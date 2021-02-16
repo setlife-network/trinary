@@ -14,9 +14,15 @@ import {
     Snackbar,
     TextField
 } from '@material-ui/core/'
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker
+} from '@material-ui/pickers'
+import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 import { split } from 'lodash'
 import accounting from 'accounting-js'
-import CurrencyTextField from '@unicef/material-ui-currency-textfield'
+import moment from 'moment'
+import MomentUtils from '@date-io/moment'
 
 import LoadingProgress from './LoadingProgress'
 import {
@@ -34,6 +40,11 @@ const ProjectEditDialog = (props) => {
         open
     } = props
 
+    const currentDate = moment(project.date, 'x').format('YYYY-MM-DD')
+    const currencyInformation = selectCurrencyInformation({
+        currency: project.client.currency
+    })
+
     const [updateProject, { data, loading, error }] = useMutation(UPDATE_PROJECT, { errorPolicy: 'all' })
 
     const [disableEdit, setDisableEdit] = useState(true)
@@ -41,9 +52,23 @@ const ProjectEditDialog = (props) => {
     const [editProjectError, setEditProjectError] = useState('')
     const [expectedBudget, setExpectedBudget] = useState(project.expected_budget)
     const [githubURL, setGithubURL] = useState(project.github_url)
+    const [projectDate, setProjectDate] = useState(null)
     const [projectName, setProjectName] = useState(project.name)
     const [togglURL, setTogglURL] = useState(project.toggl_url)
 
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setDisplayError(false)
+    }
+    const handleBudgetChange = (input) => {
+        const amount = Number(input.replace(/\D/g, ''))
+        setExpectedBudget(amount)
+    }
+    const handleDateChange = (date) => {
+        setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
+    }
     const onEditProject = async () => {
         if (!verifyGithubURL(githubURL)) {
             setEditProjectError('The Github URL is invalid')
@@ -60,8 +85,9 @@ const ProjectEditDialog = (props) => {
         const projectInfoToEdit = {
             project_id: project.id,
             name: projectName,
-            expected_budget: Number(expectedBudget),
-            github_url: githubURL
+            github_url: githubURL,
+            date: projectDate,
+            expected_budget: Number(expectedBudget)
         }
         if (togglURL) {
             projectInfoToEdit['toggl_url'] = togglURL
@@ -76,24 +102,16 @@ const ProjectEditDialog = (props) => {
         }
     }
 
-    const handleAlertClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return
-        }
-        setDisplayError(false)
-    }
-
-    const handleBudgetChange = (input) => {
-        const amount = Number(input.replace(/\D/g, ''))
-        setExpectedBudget(amount)
-    }
-
+    useEffect(() => {
+        setProjectDate(currentDate)
+    }, [])
     useEffect(() => {
         if (
             expectedBudget == project.expected_budget &&
             githubURL == project.github_url &&
             projectName == project.name &&
-            togglURL == project.toggl_url
+            togglURL == project.toggl_url &&
+            projectDate == currentDate
         ) {
             setDisableEdit(true)
         } else if (!expectedBudget || !githubURL || !projectName) {
@@ -101,10 +119,6 @@ const ProjectEditDialog = (props) => {
         } else {
             setDisableEdit(false)
         }
-    })
-
-    const currencyInformation = selectCurrencyInformation({
-        currency: project.client.currency
     })
 
     return (
@@ -174,6 +188,23 @@ const ProjectEditDialog = (props) => {
                                     onChange={(event) => setTogglURL(event.target.value)}
                                 />
                             </Box>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <MuiPickersUtilsProvider utils={MomentUtils}>
+                                <KeyboardDatePicker
+                                    disableToolbar
+                                    variant='inline'
+                                    format='MM/DD/YYYY'
+                                    margin='normal'
+                                    id='date-picker-inline'
+                                    label=''
+                                    value={projectDate}
+                                    onChange={handleDateChange}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change date',
+                                    }}
+                                />
+                            </MuiPickersUtilsProvider>
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <Box mt={5} pl={1}>
