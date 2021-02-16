@@ -32,7 +32,7 @@ class ClientDetailPage extends React.Component {
                     <Box my={5}>
                         <Typography align='left' variant='h4'>
                             <strong>
-                                Projects
+                                {`Projects`}
                             </strong>
                         </Typography>
                         <ProjectsListManager
