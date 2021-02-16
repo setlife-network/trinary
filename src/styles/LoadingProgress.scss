@@ -3,6 +3,10 @@
     color: $setlife-blue;
 
     .MuiBackdrop-root {
-        background-color: $backgroud-white;
+        z-index: 1;
+    }
+
+    .MuiBackdrop-root {
+        background-color: rgba(255,255,255, 0.3);
     }
 }

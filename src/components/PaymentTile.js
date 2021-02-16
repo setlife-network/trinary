@@ -69,7 +69,18 @@ const PaymentTile = (props) => {
         currency: client.currency
     })
 
-    if (loadingTotalAllocated || loadingPaymentAllocations) return 'Loading...'
+    const paymentAmount = accounting.formatMoney(
+        payment.amount / 100,
+        {
+            symbol: currencyInformation['symbol'],
+            thousand: currencyInformation['thousand'],
+            decimal: currencyInformation['decimal'],
+            format: '%s %v'
+        }
+    )
+
+    if (loadingTotalAllocated || loadingPaymentAllocations) return ''
+
     if (errorTotalAllocated || errorPaymentAllocations) return `An error ocurred`
 
     const { allocations } = dataPaymentAllocations.getPaymentById
