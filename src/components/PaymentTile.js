@@ -12,7 +12,6 @@ import {
 } from '@material-ui/core/'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
-import accounting from 'accounting-js'
 
 import AllocationAddForm from './AllocationAddForm'
 import {

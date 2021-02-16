@@ -16,7 +16,6 @@ import {
     TextField
 } from '@material-ui/core/'
 import { findIndex, split } from 'lodash'
-import accounting from 'accounting-js'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import LoadingProgress from './LoadingProgress'

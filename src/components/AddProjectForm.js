@@ -19,7 +19,6 @@ import {
 } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
-import accounting from 'accounting-js'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import LoadingProgress from './LoadingProgress'
