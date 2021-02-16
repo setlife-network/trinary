@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
+import { useHistory } from 'react-router-dom'
 import {
     Box,
     Button,
     FormControl,
     Grid,
+    Snackbar,
     TextField,
     Typography
 } from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker
@@ -30,6 +33,8 @@ const PaymentsAddForm = (props) => {
         clientId
     } = props
 
+    const history = useHistory()
+
     const {
         data: dataClient,
         error: errorClient,
@@ -46,6 +51,12 @@ const PaymentsAddForm = (props) => {
         errorNewPayment
     }] = useMutation(CREATE_PAYMENT)
 
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setDisplayError(false)
+    }
     const handleCreatePayment = async () => {
         const variables = {
             amount: paymentAmount,
@@ -59,10 +70,9 @@ const PaymentsAddForm = (props) => {
             setCreatePaymentError(`${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`)
             setDisplayError(true)
         } else {
-            console.log('added');
+            history.push(`/clients/${clientId}`)
         }
     }
-
     const handleDateIncurredChange = (date) => {
         setDateIncurred(moment(date['_d']).format('YYYY-MM-DD'))
     }
@@ -74,10 +84,6 @@ const PaymentsAddForm = (props) => {
         const amount = Number(input.replace(/\D/g, ''))
         setPaymentAmount(amount)
     }
-
-    //amount
-    //date incurred
-    //date paid
 
     const [createPaymentError, setCreatePaymentError] = useState('')
     const [dateIncurred, setDateIncurred] = useState(null)
@@ -160,6 +166,15 @@ const PaymentsAddForm = (props) => {
                     </Button>
                 </Grid>
             </Grid>
+            <Snackbar
+                open={displayError}
+                autoHideDuration={4000}
+                onClose={handleAlertClose}
+            >
+                <Alert severity='error'>
+                    {`${createPaymentError}`}
+                </Alert>
+            </Snackbar>
         </FormControl>
     )
 }
