@@ -23,6 +23,12 @@ export const CURRENCIES = [
         symbol: '₿',
         decimal: '.',
         thousand: ','
+    },
+    {
+        name: '',
+        symbol: '',
+        decimal: '.',
+        thousand: ','
     }
 ]
 export const EXPECTED_BUDGET_TIMEFRAME_OPTIONS = [
