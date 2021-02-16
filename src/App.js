@@ -12,6 +12,7 @@ import ClientDetailPage from './pages/ClientDetailPage'
 import ClientsListPage from './pages/ClientsListPage'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
+import PaymentsAddPage from './pages/PaymentsAddPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
 import ProjectsListPage from './pages/ProjectsListPage'
 
@@ -49,12 +50,17 @@ class App extends React.Component {
                         component={LoginPage}
                     />
                     <PrivateRoute
+                        exact
                         path='/clients/:clientId'
                         component={ClientDetailPage}
                     />
                     <PrivateRoute
                         path='/client/add'
                         component={AddClientPage}
+                    />
+                    <PrivateRoute
+                        path='/clients/:clientId/payments/add'
+                        component={PaymentsAddPage}
                     />
                     <PrivateRoute
                         path='/projects/:projectId'
