@@ -14,11 +14,22 @@ import {
     Snackbar,
     TextField
 } from '@material-ui/core/'
-import accounting from 'accounting-js'
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker
+} from '@material-ui/pickers'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
+import { split } from 'lodash'
+import accounting from 'accounting-js'
+import moment from 'moment'
+import MomentUtils from '@date-io/moment'
 
 import LoadingProgress from './LoadingProgress'
-import { selectCurrencyInformation } from '../scripts/selectors'
+import {
+    selectCurrencyInformation,
+    verifyGithubURL,
+    verifyTogglURL
+} from '../scripts/selectors'
 import { UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
 
 const ProjectEditDialog = (props) => {
@@ -29,6 +40,11 @@ const ProjectEditDialog = (props) => {
         open
     } = props
 
+    const currentDate = moment(project.date, 'x').format('YYYY-MM-DD')
+    const currencyInformation = selectCurrencyInformation({
+        currency: project.client.currency
+    })
+
     const [updateProject, { data, loading, error }] = useMutation(UPDATE_PROJECT, { errorPolicy: 'all' })
 
     const [disableEdit, setDisableEdit] = useState(true)
@@ -36,28 +52,9 @@ const ProjectEditDialog = (props) => {
     const [editProjectError, setEditProjectError] = useState('')
     const [expectedBudget, setExpectedBudget] = useState(project.expected_budget)
     const [githubURL, setGithubURL] = useState(project.github_url)
+    const [projectDate, setProjectDate] = useState(null)
     const [projectName, setProjectName] = useState(project.name)
     const [togglURL, setTogglURL] = useState(project.toggl_url)
-
-    const onEditProject = async () => {
-        const projectInfoToEdit = {
-            project_id: project.id,
-            name: projectName,
-            expected_budget: Number(expectedBudget),
-            github_url: githubURL
-        }
-        if (togglURL) {
-            projectInfoToEdit['toggl_url'] = togglURL
-        }
-        const projectEdited = await updateProject({ variables: projectInfoToEdit })
-        if (loading) return <LoadingProgress/>
-        else if (projectEdited.errors) {
-            setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}`)
-            setDisplayError(true)
-        } else {
-            onClose()
-        }
-    }
 
     const handleAlertClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -65,18 +62,56 @@ const ProjectEditDialog = (props) => {
         }
         setDisplayError(false)
     }
-
     const handleBudgetChange = (input) => {
         const amount = Number(input.replace(/\D/g, ''))
         setExpectedBudget(amount)
     }
+    const handleDateChange = (date) => {
+        setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
+    }
+    const onEditProject = async () => {
+        if (!verifyGithubURL(githubURL)) {
+            setEditProjectError('The Github URL is invalid')
+            setDisplayError(true)
+            return
+        }
+        if (togglURL) {
+            if (!verifyTogglURL(togglURL)) {
+                setEditProjectError('The Toggl URL is invalid')
+                setDisplayError(true)
+                return
+            }
+        }
+        const projectInfoToEdit = {
+            project_id: project.id,
+            name: projectName,
+            github_url: githubURL,
+            date: projectDate,
+            expected_budget: Number(expectedBudget)
+        }
+        if (togglURL) {
+            projectInfoToEdit['toggl_url'] = togglURL
+        }
+        const projectEdited = await updateProject({ variables: projectInfoToEdit })
+        if (loading) return <LoadingProgress/>
+        else if (projectEdited.errors) {
+            setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}  already exists`)
+            setDisplayError(true)
+        } else {
+            onClose()
+        }
+    }
 
+    useEffect(() => {
+        setProjectDate(currentDate)
+    }, [])
     useEffect(() => {
         if (
             expectedBudget == project.expected_budget &&
             githubURL == project.github_url &&
             projectName == project.name &&
-            togglURL == project.toggl_url
+            togglURL == project.toggl_url &&
+            projectDate == currentDate
         ) {
             setDisableEdit(true)
         } else if (!expectedBudget || !githubURL || !projectName) {
@@ -84,10 +119,6 @@ const ProjectEditDialog = (props) => {
         } else {
             setDisableEdit(false)
         }
-    })
-
-    const currencyInformation = selectCurrencyInformation({
-        currency: project.client.currency
     })
 
     return (
@@ -158,6 +189,23 @@ const ProjectEditDialog = (props) => {
                                 />
                             </Box>
                         </Grid>
+                        <Grid item xs={12}>
+                            <MuiPickersUtilsProvider utils={MomentUtils}>
+                                <KeyboardDatePicker
+                                    disableToolbar
+                                    variant='inline'
+                                    format='MM/DD/YYYY'
+                                    margin='normal'
+                                    id='date-picker-inline'
+                                    label=''
+                                    value={projectDate}
+                                    onChange={handleDateChange}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change date',
+                                    }}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </Grid>
                         <Grid item xs={12} lg={6}>
                             <Box mt={5} pl={1}>
                                 <Button
@@ -177,7 +225,7 @@ const ProjectEditDialog = (props) => {
                         onClose={handleAlertClose}
                     >
                         <Alert severity='error'>
-                            {`${editProjectError} already exists`}
+                            {`${editProjectError}`}
                         </Alert>
                     </Snackbar>
                 </FormControl>

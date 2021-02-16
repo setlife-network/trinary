@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client'
 import {
     Box,
-    Grid
+    Grid,
+    Typography
 } from '@material-ui/core/'
 import {
     differenceBy,
@@ -18,11 +19,17 @@ import GithubAccessBlocked from './GithubAccessBlocked'
 import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
+import {
+    getAllocatedContributors,
+    getActiveAndUpcomingAllocations
+} from '../scripts/selectors'
 
 const ProjectContributors = (props) => {
 
     const { projectId } = props
+
     const [contributors, setContributors] = useState([])
+    const [githubContributors, setGithubContributors] = useState([])
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
     const [contributorClicked, setContributorClicked] = useState(null)
     const handleAddAllocationClose = (value) => {
@@ -53,23 +60,30 @@ const ProjectContributors = (props) => {
             error: errorGithubContributors
         }
     ] = useMutation(SYNC_PROJECT_GITHUB_CONTRIBUTORS, {
+        onCompleted: dataGithubContributors => {
+            setGithubContributors(dataGithubContributors.syncProjectGithubContributors)
+        },
+        refetchQueries: [{
+            query: GET_CONTRIBUTORS
+        }],
         errorPolicy: 'all'
     })
 
-    useEffect(async () => {
-        const githubContributors = await getGithubContributors({
+    useEffect(() => {
+        getGithubContributors({
             variables: { project_id: Number(projectId) }
         })
-        setContributors(contributors.concat(...githubContributors.data.syncProjectGithubContributors))
     }, [])
+
+    useEffect(() => {
+        if (githubContributors.length) {
+            setContributors(contributors.concat(...githubContributors))
+        }
+    }, [githubContributors])
 
     const addAllocation = (props) => {
         setOpenAddAllocationDialog(true)
         setContributorClicked(props.contributor)
-    }
-
-    const selectActiveAllocations = (allocation) => {
-        return moment(allocation['start_date'], 'x').isBefore(moment()) && moment(allocation['end_date'], 'x').isAfter(moment())
     }
 
     if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
@@ -86,16 +100,36 @@ const ProjectContributors = (props) => {
 
     const project = dataProjectContributors.getProjectById
     const { allocations } = project
-    const activeAllocations = filter(allocations, (allocation) => selectActiveAllocations(allocation))
-    const activeContributors = activeAllocations.map(a => {
-        return a.contributor
+
+    const activeAllocations = getActiveAndUpcomingAllocations({
+        allocations: allocations,
+        activeOnly: true
     })
+    const activeContributorsAllocated = getAllocatedContributors({
+        allocations: activeAllocations
+    })
+    const upcomingAllocations = getActiveAndUpcomingAllocations({
+        allocations: allocations,
+        upcomingOnly: true
+    })
+    const upcomingContributorsAllocatedOnly = differenceBy(
+        getAllocatedContributors({ allocations: upcomingAllocations }),
+        activeContributorsAllocated,
+        'id'
+    )
+
     if (differenceBy(dataContributors.getContributors, contributors, 'id').length != 0) {
         setContributors(contributors.concat(...dataContributors.getContributors))
     }
-    const contributorsToAdd = differenceBy(contributors, activeContributors, 'id')
 
-    const renderContributors = (active, contributors) => {
+    const contributorsToAdd = differenceBy(contributors, [...activeContributorsAllocated, ...upcomingContributorsAllocatedOnly], 'id')
+
+    const renderContributors = (props) => {
+        const {
+            active,
+            contributors,
+            project
+        } = props
         return contributors.map(c => {
             return (
                 <Grid item xs={12} md={6}>
@@ -103,6 +137,7 @@ const ProjectContributors = (props) => {
                         active={active}
                         contributor={c}
                         onAddButton={addAllocation}
+                        project={project}
                     />
                 </Grid>
             )
@@ -111,7 +146,9 @@ const ProjectContributors = (props) => {
 
     return (
         <Grid container className='ProjectContributors'>
-            <h1>{`${project.name} Contributors`}</h1>
+            <h1>
+                {`${project.name} Contributors`}
+            </h1>
             <Grid xs={12}/>
             <Grid item xs={12} sm={5}>
                 <Box
@@ -122,7 +159,7 @@ const ProjectContributors = (props) => {
                     py={1}
                 >
                     {
-                        `${activeContributors.length} active ${activeContributors.length == 1
+                        `${activeContributorsAllocated.length} active ${activeContributorsAllocated.length == 1
                             ? 'contributor'
                             : 'contributors'
                         }`
@@ -131,10 +168,34 @@ const ProjectContributors = (props) => {
             </Grid>
             <Grid item xs={12}>
                 <Box my={5}>
+                    <Typography align='left' variant='h5'>
+                        {`Active contributors`}
+                    </Typography>
                     <Grid container>
                         {
-                            activeContributors.length != 0
-                                ? renderContributors(true, activeContributors)
+                            activeContributorsAllocated.length != 0
+                                ? renderContributors({
+                                    active: true,
+                                    contributors: activeContributorsAllocated,
+                                    project: project
+                                })
+                                : <ContributorsEmptyState active/>
+
+                        }
+                    </Grid>
+                </Box>
+                <Box my={5}>
+                    <Typography align='left' variant='h5'>
+                        {`Upcoming contributors`}
+                    </Typography>
+                    <Grid container>
+                        {
+                            upcomingContributorsAllocatedOnly.length != 0
+                                ? renderContributors({
+                                    active: true,
+                                    contributors: upcomingContributorsAllocatedOnly,
+                                    project: project
+                                })
                                 : <ContributorsEmptyState active/>
 
                         }
@@ -150,7 +211,11 @@ const ProjectContributors = (props) => {
                     <Grid container>
                         {
                             contributorsToAdd.length != 0
-                                ? renderContributors(false, contributorsToAdd)
+                                ? renderContributors({
+                                    active: false,
+                                    contributors: contributorsToAdd,
+                                    project: project
+                                })
                                 : <ContributorsEmptyState/>
                         }
                     </Grid>

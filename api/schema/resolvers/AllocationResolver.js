@@ -21,7 +21,16 @@ module.exports = {
             return models.Allocation.findByPk(id)
         },
         getAllocations: (root, args, { models }) => {
-            return models.Allocation.findAll()
+            const whereConditions = {}
+            if (args.contributorId) {
+                whereConditions['contributor_id'] = args.contributorId
+            }
+            if (args.projectId) {
+                whereConditions['project_id'] = args.projectId
+            }
+            return models.Allocation.findAll({
+                where: whereConditions
+            })
         }
     },
     Mutation: {

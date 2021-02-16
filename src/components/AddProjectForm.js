@@ -20,7 +20,11 @@ import accounting from 'accounting-js'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import LoadingProgress from './LoadingProgress'
-import { selectCurrencyInformation } from '../scripts/selectors'
+import {
+    selectCurrencyInformation,
+    verifyGithubURL,
+    verifyTogglURL
+} from '../scripts/selectors'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
 import { red } from '../styles/colors.scss'
@@ -74,6 +78,18 @@ const AddProjectForm = ({
     }
 
     const createProject = async () => {
+        if (!verifyGithubURL(projectGithub)) {
+            setCreateProjectError('The Github URL is invalid')
+            setDisplayError(true)
+            return
+        }
+        if (projectToggl) {
+            if (!verifyTogglURL(projectToggl)) {
+                setCreateProjectError('The Toggl URL is invalid')
+                setDisplayError(true)
+                return
+            }
+        }
         const variables = {
             client_id: parseInt(clientId, 10),
             name: projectName,
@@ -88,16 +104,15 @@ const AddProjectForm = ({
         const newProject = await addProject({ variables })
         if (loading) return <LoadingProgress/>
         if (newProject.errors) {
-            setCreateProjectError(`${Object.keys(newProject.errors[0].extensions.exception.fields)[0]}`)
+            setCreateProjectError(`${Object.keys(newProject.errors[0].extensions.exception.fields)[0]} already exists`)
             setDisplayError(true)
         } else {
             history.push(`/projects/${newProject.data.createProject.id}`)
         }
-
     }
 
     if (errorClient) return 'Somenthing went wrong'
-    if (loadingClient) return 'loading...'
+    if (loadingClient) return <LoadingProgress/>
 
     const currencyInformation = selectCurrencyInformation({
         currency: dataClient.getClientById.currency
@@ -134,7 +149,6 @@ const AddProjectForm = ({
                     </Box>
                 </Grid>
             </Grid>
-
             <Grid container justify='space-between'>
                 <Grid item xs={12} md={5}>
                     <Box xs={10} my={2}>
@@ -171,7 +185,7 @@ const AddProjectForm = ({
                         format='MM/DD/YYYY'
                         margin='normal'
                         id='date-picker-inline'
-                        label=''
+                        label='Project start date'
                         value={projectDate}
                         onChange={handleDateChange}
                         KeyboardButtonProps={{
@@ -194,11 +208,11 @@ const AddProjectForm = ({
             </Grid>
             <Snackbar
                 open={displayError}
-                autoHideDuration={3600}
+                autoHideDuration={4000}
                 onClose={handleAlertClose}
             >
                 <Alert severity='error'>
-                    {`${createProjectError} already exists`}
+                    {`${createProjectError}`}
                 </Alert>
             </Snackbar>
         </FormControl>
