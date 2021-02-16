@@ -28,7 +28,11 @@ import accounting from 'accounting-js'
 
 import LoadingProgress from './LoadingProgress'
 import { GET_ALL_PROJECTS, GET_PROJECT_CLIENT_PAYMENTS } from '../operations/queries/ProjectQueries'
-import { selectCurrencyInformation, selectCurrencySymbol } from '../scripts/selectors'
+import {
+    formatAmount,
+    selectCurrencyInformation,
+    selectCurrencySymbol
+} from '../scripts/selectors'
 
 const AllocationProposeSpecifics = (props) => {
 
@@ -97,19 +101,6 @@ const AllocationProposeSpecifics = (props) => {
         setPayment(selectedPayment)
     }, [selectedPayment])
 
-    //TODO: Replace this funtion with selector on merge branch
-    const formatPaymentAmount = (props) => {
-        const { amount, currencyInformation } = props
-        return accounting.formatMoney(
-            amount,
-            {
-                symbol: currencyInformation['symbol'],
-                thousand: currencyInformation['thousand'],
-                decimal: currencyInformation['decimal'],
-                format: '%s %v'
-            }
-        )
-    }
     const handleClickPaymentsList = () => {
         setOpenPaymentsList(!openPaymentsList)
     }
@@ -137,7 +128,7 @@ const AllocationProposeSpecifics = (props) => {
     const listPayments = ({ payments, selectedPayment }) => {
         const unselectedPayments = differenceBy(payments, [selectedPayment], 'id')
         return unselectedPayments.map(payment => {
-            const paymentAmount = formatPaymentAmount({
+            const paymentAmount = formatAmount({
                 amount: payment.amount / 100,
                 currencyInformation: clientCurrency ? clientCurrency : 'USD'
             })
@@ -199,7 +190,7 @@ const AllocationProposeSpecifics = (props) => {
 
     const { getProjects: projects } = dataProjects
 
-    const paymentAmount = formatPaymentAmount({
+    const paymentAmount = formatAmount({
         amount: selectedPayment ? selectedPayment.amount / 100 : null,
         currencyInformation: clientCurrency ? clientCurrency : 'USD'
     })

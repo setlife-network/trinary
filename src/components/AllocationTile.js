@@ -9,7 +9,10 @@ import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
 import accounting from 'accounting-js'
 import moment from 'moment'
 
-import { selectCurrencyInformation } from '../scripts/selectors'
+import {
+    formatAmount,
+    selectCurrencyInformation
+} from '../scripts/selectors'
 import { grey, orange, red, setlifeBlue } from '../styles/colors.scss'
 
 const AllocationTile = (props) => {
@@ -21,20 +24,7 @@ const AllocationTile = (props) => {
     const currencyInformation = selectCurrencyInformation({
         currency: 'USD'
     })
-    //TODO: Replacethe following function with upcoming selecto formatAmount (currently on different pr)
-    const formatPaymentAmount = (props) => {
-        const { amount, currencyInformation } = props
-        return accounting.formatMoney(
-            amount,
-            {
-                symbol: currencyInformation['symbol'],
-                thousand: currencyInformation['thousand'],
-                decimal: currencyInformation['decimal'],
-                format: '%s %v'
-            }
-        )
-    }
-    const paymentAmount = formatPaymentAmount({
+    const paymentAmount = formatAmount({
         amount: allocation.amount / 100,
         currencyInformation: currencyInformation
     })

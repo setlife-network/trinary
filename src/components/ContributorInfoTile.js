@@ -14,7 +14,10 @@ import { last, split } from 'lodash'
 
 import LoadingProgress from './LoadingProgress'
 import { GET_CONTRIBUTOR_INFO } from '../operations/queries/ContributorQueries'
-import { selectCurrencyInformation } from '../scripts/selectors'
+import {
+    formatAmount,
+    selectCurrencyInformation
+} from '../scripts/selectors'
 
 const ContributorInfoTile = (props) => {
 
@@ -41,20 +44,7 @@ const ContributorInfoTile = (props) => {
     const currencyInformation = selectCurrencyInformation({
         currency: 'USD'
     })
-    //TODO: Replacethe following function with upcoming selecto formatAmount (currently on different pr)
-    const formatPaymentAmount = (props) => {
-        const { amount, currencyInformation } = props
-        return accounting.formatMoney(
-            amount,
-            {
-                symbol: currencyInformation['symbol'],
-                thousand: currencyInformation['thousand'],
-                decimal: currencyInformation['decimal'],
-                format: '%s %v'
-            }
-        )
-    }
-    const paymentAmount = formatPaymentAmount({
+    const paymentAmount = formatAmount({
         amount: contributor.total_paid / 100,
         currencyInformation: currencyInformation
     })

@@ -5,6 +5,7 @@ import {
     AccordionDetails,
     AccordionSummary,
     Box,
+    Button,
     Fab,
     Grid,
     Typography
@@ -12,6 +13,7 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 import moment from 'moment'
 import { filter, sortBy } from 'lodash'
+import { useHistory } from 'react-router-dom'
 
 import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
 import {
@@ -28,9 +30,13 @@ const ContributorTile = (props) => {
         onAddButton,
         project
     } = props
+    const history = useHistory()
 
     const handleAddButton = () => {
         onAddButton({ contributor })
+    }
+    const redirectToContributorDetails = ({ contributor }) => {
+        history.push(`/contributor/${contributor.id}`)
     }
 
     const {
@@ -166,9 +172,6 @@ const ContributorTile = (props) => {
 
     const { getAllocations: allocations } = dataAllocation
 
-    console.log('allocations');
-    console.log(allocations);
-
     return (
         <Box
             className='ContributorTile'
@@ -209,12 +212,21 @@ const ContributorTile = (props) => {
                     </Grid>
                 </Grid>
                 <AccordionDetails>
-                    <Grid container>
+                    <Grid container spacing={3}>
                         {
                             renderContributorAllocations({
                                 allocations: allocations
                             })
                         }
+                        <Grid item xs={12} align='center'>
+                            <Button
+                                variant='outlined'
+                                color='primary'
+                                onClick={() => redirectToContributorDetails({ contributor })}
+                            >
+                                {`View Contributor Detail`}
+                            </Button>
+                        </Grid>
                     </Grid>
                 </AccordionDetails>
             </Accordion>
