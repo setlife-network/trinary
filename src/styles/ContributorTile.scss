@@ -3,6 +3,10 @@
         background-color: transparent;
         box-shadow: none;
     }
+    .non-allocated .Mui-expanded  {
+
+            background-color: $light_grey !important;
+    }
     .outlined-add-icon {
         background-color: transparent;
         border-style: solid;

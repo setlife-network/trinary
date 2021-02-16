@@ -174,7 +174,7 @@ const ContributorTile = (props) => {
 
     return (
         <Box
-            className='ContributorTile'
+            className={`ContributorTile`}
             bgcolor={`${active ? 'primary.light_blue' : ''}`}
             borderRadius='borderRadius'
             p={2}
@@ -182,54 +182,58 @@ const ContributorTile = (props) => {
             mx={active ? 1 : 0}
             align='left'
         >
-            <Accordion>
-                <Grid container alignItems='center'>
-                    <Grid item xs={2}>
-                        <Fab
-                            color={`${active ? 'secondary' : 'primary'}`}
-                            size='small'
-                            onClick={() => handleAddButton()}
-                            className={`${active && 'outlined-add-icon'}`}
-                        >
-                            <AddIcon color='action'/>
-                        </Fab>
-                    </Grid>
-                    <Grid item xs={10}>
-                        <AccordionSummary>
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Typography>
-                                        <strong>
-                                            {contributor.name}
-                                        </strong>
-                                    </Typography>
+            <Box className={`${!active ? 'non-allocated' : ''}`}>
+                <Accordion>
+                    <Grid container alignItems='center'>
+                        <Grid item xs={2}>
+                            <Box px={active ? 0 : 3}>
+                                <Fab
+                                    color={`${active ? 'secondary' : 'primary'}`}
+                                    size='small'
+                                    onClick={() => handleAddButton()}
+                                    className={`${active && 'outlined-add-icon'}`}
+                                >
+                                    <AddIcon color='action'/>
+                                </Fab>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={10}>
+                            <AccordionSummary>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <Typography>
+                                            <strong>
+                                                {contributor.name}
+                                            </strong>
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {contributor.github_handle}
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12}>
-                                    {contributor.github_handle}
-                                </Grid>
-                            </Grid>
-                        </AccordionSummary>
-                    </Grid>
-                </Grid>
-                <AccordionDetails>
-                    <Grid container spacing={3}>
-                        {
-                            renderContributorAllocations({
-                                allocations: allocations
-                            })
-                        }
-                        <Grid item xs={12} align='center'>
-                            <Button
-                                variant='outlined'
-                                color='primary'
-                                onClick={() => redirectToContributorDetails({ contributor })}
-                            >
-                                {`View Contributor Detail`}
-                            </Button>
+                            </AccordionSummary>
                         </Grid>
                     </Grid>
-                </AccordionDetails>
-            </Accordion>
+                    <AccordionDetails>
+                        <Grid container spacing={3}>
+                            {
+                                renderContributorAllocations({
+                                    allocations: allocations
+                                })
+                            }
+                            <Grid item xs={12} align='center'>
+                                <Button
+                                    variant='outlined'
+                                    color='primary'
+                                    onClick={() => redirectToContributorDetails({ contributor })}
+                                >
+                                    {`View Contributor Detail`}
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </AccordionDetails>
+                </Accordion>
+            </Box>
         </Box>
 
     )
