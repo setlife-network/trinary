@@ -15,9 +15,9 @@ const ContributorsEmptyState = (props) => {
             justify='center'
             className='ContributorsEmptyState EmptyState'
         >
-            <Box mt={5}>
+            <Box mt={2}>
                 <Typography color='secondary' variant='h6'>
-                    {`No active contributors found`}
+                    {`No contributors found`}
                 </Typography>
                 {
                     active &&
@@ -25,9 +25,8 @@ const ContributorsEmptyState = (props) => {
                         {`Add some contributors from the list below`}
                     </Typography>
                 }
-                <Box mt={5}>
+                <Box>
                     <SupervisedUserCircleIcon
-                        fontSize='large'
                         className='empty-icon'
                         color='secondary'
                     />
