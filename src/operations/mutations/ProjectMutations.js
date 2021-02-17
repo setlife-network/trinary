@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const ADD_PROJECT = gql`
-    mutation createProject($client_id: Int!, $name:String!, $github_url: String!, $toggl_url: String, $date: String!, $expected_budget: Int!){
+    mutation createProject($client_id: Int!, $name:String!, $github_url: String!, $toggl_url: String, $date: String!, $expected_budget: Int!, $expected_budget_timeframe: String!){
         createProject(createFields: {
             client_id: $client_id
             name: $name,
@@ -9,7 +9,8 @@ export const ADD_PROJECT = gql`
             toggl_url: $toggl_url,
             date: $date,
             is_active: true,
-            expected_budget:$expected_budget
+            expected_budget :$expected_budget,
+            expected_budget_timeframe: $expected_budget_timeframe
         }){
             id,
             name
@@ -18,12 +19,13 @@ export const ADD_PROJECT = gql`
 `
 
 export const UPDATE_PROJECT = gql`
-    mutation updateProjectById($project_id: Int!, $name: String!, $github_url: String, $toggl_url: String, $date: String!, $expected_budget:Int!){
+    mutation updateProjectById($project_id: Int!, $date: String!, $expected_budget:Int!, $name: String!, $github_url: String, $expected_budget_timeframe: String, $toggl_url: String){
         updateProjectById(
             id: $project_id,
             updateFields: {
                 name: $name
                 github_url: $github_url
+                expected_budget_timeframe: $expected_budget_timeframe
                 toggl_url: $toggl_url
                 date: $date
                 expected_budget: $expected_budget
@@ -32,6 +34,7 @@ export const UPDATE_PROJECT = gql`
             id,
             name,
             expected_budget,
+            expected_budget_timeframe,
             is_active,
             github_url,
             toggl_url

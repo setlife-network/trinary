@@ -31,6 +31,28 @@ export const CURRENCIES = [
         thousand: ','
     }
 ]
+export const EXPECTED_BUDGET_TIMEFRAME_OPTIONS = [
+    {
+        value: 'daily',
+        label: 'daily'
+    },
+    {
+        value: 'weekly',
+        label: 'weekly'
+    },
+    {
+        value: 'quarterly',
+        label: 'quarterly'
+    },
+    {
+        value: 'monthly',
+        label: 'monthly'
+    },
+    {
+        value: 'yearly',
+        label: 'yearly'
+    }
+]
 export const IS_PRODUCTION = process.env.NODE_ENV == 'production' ? true : false
 export const LOGO_URL = 'https://project-trinary.s3.amazonaws.com/images/Logo.png'
 export const NAV_ITEMS = [

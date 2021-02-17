@@ -8,6 +8,12 @@ import moment from 'moment'
 
 import { CURRENCIES } from '../constants'
 
+export const calculateTotalPayments = (payments) => {
+    return payments.reduce((sum, payment) => {
+        return sum + payment.amount;
+    }, 0)
+}
+
 export const formatAmount = (props) => {
     const {
         amount,

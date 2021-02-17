@@ -26,7 +26,6 @@ import {
     last,
     split
 } from 'lodash'
-import accounting from 'accounting-js'
 
 import {
     formatAmount,
