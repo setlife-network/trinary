@@ -23,7 +23,7 @@ const ClientPaymentsManager = ({
 
     const { loading, error, data } = useQuery(GET_CLIENT_TOTAL_PAID, {
         variables: {
-            id: parseInt(clientId, 10),
+            id: Number(clientId),
             fromDate: null,
             toDate: null
         }
@@ -62,34 +62,29 @@ const ClientPaymentsManager = ({
                         </strong>
                     </Typography>
                 </Grid>
-                {
-                    getClientById.totalPaid &&
-                    (
-                        <>
-                            <Grid item xs={10} md={3}>
-                                <Typography align='left' variant='h5' >
-                                    <strong>
-                                        {`${totalPaid} Total`}
-                                    </strong>
-                                </Typography>
-                            </Grid>
-                            <Grid
-                                item
-                                xs={2}
-                                md={1}
-                                align='right'
-                                onClick={() => history.push(`/clients/${clientId}/payments/add`)}
-                            >
-                                <Fab
-                                    color='primary'
-                                    size='medium'
-                                >
-                                    <AddIcon color='action'/>
-                                </Fab>
-                            </Grid>
-                        </>
-                    )
-                }
+
+                <Grid item xs={10} md={3}>
+                    <Typography align='left' variant='h5' >
+                        <strong>
+                            {`${totalPaid} Total`}
+                        </strong>
+                    </Typography>
+                </Grid>
+                <Grid
+                    item
+                    xs={2}
+                    md={1}
+                    align='right'
+                    onClick={() => history.push(`/clients/${clientId}/payments/add`)}
+                >
+                    <Fab
+                        color='primary'
+                        size='medium'
+                    >
+                        <AddIcon color='action'/>
+                    </Fab>
+                </Grid>
+
             </Grid>
         </Box>
     )
