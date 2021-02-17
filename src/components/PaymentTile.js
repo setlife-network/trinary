@@ -69,7 +69,8 @@ const PaymentTile = (props) => {
         currency: client.currency
     })
 
-    if (loadingTotalAllocated || loadingPaymentAllocations) return 'Loading...'
+    if (loadingTotalAllocated || loadingPaymentAllocations) return ''
+
     if (errorTotalAllocated || errorPaymentAllocations) return `An error ocurred`
 
     const { allocations } = dataPaymentAllocations.getPaymentById

@@ -112,7 +112,7 @@ const AddProjectForm = ({
     }
 
     if (errorClient) return 'Somenthing went wrong'
-    if (loadingClient) return 'loading...'
+    if (loadingClient) return <LoadingProgress/>
 
     const currencyInformation = selectCurrencyInformation({
         currency: dataClient.getClientById.currency
@@ -185,7 +185,7 @@ const AddProjectForm = ({
                         format='MM/DD/YYYY'
                         margin='normal'
                         id='date-picker-inline'
-                        label=''
+                        label='Project start date'
                         value={projectDate}
                         onChange={handleDateChange}
                         KeyboardButtonProps={{
