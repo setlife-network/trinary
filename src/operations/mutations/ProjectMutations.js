@@ -19,15 +19,16 @@ export const ADD_PROJECT = gql`
 `
 
 export const UPDATE_PROJECT = gql`
-    mutation updateProjectById($project_id: Int!, $expected_budget:Int!, $name: String!, $github_url: String, $expected_budget_timeframe: String, $toggl_url: String){
+    mutation updateProjectById($project_id: Int!, $date: String!, $expected_budget:Int!, $name: String!, $github_url: String, $expected_budget_timeframe: String, $toggl_url: String){
         updateProjectById(
             id: $project_id,
             updateFields: {
-                expected_budget: $expected_budget
                 name: $name
                 github_url: $github_url
                 expected_budget_timeframe: $expected_budget_timeframe
                 toggl_url: $toggl_url
+                date: $date
+                expected_budget: $expected_budget
             }
         ){
             id,

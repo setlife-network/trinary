@@ -5,6 +5,7 @@ module.exports = gql`
     type Contributor {
         id: Int!
         toggl_id: Int
+        total_paid: Int!
         name: String!
         external_data_url: String
         github_id: String

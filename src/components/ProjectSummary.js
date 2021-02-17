@@ -7,6 +7,7 @@ import {
     Icon,
     Typography
 } from '@material-ui/core'
+import moment from 'moment'
 
 import {
     formatAmount,
@@ -70,7 +71,6 @@ const ProjectSummary = (props) => {
                                 </Grid>
                             </Grid>
                         </Grid>
-
                         <Grid item xs={12}>
                             <Grid container>
                                 <Grid item xs={2}>
@@ -78,6 +78,17 @@ const ProjectSummary = (props) => {
                                 </Grid>
                                 <Grid xs={10} align='left'>
                                     {`Total paid - ${totalPaidAmount}`}
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Grid container>
+                                <Grid item xs={2}>
+                                    <Icon className='fas fa-flag' color='primary'/>
+                                </Grid>
+                                <Grid xs={10} align='left'>
+
+                                    {`Start date - ${moment(project.date, 'x').format('MM/DD/YYYY')}`}
                                 </Grid>
                             </Grid>
                         </Grid>

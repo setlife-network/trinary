@@ -17,6 +17,13 @@ import {
 } from '@material-ui/core/'
 import { findIndex, split } from 'lodash'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker
+} from '@material-ui/pickers'
+import accounting from 'accounting-js'
+import moment from 'moment'
+import MomentUtils from '@date-io/moment'
 
 import LoadingProgress from './LoadingProgress'
 import {
@@ -35,6 +42,11 @@ const ProjectEditDialog = (props) => {
         open
     } = props
 
+    const currentDate = moment(project.date, 'x').format('YYYY-MM-DD')
+    const currencyInformation = selectCurrencyInformation({
+        currency: project.client.currency
+    })
+
     const [updateProject, { data, loading, error }] = useMutation(UPDATE_PROJECT, { errorPolicy: 'all' })
 
     const [budgetTimeframe, setBudgetTimeframe] = useState(null)
@@ -43,9 +55,26 @@ const ProjectEditDialog = (props) => {
     const [editProjectError, setEditProjectError] = useState('')
     const [expectedBudget, setExpectedBudget] = useState(project.expected_budget)
     const [githubURL, setGithubURL] = useState(project.github_url)
+    const [projectDate, setProjectDate] = useState(null)
     const [projectName, setProjectName] = useState(project.name)
     const [togglURL, setTogglURL] = useState(project.toggl_url)
 
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setDisplayError(false)
+    }
+    const handleBudgetChange = (input) => {
+        const amount = Number(input.replace(/\D/g, ''))
+        setExpectedBudget(amount)
+    }
+    const handleDateChange = (date) => {
+        setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
+    }
+    const handleTimeframeChange = (timeframe) => {
+        setBudgetTimeframe(timeframe)
+    }
     const onEditProject = async () => {
         if (!verifyGithubURL(githubURL)) {
             setEditProjectError('The Github URL is invalid')
@@ -61,10 +90,11 @@ const ProjectEditDialog = (props) => {
         }
         const projectInfoToEdit = {
             project_id: project.id,
-            name: projectName,
+            date: projectDate,
             expected_budget: Number(expectedBudget),
+            expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value,
             github_url: githubURL,
-            expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
+            name: projectName
         }
         if (togglURL) {
             projectInfoToEdit['toggl_url'] = togglURL
@@ -79,29 +109,14 @@ const ProjectEditDialog = (props) => {
         }
     }
 
-    const handleAlertClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return
-        }
-        setDisplayError(false)
-    }
-
-    const handleBudgetChange = (input) => {
-        const amount = Number(input.replace(/\D/g, ''))
-        setExpectedBudget(amount)
-    }
-
-    const handleTimeframeChange = (timeframe) => {
-        setBudgetTimeframe(timeframe)
-    }
-
     useEffect(() => {
         if (
             expectedBudget == project.expected_budget &&
             githubURL == project.github_url &&
             projectName == project.name &&
             togglURL == project.toggl_url &&
-            EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe || 0].label == project.expected_budget_timeframe
+            EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe || 0].label == project.expected_budget_timeframe &&
+            projectDate == currentDate
         ) {
             setDisableEdit(true)
         } else if (!expectedBudget || !githubURL || !projectName) {
@@ -112,15 +127,12 @@ const ProjectEditDialog = (props) => {
     })
 
     useEffect(() => {
+        setProjectDate(currentDate)
         if (project.expected_budget_timeframe) {
             //set the index of the current expected budget timeframe
             setBudgetTimeframe(findIndex(EXPECTED_BUDGET_TIMEFRAME_OPTIONS, ['label', `${project.expected_budget_timeframe}`]))
         }
     }, [])
-
-    const currencyInformation = selectCurrencyInformation({
-        currency: project.client.currency
-    })
 
     const renderTimeframeOptions = ({ timeframes }) => {
         return timeframes.map((timeframe, i) => {
@@ -199,6 +211,23 @@ const ProjectEditDialog = (props) => {
                                     onChange={(event) => setTogglURL(event.target.value)}
                                 />
                             </Box>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <MuiPickersUtilsProvider utils={MomentUtils}>
+                                <KeyboardDatePicker
+                                    disableToolbar
+                                    variant='inline'
+                                    format='MM/DD/YYYY'
+                                    margin='normal'
+                                    id='date-picker-inline'
+                                    label=''
+                                    value={projectDate}
+                                    onChange={handleDateChange}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change date',
+                                    }}
+                                />
+                            </MuiPickersUtilsProvider>
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <Box mb={2}>

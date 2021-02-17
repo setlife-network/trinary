@@ -130,7 +130,7 @@ const AddProjectForm = ({
     }
 
     if (errorClient) return 'Somenthing went wrong'
-    if (loadingClient) return 'loading...'
+    if (loadingClient) return <LoadingProgress/>
 
     const currencyInformation = selectCurrencyInformation({
         currency: dataClient.getClientById.currency
@@ -232,6 +232,24 @@ const AddProjectForm = ({
                     </Box>
                 </Grid>
             </Grid>
+            {// <Grid item xs={12}>
+            //     <MuiPickersUtilsProvider utils={MomentUtils}>
+            //         <KeyboardDatePicker
+            //             disableToolbar
+            //             variant='inline'
+            //             format='MM/DD/YYYY'
+            //             margin='normal'
+            //             id='date-picker-inline'
+            //             label='Project start date'
+            //             value={projectDate}
+            //             onChange={handleDateChange}
+            //             KeyboardButtonProps={{
+            //                 'aria-label': 'change date',
+            //             }}
+            //         />
+            //     </MuiPickersUtilsProvider>
+            // </Grid>
+            }
             <Grid item xs={12}>
                 <Box mt={5}>
                     <Button

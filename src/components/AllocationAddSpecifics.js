@@ -118,7 +118,7 @@ const AllocationAddSpecifics = (props) => {
                             <Grid item xs={3}>
                                 <ListItemText primary={
                                     `${p.amount
-                                        ? `${selectCurrencySymbol({ currency: currency })}${paymentAmount}`
+                                        ? `${paymentAmount}`
                                         : 'Propose'
                                     }`
                                 }
