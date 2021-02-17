@@ -47,7 +47,7 @@ const PaymentEditDialog = (props) => {
 
     const [dateIncurred, setDateIncurred] = useState(null)
     const [datePaid, setDatePaid] = useState(null)
-    const [disableAdd, setDisableAdd] = useState(true)
+    const [disableEdit, setDisableEdit] = useState(true)
     const [displayError, setDisplayError] = useState(false)
     const [editPaymentError, setEditPaymentError] = useState('')
     const [invalidPaymentAmountInput, setInvalidPaymentAmountInput] = useState(false)
@@ -89,6 +89,19 @@ const PaymentEditDialog = (props) => {
         const amount = typeof input == 'string' ? Number(input.replace(/\D/g, '')) : (input / 100)
         setPaymentAmount(amount)
     }
+
+    useEffect(() => {
+        if (!dateIncurred || !paymentAmount) {
+            setDisableEdit(true)
+        } else if (
+            dateIncurred == moment(payment.date_incurred, 'x').format('YYYY-MM-DD') &&
+            datePaid == moment(payment.date_paid, 'x').format('YYYY-MM-DD')
+            && paymentAmount == payment.amount / 100) {
+            setDisableEdit(true)
+        } else {
+            setDisableEdit(false)
+        }
+    })
 
     useEffect(() => {
         handlePaymentAmountChange(payment.amount)
@@ -165,6 +178,7 @@ const PaymentEditDialog = (props) => {
                             variant='contained'
                             color='primary'
                             onClick={handleEditPayment}
+                            disabled={disableEdit}
                         >
                             {`Edit payment`}
                         </Button>

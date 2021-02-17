@@ -61,7 +61,6 @@ const ClientEditDialog = (props) => {
     }
 
     useEffect(() => {
-
         if (!clientName || !clientCurrency) {
             setDisableEdit(true)
         } else if (clientName == client.name && clientCurrency == client.currency && clientEmail == client.email) {
