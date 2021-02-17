@@ -25,10 +25,10 @@ const Navigation = (props) => {
 
     return (
         <Box bgcolor={lightBlue} mb={5}>
-            <AppBar className='Navigation' position='sticky' color='transparent'>
+            <AppBar className='Navigation' position='sticky' color='white'>
                 <Grid container>
-                    <Grid item xs={12} sm={3}>
-                        <Box my={2} align='center'>
+                    <Grid item xs={3}>
+                        <Box mt={2} align='center'>
                             <img
                                 src={LOGO_URL}
                                 alt='Home'
@@ -37,8 +37,8 @@ const Navigation = (props) => {
                             />
                         </Box>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <h2>
+                    <Grid item xs={6}>
+                        <h2 className='navigation-title'>
                             {
                                 capitalizeWord({
                                     word: locationTitle.title || optionalLocationTitle
