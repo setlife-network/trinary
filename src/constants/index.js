@@ -23,6 +23,12 @@ export const CURRENCIES = [
         symbol: '₿',
         decimal: '.',
         thousand: ','
+    },
+    {
+        name: '',
+        symbol: '',
+        decimal: '.',
+        thousand: ','
     }
 ]
 export const IS_PRODUCTION = process.env.NODE_ENV == 'production' ? true : false

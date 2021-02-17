@@ -32,7 +32,7 @@ const RateMaxBudgetForm = (props) => {
     }, [currentRate])
 
     useEffect(() => {
-        setTotalHours(totalAmount && currentRateInput ? (totalAmount / currentRateInput).toFixed(2) : 0)
+        setTotalHours(totalAmount && currentRateInput ? ((totalAmount / 100) / currentRateInput).toFixed(2) : 0)
         setNewAllocationRate({
             hourly_rate: currentRateInput,
             total_amount: totalAmount,

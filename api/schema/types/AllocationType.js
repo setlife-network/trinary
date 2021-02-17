@@ -43,7 +43,7 @@ module.exports = gql`
 
     type Query {
         getAllocationById(id: Int!): Allocation
-        getAllocations: [Allocation]
+        getAllocations(contributorId: Int, projectId: Int): [Allocation]
     }
 
     type Mutation {
