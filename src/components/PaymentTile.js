@@ -15,6 +15,7 @@ import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import accounting from 'accounting-js'
 
 import AllocationAddForm from './AllocationAddForm'
+import PaymentEditDialog from './PaymentEditDialog'
 import {
     GET_PAYMENT_ALLOCATIONS,
     GET_PAYMENT_TOTAL_ALLOCATED
@@ -55,16 +56,18 @@ const PaymentTile = (props) => {
 
     const [paymentClicked, setPaymentClicked] = useState(null)
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
+    const [openEditPayment, setOpenEditPayment] = useState(false);
 
     const addAllocation = (props) => {
         setOpenAddAllocationDialog(true)
         setPaymentClicked(props.payment)
     }
-
     const handleAddAllocationClose = (value) => {
         setOpenAddAllocationDialog(false)
     }
-
+    const handleEditPayment = (value) => {
+        setOpenEditPayment(value)
+    }
     const currencyInformation = selectCurrencyInformation({
         currency: client.currency
     })
@@ -141,10 +144,7 @@ const PaymentTile = (props) => {
             mx={1}
             className='PaymentTile'
         >
-            <Accordion
-                disabled={!project}
-                className={!project && 'disabled-tile'}
-            >
+            <Accordion>
                 <AccordionSummary
                     expandIcon={
                         project &&
@@ -178,7 +178,6 @@ const PaymentTile = (props) => {
                             />
                         </Grid>
                         {project &&
-
                             <Grid item xs={12}>
                                 <Typography variant='subtitle1'>
                                     <Box
@@ -196,7 +195,17 @@ const PaymentTile = (props) => {
                         }
                     </Grid>
                 </AccordionSummary>
-                {project &&
+                { !project &&
+                    <Box align='left' mb={2} ml={2}>
+                        <Button
+                            color='primary'
+                            onClick={() => handleEditPayment(true)}
+                        >
+                            {'Edit'.toUpperCase()}
+                        </Button>
+                    </Box>
+                }
+                { project &&
                     <AccordionDetails>
                         <Grid container>
                             <Grid item xs={12}>
@@ -230,6 +239,11 @@ const PaymentTile = (props) => {
                     payment={paymentClicked}
                 />
             }
+            <PaymentEditDialog
+                payment={payment}
+                open={openEditPayment}
+                onClose={() => handleEditPayment(false)}
+            />
         </Box>
     )
 }

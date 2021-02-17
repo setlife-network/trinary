@@ -15,7 +15,6 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker
 } from '@material-ui/pickers'
-import accounting from 'accounting-js'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 import moment from 'moment'
 import MomentUtils from '@date-io/moment'
@@ -24,7 +23,6 @@ import LoadingProgress from './LoadingProgress'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/PaymentQueries'
 import { CREATE_PAYMENT } from '../operations/mutations/PaymentMutations'
-
 import {
     selectCurrencyInformation
 } from '../scripts/selectors'
