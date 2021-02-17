@@ -64,7 +64,7 @@ const ProjectEditDialog = (props) => {
             name: projectName,
             expected_budget: Number(expectedBudget),
             github_url: githubURL,
-            expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].option
+            expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
         }
         if (togglURL) {
             projectInfoToEdit['toggl_url'] = togglURL
@@ -101,7 +101,7 @@ const ProjectEditDialog = (props) => {
             githubURL == project.github_url &&
             projectName == project.name &&
             togglURL == project.toggl_url &&
-            EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe || 0].option == project.expected_budget_timeframe
+            EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe || 0].label == project.expected_budget_timeframe
         ) {
             setDisableEdit(true)
         } else if (!expectedBudget || !githubURL || !projectName) {
@@ -114,7 +114,7 @@ const ProjectEditDialog = (props) => {
     useEffect(() => {
         if (project.expected_budget_timeframe) {
             //set the index of the current expected budget timeframe
-            setBudgetTimeframe(findIndex(EXPECTED_BUDGET_TIMEFRAME_OPTIONS, ['option', `${project.expected_budget_timeframe}`]))
+            setBudgetTimeframe(findIndex(EXPECTED_BUDGET_TIMEFRAME_OPTIONS, ['label', `${project.expected_budget_timeframe}`]))
         }
     }, [])
 
@@ -126,7 +126,7 @@ const ProjectEditDialog = (props) => {
         return timeframes.map((timeframe, i) => {
             return (
                 <MenuItem value={i}>
-                    {`${timeframe.option}`}
+                    {`${timeframe.label}`}
                 </MenuItem>
             )
         })

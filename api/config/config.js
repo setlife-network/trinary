@@ -8,11 +8,11 @@ const {
 } = MYSQL
 
 module.exports = {
-    'development': {
-        'username': `${DB_USERNAME}`,
-        'password': `${DB_PASSWORD}`,
-        database: `${DB_NAME}`,
-        host: `${DB_HOST}`,
+    development: {
+        username: DB_USERNAME,
+        password: DB_PASSWORD,
+        database: DB_NAME,
+        host: DB_HOST,
         dialect: 'mysql'
     }
 }

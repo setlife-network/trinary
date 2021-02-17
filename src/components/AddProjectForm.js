@@ -104,7 +104,7 @@ const AddProjectForm = ({
             github_url: projectGithub,
             date: projectDate,
             expected_budget: parseInt(projectBudget, 10),
-            expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].option
+            expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
         }
         if (projectToggl) {
             variables['toggl_url'] = projectToggl
@@ -123,7 +123,7 @@ const AddProjectForm = ({
         return timeframes.map((timeframe, i) => {
             return (
                 <MenuItem value={i}>
-                    {`${timeframe.option}`}
+                    {`${timeframe.label}`}
                 </MenuItem>
             )
         })

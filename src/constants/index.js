@@ -33,19 +33,24 @@ export const CURRENCIES = [
 ]
 export const EXPECTED_BUDGET_TIMEFRAME_OPTIONS = [
     {
-        option: 'daily'
+        value: 'daily',
+        label: 'daily'
     },
     {
-        option: 'weekly'
+        value: 'weekly',
+        label: 'weekly'
     },
     {
-        option: 'quarterly'
+        value: 'quarterly',
+        label: 'quarterly'
     },
     {
-        option: 'monthly'
+        value: 'monthly',
+        label: 'monthly'
     },
     {
-        option: 'yearly'
+        value: 'yearly',
+        label: 'yearly'
     }
 ]
 export const IS_PRODUCTION = process.env.NODE_ENV == 'production' ? true : false
