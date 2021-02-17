@@ -8,9 +8,12 @@ import {
     Typography
 } from '@material-ui/core'
 import moment from 'moment'
-import accounting from 'accounting-js'
 
-import { selectCurrencyInformation, selectCurrencySymbol } from '../scripts/selectors'
+import {
+    formatAmount,
+    selectCurrencyInformation,
+    selectCurrencySymbol
+} from '../scripts/selectors'
 import ProjectEditDialog from './ProjectEditDialog'
 
 const ProjectSummary = (props) => {
@@ -28,24 +31,14 @@ const ProjectSummary = (props) => {
     }
 
     const currencyInformation = selectCurrencyInformation({ currency: project.client.currency })
-    const expectedBudgetAmount = accounting.formatMoney(
-        project.expected_budget / 100,
-        {
-            symbol: currencyInformation['symbol'],
-            thousand: currencyInformation['thousand'],
-            decimal: currencyInformation['decimal'],
-            format: '%s %v'
-        }
-    )
-    const totalPaidAmount = accounting.formatMoney(
-        project.totalPaid / 100,
-        {
-            symbol: currencyInformation['symbol'],
-            thousand: currencyInformation['thousand'],
-            decimal: currencyInformation['decimal'],
-            format: '%s %v'
-        }
-    )
+    const expectedBudgetAmount = formatAmount({
+        amount: project.expected_budget / 100,
+        currencyInformation: currencyInformation
+    })
+    const totalPaidAmount = formatAmount({
+        amount: project.totalPaid / 100,
+        currencyInformation: currencyInformation
+    })
 
     return (
         <Box
@@ -74,7 +67,7 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-wallet' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-                                    {`Expected budget - ${expectedBudgetAmount}`}
+                                    {`Expected budget - ${expectedBudgetAmount} ${project.expected_budget_timeframe}`}
                                 </Grid>
                             </Grid>
                         </Grid>

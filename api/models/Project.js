@@ -38,6 +38,9 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             unique: true
         },
+        expected_budget_timeframe: {
+            type: DataTypes.STRING
+        },
         date: {
             type: DataTypes.DATE,
             allowNull: false
