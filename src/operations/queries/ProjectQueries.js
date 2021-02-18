@@ -37,6 +37,7 @@ export const GET_PROJECT = gql`
             toggl_url
             date
             totalPaid
+            expected_budget_timeframe
             client {
                 id
                 name

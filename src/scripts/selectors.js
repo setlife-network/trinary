@@ -8,6 +8,11 @@ import moment from 'moment'
 
 import { CURRENCIES, NAV_TITLES } from '../constants'
 
+export const calculateTotalPayments = (payments) => {
+    return payments.reduce((sum, payment) => {
+        return sum + payment.amount;
+    }, 0)
+}
 export const capitalizeWord = (props) => {
     const {
         word

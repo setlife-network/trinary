@@ -15,14 +15,13 @@ import PaymentTile from './PaymentTile'
 import PaymentsList from './PaymentsList'
 import { GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { pageName } from '../reactivities/variables'
+import {
+    calculateTotalPayments,
+    formatAmount,
+    selectCurrencyInformation
+} from '../scripts/selectors'
 
 const ProjectPayments = (props) => {
-
-    const calculateTotalPayments = (payments) => {
-        return payments.reduce((sum, payment) => {
-            return sum + payment.amount;
-        }, 0)
-    }
 
     const { projectId } = props
 
@@ -39,6 +38,11 @@ const ProjectPayments = (props) => {
     const { allocatedPayments, client } = getProjectById
     pageName(getProjectById.name)
     const payments = orderBy(allocatedPayments, ['date_paid'], ['desc'])
+    const currencyInformation = selectCurrencyInformation({ currency: client.currency })
+    const totalPaidAmount = formatAmount({
+        amount: calculateTotalPayments(allocatedPayments) / 100,
+        currencyInformation: currencyInformation
+    })
 
     return (
 
@@ -56,7 +60,7 @@ const ProjectPayments = (props) => {
                         <Grid item>
                             <Typography variant='h5'>
                                 <strong>
-                                    {`${calculateTotalPayments(allocatedPayments)} ${client.currency} Total`}
+                                    {`${totalPaidAmount} Total`}
                                 </strong>
                             </Typography>
                         </Grid>
