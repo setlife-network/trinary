@@ -88,5 +88,5 @@ export const NAV_TITLES = [
         title: '',
         locations: ['/']
     }
-
 ]
+export const SMALL_LOGO_URL = 'https://project-trinary.s3.amazonaws.com/images/SmallLogo.png'

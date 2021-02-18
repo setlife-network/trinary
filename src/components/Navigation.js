@@ -6,10 +6,11 @@ import {
     Box,
     Grid
 } from '@material-ui/core'
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
 import { split } from 'lodash'
 
 import { lightBlue } from '../styles/colors.scss'
-import { LOGO_URL } from '../constants'
+import { LOGO_URL, SMALL_LOGO_URL } from '../constants'
 import { capitalizeWord, matchTitlePage } from '../scripts/selectors'
 import { pageName } from '../reactivities/variables'
 
@@ -22,19 +23,30 @@ const Navigation = (props) => {
     const location = useLocation()
     const locationTitle = matchTitlePage({ location: location.pathname })
     const optionalLocationTitle = useReactiveVar(pageName)
-
+    
     return (
         <Box bgcolor={lightBlue} mb={5}>
             <AppBar className='Navigation' position='sticky' color='white'>
                 <Grid container>
                     <Grid item xs={3}>
                         <Box mt={2} align='center'>
-                            <img
-                                src={LOGO_URL}
-                                alt='Home'
-                                onClick={() => redirectToHome()}
-                                className='icon-image'
-                            />
+                            {
+                                props.width == 'xs'
+                                    ? (
+                                        <img
+                                            src={SMALL_LOGO_URL}
+                                            alt='Logo'
+                                            className='icon-image'
+                                        />
+                                    )
+                                    : (
+                                        <img
+                                            src={LOGO_URL}
+                                            alt='Logo'
+                                            className='icon-image'
+                                        />
+                                    )
+                            }
                         </Box>
                     </Grid>
                     <Grid item xs={6}>
@@ -54,4 +66,4 @@ const Navigation = (props) => {
     )
 }
 
-export default Navigation
+export default withWidth()(Navigation)
