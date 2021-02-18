@@ -13,6 +13,7 @@ module.exports = gql`
         date_last_synced: String
         client_id: Int!
         toggl_id: String
+        expected_budget_timeframe: String
         allocations(contributorId: Int): [Allocation]
         allocatedPayments: [Payment]
         averageHourlyPaid(fromDate: String, toDate: String): Int
@@ -72,6 +73,7 @@ module.exports = gql`
         toggl_url: String
         client_id: Int!
         date: String!
+        expected_budget_timeframe: String
     }
 
     input UpdateProjectInput {
@@ -84,6 +86,7 @@ module.exports = gql`
         toggl_id: String
         date: String
         date_last_synced:String
+        expected_budget_timeframe: String
     }
 
     type Query {

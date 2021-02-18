@@ -6,6 +6,9 @@ import {
     Button,
     FormControl,
     Grid,
+    InputLabel,
+    MenuItem,
+    Select,
     Snackbar,
     TextField,
     Typography
@@ -16,7 +19,6 @@ import {
 } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
-import accounting from 'accounting-js'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import LoadingProgress from './LoadingProgress'
@@ -25,6 +27,7 @@ import {
     verifyGithubURL,
     verifyTogglURL
 } from '../scripts/selectors'
+import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS } from '../constants'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
 import { red } from '../styles/colors.scss'
@@ -51,9 +54,10 @@ const AddProjectForm = ({
     const [projectDate, setProjectDate] = useState(null)
     const [projectBudget, setProjectBudget] = useState(0)
     const [displayError, setDisplayError] = useState(false)
+    const [budgetTimeframe, setBudgetTimeframe] = useState(null)
 
     useEffect(() => {
-        if (!projectName || !projectGithub || !projectDate) {
+        if (!projectName || !projectGithub || !projectDate || budgetTimeframe == null) {
             setDisableAdd(true)
         } else {
             setDisableAdd(false)
@@ -76,6 +80,9 @@ const AddProjectForm = ({
     const handleDateChange = (date) => {
         setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
     }
+    const handleTimeframeChange = (timeframe) => {
+        setBudgetTimeframe(timeframe)
+    }
 
     const createProject = async () => {
         if (!verifyGithubURL(projectGithub)) {
@@ -90,17 +97,18 @@ const AddProjectForm = ({
                 return
             }
         }
+
         const variables = {
             client_id: parseInt(clientId, 10),
             name: projectName,
             github_url: projectGithub,
             date: projectDate,
-            expected_budget: parseInt(projectBudget, 10)
+            expected_budget: parseInt(projectBudget, 10),
+            expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
         }
         if (projectToggl) {
             variables['toggl_url'] = projectToggl
         }
-
         const newProject = await addProject({ variables })
         if (loading) return <LoadingProgress/>
         if (newProject.errors) {
@@ -109,6 +117,16 @@ const AddProjectForm = ({
         } else {
             history.push(`/projects/${newProject.data.createProject.id}`)
         }
+    }
+
+    const renderTimeframeOptions = ({ timeframes }) => {
+        return timeframes.map((timeframe, i) => {
+            return (
+                <MenuItem value={i}>
+                    {`${timeframe.label}`}
+                </MenuItem>
+            )
+        })
     }
 
     if (errorClient) return 'Somenthing went wrong'
@@ -177,23 +195,61 @@ const AddProjectForm = ({
                     </Box>
                 </Grid>
             </Grid>
-            <Grid item xs={12}>
-                <MuiPickersUtilsProvider utils={MomentUtils}>
-                    <KeyboardDatePicker
-                        disableToolbar
-                        variant='inline'
-                        format='MM/DD/YYYY'
-                        margin='normal'
-                        id='date-picker-inline'
-                        label='Project start date'
-                        value={projectDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                    />
-                </MuiPickersUtilsProvider>
+            <Grid container justify='space-between'>
+                <Grid item xs={12} md={5}>
+                    <Box xs={10} my={2}>
+                        <MuiPickersUtilsProvider utils={MomentUtils}>
+                            <KeyboardDatePicker
+                                disableToolbar
+                                variant='inline'
+                                format='MM/DD/YYYY'
+                                margin='normal'
+                                id='date-picker-inline'
+                                label=''
+                                value={projectDate}
+                                onChange={handleDateChange}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
+                            />
+                        </MuiPickersUtilsProvider>
+                    </Box>
+                </Grid>
+                <Grid item xs={12} md={5}>
+                    <Box xs={10} my={2}>
+                        <FormControl fullWidth>
+                            <InputLabel id='demo-simple-select-helper-label'>{`Expected budget timeframe`}</InputLabel>
+                            <Select
+                                fullWidth
+                                label={`Expected budget timeframe`}
+                                id='demo-simple-select'
+                                value={budgetTimeframe}
+                                onChange={(event) => (handleTimeframeChange(event.target.value))}
+                            >
+                                {renderTimeframeOptions({ timeframes: EXPECTED_BUDGET_TIMEFRAME_OPTIONS })}
+                            </Select>
+                        </FormControl>
+                    </Box>
+                </Grid>
             </Grid>
+            {// <Grid item xs={12}>
+            //     <MuiPickersUtilsProvider utils={MomentUtils}>
+            //         <KeyboardDatePicker
+            //             disableToolbar
+            //             variant='inline'
+            //             format='MM/DD/YYYY'
+            //             margin='normal'
+            //             id='date-picker-inline'
+            //             label='Project start date'
+            //             value={projectDate}
+            //             onChange={handleDateChange}
+            //             KeyboardButtonProps={{
+            //                 'aria-label': 'change date',
+            //             }}
+            //         />
+            //     </MuiPickersUtilsProvider>
+            // </Grid>
+            }
             <Grid item xs={12}>
                 <Box mt={5}>
                     <Button

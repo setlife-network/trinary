@@ -5,9 +5,10 @@ import {
     TextField,
     Typography
 } from '@material-ui/core/'
-import accounting from 'accounting-js'
-
-import { selectCurrencyInformation } from '../scripts/selectors'
+import {
+    formatAmount,
+    selectCurrencyInformation
+} from '../scripts/selectors'
 
 const RateProratedMonthlyForm = (props) => {
 
@@ -56,15 +57,10 @@ const RateProratedMonthlyForm = (props) => {
     const currencyInformation = selectCurrencyInformation({
         currency: currency
     })
-    const paymentAmount = accounting.formatMoney(
-        totalAmount,
-        {
-            symbol: currencyInformation['symbol'],
-            thousand: currencyInformation['thousand'],
-            decimal: currencyInformation['decimal'],
-            format: '%s %v'
-        }
-    )
+    const paymentAmount = formatAmount({
+        amount: totalAmount,
+        currencyInformation: currencyInformation
+    })
 
     return (
         <Grid container className='RateProratedMonthlyForm'>

@@ -9,17 +9,18 @@ import {
     FormControl,
     FormHelperText,
     Grid,
+    InputLabel,
     MenuItem,
     Select,
     Snackbar,
     TextField
 } from '@material-ui/core/'
+import { findIndex, split } from 'lodash'
+import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker
 } from '@material-ui/pickers'
-import CurrencyTextField from '@unicef/material-ui-currency-textfield'
-import { split } from 'lodash'
 import accounting from 'accounting-js'
 import moment from 'moment'
 import MomentUtils from '@date-io/moment'
@@ -31,6 +32,7 @@ import {
     verifyTogglURL
 } from '../scripts/selectors'
 import { UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
+import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS } from '../constants'
 
 const ProjectEditDialog = (props) => {
 
@@ -47,6 +49,7 @@ const ProjectEditDialog = (props) => {
 
     const [updateProject, { data, loading, error }] = useMutation(UPDATE_PROJECT, { errorPolicy: 'all' })
 
+    const [budgetTimeframe, setBudgetTimeframe] = useState(null)
     const [disableEdit, setDisableEdit] = useState(true)
     const [displayError, setDisplayError] = useState(false)
     const [editProjectError, setEditProjectError] = useState('')
@@ -69,6 +72,9 @@ const ProjectEditDialog = (props) => {
     const handleDateChange = (date) => {
         setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
     }
+    const handleTimeframeChange = (timeframe) => {
+        setBudgetTimeframe(timeframe)
+    }
     const onEditProject = async () => {
         if (!verifyGithubURL(githubURL)) {
             setEditProjectError('The Github URL is invalid')
@@ -84,10 +90,11 @@ const ProjectEditDialog = (props) => {
         }
         const projectInfoToEdit = {
             project_id: project.id,
-            name: projectName,
-            github_url: githubURL,
             date: projectDate,
-            expected_budget: Number(expectedBudget)
+            expected_budget: Number(expectedBudget),
+            expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value,
+            github_url: githubURL,
+            name: projectName
         }
         if (togglURL) {
             projectInfoToEdit['toggl_url'] = togglURL
@@ -103,14 +110,12 @@ const ProjectEditDialog = (props) => {
     }
 
     useEffect(() => {
-        setProjectDate(currentDate)
-    }, [])
-    useEffect(() => {
         if (
             expectedBudget == project.expected_budget &&
             githubURL == project.github_url &&
             projectName == project.name &&
             togglURL == project.toggl_url &&
+            EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe || 0].label == project.expected_budget_timeframe &&
             projectDate == currentDate
         ) {
             setDisableEdit(true)
@@ -120,6 +125,24 @@ const ProjectEditDialog = (props) => {
             setDisableEdit(false)
         }
     })
+
+    useEffect(() => {
+        setProjectDate(currentDate)
+        if (project.expected_budget_timeframe) {
+            //set the index of the current expected budget timeframe
+            setBudgetTimeframe(findIndex(EXPECTED_BUDGET_TIMEFRAME_OPTIONS, ['label', `${project.expected_budget_timeframe}`]))
+        }
+    }, [])
+
+    const renderTimeframeOptions = ({ timeframes }) => {
+        return timeframes.map((timeframe, i) => {
+            return (
+                <MenuItem value={i}>
+                    {`${timeframe.label}`}
+                </MenuItem>
+            )
+        })
+    }
 
     return (
         <Dialog
@@ -160,7 +183,7 @@ const ProjectEditDialog = (props) => {
                                     outputFormat='string'
                                     decimalCharacter={`${currencyInformation['decimal']}`}
                                     digitGroupSeparator={`${currencyInformation['thousand']}`}
-                                    defaultValue={project.expected_budget}
+                                    defaultValue={project.expected_budget / 100}
                                     onChange={(event) => handleBudgetChange(event.target.value)}
                                 />
                             </Box>
@@ -207,6 +230,23 @@ const ProjectEditDialog = (props) => {
                             </MuiPickersUtilsProvider>
                         </Grid>
                         <Grid item xs={12} lg={6}>
+                            <Box mb={2}>
+                                <FormControl fullWidth>
+                                    <InputLabel>
+                                        {`Expected budget timeframe`}
+                                    </InputLabel>
+                                    <Select
+                                        fullWidth
+                                        label={`Expected budget timeframe`}
+                                        value={budgetTimeframe}
+                                        onChange={(event) => (handleTimeframeChange(event.target.value))}
+                                    >
+                                        {renderTimeframeOptions({ timeframes: EXPECTED_BUDGET_TIMEFRAME_OPTIONS })}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12} lg={7}>
                             <Box mt={5} pl={1}>
                                 <Button
                                     variant='contained'

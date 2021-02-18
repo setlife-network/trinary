@@ -9,10 +9,9 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import { gql, useQuery } from '@apollo/client'
-import accounting from 'accounting-js'
 
 import LoadingProgress from './LoadingProgress'
-import { selectCurrencyInformation } from '../scripts/selectors'
+import { formatAmount, selectCurrencyInformation } from '../scripts/selectors'
 import { GET_CLIENT_TOTAL_PAID } from '../operations/queries/ClientQueries'
 
 const ClientPaymentsManager = ({
@@ -37,15 +36,10 @@ const ClientPaymentsManager = ({
         currency: getClientById.currency
     })
 
-    const totalPaid = accounting.formatMoney(
-        getClientById.totalPaid / 100,
-        {
-            symbol: currencyInformation['symbol'],
-            thousand: currencyInformation['thousand'],
-            decimal: currencyInformation['decimal'],
-            format: '%s %v'
-        }
-    )
+    const totalPaid = formatAmount({
+        amount: getClientById.totalPaid / 100,
+        currencyInformation: currencyInformation
+    })
 
     return (
         <Box my={3} mx={0} className='ClientPaymentsManager'>
