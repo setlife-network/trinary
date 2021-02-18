@@ -78,7 +78,6 @@ const ClientPaymentsManager = ({
                         <AddIcon color='action'/>
                     </Fab>
                 </Grid>
-
             </Grid>
         </Box>
     )

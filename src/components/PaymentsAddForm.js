@@ -106,7 +106,7 @@ const PaymentsAddForm = (props) => {
         }
     })
 
-    if (loadingProject) return 'Loading...'
+    if (loadingProject) return <LoadingProgress/>
     if (errorClient) return `Error! ${errorClient}`
 
     const { getClientById: client } = dataClient
