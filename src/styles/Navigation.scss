@@ -1,6 +1,6 @@
 .Navigation {
     .icon-image {
-        max-height: 25px;
+        max-height: 20px;
         cursor: pointer;
     }
     .navigation-title {
@@ -11,6 +11,8 @@
 
 @media screen and (min-width: $sm) {
     .Navigation {
-
+        .icon-image {
+            max-height: 25px;
+        }
     }
 }
