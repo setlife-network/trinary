@@ -23,12 +23,12 @@ const Navigation = (props) => {
     const location = useLocation()
     const locationTitle = matchTitlePage({ location: location.pathname })
     const optionalLocationTitle = useReactiveVar(pageName)
-    
+
     return (
         <Box bgcolor={lightBlue} mb={5}>
             <AppBar className='Navigation' position='sticky' color='white'>
                 <Grid container>
-                    <Grid item xs={3}>
+                    <Grid item xs={2} sm={3}>
                         <Box mt={2} align='center'>
                             {
                                 props.width == 'xs'
@@ -49,7 +49,7 @@ const Navigation = (props) => {
                             }
                         </Box>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={8} sm={6}>
                         <h2 className='navigation-title'>
                             {
                                 capitalizeWord({
