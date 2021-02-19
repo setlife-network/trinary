@@ -8,7 +8,6 @@ import {
 import { Route, withRouter, Redirect } from 'react-router-dom'
 
 import { white } from '../styles/colors.scss'
-import Header from '../components/Header'
 import ProjectsListPage from './ProjectsListPage'
 import ClientsListPage from './ClientsListPage'
 
@@ -30,12 +29,6 @@ class HomePage extends React.Component {
                 alignItems='center'
                 className='HomePage'
             >
-                <Header
-                    title='Home'
-                    direction='row'
-                    justify='center'
-                    alignItems='center'
-                />
                 <Grid item xs={8}>
                     <Grid
                         container

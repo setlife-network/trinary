@@ -1,0 +1,109 @@
+import React from 'react'
+import {
+    Box,
+    Card,
+    Grid,
+    Typography
+} from '@material-ui/core'
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
+import accounting from 'accounting-js'
+import moment from 'moment'
+
+import {
+    formatAmount,
+    selectCurrencyInformation
+} from '../scripts/selectors'
+import { grey, orange, red, setlifeBlue } from '../styles/colors.scss'
+
+const AllocationTile = (props) => {
+
+    const {
+        allocation
+    } = props
+
+    const currencyInformation = selectCurrencyInformation({
+        currency: 'USD'
+    })
+    const paymentAmount = formatAmount({
+        amount: allocation.amount / 100,
+        currencyInformation: currencyInformation
+    })
+    const futureAllocation = moment(allocation.start_date, 'x').isAfter(moment(), 'days')
+    const weeksOfdDifference = moment(allocation.end_date, 'x').diff(moment(), 'weeks')
+
+    return (
+
+        <Box p={2} boxShadow={3} borderRadius='borderRadius'>
+            <Grid container alignItems='center'>
+                <Grid item xs={4} md={1}>
+                    <AccountBalanceWalletIcon color='primary'/>
+                </Grid>
+                <Grid item xs={8} md={5}>
+                    <Typography variant={'h6'}>
+                        {`${paymentAmount}`}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Typography variant='subtitle1' color='secondary'>
+                        <strong>
+                            {`${allocation.project.name}`}
+                        </strong>
+                    </Typography>
+                    <Typography variant='caption' color='secondary'>
+                        {`${allocation.project.client.name}`}
+                    </Typography>
+                </Grid>
+                <Box my={5}/>
+                <Grid item xs={6}>
+                    <Box
+                        color={
+                            `${!allocation.date_paid
+                                ? `${grey}`
+                                : futureAllocation
+                                    ? `${orange}`
+                                    : `${setlifeBlue}`
+                            }`
+                        }
+                    >
+                        <Typography
+                            variant='subtitle1'
+                        >
+                            {`Start:`}
+                            <br/>
+                            <strong>
+                                {`${moment(allocation.start_date, 'x').format('MM/DD/YYYY')}`}
+                            </strong>
+                        </Typography>
+                    </Box>
+                </Grid>
+                <Grid item xs={6}>
+                    <Box
+                        color={
+                            `${!allocation.date_paid
+                                ? `${grey}`
+                                : weeksOfdDifference == 2
+                                    ? `${red}`
+                                    : futureAllocation
+                                        ? `${orange}`
+                                        : `${setlifeBlue}`
+                            }`
+                        }
+                    >
+                        <Typography
+                            variant='subtitle1'
+                        >
+                            {`End:`}
+                            <br/>
+                            <strong>
+                                {`${moment(allocation.end_date, 'x').format('MM/DD/YYYY')}`}
+                            </strong>
+                        </Typography>
+                    </Box>
+                </Grid>
+            </Grid>
+        </Box>
+
+    )
+}
+
+export default AllocationTile

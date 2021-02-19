@@ -6,14 +6,25 @@ import {
 import accounting from 'accounting-js'
 import moment from 'moment'
 
-import { CURRENCIES } from '../constants'
+import { CURRENCIES, NAV_TITLES } from '../constants'
 
 export const calculateTotalPayments = (payments) => {
     return payments.reduce((sum, payment) => {
         return sum + payment.amount;
     }, 0)
 }
-
+export const capitalizeWord = (props) => {
+    const {
+        word
+    } = props
+    if (typeof word !== 'string') return ''
+    return word.replace(
+        /\w\S*/g,
+        (txt) => {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+        }
+    )
+}
 export const formatAmount = (props) => {
     const {
         amount,
@@ -29,7 +40,6 @@ export const formatAmount = (props) => {
         }
     )
 }
-
 export const getAllocatedContributors = ({ allocations }) => {
     const contributorsAllocated = []
     allocations.map(a => {
@@ -39,7 +49,6 @@ export const getAllocatedContributors = ({ allocations }) => {
     })
     return contributorsAllocated
 }
-
 export const getActiveAndUpcomingAllocations = ({ activeOnly, allocations, upcomingOnly }) => {
     const desiredAllocations = []
     allocations.map(a => {
@@ -57,7 +66,15 @@ export const getActiveAndUpcomingAllocations = ({ activeOnly, allocations, upcom
     })
     return desiredAllocations
 }
-
+export const matchTitlePage = (props) => {
+    const {
+        location
+    } = props
+    const locationTitle = NAV_TITLES.find(tl => {
+        return tl.locations.find(l => location.match(l))
+    })
+    return locationTitle
+}
 export const selectActiveAndUpcomingAllocations = ({ activeOnly, allocation, upcomingOnly }) => {
     if (activeOnly) {
         return moment(allocation['start_date'], 'x').isBefore(moment()) && moment(allocation['end_date'], 'x').isAfter(moment())
@@ -67,7 +84,6 @@ export const selectActiveAndUpcomingAllocations = ({ activeOnly, allocation, upc
     }
     return moment(allocation['end_date'], 'x').isAfter(moment())
 }
-
 export const selectCurrencySymbol = (props) => {
     const {
         currency
@@ -76,13 +92,11 @@ export const selectCurrencySymbol = (props) => {
         return c.name == currency
     })['symbol']
 }
-
 export const selectCurrencyInformation = (props) => {
     return find(CURRENCIES, c => {
         return c.name == props.currency
     })
 }
-
 export const verifyGithubURL = (url) => {
     const githubLinkInformation = split(url, '/')
     if (githubLinkInformation.length != 5) {
@@ -90,7 +104,6 @@ export const verifyGithubURL = (url) => {
     }
     return 1
 }
-
 export const verifyTogglURL = (url) => {
     const togglLinkInformation = split(url, '/')
     if (togglLinkInformation.length != 7) {

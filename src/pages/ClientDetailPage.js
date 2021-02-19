@@ -16,7 +16,6 @@ class ClientDetailPage extends React.Component {
     render() {
 
         const { clientId } = this.props.match.params
-
         return (
             <Grid
                 container

@@ -47,8 +47,8 @@ export const GET_CLIENTS = gql`
 `
 
 export const GET_CLIENT_PAYMENTS = gql`
-query ClientPayments {
-    getClientById(id: $id){
+query ClientPayments($clientId: Int!) {
+    getClientById(id: $clientId){
         id,
         payments {
             id

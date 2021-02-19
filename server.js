@@ -43,6 +43,7 @@ var whitelist = [
     'https://github.com/',
     'https://project-trinary.herokuapp.com/',
     'https://trinary.setlife.tech',
+    'https://trinary-staging.herokuapp.com'
 ];
 
 var corsOptions = {

@@ -10,8 +10,10 @@ import AddClientPage from './pages/AddClientPage'
 import AddProjectPage from './pages/AddProjectPage'
 import ClientDetailPage from './pages/ClientDetailPage'
 import ClientsListPage from './pages/ClientsListPage'
+import ContributorDetailPage from './pages/ContributorDetailPage'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
+import PaymentsAddPage from './pages/PaymentsAddPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
 import ProjectsListPage from './pages/ProjectsListPage'
 
@@ -28,10 +30,10 @@ class App extends React.Component {
         return (
             <div className='App'>
                 <Authentication/>
+                <Navigation/>
                 {
-                    IS_PRODUCTION
-                        ? <Navigation/>
-                        : <SwipeableNavigation/>
+                    !IS_PRODUCTION &&
+                    <SwipeableNavigation/>
                 }
                 <ThemeProvider theme={theme}>
                     <PrivateRoute
@@ -49,6 +51,7 @@ class App extends React.Component {
                         component={LoginPage}
                     />
                     <PrivateRoute
+                        exact
                         path='/clients/:clientId'
                         component={ClientDetailPage}
                     />
@@ -57,12 +60,20 @@ class App extends React.Component {
                         component={AddClientPage}
                     />
                     <PrivateRoute
+                        path='/clients/:clientId/payments/add'
+                        component={PaymentsAddPage}
+                    />
+                    <PrivateRoute
                         path='/projects/:projectId'
                         component={ProjectDetailPage}
                     />
                     <PrivateRoute
                         path='/project/add/:clientId'
                         component={AddProjectPage}
+                    />
+                    <PrivateRoute
+                        path='/contributor/:contributorId'
+                        component={ContributorDetailPage}
                     />
                 </ThemeProvider>
             </div>
