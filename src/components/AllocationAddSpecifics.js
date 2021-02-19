@@ -20,7 +20,6 @@ import PaymentIcon from '@material-ui/icons/Payment'
 import PeopleIcon from '@material-ui/icons/Group'
 import moment from 'moment'
 import {
-    difference,
     differenceWith,
     isEqual,
     last,
@@ -69,6 +68,7 @@ const AllocationAddSpecifics = (props) => {
 
     useEffect(() => {
         setContributorGithubUser(last(split(selectedContributor.github_handle, '/')))
+        setContributor(selectedContributor)
     }, [selectedContributor])
 
     useEffect(() => {
@@ -191,7 +191,6 @@ const AllocationAddSpecifics = (props) => {
                         <GitHubIcon color='secondary' fontSize='small'/>
                     </Grid>
                 </ListItem>
-
                 <Grid item xs={12}>
                     <List component='nav'>
                         <ListItem button onClick={handleClickContributors}>

@@ -55,7 +55,7 @@ const RateProratedMonthlyForm = (props) => {
     }, [startDate, endDate])
 
     const currencyInformation = selectCurrencyInformation({
-        currency: currency
+        currency: currency ? currency : 'USD'
     })
     const paymentAmount = formatAmount({
         amount: totalAmount,

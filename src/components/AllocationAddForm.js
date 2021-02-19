@@ -6,12 +6,10 @@ import {
     ButtonGroup,
     Dialog,
     DialogTitle,
-    FormControl,
     Grid,
     Typography
 } from '@material-ui/core/'
 import {
-    differenceBy,
     fill,
     filter,
     findKey
@@ -20,6 +18,7 @@ import moment from 'moment'
 import DatePicker from 'react-datepicker'
 
 import AllocationAddSpecifics from './AllocationAddSpecifics'
+import AllocationProposeSpecifics from './AllocationProposeSpecifics'
 import LoadingProgress from './LoadingProgress'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
@@ -31,7 +30,6 @@ import {
 } from '../operations/queries/ContributorQueries'
 import {
     GET_PROJECT_CONTRIBUTORS,
-    GET_PROJECT_PAYMENTS,
     GET_PROJECT_CLIENT_PAYMENTS
 } from '../operations/queries/ProjectQueries'
 import { GET_PAYMENT_TOTAL_ALLOCATED } from '../operations/queries/PaymentQueries'
@@ -96,8 +94,8 @@ const AllocationAddForm = (props) => {
                 end_date: moment(endDate).format('YYYY-MM-DD'),
                 date_paid: null,
                 payment_id: allocation.payment_id,
-                project_id: project.id,
-                contributor_id: allocation.contributor_id,
+                project_id: Number(selectedProject.id),
+                contributor_id: Number(selectedContributor.id),
                 rate_id: allocationRate.id
             }
         })
@@ -138,8 +136,9 @@ const AllocationAddForm = (props) => {
         error: errorProjectContributors
     } = useQuery(GET_PROJECT_CONTRIBUTORS, {
         variables: {
-            id: project.id
-        }
+            id: project && project.id
+        },
+        skip: !project
     })
 
     const {
@@ -148,8 +147,9 @@ const AllocationAddForm = (props) => {
         error: errorClientPayments
     } = useQuery(GET_PROJECT_CLIENT_PAYMENTS, {
         variables: {
-            id: project.id
-        }
+            id: project && project.id
+        },
+        skip: !project
     })
 
     const [getContributorAllocations, {
@@ -187,27 +187,6 @@ const AllocationAddForm = (props) => {
         loadingNewRate,
         errorNewRate
     }] = useMutation(CREATE_RATE)
-    const [createAllocation, {
-        dataNewAllocations,
-        loadingNewAllocation,
-        errorNewAllocation
-    }] = useMutation(CREATE_ALLOCATION,
-        {
-            refetchQueries: [{
-                query: GET_PROJECT_CONTRIBUTORS,
-                variables: {
-                    id: project.id
-                }
-            },
-            {
-                query: GET_ALLOCATIONS,
-                variables: {
-                    contributorId: contributor ? contributor.id : null,
-                    projectId: project.id
-
-                }
-            }]
-        })
 
     const [allocationTypes, setAllocationTypes] = useState([1, 0])
     const [contributorAllocations, setContributorAllocations] = useState(null)
@@ -218,8 +197,34 @@ const AllocationAddForm = (props) => {
     const [newAllocation, setNewAllocation] = useState({})
     const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month')['_d'])
     const [selectedContributor, setSelectedContributor] = useState(null)
+    const [selectedProject, setSelectedProject] = useState(null)
     const [selectedPayment, setSelectedPayment] = useState(null)
     const [totalAllocatedFromPayment, setTotalAllocatedFromPayment] = useState(null)
+
+    const [createAllocation, {
+        dataNewAllocations,
+        loadingNewAllocation,
+        errorNewAllocation
+    }] = useMutation(CREATE_ALLOCATION, {
+        refetchQueries: [{
+            query: GET_PROJECT_CONTRIBUTORS,
+            variables: {
+                id: selectedProject ? Number(selectedProject.id) : null
+            }
+        }, {
+            query: GET_CONTRIBUTOR_ALLOCATIONS,
+            variables: {
+                id: selectedContributor ? Number(selectedContributor.id) : null
+            }
+        }, {
+            query: GET_ALLOCATIONS,
+            variables: {
+                contributorId: contributor ? contributor.id : null,
+                projectId: project ? project.id : null
+
+            }
+        }]
+    })
 
     useEffect(() => {
         if (contributor) {
@@ -231,6 +236,11 @@ const AllocationAddForm = (props) => {
             if (!contributor && !selectedContributor) {
                 setSelectedContributor(dataContributors[0])
             }
+        }
+        if (project) {
+            setSelectedProject(project)
+        } else {
+            setSelectedProject(null)
         }
     }, [open])
 
@@ -307,11 +317,21 @@ const AllocationAddForm = (props) => {
         return `error`
     }
 
-    const { allocations } = dataContributorAllocations && contributor
-        ? dataContributorAllocations.getContributorById
-        : dataProjectContributors.getProjectById
-    const payments = [...dataClientPayments.getProjectById.client.payments, { amount: null, date_paid: null }]
-    const currency = dataClientPayments.getProjectById.client.currency
+    const allocations = dataContributorAllocations && contributor
+        ? dataContributorAllocations.getContributorById.allocations
+        : dataProjectContributors
+            ? dataProjectContributors.allocations
+            : null
+    const payments = dataClientPayments
+        ? [...dataClientPayments.getProjectById.client.payments, { amount: null, date_paid: null }]
+        : [null]
+    const currency = (
+        dataClientPayments
+            ? dataClientPayments.getProjectById.client.currency
+            : selectedProject
+                ? selectedProject.client.currency
+                : null
+    )
     const rates = contributorRates
         ? dataContributorRates.getContributorById.rates
         : null
@@ -333,126 +353,149 @@ const AllocationAddForm = (props) => {
                 </DialogTitle>
                 <Grid container spacing={5} justify='center'>
                     <Grid item xs={12}>
-                        <AllocationAddSpecifics
-                            contributor={contributor}
-                            contributors={contributors}
-                            currency={currency}
-                            payment={payment}
-                            payments={payments}
-                            project={project}
-                            setNewAllocation={setNewAllocation}
-                            selectedContributor={selectedContributor ? selectedContributor : contributors[0]}
-                            setContributor={setSelectedContributor}
-                            setPayment={setSelectedPayment}
-                        />
+                        {
+                            project
+                                ? (
+                                    <AllocationAddSpecifics
+                                        contributor={contributor}
+                                        contributors={contributors}
+                                        currency={currency}
+                                        payment={payment}
+                                        payments={payments}
+                                        project={project}
+                                        setNewAllocation={setNewAllocation}
+                                        selectedContributor={selectedContributor ? selectedContributor : contributors[0]}
+                                        setContributor={setSelectedContributor}
+                                        setPayment={setSelectedPayment}
+                                    />
+                                ) : (
+                                    <AllocationProposeSpecifics
+                                        contributor={contributor}
+                                        setNewAllocation={setNewAllocation}
+                                        setPayment={setSelectedPayment}
+                                        setProject={setSelectedProject}
+                                    />
+                                )
+                        }
                         <hr/>
                     </Grid>
+                    {
+                        selectedProject &&
 
-                    <Grid item xs={12}>
-                        <ButtonGroup color='primary' aria-label='outlined primary button group'>
-                            <Button
-                                variant={`${allocationTypes[0] ? 'contained' : 'outlined'}`}
-                                color='primary'
-                                onClick={() => (
-                                    changeAllocationType({
-                                        selectedType: 0,
-                                        allocationTypes:
-                                        allocationTypes
-                                    })
-                                )}
-                            >
-                                {'Prorated monthly'}
-                            </Button>
-                            <Button
-                                variant={`${allocationTypes[1] ? 'contained' : 'outlined'}`}
-                                color='primary'
-                                onClick={() => (
-                                    changeAllocationType({
-                                        selectedType: 1,
-                                        allocationTypes: allocationTypes
-                                    })
-                                )}
-                            >
-                                {'Max Budget'}
-                            </Button>
-                        </ButtonGroup>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <DatePicker
-                            selected={startDate}
-                            startDate={startDate}
-                            endDate={endDate}
-                            shouldCloseOnSelect={startDate && !endDate}
-                            selectsRange
-                            onChange={(date) => getRangedTimeEntries(date)}
-                            customInput={
-                                <Box
-                                    px={2}
-                                    py={1}
-                                    boxShadow={3}
-                                    borderRadius='borderRadius'
-                                    bgcolor='primary.light'
-                                >
-                                    {`${
-                                        startDate
-                                            ? moment(startDate).format('MM/DD/YYYY')
-                                            : 'Start date'
-                                    } - ${
-                                        endDate
-                                            ? moment(endDate).format('MM/DD/YYYY')
-                                            : ' End date'
-                                    }`}
-                                </Box>
-                            }
-                        />
-                    </Grid>
+                        <>
+
+                            <Grid item xs={12}>
+                                <ButtonGroup color='primary' aria-label='outlined primary button group'>
+                                    <Button
+                                        variant={`${allocationTypes[0] ? 'contained' : 'outlined'}`}
+                                        color='primary'
+                                        onClick={() => (
+                                            changeAllocationType({
+                                                selectedType: 0,
+                                                allocationTypes:
+                                            allocationTypes
+                                            })
+                                        )}
+                                    >
+                                        {'Prorated monthly'}
+                                    </Button>
+                                    <Button
+                                        variant={`${allocationTypes[1] ? 'contained' : 'outlined'}`}
+                                        color='primary'
+                                        onClick={() => (
+                                            changeAllocationType({
+                                                selectedType: 1,
+                                                allocationTypes: allocationTypes
+                                            })
+                                        )}
+                                    >
+                                        {'Max Budget'}
+                                    </Button>
+                                </ButtonGroup>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <DatePicker
+                                    selected={startDate}
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    shouldCloseOnSelect={startDate && !endDate}
+                                    selectsRange
+                                    onChange={(date) => getRangedTimeEntries(date)}
+                                    customInput={
+                                        <Box
+                                            px={2}
+                                            py={1}
+                                            boxShadow={3}
+                                            borderRadius='borderRadius'
+                                            bgcolor='primary.light'
+                                        >
+                                            {`${
+                                                startDate
+                                                    ? moment(startDate).format('MM/DD/YYYY')
+                                                    : 'Start date'
+                                            } - ${
+                                                endDate
+                                                    ? moment(endDate).format('MM/DD/YYYY')
+                                                    : ' End date'
+                                            }`}
+                                        </Box>
+                                    }
+                                />
+                            </Grid>
+                        </>
+                    }
                 </Grid>
                 {
-                    allocationTypes[0]
-                        ? (
-                            <RateProratedMonthlyForm
-                                currency={currency}
-                                currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
-                                setNewAllocationRate={setNewAllocationRate}
-                                startDate={moment(startDate)}
-                                endDate={moment(endDate)}
-                            />
-                        ) : (
-                            <RateMaxBudgetForm
-                                currency={currency}
-                                currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
-                                setNewAllocationRate={setNewAllocationRate}
-                                startDate={moment(startDate)}
-                                endDate={moment(endDate)}
-                            />
-                        )
-                }
-                {
-                    (totalAllocatedFromPayment && selectedPayment) &&
-                        (Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])) > Number(selectedPayment['amount']) &&
-                        <Box color='red' mb={2}>
-                            <Typography>
-                                {`Warning: The total allocated is bigger that the amount of the payment`}
-                            </Typography>
-                        </Box>
+                    selectedProject &&
+                    <>
+                        {
+                            allocationTypes[0]
+                                ? (
+                                    <RateProratedMonthlyForm
+                                        currency={currency}
+                                        currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
+                                        setNewAllocationRate={setNewAllocationRate}
+                                        startDate={moment(startDate)}
+                                        endDate={moment(endDate)}
+                                    />
+                                ) : (
+                                    <RateMaxBudgetForm
+                                        currency={currency}
+                                        currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
+                                        setNewAllocationRate={setNewAllocationRate}
+                                        startDate={moment(startDate)}
+                                        endDate={moment(endDate)}
+                                    />
+                                )
+                        }
+                        {
+                            (totalAllocatedFromPayment && selectedPayment) &&
+                            (Number(totalAllocatedFromPayment.getPaymentById['totalAllocated']) + Number(newAllocationRate['total_amount'])) > Number(selectedPayment['amount']) &&
+                            <Box color={`${red}`} mb={2}>
+                                <Typography>
+                                    {`Warning: The total allocated is bigger that the amount of the payment`}
+                                </Typography>
+                            </Box>
 
+                        }
+                        <Button
+                            variant={`contained`}
+                            color='primary'
+                            disabled={
+                                !newAllocationRate['total_amount'] || !newAllocationRate['hourly_rate']
+                                    ? true
+                                    : false
+                            }
+                            onClick={() => createRateAndAllocation({
+                                allocation: newAllocation,
+                                rate: newAllocationRate,
+                                contributorRates: rates
+                            })}
+                        >
+                            {'Add Allocation'}
+                        </Button>
+                    </>
                 }
-                <Button
-                    variant={`contained`}
-                    color='primary'
-                    disabled={
-                        !newAllocationRate['total_amount'] || !newAllocationRate['hourly_rate']
-                            ? true
-                            : false
-                    }
-                    onClick={() => createRateAndAllocation({
-                        allocation: newAllocation,
-                        rate: newAllocationRate,
-                        contributorRates: rates
-                    })}
-                >
-                    {'Add Allocation'}
-                </Button>
             </Box>
         </Dialog>
     )

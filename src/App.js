@@ -10,6 +10,7 @@ import AddClientPage from './pages/AddClientPage'
 import AddProjectPage from './pages/AddProjectPage'
 import ClientDetailPage from './pages/ClientDetailPage'
 import ClientsListPage from './pages/ClientsListPage'
+import ContributorDetailPage from './pages/ContributorDetailPage'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
@@ -63,6 +64,10 @@ class App extends React.Component {
                     <PrivateRoute
                         path='/project/add/:clientId'
                         component={AddProjectPage}
+                    />
+                    <PrivateRoute
+                        path='/contributor/:contributorId'
+                        component={ContributorDetailPage}
                     />
                 </ThemeProvider>
             </div>

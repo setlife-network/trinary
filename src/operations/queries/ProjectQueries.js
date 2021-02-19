@@ -15,6 +15,7 @@ export const GET_ALL_PROJECTS = gql`
             client {
                 id
                 name
+                currency
             }
         }
     }
@@ -57,7 +58,7 @@ export const GET_PROJECT = gql`
 `
 
 export const GET_PROJECT_PAYMENTS = gql`
-    query ProjectTimeEntries($id: Int!){
+    query ProjectTimePayments($id: Int!){
         getProjectById(id: $id){
             id
             name
