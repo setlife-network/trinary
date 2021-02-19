@@ -23,7 +23,7 @@ const ClientInfo = ({
     clientId
 }) => {
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false)
 
     const handleEditOpen = () => {
         setOpen(true)
@@ -40,7 +40,7 @@ const ClientInfo = ({
 
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`
-    
+
     const client = data.getClientById
 
     return (
