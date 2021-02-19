@@ -5,10 +5,10 @@ import {
     BottomNavigationAction,
     Grid
 } from '@material-ui/core'
-import AssessmentIcon from '@material-ui/icons/Assessment';
-import PeopleIcon from '@material-ui/icons/People';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
+import AssessmentIcon from '@material-ui/icons/Assessment'
+import PeopleIcon from '@material-ui/icons/People'
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
 
 import ProjectOverview from '../components/ProjectOverview'
 import ProjectPayments from '../components/ProjectPayments'
@@ -27,7 +27,6 @@ class ProjectDetailPage extends React.Component {
             location,
             match
         } = this.props
-
         // Convert URL `/projects/1/payments` to `payments`
         const selectedTab = location.pathname.replace(match.url, '').slice(1)
 

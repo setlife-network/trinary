@@ -7,7 +7,11 @@ import ClientsList from '../components/ClientsList'
 class ClientListPage extends React.Component {
 
     render() {
-        const { history } = this.props
+
+        const {
+            history
+        } = this.props
+
         return (
             <div>
                 <Grid

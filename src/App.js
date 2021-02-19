@@ -28,10 +28,10 @@ class App extends React.Component {
         return (
             <div className='App'>
                 <Authentication/>
+                <Navigation/>
                 {
-                    IS_PRODUCTION
-                        ? <Navigation/>
-                        : <SwipeableNavigation/>
+                    !IS_PRODUCTION &&
+                    <SwipeableNavigation/>
                 }
                 <ThemeProvider theme={theme}>
                     <PrivateRoute

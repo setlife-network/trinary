@@ -13,22 +13,13 @@ import LoadingProgress from './LoadingProgress'
 import ProjectIssuesMetrics from './ProjectIssuesMetrics'
 
 import { GET_PROJECT_ISSUES } from '../operations/queries/ProjectQueries'
+import { pageName } from '../reactivities/variables'
 
 const ProjectIssues = (props) => {
 
     const { projectId } = props
     const last30DayIssues = []
     const today30DaysAgo = moment().subtract(30, 'days').format('x')
-
-    const renderIssues = (issues) => {
-        return issues.map(i => {
-            return (
-                <Grid item xs={12}>
-                    <IssueTile issue={i}/>
-                </Grid>
-            )
-        })
-    }
 
     const {
         data: dataProjectIssues,
@@ -40,8 +31,17 @@ const ProjectIssues = (props) => {
         }
     })
 
-    if (loadingProjectIssues) return <LoadingProgress/>
+    const renderIssues = (issues) => {
+        return issues.map(i => {
+            return (
+                <Grid item xs={12}>
+                    <IssueTile issue={i}/>
+                </Grid>
+            )
+        })
+    }
 
+    if (loadingProjectIssues) return <LoadingProgress/>
     if (errorProjectIssues) {
         return (
             <GithubAccessBlocked
@@ -51,7 +51,7 @@ const ProjectIssues = (props) => {
     }
 
     const { getProjectById: project } = dataProjectIssues
-
+    pageName(project.name)
     project.issues.map(i => {
         if (i['date_opened'] >= today30DaysAgo) {
             last30DayIssues.push(i)
