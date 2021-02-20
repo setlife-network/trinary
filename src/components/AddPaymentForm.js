@@ -27,7 +27,7 @@ import {
     selectCurrencyInformation
 } from '../scripts/selectors'
 
-const PaymentsAddForm = (props) => {
+const AddPaymentForm = (props) => {
 
     const {
         clientId
@@ -190,4 +190,4 @@ const PaymentsAddForm = (props) => {
     )
 }
 
-export default PaymentsAddForm
+export default AddPaymentForm

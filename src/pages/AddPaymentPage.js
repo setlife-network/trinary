@@ -6,9 +6,9 @@ import {
 } from '@material-ui/core'
 
 import Header from '../components/Header'
-import PaymentsAddForm from '../components/PaymentsAddForm'
+import AddPaymentForm from '../components/AddPaymentForm'
 
-class PaymentsAddPage extends React.Component {
+class AddPaymentPage extends React.Component {
 
     render() {
 
@@ -33,7 +33,7 @@ class PaymentsAddPage extends React.Component {
                         </strong>
                     </Typography>
                     <Box mt={5}>
-                        <PaymentsAddForm clientId={clientId}/>
+                        <AddPaymentForm clientId={clientId}/>
                     </Box>
                 </Grid>
             </Grid>
@@ -41,4 +41,4 @@ class PaymentsAddPage extends React.Component {
     }
 }
 
-export default PaymentsAddPage
+export default AddPaymentPage
