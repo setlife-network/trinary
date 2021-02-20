@@ -19,6 +19,7 @@ import GithubAccessBlocked from './GithubAccessBlocked'
 import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
+import { pageName } from '../reactivities/variables'
 import {
     getAllocatedContributors,
     getActiveAndUpcomingAllocations
@@ -99,6 +100,7 @@ const ProjectContributors = (props) => {
     if (errorProjectContributors || errorContributors) return `Error!`
 
     const project = dataProjectContributors.getProjectById
+    pageName(project.name)
     const { allocations } = project
 
     const activeAllocations = getActiveAndUpcomingAllocations({

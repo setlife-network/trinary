@@ -1,33 +1,69 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
+import { useReactiveVar } from '@apollo/client'
 import {
+    AppBar,
     Box,
     Grid
 } from '@material-ui/core'
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
+import { split } from 'lodash'
 
-import { LOGO_URL } from '../constants'
+import { lightBlue } from '../styles/colors.scss'
+import { LOGO_URL, SMALL_LOGO_URL } from '../constants'
+import { capitalizeWord, matchTitlePage } from '../scripts/selectors'
+import { pageName } from '../reactivities/variables'
 
 const Navigation = (props) => {
-    const history = useHistory()
 
+    const history = useHistory()
     const redirectToHome = () => {
         history.push('/')
     }
+    const location = useLocation()
+    const locationTitle = matchTitlePage({ location: location.pathname })
+    const optionalLocationTitle = useReactiveVar(pageName)
 
     return (
-        <Grid container className='Navigation'>
-            <Grid item xs={12} sm={3}>
-                <Box my={2} align='center'>
-                    <img
-                        src={LOGO_URL}
-                        alt='Home'
-                        onClick={() => redirectToHome()}
-                        className='icon-image'
-                    />
-                </Box>
-            </Grid>
-        </Grid>
+        <Box bgcolor={lightBlue} mb={5}>
+            <AppBar className='Navigation' position='sticky' color='white'>
+                <Grid container>
+                    <Grid item xs={2} sm={3}>
+                        <Box mt={2} align='center'>
+                            {
+                                props.width == 'xs'
+                                    ? (
+                                        <img
+                                            src={SMALL_LOGO_URL}
+                                            alt='Logo'
+                                            className='icon-image'
+                                        />
+                                    )
+                                    : (
+                                        <img
+                                            src={LOGO_URL}
+                                            alt='Logo'
+                                            className='icon-image'
+                                        />
+                                    )
+                            }
+                        </Box>
+                    </Grid>
+                    <Grid item xs={8} sm={6}>
+                        <h2 className='navigation-title'>
+                            {
+                                capitalizeWord({
+                                    word: locationTitle.title || optionalLocationTitle
+                                })
+                            }
+                        </h2>
+                    </Grid>
+                </Grid>
+
+            </AppBar>
+        </Box>
+
     )
 }
 
-export default Navigation
+export default withWidth()(Navigation)

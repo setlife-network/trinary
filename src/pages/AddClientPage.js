@@ -8,24 +8,16 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
 import ClientAddForm from '../components/ClientAddForm'
-import Header from '../components/Header'
 
 class AddClientPage extends React.Component {
 
     render() {
-
         return (
             <Grid
                 container
                 className='AddClientPage'
                 justify='center'
             >
-                <Header
-                    title='Add Client'
-                    direction='row'
-                    justify='center'
-                    alignItems='center'
-                />
                 <Grid item xs={8}>
                     <Typography align='left'>
                         <strong>

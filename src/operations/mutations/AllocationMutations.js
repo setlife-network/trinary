@@ -23,6 +23,10 @@ export const CREATE_ALLOCATION = gql`
             rate_id: $rate_id
         }){
             id
+            amount
+            start_date
+            end_date
+            date_paid
         }
     }
 `

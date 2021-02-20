@@ -61,7 +61,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-cleanup": "npx sequelize-cli db:migrate"
+    "prebuild": "npx sequelize-cli db:migrate"
   },
   "eslintConfig": {
     "extends": "react-app"

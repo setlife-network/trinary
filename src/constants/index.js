@@ -85,3 +85,30 @@ export const NAV_ITEMS = [
         route: '/project/add'
     }
 ]
+export const NAV_TITLES = [
+    {
+        title: 'Add Project',
+        locations: ['/project/add/']
+    },
+    {
+        title: 'Client',
+        locations: ['/clients/']
+    },
+    {
+        title: 'Clients',
+        locations: ['/home/clients']
+    },
+    {
+        title: 'Login',
+        locations: ['/login']
+    },
+    {
+        title: 'Projects',
+        locations: ['/home/projects']
+    },
+    {
+        title: '',
+        locations: ['/']
+    }
+]
+export const SMALL_LOGO_URL = 'https://project-trinary.s3.amazonaws.com/images/SmallLogo.png'

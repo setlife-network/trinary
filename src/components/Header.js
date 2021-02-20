@@ -1,8 +1,8 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid'
+import Box from '@material-ui/core/Box'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 
 import { LOGO_URL } from '../constants'
 
@@ -33,7 +33,6 @@ const HeaderBanner = ({
                         <h2>
                             {title}
                         </h2>
-
                     </Box>
                     <Grid container className={classes.container}/>
                 </Box>
