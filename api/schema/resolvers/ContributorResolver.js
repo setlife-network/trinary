@@ -7,7 +7,6 @@ module.exports = {
     Contributor: {
         paid_by_currency: async (contributor, args, { models }) => {
             const totalPaydByCurrencyQuery = await models.Client.findAll({
-                raw: true,
                 group: 'currency',
                 attributes: ['currency'],
                 include: {
@@ -24,11 +23,11 @@ module.exports = {
                 }
             })
             totalPaydByCurrency = []
-            totalPaydByCurrencyQuery.map(tpbc => {
+            totalPaydByCurrencyQuery.map(t => {
                 totalPaydByCurrency.push(
                     {
-                        currency: tpbc['currency'],
-                        amount: tpbc['Projects.Allocations.amount']
+                        currency: t['currency'],
+                        amount: t['Projects.Allocations.amount']
                     }
                 )
             })
