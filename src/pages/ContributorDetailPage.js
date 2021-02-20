@@ -23,12 +23,6 @@ class ContributorDetailPage extends React.Component {
                 align='center'
                 className='ContributorDetailPage'
             >
-                <Header
-                    title='Contributor'
-                    direction='row'
-                    justify='center'
-                    alignItems='center'
-                />
                 <Grid item xs={10} sm={7} md={6} lg={3}>
                     <ContributorInfoTile
                         contributorId={contributorId}

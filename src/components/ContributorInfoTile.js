@@ -6,6 +6,11 @@ import {
     CardActions,
     CardContent,
     Grid,
+    Icon,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
     Typography
 } from '@material-ui/core'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
@@ -49,11 +54,35 @@ const ContributorInfoTile = (props) => {
         currencyInformation: currencyInformation
     })
 
+    const renderPaiToContributorByCurrency = (props) => {
+        const {
+            paidByCurrency
+        } = props
+
+        return paidByCurrency.map(p => {
+            const currencyInformation = selectCurrencyInformation({
+                currency: p.currency
+            })
+            const paymentAmount = formatAmount({
+                amount: p.amount / 100,
+                currencyInformation: currencyInformation
+            })
+            return (
+                <ListItem>
+                    <ListItemAvatar>
+                        <Icon className='fas fa-money-bill-wave' color='primary'/>
+                    </ListItemAvatar>
+                    <ListItemText primary={`${paymentAmount}`}/>
+                </ListItem>
+            )
+        })
+    }
+
     return (
         <Card variant='outlined' className='ContributorInfoTile'>
             <CardContent>
                 <Box m={4} align='left'>
-                    <Grid container spacing={1}>
+                    <Grid container>
                         <Grid item xs={10}>
                             <Typography variant='h5' color='primary'>
                                 <strong>
@@ -62,10 +91,7 @@ const ContributorInfoTile = (props) => {
                             </Typography>
                         </Grid>
                         <Grid item xs={2}>
-                            <CheckCircleIcon
-                                color='primary'
-                                fontSize='large'
-                            />
+                            <Icon className='fas fa-check-circle' color='primary' fontSize='large'/>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography>
@@ -76,19 +102,28 @@ const ContributorInfoTile = (props) => {
                 </Box>
             </CardContent>
             <CardActions>
-                <Box
-                    mx={3}
-                    mb={2}
-                    px={2}
-                    py={1}
-                    align='left'
-                    bgcolor='primary.light_blue'
-                    borderRadius='borderRadius'
-                >
-                    <Typography>
-                        {`Total paid from allocations: ${paymentAmount}`}
-                    </Typography>
-                </Box>
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Box
+                            mx={3}
+                            px={2}
+                            mb={2}
+                            pt={1}
+                            align='left'
+                            bgcolor='primary.light_blue'
+                            borderRadius='borderRadius'
+                        >
+                            <Typography>
+                                <strong>
+                                    {`Total paid from allocations:`}
+                                </strong>
+                            </Typography>
+                            <List>
+                                {renderPaiToContributorByCurrency({ paidByCurrency: contributor.paid_by_currency })}
+                            </List>
+                        </Box>
+                    </Grid>
+                </Grid>
             </CardActions>
         </Card>
     )
