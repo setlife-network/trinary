@@ -9,6 +9,7 @@ module.exports = {
             const totalPaydByCurrencyQuery = await models.Client.findAll({
                 group: 'currency',
                 attributes: ['currency'],
+                raw: true,
                 include: {
                     model: models.Project,
                     attributes: [],

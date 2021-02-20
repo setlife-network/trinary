@@ -68,6 +68,10 @@ export const GET_CONTRIBUTOR_INFO = gql`
             github_handle
             github_access_token
             total_paid
+            paid_by_currency {
+                currency
+                amount
+            }
         }
     }
 `
