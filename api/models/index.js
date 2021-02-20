@@ -56,7 +56,7 @@ const associations = ({ Allocation, Client, Contributor, Issue, Payment, Permiss
     Contributor.hasMany(Permission, { foreignKey: 'contributor_id' })
     Payment.hasMany(Allocation, { foreignKey: 'payment_id' })
     Project.hasMany(Allocation, { foreignKey: 'project_id' })
-    Project.belongsTo(Client, { foreignKey: 'client_id' })
+    Client.hasMany(Project, { foreignKey: 'client_id' })
     Project.hasMany(Permission, { foreignKey: 'project_id' })
     Issue.belongsTo(Project, { foreignKey: 'project_id' })
     Rate.hasMany(Allocation, { foreignKey: 'rate_id' })

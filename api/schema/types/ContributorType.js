@@ -14,6 +14,7 @@ module.exports = gql`
         allocations: [Allocation]
         permissions: [Permission]
         timeEntries: [TimeEntry]
+        paid_by_currency: [TotalAllocatedByCurrency]
         rates: [Rate]
     }
 
@@ -36,6 +37,11 @@ module.exports = gql`
         external_data_url: String
         github_id: String
         github_handle: String
+    }
+
+    type TotalAllocatedByCurrency {
+        amount: Int
+        currency: String
     }
 
     type Query {
