@@ -84,7 +84,10 @@ const ProjectPayments = (props) => {
                         </Grid>
                     </Grid>
                 </Box>
-                <ProjectPaymentsSummary project={getProjectById}/>
+                <ProjectPaymentsSummary
+                    project={getProjectById}
+                    currencyInformation={currencyInformation}
+                />
                 {allocatedPayments.length != 0
                     ? (
                         <PaymentsList
