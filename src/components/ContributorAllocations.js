@@ -9,6 +9,7 @@ import {
 
 import AllocationAddForm from './AllocationAddForm'
 import AllocationTile from './AllocationTile'
+import EmptyState from './EmptyState'
 import LoadingProgress from './LoadingProgress'
 import { GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_INFO } from '../operations/queries/ContributorQueries'
 import { white } from '../styles/colors.scss'
@@ -88,7 +89,17 @@ const ContributorAllocations = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={5}>
-                        {renderAllocations({ allocations: contributorAllocations.allocations })}
+                        {
+                            contributorAllocations.allocations.length
+                                ? renderAllocations({ allocations: contributorAllocations.allocations })
+                                : (
+                                    <EmptyState
+                                        description='This contributor has no allocations at the moment'
+                                        iconClassname='fas fa-money-check'
+                                    />
+                                )
+                        }
+
                     </Grid>
                 </Grid>
             </Grid>
