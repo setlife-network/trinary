@@ -16,6 +16,7 @@ import LoadingProgress from './LoadingProgress'
 import PaymentsEmptyState from './PaymentsEmptyState'
 import PaymentTile from './PaymentTile'
 import PaymentsList from './PaymentsList'
+import ProjectPaymentsSummary from './ProjectPaymentsSummary'
 import { GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { pageName } from '../reactivities/variables'
 import {
@@ -83,6 +84,7 @@ const ProjectPayments = (props) => {
                         </Grid>
                     </Grid>
                 </Box>
+                <ProjectPaymentsSummary project={getProjectById}/>
                 {allocatedPayments.length != 0
                     ? (
                         <PaymentsList
