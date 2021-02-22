@@ -343,14 +343,45 @@ module.exports = {
                 where: whereConditions
             })
         },
+        totalAllocated: async (project, args, { models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
+            const whereConditions = {}
+            whereConditions['project_id'] = project.id
+            if (args.confirmedOnly) {
+                whereConditions['payment_id'] = {
+                    [Op.ne]: args.confirmedOnly && null
+                }
+            }
+            if (args.fromDate || args.endDate) {
+                whereCondition['date_paid'] = {
+                    [Op.between]: [
+                        args.fromDate
+                            ? args.fromDate
+                            : moment.utc(1),
+                        args.toDate
+                            ? args.toDate
+                            : moment.utc()
+                    ]
+                }
+            }
+            const totalAllocated = await models.Allocation.findOne({
+                attributes: [[fn('sum', col('amount')), 'amount']],
+                raw: true,
+                where: {
+                    ...whereConditions
+                }
+            })
+            return totalAllocated ? totalAllocated.amount : 0
+        },
         totalIncurredPayments: async (project, args, { models }) => {
             const total = await models.Payment.findOne({
                 attributes: [[fn('sum', col('amount')), 'totalIncurred']],
                 where: {
                     date_paid: {
-                        [Op.and]: [{
-                            [Op.eq]: null
-                        }]
+                        [Op.eq]: null
                     },
                 },
                 include: [
@@ -358,7 +389,8 @@ module.exports = {
                         model: models.Allocation,
                         where: {
                             project_id: project.id
-                        }
+                        },
+                        required: true
                     }
                 ]
             })
@@ -393,9 +425,10 @@ module.exports = {
                         model: models.Allocation,
                         where: {
                             project_id: project.id
-                        }
+                        },
+                        required: true
                     }
-                ],
+                ]
             })
             return total
                 ? total.dataValues.totalPaid

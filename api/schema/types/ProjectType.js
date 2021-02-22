@@ -45,20 +45,20 @@ module.exports = gql`
             contributor_id: Int
         ): TimeSpent
         timeSpentPerContributor(
-            fromDate: String
+            fromDate: String,
             toDate: String
         ): [TimeSpent]
         #calculated properties
         totalAllocated(
             fromDate: String,
-            toDate: String
+            toDate: String,
+            confirmedOnly: Boolean
         ): Int
         totalPaid(
             fromDate: String,
             toDate: String
         ): Int # The total paid from the client, takes start date and ed date as attributes
         totalIncurredPayments: Int # The total incurred not paid from the client
-
     }
 
     type AverageIssueCost {
