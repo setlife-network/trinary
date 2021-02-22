@@ -99,7 +99,6 @@ const ContributorAllocations = (props) => {
                                     />
                                 )
                         }
-
                     </Grid>
                 </Grid>
             </Grid>
