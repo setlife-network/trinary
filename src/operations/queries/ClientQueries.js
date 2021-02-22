@@ -22,6 +22,26 @@ export const GET_CLIENT_INFO = gql`
         }
     }
 `
+
+export const GET_CLIENT_PROJECTS = gql`
+    query ClientProjects($id: Int!) {
+        getClientById(id: $id){
+            id,
+            projects {
+                id
+                name
+                is_active
+                github_url
+                contributors {
+                    id
+                    name
+                    github_handle
+                }
+            }
+        }
+    }
+`
+
 export const GET_CLIENT_TOTAL_PAID = gql`
     query ClientTotalPaid($id: Int!, $fromDate: String, $toDate: String) {
         getClientById(id: $id){
