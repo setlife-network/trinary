@@ -343,6 +343,27 @@ module.exports = {
                 where: whereConditions
             })
         },
+        totalIncurredPayments: async (project, args, { models }) => {
+            const total = await models.Payment.findOne({
+                attributes: [[fn('sum', col('amount')), 'totalIncurred']],
+                where: {
+                    date_paid: {
+                        [Op.and]: [{
+                            [Op.eq]: null
+                        }]
+                    },
+                },
+                include: [
+                    {
+                        model: models.Allocation,
+                        where: {
+                            project_id: project.id
+                        }
+                    }
+                ]
+            })
+            return total ? total.dataValues.totalIncurred : 0
+        },
         totalPaid: async (project, args, { models }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,
