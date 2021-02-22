@@ -54,7 +54,7 @@ const ContributorInfoTile = (props) => {
         currencyInformation: currencyInformation
     })
 
-    const renderPaiToContributorByCurrency = (props) => {
+    const renderPaidToContributorByCurrency = (props) => {
         const {
             paidByCurrency
         } = props
@@ -119,7 +119,7 @@ const ContributorInfoTile = (props) => {
                                 </strong>
                             </Typography>
                             <List>
-                                {renderPaiToContributorByCurrency({ paidByCurrency: contributor.paid_by_currency })}
+                                {renderPaidToContributorByCurrency({ paidByCurrency: contributor.paid_by_currency })}
                             </List>
                         </Box>
                     </Grid>
