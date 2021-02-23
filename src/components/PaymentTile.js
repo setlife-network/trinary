@@ -16,7 +16,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 
 import AllocationAddForm from './AllocationAddForm'
-import DeleteConfirmationDialog from './DeleteConfirmationDialog'
+import DeletePayment from './DeletePayment'
 import PaymentEditDialog from './PaymentEditDialog'
 import {
     GET_PAYMENT_ALLOCATIONS,
@@ -80,7 +80,6 @@ const PaymentTile = (props) => {
     })
 
     if (loadingTotalAllocated || loadingPaymentAllocations) return ''
-
     if (errorTotalAllocated || errorPaymentAllocations) return `An error ocurred`
 
     const { allocations } = dataPaymentAllocations.getPaymentById
@@ -145,46 +144,47 @@ const PaymentTile = (props) => {
     }
 
     return (
-        <Box
-            borderRadius='borderRadius'
-            bgcolor='primary.light'
-            mx={1}
-            className='PaymentTile'
-        >
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={
-                        project &&
+        <div>
+            <Box
+                borderRadius='borderRadius'
+                bgcolor='primary.light'
+                mx={1}
+                className='PaymentTile'
+            >
+                <Accordion>
+                    <AccordionSummary
+                        expandIcon={
+                            project &&
                             <ExpandMoreIcon />
-                    }
-                >
-                    <Grid container alignItems='center'>
-                        <Grid item xs={5} align='left'>
-                            <Typography variant='h6'>
-                                {
-                                    `${paymentAmount}`
-                                }
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={1}>
-                            <Typography
-                                variant='caption'
-                                align='left'
-                                color='secondary'
-                            >
-                                {
-                                    `${paymentHasBeenMade
-                                        ? formattedDatePaid
-                                        : formattedDateIncurred}`
-                                }
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6} align='right'>
-                            <MonetizationOnIcon
-                                color={`${paymentHasBeenMade ? 'primary' : 'secondary'}`}
-                            />
-                        </Grid>
-                        {project &&
+                        }
+                    >
+                        <Grid container alignItems='center'>
+                            <Grid item xs={5} align='left'>
+                                <Typography variant='h6'>
+                                    {
+                                        `${paymentAmount}`
+                                    }
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={1}>
+                                <Typography
+                                    variant='caption'
+                                    align='left'
+                                    color='secondary'
+                                >
+                                    {
+                                        `${paymentHasBeenMade
+                                            ? formattedDatePaid
+                                            : formattedDateIncurred}`
+                                    }
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6} align='right'>
+                                <MonetizationOnIcon
+                                    color={`${paymentHasBeenMade ? 'primary' : 'secondary'}`}
+                                />
+                            </Grid>
+                            {project &&
                             <Grid item xs={12}>
                                 <Typography variant='subtitle1'>
                                     <Box
@@ -199,11 +199,11 @@ const PaymentTile = (props) => {
                                     </Box>
                                 </Typography>
                             </Grid>
-                        }
-                    </Grid>
-                </AccordionSummary>
-                { !project &&
-                    <Box align='left' mb={2} ml={2} pr={2}>
+                            }
+                        </Grid>
+                    </AccordionSummary>
+                    { !project &&
+                    <Box align='left' mb={2} ml={2}>
                         <Grid container>
                             <Grid item xs={6}>
                                 <Button
@@ -224,8 +224,8 @@ const PaymentTile = (props) => {
                             </Grid>
                         </Grid>
                     </Box>
-                }
-                { project &&
+                    }
+                    { project &&
                     <AccordionDetails>
                         <Grid container>
                             <Grid item xs={12}>
@@ -248,8 +248,9 @@ const PaymentTile = (props) => {
                             </Grid>
                         </Grid>
                     </AccordionDetails>
-                }
-            </Accordion>
+                    }
+                </Accordion>
+            </Box>
             {
                 (paymentClicked && project) &&
                 <AllocationAddForm
@@ -264,13 +265,12 @@ const PaymentTile = (props) => {
                 open={openEditPayment}
                 onClose={() => handleEditPayment(false)}
             />
-            <DeleteConfirmationDialog
-                deleteItem={`payment`}
+            <DeletePayment
                 payment={payment}
                 open={openDeletePayment}
                 onClose={() => handleDeletePayment(false)}
             />
-        </Box>
+        </div>
     )
 }
 

@@ -1,6 +1,6 @@
 import React from 'react'
-
 import {
+    Box,
     Button,
     Dialog,
     DialogActions,
@@ -9,35 +9,43 @@ import {
     DialogTitle
 } from '@material-ui/core/'
 
+import { red } from '../styles/colors.scss'
+
 const DeleteConfirmationDialog = (props) => {
 
     const {
+        deleteAction,
         deleteItem,
         onClose,
         open
     } = props
 
+    const handleConfirmAction = () => {
+        deleteAction()
+        onClose()
+    }
+
     return (
         <Dialog
             open={open}
             onClose={onClose}
-            aria-labelledby='alert-dialog-title'
-            aria-describedby='alert-dialog-description'
         >
             <DialogTitle>
                 {`Delete ${deleteItem}`}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id='alert-dialog-description'>
-                    {`Are you sure that you gant to delete this ${deleteItem}`}
+                    {`Are you sure that you want to delete this ${deleteItem}`}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color='primary'>
                     {`Cancel`}
                 </Button>
-                <Button onClick={onClose} color='primary'>
-                    {`Delete`}
+                <Button onClick={handleConfirmAction}>
+                    <Box color={`${red}`}>
+                        {`Delete`}
+                    </Box>
                 </Button>
             </DialogActions>
         </Dialog>
