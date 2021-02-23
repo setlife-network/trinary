@@ -68,6 +68,9 @@ const AllocationClientSpecifics = (props) => {
         if (selectedContributor) {
             setContributor(selectedContributor)
         }
+        if (!contributor) {
+            setSelectedContributor(null)
+        }
     })
     useEffect(() => {
         if (contributor) {

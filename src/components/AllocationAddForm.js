@@ -244,6 +244,9 @@ const AllocationAddForm = (props) => {
         } else {
             setSelectedProject(null)
         }
+        if (!contributor) {
+            setSelectedContributor(null)
+        }
     }, [open])
 
     useEffect(() => {
