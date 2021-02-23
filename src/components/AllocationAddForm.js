@@ -387,8 +387,7 @@ const AllocationAddForm = (props) => {
                                             setContributor={setSelectedContributor}
                                             setProject={setSelectedProject}
                                         />
-                                    )
-                                    : (
+                                    ) : (
                                         <AllocationProposeSpecifics
                                             contributor={contributor}
                                             setNewAllocation={setNewAllocation}
