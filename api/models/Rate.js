@@ -28,6 +28,10 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        currency: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         contributor_id: { //FK
             type: DataTypes.INTEGER(11),
             references: {
