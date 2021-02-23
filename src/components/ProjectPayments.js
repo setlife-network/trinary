@@ -67,14 +67,14 @@ const ProjectPayments = (props) => {
             <Grid item xs={12} align='left'>
                 <Box p={3}>
                     <Grid container justify='space-between' alignItems='flex-end'>
-                        <Grid item xs={12} sm={8}>
+                        <Grid item xs={12} sm={7}>
                             <Typography variant='h4'>
                                 <strong>
                                     {'Payments'}
                                 </strong>
                             </Typography>
                         </Grid>
-                        <Grid item xs={11} sm={3}>
+                        <Grid item xs={11} sm={4}>
                             <Typography variant='h5'>
                                 <strong>
                                     {`${totalPaidAmount} Total`}
@@ -110,7 +110,7 @@ const ProjectPayments = (props) => {
                     (
                         <Grid container>
                             <Grid item xs={12} md={6}>
-                                <Box my={4}>
+                                <Box mt={3} mb={5} pb={6}>
                                     <ProjectProposedAllocationsTile
                                         currencyInformation={currencyInformation}
                                         proposedAllocations={proposedAllocations}
