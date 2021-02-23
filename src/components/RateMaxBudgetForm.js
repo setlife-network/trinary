@@ -21,6 +21,7 @@ const RateMaxBudgetForm = (props) => {
         currentRate,
         createRate,
         endDate,
+        setCurrency,
         setNewAllocationRate,
         startDate
     } = props
@@ -31,6 +32,11 @@ const RateMaxBudgetForm = (props) => {
     const [totalWeeks, setTotalWeeks] = useState(null)
     const [totalHours, setTotalHours] = useState(0)
 
+    useEffect(() => {
+        if (rateCurrency) {
+            setCurrency(rateCurrency)
+        }
+    }, [rateCurrency])
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)

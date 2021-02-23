@@ -469,6 +469,7 @@ const AllocationAddForm = (props) => {
                                     <RateMaxBudgetForm
                                         clientCurrency={clientCurrency}
                                         currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
+                                        setCurrency={setRateCurrency}
                                         setNewAllocationRate={setNewAllocationRate}
                                         startDate={moment(startDate)}
                                         endDate={moment(endDate)}
