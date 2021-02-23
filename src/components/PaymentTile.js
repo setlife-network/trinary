@@ -7,13 +7,16 @@ import {
     AccordionSummary,
     Box,
     Button,
+    Fab,
     Grid,
     Typography
 } from '@material-ui/core/'
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 
 import AllocationAddForm from './AllocationAddForm'
+import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import PaymentEditDialog from './PaymentEditDialog'
 import {
     GET_PAYMENT_ALLOCATIONS,
@@ -55,14 +58,19 @@ const PaymentTile = (props) => {
 
     const [paymentClicked, setPaymentClicked] = useState(null)
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
-    const [openEditPayment, setOpenEditPayment] = useState(false);
+    const [openDeletePayment, setOpenDeletePayment] = useState(false)
+    const [openEditPayment, setOpenEditPayment] = useState(false)
 
     const addAllocation = (props) => {
         setOpenAddAllocationDialog(true)
         setPaymentClicked(props.payment)
     }
-    const handleAddAllocationClose = (value) => {
+    const handleAddAllocationClose = () => {
         setOpenAddAllocationDialog(false)
+    }
+
+    const handleDeletePayment = (value) => {
+        setOpenDeletePayment(value)
     }
     const handleEditPayment = (value) => {
         setOpenEditPayment(value)
@@ -195,13 +203,26 @@ const PaymentTile = (props) => {
                     </Grid>
                 </AccordionSummary>
                 { !project &&
-                    <Box align='left' mb={2} ml={2}>
-                        <Button
-                            color='primary'
-                            onClick={() => handleEditPayment(true)}
-                        >
-                            {'Edit'.toUpperCase()}
-                        </Button>
+                    <Box align='left' mb={2} ml={2} pr={2}>
+                        <Grid container>
+                            <Grid item xs={6}>
+                                <Button
+                                    color='primary'
+                                    onClick={() => handleEditPayment(true)}
+                                >
+                                    {'Edit'.toUpperCase()}
+                                </Button>
+                            </Grid>
+                            <Grid item xs={6} align='right'>
+                                <Button
+                                    color='primary'
+                                    onClick={() => handleDeletePayment(true)}
+                                >
+                                    <DeleteOutlinedIcon color='primary'/>
+                                </Button>
+
+                            </Grid>
+                        </Grid>
                     </Box>
                 }
                 { project &&
@@ -242,6 +263,12 @@ const PaymentTile = (props) => {
                 payment={payment}
                 open={openEditPayment}
                 onClose={() => handleEditPayment(false)}
+            />
+            <DeleteConfirmationDialog
+                deleteItem={`payment`}
+                payment={payment}
+                open={openDeletePayment}
+                onClose={() => handleDeletePayment(false)}
             />
         </Box>
     )
