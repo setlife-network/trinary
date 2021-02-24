@@ -266,9 +266,10 @@ const PaymentTile = (props) => {
                 onClose={() => handleEditPayment(false)}
             />
             <DeletePayment
-                payment={payment}
+                client={client}
                 open={openDeletePayment}
                 onClose={() => handleDeletePayment(false)}
+                payment={payment}
             />
         </div>
     )

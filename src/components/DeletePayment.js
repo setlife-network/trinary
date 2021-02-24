@@ -6,11 +6,13 @@ import {
 } from '@material-ui/core/'
 
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
+import { GET_CLIENT_PAYMENTS } from '../operations/queries/PaymentQueries'
 import { DELETE_PAYMENT } from '../operations/mutations/PaymentMutations'
 
 const DeletePayment = (props) => {
 
     const {
+        client,
         onClose,
         open,
         payment
@@ -20,7 +22,14 @@ const DeletePayment = (props) => {
         dataDeletedPayment,
         loadingDeletedPayment,
         errorDeletedPayment
-    }] = useMutation(DELETE_PAYMENT)
+    }] = useMutation(DELETE_PAYMENT, {
+        refetchQueries: [{
+            query: GET_CLIENT_PAYMENTS,
+            variables: {
+                clientId: Number(client.id)
+            }
+        }]
+    })
 
     const handleDeletePayment = async () => {
         const paymentDeleted = await deletePayment({
