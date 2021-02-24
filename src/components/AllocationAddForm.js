@@ -30,7 +30,8 @@ import {
 } from '../operations/queries/ContributorQueries'
 import {
     GET_PROJECT_CONTRIBUTORS,
-    GET_PROJECT_CLIENT_PAYMENTS
+    GET_PROJECT_CLIENT_PAYMENTS,
+    GET_PROJECT_PAYMENTS
 } from '../operations/queries/ProjectQueries'
 import {
     GET_PAYMENT_ALLOCATIONS,
@@ -235,6 +236,11 @@ const AllocationAddForm = (props) => {
             query: GET_PAYMENT_TOTAL_ALLOCATED,
             variables: {
                 paymentId: selectedPayment ? selectedPayment.id : null
+            }
+        }, {
+            query: GET_PROJECT_PAYMENTS,
+            variables: {
+                id: selectedProject ? Number(selectedProject.id) : null
             }
         }]
     })
