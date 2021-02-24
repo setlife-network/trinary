@@ -29,8 +29,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         currency: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.STRING
         },
         contributor_id: { //FK
             type: DataTypes.INTEGER(11),
