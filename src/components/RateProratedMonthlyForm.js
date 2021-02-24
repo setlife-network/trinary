@@ -38,10 +38,12 @@ const RateProratedMonthlyForm = (props) => {
             setCurrency(rateCurrency)
         }
     }, [rateCurrency])
+
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
         setMonthlyhoursInput(currentRate ? currentRate.total_expected_hours : 160)
+        setRateCurrency(currentRate ? currentRate.currency : clientCurrency)
     }, [currentRate])
 
     useEffect(() => {
