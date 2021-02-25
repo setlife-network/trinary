@@ -13,6 +13,8 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import EditAllocation from './EditAllocation'
+import { GET_PAYMENT_ALLOCATIONS } from '../operations/queries/PaymentQueries'
+import { GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { DELETE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 import { formatAmount, selectCurrencyInformation } from '../scripts/selectors'
 
@@ -31,7 +33,18 @@ const AllocationOverview = (props) => {
     }] = useMutation(DELETE_ALLOCATION, {
         variables: {
             id: allocation.id
-        }
+        },
+        refetchQueries: [{
+            query: GET_PROJECT_PAYMENTS,
+            variables: {
+                id: allocation.project.id
+            }
+        }, {
+            query: GET_PAYMENT_ALLOCATIONS,
+            variables: {
+                paymentId: allocation.payment.id
+            }
+        }]
     })
 
     const [openDeleteAllocation, setOpenDeleteAllocation] = useState(false)
@@ -46,8 +59,6 @@ const AllocationOverview = (props) => {
     const handleDeleteAllocation = async () => {
         const paymentDeleted = await deleteAllocation()
         onClose()
-        console.log('paymentDeleted');
-        console.log(paymentDeleted);
     }
 
     return (
@@ -106,17 +117,19 @@ const AllocationOverview = (props) => {
                     rate={allocation.rate}
                     onClose={onClose}
                 />
-                <Button
-                    color='primary'
-                    onClick={() => setOpenDeleteAllocation(true)}
-                >
-                    <DeleteOutlinedIcon color='primary'/>
-                </Button>
+                <Box mt={1}>
+                    <Button
+                        color='primary'
+                        onClick={() => setOpenDeleteAllocation(true)}
+                    >
+                        <DeleteOutlinedIcon color='primary'/>
+                    </Button>
+                </Box>
                 <DeleteConfirmationDialog
                     deleteAction={() => handleDeleteAllocation()}
                     deleteItem={`allocation`}
                     open={openDeleteAllocation}
-                    onClose={handleDeleteAllocation}
+                    onClose={() => setOpenDeleteAllocation(false)}
                 />
             </Box>
         </Dialog>
