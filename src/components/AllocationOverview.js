@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useMutation } from '@apollo/client'
 import {
     Box,
     Button,
@@ -10,8 +11,9 @@ import {
 import moment from 'moment'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 
+import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import EditAllocation from './EditAllocation'
-
+import { DELETE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 import { formatAmount, selectCurrencyInformation } from '../scripts/selectors'
 
 const AllocationOverview = (props) => {
@@ -22,6 +24,18 @@ const AllocationOverview = (props) => {
         open
     } = props
 
+    const [deleteAllocation, {
+        dataDeletedPayment,
+        loadingDeletedPayment,
+        errorDeletedPayment
+    }] = useMutation(DELETE_ALLOCATION, {
+        variables: {
+            id: allocation.id
+        }
+    })
+
+    const [openDeleteAllocation, setOpenDeleteAllocation] = useState(false)
+
     const currencyInformation = selectCurrencyInformation({
         currency: allocation.project.client.currency
     })
@@ -29,8 +43,11 @@ const AllocationOverview = (props) => {
         amount: allocation.payment.amount / 100,
         currencyInformation: currencyInformation
     })
-    const handleOnDeleteAllocation = ({ allocation }) => {
-
+    const handleDeleteAllocation = async () => {
+        const paymentDeleted = await deleteAllocation()
+        onClose()
+        console.log('paymentDeleted');
+        console.log(paymentDeleted);
     }
 
     return (
@@ -91,9 +108,16 @@ const AllocationOverview = (props) => {
                 />
                 <Button
                     color='primary'
+                    onClick={() => setOpenDeleteAllocation(true)}
                 >
                     <DeleteOutlinedIcon color='primary'/>
                 </Button>
+                <DeleteConfirmationDialog
+                    deleteAction={() => handleDeleteAllocation()}
+                    deleteItem={`allocation`}
+                    open={openDeleteAllocation}
+                    onClose={handleDeleteAllocation}
+                />
             </Box>
         </Dialog>
     )
