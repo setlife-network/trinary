@@ -1,14 +1,17 @@
 import React from 'react'
 import {
     Box,
+    Button,
     Dialog,
     DialogTitle,
     Grid,
     Typography
 } from '@material-ui/core/'
 import moment from 'moment'
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 
 import EditAllocation from './EditAllocation'
+
 import { formatAmount, selectCurrencyInformation } from '../scripts/selectors'
 
 const AllocationOverview = (props) => {
@@ -19,9 +22,6 @@ const AllocationOverview = (props) => {
         open
     } = props
 
-    console.log('allocation');
-    console.log(allocation);
-
     const currencyInformation = selectCurrencyInformation({
         currency: allocation.project.client.currency
     })
@@ -29,16 +29,9 @@ const AllocationOverview = (props) => {
         amount: allocation.payment.amount / 100,
         currencyInformation: currencyInformation
     })
+    const handleOnDeleteAllocation = ({ allocation }) => {
 
-    /*
-    __typename: "Allocation"
-    amount: 320000
-    contributor: {__typename: "Contributor", id: 197, name: "Oscar Lafarga"}
-    end_date: "1617148800000"
-    id: 189
-    rate: {__typename: "Rate", id: 215, hourly_rate: "20", total_expected_hours: 160, type: "prorated_monthly"}
-    start_date: "1614556800000"
-    */
+    }
 
     return (
         <Dialog className='AllocationOverview' onClose={onClose} open={open}>
@@ -90,14 +83,17 @@ const AllocationOverview = (props) => {
                 <Box my={3}>
                     <hr/>
                 </Box>
-                <Grid container>
-                    <EditAllocation
-                        allocation={allocation}
-                        currency='USD'
-                        rate={allocation.rate}
-                        onClose={onClose}
-                    />
-                </Grid>
+                <EditAllocation
+                    allocation={allocation}
+                    currency={allocation.project.client.currency}
+                    rate={allocation.rate}
+                    onClose={onClose}
+                />
+                <Button
+                    color='primary'
+                >
+                    <DeleteOutlinedIcon color='primary'/>
+                </Button>
             </Box>
         </Dialog>
     )

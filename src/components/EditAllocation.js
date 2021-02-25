@@ -11,6 +11,7 @@ import moment from 'moment'
 import DatePicker from 'react-datepicker'
 import { findKey } from 'lodash'
 
+import LoadingProgress from './LoadingProgress'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import { GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
@@ -109,7 +110,7 @@ const EditAllocation = (props) => {
         }
     }
 
-    if (loadingContributorRates) return ''
+    if (loadingContributorRates) return <LoadingProgress/>
     if (errorContributorRates) return `${errorContributorRates}`
 
     const { getContributorById: contributorRates } = dataContributorRates

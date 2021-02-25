@@ -31,6 +31,14 @@ export const CREATE_ALLOCATION = gql`
     }
 `
 
+export const DELETE_ALLOCATION = gql`
+    mutation DeleteAllocation(
+        $id: Int!
+    ) {
+        deleteAllocationById(id: $id)
+    }
+`
+
 export const UPDATE_ALLOCATION = gql`
     mutation UpdateAllocation(
         $id: Int!,
