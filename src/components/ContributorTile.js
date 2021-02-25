@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import {
     Accordion,
@@ -15,6 +15,7 @@ import moment from 'moment'
 import { filter, sortBy } from 'lodash'
 import { useHistory } from 'react-router-dom'
 
+import AllocationOverview from './AllocationOverview'
 import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
 import {
     formatAmount,
@@ -32,8 +33,17 @@ const ContributorTile = (props) => {
     } = props
     const history = useHistory()
 
+    const [openAllocationOverview, setOpenAllocationOverview] = useState(false)
+    const [selectedAllocation, setSelectedAllocation] = useState(null)
+
     const handleAddButton = () => {
         onAddButton({ contributor })
+    }
+    const handleAllocationOverview = ({ value, allocation }) => {
+        console.log('allocation');
+        console.log(allocation);
+        setSelectedAllocation(allocation)
+        setOpenAllocationOverview(value)
     }
     const redirectToContributorDetails = ({ contributor }) => {
         history.push(`/contributor/${contributor.id}`)
@@ -78,7 +88,7 @@ const ContributorTile = (props) => {
             const isActiveAllocation = moment(a.start_date, 'x').isBefore(moment())
 
             return (
-                <Grid item xs={12}>
+                <Grid item xs={12} onClick={() => handleAllocationOverview({ value: true, allocation: a })}>
                     <hr/>
                     <Box my={1}>
                         <Grid container>
@@ -234,6 +244,14 @@ const ContributorTile = (props) => {
                     </AccordionDetails>
                 </Accordion>
             </Box>
+            {
+                selectedAllocation &&
+                <AllocationOverview
+                    allocation={selectedAllocation}
+                    onClose={() => handleAllocationOverview(false)}
+                    open={openAllocationOverview}
+                />
+            }
         </Box>
 
     )

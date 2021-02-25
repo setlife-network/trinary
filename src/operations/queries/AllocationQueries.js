@@ -8,6 +8,10 @@ export const GET_ALLOCATIONS = gql`
             start_date
             end_date
             date_paid
+            contributor {
+                id
+                name
+            }
             rate {
                 id
                 active
@@ -17,6 +21,16 @@ export const GET_ALLOCATIONS = gql`
             }
             payment {
                 id
+                amount
+                client {
+                    id
+                    name
+                    currency
+                }
+            }
+            project {
+                id
+                name
                 client {
                     id
                     name
