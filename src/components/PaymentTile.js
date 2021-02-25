@@ -7,14 +7,17 @@ import {
     AccordionSummary,
     Box,
     Button,
+    Fab,
     Grid,
     Typography
 } from '@material-ui/core/'
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 
 import AllocationAddForm from './AllocationAddForm'
 import AllocationOverview from './AllocationOverview'
+import DeletePayment from './DeletePayment'
 import PaymentEditDialog from './PaymentEditDialog'
 import {
     GET_PAYMENT_ALLOCATIONS,
@@ -56,6 +59,7 @@ const PaymentTile = (props) => {
     const [paymentClicked, setPaymentClicked] = useState(null)
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
     const [openAllocationOverview, setOpenAllocationOverview] = useState(false)
+    const [openDeletePayment, setOpenDeletePayment] = useState(false)
     const [openEditPayment, setOpenEditPayment] = useState(false)
     const [selectedAllocation, setSelectedAllocation] = useState(null)
 
@@ -67,8 +71,12 @@ const PaymentTile = (props) => {
         setSelectedAllocation(allocation)
         setOpenAllocationOverview(value)
     }
-    const handleAddAllocationClose = (value) => {
+    const handleAddAllocationClose = () => {
         setOpenAddAllocationDialog(false)
+    }
+
+    const handleDeletePayment = (value) => {
+        setOpenDeletePayment(value)
     }
     const handleEditPayment = (value) => {
         setOpenEditPayment(value)
@@ -78,7 +86,6 @@ const PaymentTile = (props) => {
     })
 
     if (loadingTotalAllocated || loadingPaymentAllocations) return ''
-
     if (errorTotalAllocated || errorPaymentAllocations) return `An error ocurred`
 
     const { allocations } = dataPaymentAllocations.getPaymentById
@@ -143,46 +150,47 @@ const PaymentTile = (props) => {
     }
 
     return (
-        <Box
-            borderRadius='borderRadius'
-            bgcolor='primary.light'
-            mx={1}
-            className='PaymentTile'
-        >
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={
-                        project &&
+        <div>
+            <Box
+                borderRadius='borderRadius'
+                bgcolor='primary.light'
+                mx={1}
+                className='PaymentTile'
+            >
+                <Accordion>
+                    <AccordionSummary
+                        expandIcon={
+                            project &&
                             <ExpandMoreIcon />
-                    }
-                >
-                    <Grid container alignItems='center'>
-                        <Grid item xs={5} align='left'>
-                            <Typography variant='h6'>
-                                {
-                                    `${paymentAmount}`
-                                }
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={1}>
-                            <Typography
-                                variant='caption'
-                                align='left'
-                                color='secondary'
-                            >
-                                {
-                                    `${paymentHasBeenMade
-                                        ? formattedDatePaid
-                                        : formattedDateIncurred}`
-                                }
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6} align='right'>
-                            <MonetizationOnIcon
-                                color={`${paymentHasBeenMade ? 'primary' : 'secondary'}`}
-                            />
-                        </Grid>
-                        {project &&
+                        }
+                    >
+                        <Grid container alignItems='center'>
+                            <Grid item xs={5} align='left'>
+                                <Typography variant='h6'>
+                                    {
+                                        `${paymentAmount}`
+                                    }
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={1}>
+                                <Typography
+                                    variant='caption'
+                                    align='left'
+                                    color='secondary'
+                                >
+                                    {
+                                        `${paymentHasBeenMade
+                                            ? formattedDatePaid
+                                            : formattedDateIncurred}`
+                                    }
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6} align='right'>
+                                <MonetizationOnIcon
+                                    color={`${paymentHasBeenMade ? 'primary' : 'secondary'}`}
+                                />
+                            </Grid>
+                            {project &&
                             <Grid item xs={12}>
                                 <Typography variant='subtitle1'>
                                     <Box
@@ -197,20 +205,33 @@ const PaymentTile = (props) => {
                                     </Box>
                                 </Typography>
                             </Grid>
-                        }
-                    </Grid>
-                </AccordionSummary>
-                { !project &&
+                            }
+                        </Grid>
+                    </AccordionSummary>
+                    { !project &&
                     <Box align='left' mb={2} ml={2}>
-                        <Button
-                            color='primary'
-                            onClick={() => handleEditPayment(true)}
-                        >
-                            {'Edit'.toUpperCase()}
-                        </Button>
+                        <Grid container>
+                            <Grid item xs={6}>
+                                <Button
+                                    color='primary'
+                                    onClick={() => handleEditPayment(true)}
+                                >
+                                    {'Edit'.toUpperCase()}
+                                </Button>
+                            </Grid>
+                            <Grid item xs={6} align='right'>
+                                <Button
+                                    color='primary'
+                                    onClick={() => handleDeletePayment(true)}
+                                >
+                                    <DeleteOutlinedIcon color='primary'/>
+                                </Button>
+
+                            </Grid>
+                        </Grid>
                     </Box>
-                }
-                { project &&
+                    }
+                    { project &&
                     <AccordionDetails>
                         <Grid container>
                             <Grid item xs={12}>
@@ -233,8 +254,9 @@ const PaymentTile = (props) => {
                             </Grid>
                         </Grid>
                     </AccordionDetails>
-                }
-            </Accordion>
+                    }
+                </Accordion>
+            </Box>
             {
                 (paymentClicked && project) &&
                 <AllocationAddForm
@@ -257,7 +279,13 @@ const PaymentTile = (props) => {
                     open={openAllocationOverview}
                 />
             }
-        </Box>
+            <DeletePayment
+                client={client}
+                open={openDeletePayment}
+                onClose={() => handleDeletePayment(false)}
+                payment={payment}
+            />
+        </div>
     )
 }
 
