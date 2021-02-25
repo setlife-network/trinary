@@ -30,3 +30,25 @@ export const CREATE_ALLOCATION = gql`
         }
     }
 `
+
+export const UPDATE_ALLOCATION = gql`
+    mutation UpdateAllocation(
+        $id: Int!,
+        $amount: Int!,
+        $start_date: String!,
+        $end_date: String!,
+        $rate_id: Int!
+    ) {
+        updateAllocationById(
+            id: $id
+            updateFields: {
+                amount: $amount
+                start_date: $start_date
+                end_date: $end_date
+                rate_id: $rate_id
+            }
+        ){
+            id
+        }
+    }
+`

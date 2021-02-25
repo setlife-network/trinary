@@ -14,6 +14,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 
 import AllocationAddForm from './AllocationAddForm'
+import AllocationOverview from './AllocationOverview'
 import PaymentEditDialog from './PaymentEditDialog'
 import {
     GET_PAYMENT_ALLOCATIONS,
@@ -23,7 +24,6 @@ import {
     formatAmount,
     selectCurrencyInformation
 } from '../scripts/selectors'
-
 import { red } from '../styles/colors.scss'
 
 const PaymentTile = (props) => {
@@ -55,11 +55,17 @@ const PaymentTile = (props) => {
 
     const [paymentClicked, setPaymentClicked] = useState(null)
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
-    const [openEditPayment, setOpenEditPayment] = useState(false);
+    const [openAllocationOverview, setOpenAllocationOverview] = useState(false)
+    const [openEditPayment, setOpenEditPayment] = useState(false)
+    const [selectedAllocation, setSelectedAllocation] = useState(null)
 
     const addAllocation = (props) => {
         setOpenAddAllocationDialog(true)
         setPaymentClicked(props.payment)
+    }
+    const handleAllocationOverview = ({ value, allocation }) => {
+        setSelectedAllocation(allocation)
+        setOpenAllocationOverview(value)
     }
     const handleAddAllocationClose = (value) => {
         setOpenAddAllocationDialog(false)
@@ -93,7 +99,7 @@ const PaymentTile = (props) => {
             currencyInformation
         } = props
 
-        return allocations.map(a => {
+        return allocations.map((a, i) => {
             const {
                 amount,
                 contributor,
@@ -107,7 +113,7 @@ const PaymentTile = (props) => {
 
             return (
                 <Box mb={3}>
-                    <Grid container>
+                    <Grid container onClick={() => handleAllocationOverview({ value: true, allocation: a })}>
                         <Grid items xs={10} >
                             <Typography color='secondary' variant='caption'>
                                 {`${contributor.name}`}
@@ -243,6 +249,14 @@ const PaymentTile = (props) => {
                 open={openEditPayment}
                 onClose={() => handleEditPayment(false)}
             />
+            {
+                selectedAllocation &&
+                <AllocationOverview
+                    allocation={selectedAllocation}
+                    onClose={() => handleAllocationOverview(false)}
+                    open={openAllocationOverview}
+                />
+            }
         </Box>
     )
 }

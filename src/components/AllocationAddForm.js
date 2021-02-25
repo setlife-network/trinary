@@ -99,7 +99,7 @@ const AllocationAddForm = (props) => {
                 rate_id: allocationRate.id
             }
         })
-        if (loadingNewAllocation) return <span>loading...</span>
+        if (loadingNewAllocation) return ''
         else if (allocationCreated.errors) {
             console.log('Error adding the allocation');
         } else {
@@ -381,9 +381,7 @@ const AllocationAddForm = (props) => {
                     </Grid>
                     {
                         selectedProject &&
-
                         <>
-
                             <Grid item xs={12}>
                                 <ButtonGroup color='primary' aria-label='outlined primary button group'>
                                     <Button
@@ -392,8 +390,7 @@ const AllocationAddForm = (props) => {
                                         onClick={() => (
                                             changeAllocationType({
                                                 selectedType: 0,
-                                                allocationTypes:
-                                            allocationTypes
+                                                allocationTypes: allocationTypes
                                             })
                                         )}
                                     >
