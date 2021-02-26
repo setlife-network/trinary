@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import {
     Box,
     Button,
@@ -13,6 +13,7 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import EditAllocation from './EditAllocation'
+import { GET_ALLOCATION_INFO } from '../operations/queries/AllocationQueries'
 import { GET_PAYMENT_ALLOCATIONS } from '../operations/queries/PaymentQueries'
 import { GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { DELETE_ALLOCATION } from '../operations/mutations/AllocationMutations'
@@ -21,10 +22,20 @@ import { formatAmount, selectCurrencyInformation } from '../scripts/selectors'
 const AllocationOverview = (props) => {
 
     const {
-        allocation,
+        allocationInfo,
         onClose,
         open
     } = props
+
+    const {
+        data: dataAllocation,
+        error: errorAllocation,
+        loading: loadingAllocation
+    } = useQuery(GET_ALLOCATION_INFO, {
+        variables: {
+            id: allocationInfo.id
+        }
+    })
 
     const [deleteAllocation, {
         dataDeletedPayment,
@@ -32,22 +43,32 @@ const AllocationOverview = (props) => {
         errorDeletedPayment
     }] = useMutation(DELETE_ALLOCATION, {
         variables: {
-            id: allocation.id
+            id: allocationInfo.id
         },
         refetchQueries: [{
             query: GET_PROJECT_PAYMENTS,
             variables: {
-                id: allocation.project.id
+                id: dataAllocation ? dataAllocation.getAllocationById.project.id : null
             }
         }, {
             query: GET_PAYMENT_ALLOCATIONS,
             variables: {
-                paymentId: allocation.payment.id
+                paymentId: dataAllocation ? dataAllocation.getAllocationById.payment.id : null
             }
         }]
     })
 
     const [openDeleteAllocation, setOpenDeleteAllocation] = useState(false)
+
+    const handleDeleteAllocation = async () => {
+        const paymentDeleted = await deleteAllocation()
+        onClose()
+    }
+
+    if (loadingAllocation) return 'Loading'
+    if (errorAllocation) return `Error ${errorAllocation}`
+
+    const { getAllocationById: allocation } = dataAllocation
 
     const currencyInformation = selectCurrencyInformation({
         currency: allocation.project.client.currency
@@ -56,10 +77,6 @@ const AllocationOverview = (props) => {
         amount: allocation.payment.amount / 100,
         currencyInformation: currencyInformation
     })
-    const handleDeleteAllocation = async () => {
-        const paymentDeleted = await deleteAllocation()
-        onClose()
-    }
 
     return (
         <Dialog className='AllocationOverview' onClose={onClose} open={open}>

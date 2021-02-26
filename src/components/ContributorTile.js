@@ -247,7 +247,7 @@ const ContributorTile = (props) => {
             {
                 selectedAllocation &&
                 <AllocationOverview
-                    allocation={selectedAllocation}
+                    allocationInfo={selectedAllocation}
                     onClose={() => handleAllocationOverview(false)}
                     open={openAllocationOverview}
                 />
