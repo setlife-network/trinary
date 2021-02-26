@@ -13,6 +13,7 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import EditAllocation from './EditAllocation'
+import LoadingProgress from './LoadingProgress'
 import { GET_ALLOCATION_INFO } from '../operations/queries/AllocationQueries'
 import { GET_PAYMENT_ALLOCATIONS } from '../operations/queries/PaymentQueries'
 import { GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
@@ -65,7 +66,7 @@ const AllocationOverview = (props) => {
         onClose()
     }
 
-    if (loadingAllocation) return 'Loading'
+    if (loadingAllocation) return <LoadingProgress/>
     if (errorAllocation) return `Error ${errorAllocation}`
 
     const { getAllocationById: allocation } = dataAllocation

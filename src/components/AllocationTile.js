@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Box,
     Card,
@@ -8,6 +8,8 @@ import {
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
 import accounting from 'accounting-js'
 import moment from 'moment'
+
+import AllocationOverview from './AllocationOverview'
 
 import {
     formatAmount,
@@ -21,6 +23,8 @@ const AllocationTile = (props) => {
         allocation
     } = props
 
+    const [openAllocationOverview, setOpenAllocationOverview] = useState(false)
+
     const currencyInformation = selectCurrencyInformation({
         currency: 'USD'
     })
@@ -33,8 +37,12 @@ const AllocationTile = (props) => {
 
     return (
 
-        <Box p={2} boxShadow={3} borderRadius='borderRadius'>
-            <Grid container alignItems='center'>
+        <Box
+            p={2}
+            boxShadow={3}
+            borderRadius='borderRadius'
+        >
+            <Grid container alignItems='center' onClick={() => setOpenAllocationOverview(true)}>
                 <Grid item xs={4} md={1}>
                     <AccountBalanceWalletIcon color='primary'/>
                 </Grid>
@@ -101,6 +109,11 @@ const AllocationTile = (props) => {
                     </Box>
                 </Grid>
             </Grid>
+            <AllocationOverview
+                allocationInfo={allocation}
+                onClose={() => setOpenAllocationOverview(false)}
+                open={openAllocationOverview}
+            />
         </Box>
 
     )

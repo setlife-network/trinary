@@ -40,8 +40,6 @@ const ContributorTile = (props) => {
         onAddButton({ contributor })
     }
     const handleAllocationOverview = ({ value, allocation }) => {
-        console.log('allocation');
-        console.log(allocation);
         setSelectedAllocation(allocation)
         setOpenAllocationOverview(value)
     }
