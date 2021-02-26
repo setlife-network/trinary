@@ -179,6 +179,7 @@ const EditAllocation = (props) => {
                         />
                     ) : (
                         <RateMaxBudgetForm
+                            currentTotal={allocation.amount}
                             currency={currency}
                             currentRate={rate}
                             setNewAllocationRate={setNewAllocationRate}

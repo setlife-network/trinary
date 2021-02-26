@@ -71,9 +71,6 @@ const AllocationOverview = (props) => {
 
     const { getAllocationById: allocation } = dataAllocation
 
-    console.log('allocation');
-    console.log(allocation);
-
     const currencyInformation = selectCurrencyInformation({
         currency: allocation.project.client.currency
     })

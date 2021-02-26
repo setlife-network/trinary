@@ -15,13 +15,14 @@ const RateMaxBudgetForm = (props) => {
     const {
         currency,
         currentRate,
+        currentTotal,
         createRate,
         endDate,
         setNewAllocationRate,
         startDate
     } = props
 
-    const [totalAmount, setTotalAmount] = useState(0)
+    const [totalAmount, setTotalAmount] = useState(currentTotal ? currentTotal / 100 : 0)
     const [currentRateInput, setCurrentRateInput] = useState(null)
     const [totalWeeks, setTotalWeeks] = useState(null)
     const [totalHours, setTotalHours] = useState(0)
@@ -74,7 +75,7 @@ const RateMaxBudgetForm = (props) => {
                                 variant='filled'
                                 currencySymbol={`${currencyInformation['symbol']}`}
                                 minimumValue='0'
-                                defautltValue='0'
+                                defaultValue={currentTotal / 100}
                                 outputFormat='string'
                                 decimalCharacter={`${currencyInformation['decimal']}`}
                                 digitGroupSeparator={`${currencyInformation['thousand']}`}
