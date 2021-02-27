@@ -200,39 +200,40 @@ const PaymentTile = (props) => {
                             color='primary'
                             onClick={() => handleEditPayment(true)}
                         >
-                            {'Edit'.toUpperCase()}
+                            {'Edit Payment'.toUpperCase()}
                         </Button>
                     </Box>
                 }
-                { project &&
-                    <AccordionDetails>
-                        <Grid container>
-                            <Grid item xs={12}>
-                                {renderPaymentAllocations({
-                                    allocations: allocations,
-                                    currencyInformation: currencyInformation
-                                })}
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button
-                                    fullWidth
-                                    color='primary'
-                                    variant='outlined'
-                                    onClick={() => addAllocation({ payment })}
-                                >
-                                    <Typography>
-                                        {`Allocate`}
-                                    </Typography>
-                                </Button>
-                            </Grid>
+
+                <AccordionDetails>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            {renderPaymentAllocations({
+                                allocations: allocations,
+                                currencyInformation: currencyInformation
+                            })}
                         </Grid>
-                    </AccordionDetails>
-                }
+                        <Grid item xs={12}>
+                            <Button
+                                fullWidth
+                                color='primary'
+                                variant='outlined'
+                                onClick={() => addAllocation({ payment })}
+                            >
+                                <Typography>
+                                    {`Allocate`}
+                                </Typography>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </AccordionDetails>
+
             </Accordion>
             {
-                (paymentClicked && project) &&
+                paymentClicked &&
                 <AllocationAddForm
-                    project={project}
+                    client={client}
+                    project={project ? project : null}
                     open={openAddAllocationDialog}
                     onClose={handleAddAllocationClose}
                     payment={paymentClicked}
