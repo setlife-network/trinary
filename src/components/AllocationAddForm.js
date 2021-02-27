@@ -31,9 +31,13 @@ import {
 } from '../operations/queries/ContributorQueries'
 import {
     GET_PROJECT_CONTRIBUTORS,
-    GET_PROJECT_CLIENT_PAYMENTS
+    GET_PROJECT_CLIENT_PAYMENTS,
+    GET_PROJECT_PAYMENTS
 } from '../operations/queries/ProjectQueries'
-import { GET_PAYMENT_TOTAL_ALLOCATED } from '../operations/queries/PaymentQueries'
+import {
+    GET_PAYMENT_ALLOCATIONS,
+    GET_PAYMENT_TOTAL_ALLOCATED
+} from '../operations/queries/PaymentQueries'
 import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
@@ -224,6 +228,21 @@ const AllocationAddForm = (props) => {
                 contributorId: contributor ? contributor.id : null,
                 projectId: project ? project.id : null
 
+            }
+        }, {
+            query: GET_PAYMENT_ALLOCATIONS,
+            variables: {
+                paymentId: selectedPayment ? selectedPayment.id : null
+            }
+        }, {
+            query: GET_PAYMENT_TOTAL_ALLOCATED,
+            variables: {
+                paymentId: selectedPayment ? selectedPayment.id : null
+            }
+        }, {
+            query: GET_PROJECT_PAYMENTS,
+            variables: {
+                id: selectedProject ? Number(selectedProject.id) : null
             }
         }]
     })
