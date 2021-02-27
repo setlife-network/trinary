@@ -68,7 +68,6 @@ const PaymentTile = (props) => {
     const handleAddAllocationClose = () => {
         setOpenAddAllocationDialog(false)
     }
-
     const handleDeletePayment = (value) => {
         setOpenDeletePayment(value)
     }

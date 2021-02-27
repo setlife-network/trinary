@@ -95,8 +95,9 @@ const PaymentEditDialog = (props) => {
             setDisableEdit(true)
         } else if (
             dateIncurred == moment(payment.date_incurred, 'x').format('YYYY-MM-DD') &&
-            datePaid == moment(payment.date_paid, 'x').format('YYYY-MM-DD')
-            && paymentAmount == payment.amount / 100) {
+            datePaid == moment(payment.date_paid, 'x').format('YYYY-MM-DD') &&
+            paymentAmount == payment.amount / 100
+        ) {
             setDisableEdit(true)
         } else {
             setDisableEdit(false)

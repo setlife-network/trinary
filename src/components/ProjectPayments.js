@@ -67,14 +67,14 @@ const ProjectPayments = (props) => {
             <Grid item xs={12} align='left'>
                 <Box p={3}>
                     <Grid container justify='space-between' alignItems='flex-end'>
-                        <Grid item xs={12} sm={7}>
+                        <Grid item xs={12} sm={8}>
                             <Typography variant='h4'>
                                 <strong>
                                     {'Payments'}
                                 </strong>
                             </Typography>
                         </Grid>
-                        <Grid item xs={11} sm={4}>
+                        <Grid item xs={11} sm={3}>
                             <Typography variant='h5'>
                                 <strong>
                                     {`${totalPaidAmount} Total`}
