@@ -67,7 +67,10 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-wallet' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-                                    {`Expected budget - ${expectedBudgetAmount} ${project.expected_budget_timeframe}`}
+                                    {`
+                                        Expected budget - ${expectedBudgetAmount}
+                                        ${project.expected_budget_timeframe ? project.expected_budget_timeframe : ''}
+                                    `}
                                 </Grid>
                             </Grid>
                         </Grid>

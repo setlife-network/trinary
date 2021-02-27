@@ -1,5 +1,4 @@
 module.exports = {
-
     Rate: {
         contributor: (rate, args, { models }) => {
             return models.Contributor.findByPk(rate.contributor_id)

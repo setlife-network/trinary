@@ -10,13 +10,15 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
-import { orderBy } from 'lodash'
+import { filter, orderBy } from 'lodash'
 
 import LoadingProgress from './LoadingProgress'
 import PaymentsEmptyState from './PaymentsEmptyState'
 import PaymentTile from './PaymentTile'
 import PaymentsList from './PaymentsList'
-import { GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
+import ProjectPaymentsSummary from './ProjectPaymentsSummary'
+import ProjectProposedAllocationsTile from './ProjectProposedAllocationsTile'
+import { GET_PROJECT_CONTRIBUTOR_ALLOCATIONS, GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { pageName } from '../reactivities/variables'
 import {
     calculateTotalPayments,
@@ -34,11 +36,21 @@ const ProjectPayments = (props) => {
             id: Number(projectId)
         }
     })
+    const {
+        data: dataProjectAllocations,
+        error: errorProjectAllocations,
+        loading: loadingProjectAllocations,
+    } = useQuery(GET_PROJECT_CONTRIBUTOR_ALLOCATIONS, {
+        variables: {
+            id: Number(projectId)
+        }
+    })
 
-    if (loading) return <LoadingProgress/>
-    if (error) return `Error! ${error.message}`
+    if (loading || loadingProjectAllocations) return <LoadingProgress/>
+    if (error || errorProjectAllocations) return `Error!`
 
     const { getProjectById } = data
+    const { getProjectById: projectAllocations } = dataProjectAllocations
     const { allocatedPayments, client } = getProjectById
     pageName(getProjectById.name)
     const payments = orderBy(allocatedPayments, ['date_paid'], ['desc'])
@@ -47,6 +59,7 @@ const ProjectPayments = (props) => {
         amount: calculateTotalPayments(allocatedPayments) / 100,
         currencyInformation: currencyInformation
     })
+    const proposedAllocations = filter(projectAllocations.allocations, ['payment', null])
 
     return (
 
@@ -83,16 +96,33 @@ const ProjectPayments = (props) => {
                         </Grid>
                     </Grid>
                 </Box>
-                {allocatedPayments.length != 0
-                    ? (
-                        <PaymentsList
-                            payments={payments}
-                            project={getProjectById}
-                        />
+                <ProjectPaymentsSummary
+                    project={getProjectById}
+                    currencyInformation={currencyInformation}
+                />
+                {allocatedPayments.length != 0 &&
+                    <PaymentsList
+                        payments={payments}
+                        project={getProjectById}
+                    />
+                }
+                {proposedAllocations.length &&
+                    (
+                        <Grid container>
+                            <Grid item xs={12} md={6}>
+                                <Box mt={3} mb={5} pb={6}>
+                                    <ProjectProposedAllocationsTile
+                                        currencyInformation={currencyInformation}
+                                        proposedAllocations={proposedAllocations}
+                                        project={getProjectById}
+                                    />
+                                </Box>
+                            </Grid>
+                        </Grid>
                     )
-                    : (
-                        <PaymentsEmptyState/>
-                    )
+                }
+                {(!allocatedPayments.length && !proposedAllocations.length) &&
+                    <PaymentsEmptyState/>
                 }
             </Grid>
         </Grid>
