@@ -26,8 +26,7 @@ const ClientPayments = (props) => {
                 <PaymentsList
                     payments={payments}
                 />
-            )
-            : (
+            ) : (
                 <PaymentsEmptyState/>
             )
     )
