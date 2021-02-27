@@ -13,6 +13,13 @@ export const CREATE_PAYMENT = gql`
         }
     }
 `
+
+export const DELETE_PAYMENT = gql`
+    mutation DeletePayment($paymentId: Int!) {
+        deletePaymentById(id: $paymentId)
+    }
+`
+
 export const EDIT_PAYMENT = gql`
     mutation EditPayment($id: Int!, $amount: Int!, $date_incurred: String!, $date_paid: String) {
         updatePaymentById(id: $id, updateFields: {

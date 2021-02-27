@@ -18,6 +18,7 @@ import moment from 'moment'
 import DatePicker from 'react-datepicker'
 
 import AllocationAddSpecifics from './AllocationAddSpecifics'
+import AllocationClientSpecifics from './AllocationClientSpecifics'
 import AllocationProposeSpecifics from './AllocationProposeSpecifics'
 import LoadingProgress from './LoadingProgress'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
@@ -30,9 +31,13 @@ import {
 } from '../operations/queries/ContributorQueries'
 import {
     GET_PROJECT_CONTRIBUTORS,
-    GET_PROJECT_CLIENT_PAYMENTS
+    GET_PROJECT_CLIENT_PAYMENTS,
+    GET_PROJECT_PAYMENTS
 } from '../operations/queries/ProjectQueries'
-import { GET_PAYMENT_TOTAL_ALLOCATED } from '../operations/queries/PaymentQueries'
+import {
+    GET_PAYMENT_ALLOCATIONS,
+    GET_PAYMENT_TOTAL_ALLOCATED
+} from '../operations/queries/PaymentQueries'
 import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
@@ -42,6 +47,7 @@ import { red } from '../styles/colors.scss'
 const AllocationAddForm = (props) => {
 
     const {
+        client,
         contributor,
         payment,
         project,
@@ -223,6 +229,21 @@ const AllocationAddForm = (props) => {
                 projectId: project ? project.id : null
 
             }
+        }, {
+            query: GET_PAYMENT_ALLOCATIONS,
+            variables: {
+                paymentId: selectedPayment ? selectedPayment.id : null
+            }
+        }, {
+            query: GET_PAYMENT_TOTAL_ALLOCATED,
+            variables: {
+                paymentId: selectedPayment ? selectedPayment.id : null
+            }
+        }, {
+            query: GET_PROJECT_PAYMENTS,
+            variables: {
+                id: selectedProject ? Number(selectedProject.id) : null
+            }
         }]
     })
 
@@ -233,7 +254,7 @@ const AllocationAddForm = (props) => {
             setSelectedPayment(payment)
         }
         if (dataContributors) {
-            if (!contributor && !selectedContributor) {
+            if (!client && !contributor && !selectedContributor) {
                 setSelectedContributor(dataContributors[0])
             }
         }
@@ -242,11 +263,14 @@ const AllocationAddForm = (props) => {
         } else {
             setSelectedProject(null)
         }
+        if (!contributor) {
+            setSelectedContributor(null)
+        }
     }, [open])
 
     useEffect(() => {
         if (dataContributors) {
-            if (!contributor && !selectedContributor) {
+            if (!client && !contributor && !selectedContributor) {
                 setSelectedContributor(dataContributors.getContributors[0])
             }
         }
@@ -328,9 +352,11 @@ const AllocationAddForm = (props) => {
     const currency = (
         dataClientPayments
             ? dataClientPayments.getProjectById.client.currency
-            : selectedProject
-                ? selectedProject.client.currency
-                : null
+            : client
+                ? client.currency
+                : selectedProject
+                    ? selectedProject.client.currency
+                    : null
     )
     const rates = contributorRates
         ? dataContributorRates.getContributorById.rates
@@ -368,22 +394,32 @@ const AllocationAddForm = (props) => {
                                         setContributor={setSelectedContributor}
                                         setPayment={setSelectedPayment}
                                     />
-                                ) : (
-                                    <AllocationProposeSpecifics
-                                        contributor={contributor}
-                                        setNewAllocation={setNewAllocation}
-                                        setPayment={setSelectedPayment}
-                                        setProject={setSelectedProject}
-                                    />
                                 )
+                                : client
+                                    ? (
+                                        <AllocationClientSpecifics
+                                            client={client}
+                                            contributor={selectedContributor}
+                                            payment={payment}
+                                            project={selectedProject}
+                                            setNewAllocation={setNewAllocation}
+                                            setContributor={setSelectedContributor}
+                                            setProject={setSelectedProject}
+                                        />
+                                    ) : (
+                                        <AllocationProposeSpecifics
+                                            contributor={contributor}
+                                            setNewAllocation={setNewAllocation}
+                                            setPayment={setSelectedPayment}
+                                            setProject={setSelectedProject}
+                                        />
+                                    )
                         }
                         <hr/>
                     </Grid>
                     {
-                        selectedProject &&
-
+                        (selectedContributor) &&
                         <>
-
                             <Grid item xs={12}>
                                 <ButtonGroup color='primary' aria-label='outlined primary button group'>
                                     <Button
@@ -446,7 +482,7 @@ const AllocationAddForm = (props) => {
                     }
                 </Grid>
                 {
-                    selectedProject &&
+                    selectedContributor &&
                     <>
                         {
                             allocationTypes[0]
