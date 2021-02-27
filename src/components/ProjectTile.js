@@ -19,6 +19,19 @@ const ProjectTile = ({
         history.push(`/projects/${project.id}`)
     }
 
+    const fromProjects = window.location.pathname == '/home/projects'
+    const fromContributors = window.location.pathname == '/home/projects'
+    const fromContributor = project.active_contributor != null
+    const projectActive = (
+        fromContributor
+            ? project.active_contributor
+                ? 'primary'
+                : 'secondary'
+            : project.is_active
+                ? 'primary'
+                : 'secondary'
+    )
+
     return (
         <Grid container className='ProjectTile'>
             <Grid item xs={12}>
@@ -40,13 +53,13 @@ const ProjectTile = ({
                             alignItems='center'
                             justify='space-around'
                         >
-                            <Grid item xs={window.location.pathname == '/home/projects' ? 6 : 10}>
+                            <Grid item xs={fromProjects ? 6 : 10}>
                                 <Typography variant='h6'>
                                     {project.name}
                                 </Typography>
                             </Grid>
                             {
-                                window.location.pathname == '/home/projects' &&
+                                fromProjects &&
                                     <Grid item xs={4}>
                                         <Typography variant='caption'>
                                             {project.client.name}
@@ -58,7 +71,8 @@ const ProjectTile = ({
                                 xs={2}
                             >
                                 <CodeIcon
-                                    color={project.is_active ? 'primary' : 'secondary'}
+                                    //TODO: Remake this logic withous is_active
+                                    color={projectActive}
                                     fontSize='large'
                                 />
                             </Grid>
@@ -70,8 +84,4 @@ const ProjectTile = ({
     )
 }
 
-ProjectTile.defaultProps = {
-
-}
-
-export default ProjectTile;
+export default ProjectTile

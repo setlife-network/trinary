@@ -96,6 +96,8 @@ export const GET_CONTRIBUTOR_PROJECTS = gql`
             id
             allocations {
                 id
+                start_date
+                end_date
                 project {
                     id
                     name
