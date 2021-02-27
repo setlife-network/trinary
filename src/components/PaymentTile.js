@@ -185,20 +185,20 @@ const PaymentTile = (props) => {
                                 />
                             </Grid>
                             {project &&
-                            <Grid item xs={12}>
-                                <Typography variant='subtitle1'>
-                                    <Box
-                                        align='left'
-                                        color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
-                                    >
-                                        {`
-                                            ${totalAllocated}
-                                            ${numberOfContributorsAllocated && `allocated to ${numberOfContributorsAllocated}`}
-                                            ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}
-                                        `}
-                                    </Box>
-                                </Typography>
-                            </Grid>
+                                <Grid item xs={12}>
+                                    <Typography variant='subtitle1'>
+                                        <Box
+                                            align='left'
+                                            color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
+                                        >
+                                            {`
+                                                ${totalAllocated}
+                                                ${numberOfContributorsAllocated && `allocated to ${numberOfContributorsAllocated}`}
+                                                ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}
+                                            `}
+                                        </Box>
+                                    </Typography>
+                                </Grid>
                             }
                         </Grid>
                     </AccordionSummary>
@@ -210,7 +210,7 @@ const PaymentTile = (props) => {
                                         color='primary'
                                         onClick={() => handleEditPayment(true)}
                                     >
-                                        {'Edit'.toUpperCase()}
+                                        {'Edit Payment'.toUpperCase()}
                                     </Button>
                                 </Grid>
                                 <Grid item xs={6} align='right'>
@@ -253,7 +253,8 @@ const PaymentTile = (props) => {
             </Box>
             {(paymentClicked && project) &&
                 <AllocationAddForm
-                    project={project}
+                    client={client}
+                    project={project ? project : null}
                     open={openAddAllocationDialog}
                     onClose={handleAddAllocationClose}
                     payment={paymentClicked}
