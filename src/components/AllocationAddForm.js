@@ -76,21 +76,24 @@ const AllocationAddForm = (props) => {
             {
                 'hourly_rate': rate.hourly_rate.toString(),
                 'total_expected_hours': Number(rate.total_expected_hours),
-                'type': rate.type
+                'type': rate.type,
+                'currency': rateCurrency
             }
         )
         if (existingRate != null) {
             //create only allocation referencing contributorRates[existingRate].id
             allocationRate['id'] = contributorRates[`${existingRate}`].id
         } else {
-            allocationRate['id'] = (await createRate({
-                variables: {
-                    hourly_rate: rate.hourly_rate.toString(),
-                    total_expected_hours: Number(rate.total_expected_hours),
-                    type: rate.type,
-                    contributor_id: selectedContributor.id
-                }
-            })).data.createRate.id
+            allocationRate['id'] = (
+                await createRate({
+                    variables: {
+                        hourly_rate: rate.hourly_rate.toString(),
+                        total_expected_hours: Number(rate.total_expected_hours),
+                        type: rate.type,
+                        currency: rateCurrency,
+                        contributor_id: selectedContributor.id
+                    }
+                })).data.createRate.id
         }
         //create allocation with that rate id
         const allocationCreated = await createAllocation({
@@ -201,6 +204,7 @@ const AllocationAddForm = (props) => {
     const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
     const [newAllocationRate, setNewAllocationRate] = useState({})
     const [newAllocation, setNewAllocation] = useState({})
+    const [rateCurrency, setRateCurrency] = useState(null)
     const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month')['_d'])
     const [selectedContributor, setSelectedContributor] = useState(null)
     const [selectedProject, setSelectedProject] = useState(null)
@@ -349,7 +353,7 @@ const AllocationAddForm = (props) => {
     const payments = dataClientPayments
         ? [...dataClientPayments.getProjectById.client.payments, { amount: null, date_paid: null }]
         : [null]
-    const currency = (
+    const clientCurrency = (
         dataClientPayments
             ? dataClientPayments.getProjectById.client.currency
             : client
@@ -366,6 +370,10 @@ const AllocationAddForm = (props) => {
     const activeContributors = activeAllocations.map(a => {
         return a.contributor
     })
+
+    if (!rateCurrency) {
+        setRateCurrency(clientCurrency)
+    }
 
     return (
         <Dialog
@@ -385,7 +393,7 @@ const AllocationAddForm = (props) => {
                                     <AllocationAddSpecifics
                                         contributor={contributor}
                                         contributors={contributors}
-                                        currency={currency}
+                                        currency={clientCurrency}
                                         payment={payment}
                                         payments={payments}
                                         project={project}
@@ -417,8 +425,7 @@ const AllocationAddForm = (props) => {
                         }
                         <hr/>
                     </Grid>
-                    {
-                        (selectedContributor) &&
+                    {selectedProject &&
                         <>
                             <Grid item xs={12}>
                                 <ButtonGroup color='primary' aria-label='outlined primary button group'>
@@ -428,8 +435,7 @@ const AllocationAddForm = (props) => {
                                         onClick={() => (
                                             changeAllocationType({
                                                 selectedType: 0,
-                                                allocationTypes:
-                                            allocationTypes
+                                                allocationTypes
                                             })
                                         )}
                                     >
@@ -441,7 +447,7 @@ const AllocationAddForm = (props) => {
                                         onClick={() => (
                                             changeAllocationType({
                                                 selectedType: 1,
-                                                allocationTypes: allocationTypes
+                                                allocationTypes
                                             })
                                         )}
                                     >
@@ -481,23 +487,24 @@ const AllocationAddForm = (props) => {
                         </>
                     }
                 </Grid>
-                {
-                    selectedContributor &&
+                {selectedContributor &&
                     <>
                         {
                             allocationTypes[0]
                                 ? (
                                     <RateProratedMonthlyForm
-                                        currency={currency}
+                                        clientCurrency={clientCurrency}
                                         currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
                                         setNewAllocationRate={setNewAllocationRate}
+                                        setCurrency={setRateCurrency}
                                         startDate={moment(startDate)}
                                         endDate={moment(endDate)}
                                     />
                                 ) : (
                                     <RateMaxBudgetForm
-                                        currency={currency}
+                                        clientCurrency={clientCurrency}
                                         currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
+                                        setCurrency={setRateCurrency}
                                         setNewAllocationRate={setNewAllocationRate}
                                         startDate={moment(startDate)}
                                         endDate={moment(endDate)}

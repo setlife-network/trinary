@@ -44,6 +44,7 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
                     active
                     type
                     hourly_rate
+                    currency
                     total_expected_hours
                 }
                 project {

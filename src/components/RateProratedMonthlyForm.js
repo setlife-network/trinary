@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import {
     Box,
+    FormHelperText,
     Grid,
+    MenuItem,
+    Select,
     TextField,
     Typography
 } from '@material-ui/core/'
+
+import { CURRENCIES } from '../constants'
 import {
     formatAmount,
     selectCurrencyInformation
@@ -13,23 +18,32 @@ import {
 const RateProratedMonthlyForm = (props) => {
 
     const {
-        currency,
+        clientCurrency,
         currentRate,
         endDate,
         setNewAllocationRate,
+        setCurrency,
         startDate
     } = props
 
-    const [totalAmount, setTotalAmount] = useState(null)
     const [monthlyHoursInput, setMonthlyhoursInput] = useState(null)
     const [currentRateInput, setCurrentRateInput] = useState(null)
+    const [rateCurrency, setRateCurrency] = useState(clientCurrency)
+    const [totalAmount, setTotalAmount] = useState(null)
     const [totalWeeks, setTotalWeeks] = useState(null)
     const [totalHours, setTotalHours] = useState(0)
+
+    useEffect(() => {
+        if (rateCurrency) {
+            setCurrency(rateCurrency)
+        }
+    }, [rateCurrency])
 
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
         setMonthlyhoursInput(currentRate ? currentRate.total_expected_hours : 160)
+        setRateCurrency(currentRate ? currentRate.currency : clientCurrency)
     }, [currentRate])
 
     useEffect(() => {
@@ -55,15 +69,42 @@ const RateProratedMonthlyForm = (props) => {
     }, [startDate, endDate])
 
     const currencyInformation = selectCurrencyInformation({
-        currency: currency ? currency : 'USD'
+        currency: rateCurrency ? rateCurrency : 'USD'
     })
     const paymentAmount = formatAmount({
         amount: totalAmount,
         currencyInformation: currencyInformation
     })
 
+    const renderCurrencies = (currencies) => {
+        return (
+            currencies.map(c => {
+                return (
+                    <MenuItem value={c.name}>
+                        {c.name}
+                    </MenuItem>
+                )
+            })
+        )
+    }
+
     return (
         <Grid container className='RateProratedMonthlyForm'>
+            <Grid item xs={6} md={5}>
+                <Box width={1} mt={3}>
+                    <Select
+                        name='Currency'
+                        fullWidth
+                        onChange={(event) => setRateCurrency(event.target.value)}
+                        value={rateCurrency}
+                    >
+                        {renderCurrencies(CURRENCIES)}
+                    </Select>
+                    <FormHelperText>
+                        {`Select currency`}
+                    </FormHelperText>
+                </Box>
+            </Grid>
             <Grid item xs={12}>
                 <Box my={3}>
                     <Grid container justify='left' spacing={1}>

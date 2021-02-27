@@ -1,34 +1,46 @@
 import React, { useEffect, useState } from 'react'
 import {
     Box,
+    FormHelperText,
     Grid,
+    MenuItem,
+    Select,
     TextField,
     Typography
 } from '@material-ui/core/'
 import moment from 'moment'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
+import { CURRENCIES } from '../constants'
 import { selectCurrencyInformation } from '../scripts/selectors'
 
 const RateMaxBudgetForm = (props) => {
 
     const {
-        currency,
+        clientCurrency,
         currentRate,
         createRate,
         endDate,
+        setCurrency,
         setNewAllocationRate,
         startDate
     } = props
 
-    const [totalAmount, setTotalAmount] = useState(0)
     const [currentRateInput, setCurrentRateInput] = useState(null)
+    const [rateCurrency, setRateCurrency] = useState(clientCurrency)
+    const [totalAmount, setTotalAmount] = useState(0)
     const [totalWeeks, setTotalWeeks] = useState(null)
     const [totalHours, setTotalHours] = useState(0)
 
     useEffect(() => {
+        if (rateCurrency) {
+            setCurrency(rateCurrency)
+        }
+    }, [rateCurrency])
+    useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
+        setRateCurrency(currentRate ? currentRate.currency : clientCurrency)
     }, [currentRate])
 
     useEffect(() => {
@@ -50,11 +62,38 @@ const RateMaxBudgetForm = (props) => {
     }
 
     const currencyInformation = selectCurrencyInformation({
-        currency: currency
+        currency: rateCurrency
     })
+
+    const renderCurrencies = (currencies) => {
+        return (
+            currencies.map(c => {
+                return (
+                    <MenuItem value={c.name}>
+                        {c.name}
+                    </MenuItem>
+                )
+            })
+        )
+    }
 
     return (
         <Grid container className='RateMaxBudgetForm'>
+            <Grid item xs={6} md={5}>
+                <Box width={1} mt={3}>
+                    <Select
+                        name='Currency'
+                        fullWidth
+                        onChange={(event) => setRateCurrency(event.target.value)}
+                        value={rateCurrency}
+                    >
+                        {renderCurrencies(CURRENCIES)}
+                    </Select>
+                    <FormHelperText>
+                        {`Select currency`}
+                    </FormHelperText>
+                </Box>
+            </Grid>
             <Grid item xs={12}>
                 <Box my={3}>
                     <Grid container spacing={1}>
