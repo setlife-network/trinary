@@ -192,67 +192,66 @@ const PaymentTile = (props) => {
                                         color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
                                     >
                                         {`
-                                        ${totalAllocated}
-                                        ${numberOfContributorsAllocated && `allocated to ${numberOfContributorsAllocated}`}
-                                        ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}
-                                    `}
+                                            ${totalAllocated}
+                                            ${numberOfContributorsAllocated && `allocated to ${numberOfContributorsAllocated}`}
+                                            ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}
+                                        `}
                                     </Box>
                                 </Typography>
                             </Grid>
                             }
                         </Grid>
                     </AccordionSummary>
-                    { !project &&
-                    <Box align='left' mb={2} ml={2}>
-                        <Grid container>
-                            <Grid item xs={6}>
-                                <Button
-                                    color='primary'
-                                    onClick={() => handleEditPayment(true)}
-                                >
-                                    {'Edit'.toUpperCase()}
-                                </Button>
-                            </Grid>
-                            <Grid item xs={6} align='right'>
-                                <Button
-                                    color='primary'
-                                    onClick={() => handleDeletePayment(true)}
-                                >
-                                    <DeleteOutlinedIcon color='primary'/>
-                                </Button>
+                    {!project &&
+                        <Box align='left' mb={2} ml={2}>
+                            <Grid container>
+                                <Grid item xs={6}>
+                                    <Button
+                                        color='primary'
+                                        onClick={() => handleEditPayment(true)}
+                                    >
+                                        {'Edit'.toUpperCase()}
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={6} align='right'>
+                                    <Button
+                                        color='primary'
+                                        onClick={() => handleDeletePayment(true)}
+                                    >
+                                        <DeleteOutlinedIcon color='primary'/>
+                                    </Button>
 
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </Box>
+                        </Box>
                     }
-                    { project &&
-                    <AccordionDetails>
-                        <Grid container>
-                            <Grid item xs={12}>
-                                {renderPaymentAllocations({
-                                    allocations: allocations,
-                                    currencyInformation: currencyInformation
-                                })}
+                    {project &&
+                        <AccordionDetails>
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    {renderPaymentAllocations({
+                                        allocations: allocations,
+                                        currencyInformation: currencyInformation
+                                    })}
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button
+                                        fullWidth
+                                        color='primary'
+                                        variant='outlined'
+                                        onClick={() => addAllocation({ payment })}
+                                    >
+                                        <Typography>
+                                            {`Allocate`}
+                                        </Typography>
+                                    </Button>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Button
-                                    fullWidth
-                                    color='primary'
-                                    variant='outlined'
-                                    onClick={() => addAllocation({ payment })}
-                                >
-                                    <Typography>
-                                        {`Allocate`}
-                                    </Typography>
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </AccordionDetails>
+                        </AccordionDetails>
                     }
                 </Accordion>
             </Box>
-            {
-                (paymentClicked && project) &&
+            {(paymentClicked && project) &&
                 <AllocationAddForm
                     project={project}
                     open={openAddAllocationDialog}
