@@ -370,8 +370,7 @@ const AllocationAddForm = (props) => {
     const activeContributors = activeAllocations.map(a => {
         return a.contributor
     })
-
-    if (!rateCurrency) {
+    if (!rateCurrency && clientCurrency) {
         setRateCurrency(clientCurrency)
     }
 
