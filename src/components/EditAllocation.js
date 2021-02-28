@@ -14,7 +14,10 @@ import { findKey } from 'lodash'
 import LoadingProgress from './LoadingProgress'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
-import { GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
+import {
+    GET_CONTRIBUTOR_ALLOCATIONS,
+    GET_CONTRIBUTOR_RATES
+} from '../operations/queries/ContributorQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { UPDATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 
@@ -47,7 +50,14 @@ const EditAllocation = (props) => {
         dataUpdatedAllocation,
         loadingUpdatedAllocation,
         errorUpdatedAllocation
-    }] = useMutation(UPDATE_ALLOCATION)
+    }] = useMutation(UPDATE_ALLOCATION, {
+        refetchQueries: [{
+            query: GET_CONTRIBUTOR_ALLOCATIONS,
+            variables: {
+                id: allocation.contributor.id
+            }
+        }]
+    })
 
     const [endDate, setEndDate] = useState(moment(allocation.end_date, 'x')['_d'])
     const [newAllocationRate, setNewAllocationRate] = useState({})
