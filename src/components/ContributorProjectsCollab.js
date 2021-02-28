@@ -6,9 +6,10 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
-import { find } from 'lodash'
+import { find, isEmpty } from 'lodash'
 import moment from 'moment'
 
+import EmptyState from './EmptyState'
 import LoadingProgress from './LoadingProgress'
 import ProjectTile from './ProjectTile'
 import { GET_CONTRIBUTOR_PROJECTS } from '../operations/queries/ContributorQueries'
@@ -31,8 +32,6 @@ const ContributorProjectsCollab = (props) => {
 
     const renderProjects = ({ propjects }) => {
         return projects.map(p => {
-            console.log('p');
-            console.log(p);
             return (
                 <Grid item xs={12} sm={6} md={3}>
                     <Box my={2}>
@@ -68,11 +67,20 @@ const ContributorProjectsCollab = (props) => {
                 <Box my={5} mx={3}>
                     <Typography variant='h5' color='primary'>
                         <strong>
-                            {`Project Involvment`}
+                            {`Project Involvement`}
                         </strong>
                     </Typography>
                     <Grid container>
-                        {renderProjects({ projects: projects })}
+                        {
+                            !isEmpty(projects)
+                                ? renderProjects({ projects: projects })
+                                : (
+                                    <EmptyState
+                                        description='This contributor has no projects at the moment'
+                                        iconClassname='fas fa-code'
+                                    />
+                                )
+                        }
                     </Grid>
                 </Box>
             </Grid>
