@@ -18,6 +18,7 @@ import moment from 'moment'
 import DatePicker from 'react-datepicker'
 
 import AllocationAddSpecifics from './AllocationAddSpecifics'
+import AllocationClientSpecifics from './AllocationClientSpecifics'
 import AllocationProposeSpecifics from './AllocationProposeSpecifics'
 import LoadingProgress from './LoadingProgress'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
@@ -30,9 +31,13 @@ import {
 } from '../operations/queries/ContributorQueries'
 import {
     GET_PROJECT_CONTRIBUTORS,
-    GET_PROJECT_CLIENT_PAYMENTS
+    GET_PROJECT_CLIENT_PAYMENTS,
+    GET_PROJECT_PAYMENTS
 } from '../operations/queries/ProjectQueries'
-import { GET_PAYMENT_TOTAL_ALLOCATED } from '../operations/queries/PaymentQueries'
+import {
+    GET_PAYMENT_ALLOCATIONS,
+    GET_PAYMENT_TOTAL_ALLOCATED
+} from '../operations/queries/PaymentQueries'
 import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
@@ -42,6 +47,7 @@ import { red } from '../styles/colors.scss'
 const AllocationAddForm = (props) => {
 
     const {
+        client,
         contributor,
         payment,
         project,
@@ -70,21 +76,24 @@ const AllocationAddForm = (props) => {
             {
                 'hourly_rate': rate.hourly_rate.toString(),
                 'total_expected_hours': Number(rate.total_expected_hours),
-                'type': rate.type
+                'type': rate.type,
+                'currency': rateCurrency
             }
         )
         if (existingRate != null) {
             //create only allocation referencing contributorRates[existingRate].id
             allocationRate['id'] = contributorRates[`${existingRate}`].id
         } else {
-            allocationRate['id'] = (await createRate({
-                variables: {
-                    hourly_rate: rate.hourly_rate.toString(),
-                    total_expected_hours: Number(rate.total_expected_hours),
-                    type: rate.type,
-                    contributor_id: selectedContributor.id
-                }
-            })).data.createRate.id
+            allocationRate['id'] = (
+                await createRate({
+                    variables: {
+                        hourly_rate: rate.hourly_rate.toString(),
+                        total_expected_hours: Number(rate.total_expected_hours),
+                        type: rate.type,
+                        currency: rateCurrency,
+                        contributor_id: selectedContributor.id
+                    }
+                })).data.createRate.id
         }
         //create allocation with that rate id
         const allocationCreated = await createAllocation({
@@ -195,6 +204,7 @@ const AllocationAddForm = (props) => {
     const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
     const [newAllocationRate, setNewAllocationRate] = useState({})
     const [newAllocation, setNewAllocation] = useState({})
+    const [rateCurrency, setRateCurrency] = useState(null)
     const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month')['_d'])
     const [selectedContributor, setSelectedContributor] = useState(null)
     const [selectedProject, setSelectedProject] = useState(null)
@@ -223,6 +233,21 @@ const AllocationAddForm = (props) => {
                 projectId: project ? project.id : null
 
             }
+        }, {
+            query: GET_PAYMENT_ALLOCATIONS,
+            variables: {
+                paymentId: selectedPayment ? selectedPayment.id : null
+            }
+        }, {
+            query: GET_PAYMENT_TOTAL_ALLOCATED,
+            variables: {
+                paymentId: selectedPayment ? selectedPayment.id : null
+            }
+        }, {
+            query: GET_PROJECT_PAYMENTS,
+            variables: {
+                id: selectedProject ? Number(selectedProject.id) : null
+            }
         }]
     })
 
@@ -233,7 +258,7 @@ const AllocationAddForm = (props) => {
             setSelectedPayment(payment)
         }
         if (dataContributors) {
-            if (!contributor && !selectedContributor) {
+            if (!client && !contributor && !selectedContributor) {
                 setSelectedContributor(dataContributors[0])
             }
         }
@@ -242,11 +267,14 @@ const AllocationAddForm = (props) => {
         } else {
             setSelectedProject(null)
         }
+        if (!contributor) {
+            setSelectedContributor(null)
+        }
     }, [open])
 
     useEffect(() => {
         if (dataContributors) {
-            if (!contributor && !selectedContributor) {
+            if (!client && !contributor && !selectedContributor) {
                 setSelectedContributor(dataContributors.getContributors[0])
             }
         }
@@ -325,12 +353,14 @@ const AllocationAddForm = (props) => {
     const payments = dataClientPayments
         ? [...dataClientPayments.getProjectById.client.payments, { amount: null, date_paid: null }]
         : [null]
-    const currency = (
+    const clientCurrency = (
         dataClientPayments
             ? dataClientPayments.getProjectById.client.currency
-            : selectedProject
-                ? selectedProject.client.currency
-                : null
+            : client
+                ? client.currency
+                : selectedProject
+                    ? selectedProject.client.currency
+                    : null
     )
     const rates = contributorRates
         ? dataContributorRates.getContributorById.rates
@@ -340,6 +370,10 @@ const AllocationAddForm = (props) => {
     const activeContributors = activeAllocations.map(a => {
         return a.contributor
     })
+
+    if (!rateCurrency) {
+        setRateCurrency(clientCurrency)
+    }
 
     return (
         <Dialog
@@ -359,7 +393,7 @@ const AllocationAddForm = (props) => {
                                     <AllocationAddSpecifics
                                         contributor={contributor}
                                         contributors={contributors}
-                                        currency={currency}
+                                        currency={clientCurrency}
                                         payment={payment}
                                         payments={payments}
                                         project={project}
@@ -368,22 +402,31 @@ const AllocationAddForm = (props) => {
                                         setContributor={setSelectedContributor}
                                         setPayment={setSelectedPayment}
                                     />
-                                ) : (
-                                    <AllocationProposeSpecifics
-                                        contributor={contributor}
-                                        setNewAllocation={setNewAllocation}
-                                        setPayment={setSelectedPayment}
-                                        setProject={setSelectedProject}
-                                    />
                                 )
+                                : client
+                                    ? (
+                                        <AllocationClientSpecifics
+                                            client={client}
+                                            contributor={selectedContributor}
+                                            payment={payment}
+                                            project={selectedProject}
+                                            setNewAllocation={setNewAllocation}
+                                            setContributor={setSelectedContributor}
+                                            setProject={setSelectedProject}
+                                        />
+                                    ) : (
+                                        <AllocationProposeSpecifics
+                                            contributor={contributor}
+                                            setNewAllocation={setNewAllocation}
+                                            setPayment={setSelectedPayment}
+                                            setProject={setSelectedProject}
+                                        />
+                                    )
                         }
                         <hr/>
                     </Grid>
-                    {
-                        selectedProject &&
-
+                    {selectedProject &&
                         <>
-
                             <Grid item xs={12}>
                                 <ButtonGroup color='primary' aria-label='outlined primary button group'>
                                     <Button
@@ -392,8 +435,7 @@ const AllocationAddForm = (props) => {
                                         onClick={() => (
                                             changeAllocationType({
                                                 selectedType: 0,
-                                                allocationTypes:
-                                            allocationTypes
+                                                allocationTypes
                                             })
                                         )}
                                     >
@@ -405,7 +447,7 @@ const AllocationAddForm = (props) => {
                                         onClick={() => (
                                             changeAllocationType({
                                                 selectedType: 1,
-                                                allocationTypes: allocationTypes
+                                                allocationTypes
                                             })
                                         )}
                                     >
@@ -445,23 +487,24 @@ const AllocationAddForm = (props) => {
                         </>
                     }
                 </Grid>
-                {
-                    selectedProject &&
+                {selectedContributor &&
                     <>
                         {
                             allocationTypes[0]
                                 ? (
                                     <RateProratedMonthlyForm
-                                        currency={currency}
+                                        clientCurrency={clientCurrency}
                                         currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
                                         setNewAllocationRate={setNewAllocationRate}
+                                        setCurrency={setRateCurrency}
                                         startDate={moment(startDate)}
                                         endDate={moment(endDate)}
                                     />
                                 ) : (
                                     <RateMaxBudgetForm
-                                        currency={currency}
+                                        clientCurrency={clientCurrency}
                                         currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
+                                        setCurrency={setRateCurrency}
                                         setNewAllocationRate={setNewAllocationRate}
                                         startDate={moment(startDate)}
                                         endDate={moment(endDate)}
