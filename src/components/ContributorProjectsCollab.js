@@ -6,6 +6,7 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
+import { isEmpty } from 'lodash'
 
 import EmptyState from './EmptyState'
 import LoadingProgress from './LoadingProgress'
@@ -62,7 +63,7 @@ const ContributorProjectsCollab = (props) => {
                     </Typography>
                     <Grid container>
                         {
-                            projects.lenght
+                            !isEmpty(projects)
                                 ? renderProjects({ projects: projects })
                                 : (
                                     <EmptyState

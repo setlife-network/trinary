@@ -6,6 +6,7 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
+import { isEmpty } from 'lodash'
 
 import AllocationAddForm from './AllocationAddForm'
 import AllocationTile from './AllocationTile'
@@ -90,7 +91,7 @@ const ContributorAllocations = (props) => {
                 <Grid item xs={12}>
                     <Grid container spacing={5}>
                         {
-                            contributorAllocations.allocations.length
+                            !isEmpty(contributorAllocations.allocations)
                                 ? renderAllocations({ allocations: contributorAllocations.allocations })
                                 : (
                                     <EmptyState
