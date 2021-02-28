@@ -32,8 +32,6 @@ const ContributorProjectsCollab = (props) => {
 
     const renderProjects = ({ propjects }) => {
         return projects.map(p => {
-            console.log('p');
-            console.log(p);
             return (
                 <Grid item xs={12} sm={6} md={3}>
                     <Box my={2}>
