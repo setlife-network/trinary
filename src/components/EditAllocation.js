@@ -61,6 +61,7 @@ const EditAllocation = (props) => {
 
     const [endDate, setEndDate] = useState(moment(allocation.end_date, 'x')['_d'])
     const [newAllocationRate, setNewAllocationRate] = useState({})
+    const [selectedCurrency, setSelectedCurrency] = useState(null)
     const [selectedRateType, setSelectedRateType] = useState(rate.type)
     const [startDate, setStartDate] = useState(moment(allocation.start_date, 'x')['_d'])
 
@@ -109,6 +110,7 @@ const EditAllocation = (props) => {
                 start_date: moment(startDate).format('YYYY-MM-DD'),
                 end_date: moment(endDate).format('YYYY-MM-DD'),
                 date_paid: null,
+                currency: selectedCurrency,
                 rate_id: Number(selectedRate.id)
             }
         })
@@ -181,9 +183,11 @@ const EditAllocation = (props) => {
                 selectedRateType == 'prorated_monthly'
                     ? (
                         <RateProratedMonthlyForm
+                            rateCurrency={rate.currency}
                             clientCurrency={currency}
                             currentRate={rate}
                             setNewAllocationRate={setNewAllocationRate}
+                            setCurrency={setSelectedCurrency}
                             startDate={moment(startDate)}
                             endDate={moment(endDate)}
                         />

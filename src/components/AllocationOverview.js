@@ -15,8 +15,9 @@ import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import EditAllocation from './EditAllocation'
 import LoadingProgress from './LoadingProgress'
 import { GET_ALLOCATIONS, GET_ALLOCATION_INFO } from '../operations/queries/AllocationQueries'
+import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { GET_PAYMENT_ALLOCATIONS } from '../operations/queries/PaymentQueries'
-import { GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
+import { GET_PROJECT_CONTRIBUTORS, GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { DELETE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 import { formatAmount, selectCurrencyInformation } from '../scripts/selectors'
 
@@ -47,15 +48,15 @@ const AllocationOverview = (props) => {
             id: allocationInfo.id
         },
         refetchQueries: [{
-            query: GET_PROJECT_PAYMENTS,
-            variables: {
-                id: dataAllocation ? dataAllocation.getAllocationById.project.id : null
-            }
-        }, {
             query: GET_ALLOCATIONS,
             variables: {
                 projectId: allocationInfo.project.id,
                 contributorId: allocationInfo.contributor.id
+            }
+        }, {
+            query: GET_PROJECT_CONTRIBUTORS,
+            variables: {
+                id: allocationInfo.project.id
             }
         }]
     })

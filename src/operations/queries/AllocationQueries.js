@@ -73,6 +73,7 @@ export const GET_ALLOCATION_INFO = gql`
                 hourly_rate
                 total_expected_hours
                 type
+                currency
             }
         }
     }

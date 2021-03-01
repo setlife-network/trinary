@@ -83,6 +83,7 @@ export const GET_CONTRIBUTOR_RATES = gql`
                 active
                 type
                 hourly_rate
+                currency
                 total_expected_hours
             }
 
