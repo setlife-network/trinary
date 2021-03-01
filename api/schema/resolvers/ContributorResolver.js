@@ -5,8 +5,8 @@ const toggl = require('../../handlers/toggl')
 
 module.exports = {
     Contributor: {
-        paid_by_currency: async (contributor, args, { models }) => {
-            const totalPaydByCurrencyQuery = await models.Client.findAll({
+        paidByCurrency: async (contributor, args, { models }) => {
+            const totalPaidByCurrencyQuery = await models.Client.findAll({
                 group: 'currency',
                 attributes: ['currency'],
                 raw: true,
@@ -23,16 +23,16 @@ module.exports = {
                     }
                 }
             })
-            totalPaydByCurrency = []
-            totalPaydByCurrencyQuery.map(t => {
-                totalPaydByCurrency.push(
+            totalPaidByCurrency = []
+            totalPaidByCurrencyQuery.map(t => {
+                totalPaidByCurrency.push(
                     {
                         currency: t['currency'],
                         amount: t['Projects.Allocations.amount']
                     }
                 )
             })
-            return totalPaydByCurrency
+            return totalPaidByCurrency
         },
         permissions: (contributor, args, { models }) => {
             return models.Permission.findAll({
@@ -48,7 +48,7 @@ module.exports = {
                 }
             })
         },
-        total_paid: async (contributor, args, { models }) => {
+        totalPaid: async (contributor, args, { models }) => {
             const totalPaid = await models.Allocation.sum('amount', {
                 where: {
                     contributor_id: contributor.id

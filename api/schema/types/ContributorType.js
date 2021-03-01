@@ -14,9 +14,9 @@ module.exports = gql`
         permissions: [Permission]
         timeEntries: [TimeEntry]
         rates: [Rate]
-        #The following attributes are calculated and aren't on the database
-        total_paid: Int!
-        paid_by_currency: [TotalAllocatedByCurrency]
+        "The following attributes are calculated and aren't on the database"
+        totalPaid: Int!
+        paidByCurrency: [TotalAllocatedByCurrency]
     }
 
     input CreateContributorInput {

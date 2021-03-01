@@ -50,7 +50,7 @@ const ContributorInfoTile = (props) => {
         currency: 'USD'
     })
     const paymentAmount = formatAmount({
-        amount: contributor.total_paid / 100,
+        amount: contributor.totalPaid / 100,
         currencyInformation: currencyInformation
     })
 
@@ -119,7 +119,7 @@ const ContributorInfoTile = (props) => {
                                 </strong>
                             </Typography>
                             <List>
-                                {renderPaidToContributorByCurrency({ paidByCurrency: contributor.paid_by_currency })}
+                                {renderPaidToContributorByCurrency({ paidByCurrency: contributor.paidByCurrency })}
                             </List>
                         </Box>
                     </Grid>
