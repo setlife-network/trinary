@@ -85,7 +85,8 @@ const EditAllocation = (props) => {
             {
                 'hourly_rate': rate.hourly_rate.toString(),
                 'total_expected_hours': Number(rate.total_expected_hours),
-                'type': rate.type
+                'type': rate.type,
+                'currency': selectedCurrency
             }
         )
         if (existingRate) {
@@ -97,6 +98,7 @@ const EditAllocation = (props) => {
                     hourly_rate: rate.hourly_rate.toString(),
                     total_expected_hours: Number(rate.total_expected_hours),
                     type: rate.type,
+                    currency: selectedCurrency,
                     contributor_id: contributor.id
                 }
             })
@@ -110,7 +112,6 @@ const EditAllocation = (props) => {
                 start_date: moment(startDate).format('YYYY-MM-DD'),
                 end_date: moment(endDate).format('YYYY-MM-DD'),
                 date_paid: null,
-                currency: selectedCurrency,
                 rate_id: Number(selectedRate.id)
             }
         })
