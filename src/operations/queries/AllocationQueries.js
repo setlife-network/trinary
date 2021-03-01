@@ -17,6 +17,7 @@ export const GET_ALLOCATIONS = gql`
                 active
                 hourly_rate
                 type
+                currency
                 total_expected_hours
             }
             payment {

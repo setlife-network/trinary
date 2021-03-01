@@ -6,9 +6,11 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
+import { isEmpty } from 'lodash'
 
 import AllocationAddForm from './AllocationAddForm'
 import AllocationTile from './AllocationTile'
+import EmptyState from './EmptyState'
 import LoadingProgress from './LoadingProgress'
 import {
     GET_CONTRIBUTOR_ALLOCATIONS,
@@ -91,7 +93,16 @@ const ContributorAllocations = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={5}>
-                        {renderAllocations({ allocations: contributorAllocations.allocations })}
+                        {
+                            !isEmpty(contributorAllocations.allocations)
+                                ? renderAllocations({ allocations: contributorAllocations.allocations })
+                                : (
+                                    <EmptyState
+                                        description='This contributor has no allocations at the moment'
+                                        iconClassname='fas fa-money-check'
+                                    />
+                                )
+                        }
                     </Grid>
                 </Grid>
             </Grid>

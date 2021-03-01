@@ -6,7 +6,10 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
+import { find, isEmpty } from 'lodash'
+import moment from 'moment'
 
+import EmptyState from './EmptyState'
 import LoadingProgress from './LoadingProgress'
 import ProjectTile from './ProjectTile'
 import { GET_CONTRIBUTOR_PROJECTS } from '../operations/queries/ContributorQueries'
@@ -32,7 +35,9 @@ const ContributorProjectsCollab = (props) => {
             return (
                 <Grid item xs={12} sm={6} md={3}>
                     <Box my={2}>
-                        <ProjectTile project={p}/>
+                        <ProjectTile
+                            project={p}
+                        />
                     </Box>
                 </Grid>
             )
@@ -45,8 +50,14 @@ const ContributorProjectsCollab = (props) => {
     const { getContributorById: contributor } = dataContributorProjects
     const projects = []
     contributor.allocations.map(a => {
-        if (!projects.includes(a.project)) {
-            projects.push(a.project)
+        if (!find(projects, a.project)) {
+            projects.push({ ...a.project })
+            //check if it's an active allocation
+            if (moment(a['start_date'], 'x').isBefore(moment()) && moment(a['end_date'], 'x').isAfter(moment())) {
+                projects[projects.length - 1]['active_contributor'] = true
+            } else {
+                projects[projects.length - 1]['active_contributor'] = false
+            }
         }
     })
 
@@ -56,11 +67,20 @@ const ContributorProjectsCollab = (props) => {
                 <Box my={5} mx={3}>
                     <Typography variant='h5' color='primary'>
                         <strong>
-                            {`Project Involvment`}
+                            {`Project Involvement`}
                         </strong>
                     </Typography>
                     <Grid container>
-                        {renderProjects({ projects: projects })}
+                        {
+                            !isEmpty(projects)
+                                ? renderProjects({ projects: projects })
+                                : (
+                                    <EmptyState
+                                        description='This contributor has no projects at the moment'
+                                        iconClassname='fas fa-code'
+                                    />
+                                )
+                        }
                     </Grid>
                 </Box>
             </Grid>

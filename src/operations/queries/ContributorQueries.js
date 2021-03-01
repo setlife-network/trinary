@@ -44,6 +44,7 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
                     active
                     type
                     hourly_rate
+                    currency
                     total_expected_hours
                 }
                 project {
@@ -95,6 +96,8 @@ export const GET_CONTRIBUTOR_PROJECTS = gql`
             id
             allocations {
                 id
+                start_date
+                end_date
                 project {
                     id
                     name
