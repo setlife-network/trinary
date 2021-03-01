@@ -181,7 +181,7 @@ const EditAllocation = (props) => {
                 selectedRateType == 'prorated_monthly'
                     ? (
                         <RateProratedMonthlyForm
-                            currency={currency}
+                            clientCurrency={currency}
                             currentRate={rate}
                             setNewAllocationRate={setNewAllocationRate}
                             startDate={moment(startDate)}
@@ -190,7 +190,7 @@ const EditAllocation = (props) => {
                     ) : (
                         <RateMaxBudgetForm
                             currentTotal={allocation.amount}
-                            currency={currency}
+                            clientCurrency={currency}
                             currentRate={rate}
                             setNewAllocationRate={setNewAllocationRate}
                             startDate={moment(startDate)}
@@ -220,12 +220,5 @@ const EditAllocation = (props) => {
     )
 
 }
-
-// allocation,
-// contributor,
-// contributorRates,
-// rate,
-// startDate,
-// endDate
 
 export default EditAllocation

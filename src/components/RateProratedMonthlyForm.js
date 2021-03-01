@@ -28,14 +28,14 @@ const RateProratedMonthlyForm = (props) => {
 
     const [monthlyHoursInput, setMonthlyhoursInput] = useState(null)
     const [currentRateInput, setCurrentRateInput] = useState(null)
-    const [rateCurrency, setRateCurrency] = useState(clientCurrency)
+    const [rateCurrency, setRateCurrency] = useState(null)
     const [totalAmount, setTotalAmount] = useState(null)
     const [totalWeeks, setTotalWeeks] = useState(null)
     const [totalHours, setTotalHours] = useState(0)
 
     useEffect(() => {
-        if (rateCurrency) {
-            setCurrency(rateCurrency)
+        if (!rateCurrency) {
+            setRateCurrency(clientCurrency)
         }
     }, [rateCurrency])
 

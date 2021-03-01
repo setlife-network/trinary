@@ -211,6 +211,9 @@ const AllocationAddForm = (props) => {
     const [selectedPayment, setSelectedPayment] = useState(null)
     const [totalAllocatedFromPayment, setTotalAllocatedFromPayment] = useState(null)
 
+    console.log('selectedPayment');
+    console.log(selectedPayment);
+
     const [createAllocation, {
         dataNewAllocations,
         loadingNewAllocation,
@@ -232,16 +235,6 @@ const AllocationAddForm = (props) => {
                 contributorId: contributor ? contributor.id : null,
                 projectId: project ? project.id : null
 
-            }
-        }, {
-            query: GET_PAYMENT_ALLOCATIONS,
-            variables: {
-                paymentId: selectedPayment ? selectedPayment.id : null
-            }
-        }, {
-            query: GET_PAYMENT_TOTAL_ALLOCATED,
-            variables: {
-                paymentId: selectedPayment ? selectedPayment.id : null
             }
         }, {
             query: GET_PROJECT_PAYMENTS,

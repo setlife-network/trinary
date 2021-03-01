@@ -62,9 +62,9 @@ const ProjectProposedAllocationsTile = (props) => {
                             </Grid>
                             <Grid items xs={7}>
                                 <Typography color='secondary' variant='caption'>
-                                    {`${currencyInformation['symbol']}${a.rate.hourly_rate}/hr (
-                                    ${a.rate.type == 'monthly_rate' ? 'monthly rate' : 'max budget'}
-                                )`}
+                                    {`
+                                        ${currencyInformation['symbol']}${a.rate.hourly_rate}/hr (${a.rate.type == 'monthly_rate' ? 'monthly rate' : 'max budget'})
+                                    `}
                                 </Typography>
                             </Grid>
                             <Grid item xs={5} align='right'>

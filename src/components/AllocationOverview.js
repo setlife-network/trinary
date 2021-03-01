@@ -14,7 +14,7 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import EditAllocation from './EditAllocation'
 import LoadingProgress from './LoadingProgress'
-import { GET_ALLOCATION_INFO } from '../operations/queries/AllocationQueries'
+import { GET_ALLOCATIONS, GET_ALLOCATION_INFO } from '../operations/queries/AllocationQueries'
 import { GET_PAYMENT_ALLOCATIONS } from '../operations/queries/PaymentQueries'
 import { GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { DELETE_ALLOCATION } from '../operations/mutations/AllocationMutations'
@@ -52,9 +52,10 @@ const AllocationOverview = (props) => {
                 id: dataAllocation ? dataAllocation.getAllocationById.project.id : null
             }
         }, {
-            query: GET_PAYMENT_ALLOCATIONS,
+            query: GET_ALLOCATIONS,
             variables: {
-                paymentId: dataAllocation ? dataAllocation.getAllocationById.payment.id : null
+                projectId: allocationInfo.project.id,
+                contributorId: allocationInfo.contributor.id
             }
         }]
     })
@@ -74,10 +75,14 @@ const AllocationOverview = (props) => {
     const currencyInformation = selectCurrencyInformation({
         currency: allocation.project.client.currency
     })
-    const paymentAmount = formatAmount({
-        amount: allocation.payment.amount / 100,
-        currencyInformation: currencyInformation
-    })
+    const paymentAmount = (
+        allocation.payment
+            ? formatAmount({
+                amount: allocation.payment.amount / 100,
+                currencyInformation: currencyInformation
+            })
+            : 'Proposed'
+    )
 
     return (
         <Dialog className='AllocationOverview' onClose={onClose} open={open}>
@@ -119,8 +124,8 @@ const AllocationOverview = (props) => {
                         </Typography>
                         <Typography color='secondary' variant='caption'>
                             {`Date paid: ${
-                                allocation.payment.date_paid
-                                    ? moment(allocation.payment.date_paid, 'x').format('MM/DD/YYYY')
+                                allocation.date_paid
+                                    ? moment(allocation.date_paid, 'x').format('MM/DD/YYYY')
                                     : `Not paid`
                             }`}
                         </Typography>
