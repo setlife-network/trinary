@@ -32,6 +32,7 @@ const AllocationOverview = (props) => {
         open
     } = props
 
+    const [clientPayments, setClientPayments] = useState(null)
     const [contributorAllocation, setContributorAllocation] = useState(null)
     const [contributorRates, setContributorRates] = useState(null)
     const [updatedAllocationPayment, setUpdatedAllocationPayment] = useState(null)
@@ -51,13 +52,13 @@ const AllocationOverview = (props) => {
         }
     })
 
-    const {
+    const [getClientPayments, {
         data: dataClientPayments,
         loading: loadingClientPayments,
         error: errorClientPayments
-    } = useQuery(GET_CLIENT_PAYMENTS, {
-        variables: {
-            clientId: allocationInfo.project.client.id
+    }] = useLazyQuery(GET_CLIENT_PAYMENTS, {
+        onCompleted: dataContributorRates => {
+            setClientPayments(dataClientPayments.getClientById)
         }
     })
 
@@ -88,13 +89,13 @@ const AllocationOverview = (props) => {
         refetchQueries: [{
             query: GET_ALLOCATIONS,
             variables: {
-                projectId: allocationInfo.project.id,
-                contributorId: allocationInfo.contributor.id
+                projectId: contributorAllocation ? contributorAllocation.project.id : null,
+                contributorId: contributorAllocation ? contributorAllocation.contributor.id : null
             }
         }, {
             query: GET_PROJECT_CONTRIBUTORS,
             variables: {
-                id: allocationInfo.project.id
+                id: contributorAllocation ? contributorAllocation.project.id : null
             }
         }]
     })
@@ -114,6 +115,13 @@ const AllocationOverview = (props) => {
 
     useEffect(() => {
         if (contributorAllocation) {
+            console.log('contributorAllocation');
+            console.log(contributorAllocation);
+            getClientPayments({
+                variables: {
+                    clientId: contributorAllocation.project.client.id
+                }
+            })
             getContributorRates({
                 variables: {
                     id: contributorAllocation.contributor.id
@@ -139,9 +147,6 @@ const AllocationOverview = (props) => {
         rate,
         startDate,
     }) => {
-        console.log('payment');
-        console.log(payment);
-        console.log(payment.id);
         //look for rate with same values
         const selectedRate = {}
         const existingRate = findKey(
@@ -192,7 +197,11 @@ const AllocationOverview = (props) => {
     if (errorAllocation || errorClientPayments) return `Error`
 
     const { getAllocationById: allocation } = dataAllocation
-    const { getClientById: client } = dataClientPayments
+    //const { getClientById: client } = dataClientPayments
+    const payments = [{ id: null, amount: null, date_paid: null }]
+    if (clientPayments) {
+        payments.unshift(...clientPayments.payments)
+    }
 
     if (!contributorAllocation) {
         setContributorAllocation(allocation)
@@ -206,7 +215,7 @@ const AllocationOverview = (props) => {
             <Box m={5}>
                 <EditAllocationInfo
                     allocation={allocation}
-                    payments={[...client.payments, { id: null, amount: null, date_paid: null }]}
+                    payments={payments}
                     setSelectedPayment={setUpdatedAllocationPayment}
                     selectedPayment={updatedAllocationPayment}
                 />
