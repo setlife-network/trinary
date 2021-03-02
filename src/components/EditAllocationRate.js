@@ -30,6 +30,7 @@ const EditAllocationRate = (props) => {
         //onClose,
 
         endDate,
+        selectedPayment,
         setEndDate,
         setNewAllocationRate,
         setSelectedCurrency,
@@ -61,6 +62,9 @@ const EditAllocationRate = (props) => {
     //const [selectedCurrency, setSelectedCurrency] = useState(null)
     const [selectedRateType, setSelectedRateType] = useState(rate.type)
     //const [startDate, setStartDate] = useState(moment(allocation.start_date, 'x')['_d'])
+
+    // console.log('selectedPayment');
+    // console.log(selectedPayment);
 
     const getRangedTimeEntries = (dates) => {
         const [start, end] = dates
@@ -127,6 +131,7 @@ const EditAllocationRate = (props) => {
                             rateCurrency={rate.currency}
                             clientCurrency={currency}
                             currentRate={rate}
+                            selectedPayment={selectedPayment}
                             setNewAllocationRate={setNewAllocationRate}
                             setCurrency={setSelectedCurrency}
                             startDate={moment(startDate)}
@@ -137,6 +142,7 @@ const EditAllocationRate = (props) => {
                             currentTotal={allocation.amount}
                             clientCurrency={currency}
                             currentRate={rate}
+                            selectedPayment={selectedPayment}
                             setCurrency={setSelectedCurrency}
                             setNewAllocationRate={setNewAllocationRate}
                             startDate={moment(startDate)}

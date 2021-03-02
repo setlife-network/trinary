@@ -180,7 +180,7 @@ const AllocationOverview = (props) => {
                 end_date: moment(endDate).format('YYYY-MM-DD'),
                 date_paid: null,
                 rate_id: Number(selectedRate.id),
-                payment_id: payment.id
+                payment_id: payment ? payment.id : null
             }
         })
         if (loadingUpdatedAllocation) return ''
@@ -197,9 +197,13 @@ const AllocationOverview = (props) => {
     const { getAllocationById: allocation } = dataAllocation
     //const { getClientById: client } = dataClientPayments
     const payments = [{ id: null, amount: null, date_paid: null }]
+    console.log('clientPayments');
+    console.log(clientPayments);
     if (clientPayments) {
         payments.unshift(...clientPayments.payments)
     }
+    console.log('payments');
+    console.log(payments);
 
     if (!contributorAllocation) {
         setContributorAllocation(allocation)
@@ -225,6 +229,7 @@ const AllocationOverview = (props) => {
                     currency={allocation.project.client.currency}
                     endDate={updatedAllocationEndDate}
                     rate={allocation.rate}
+                    selectedPayment={updatedAllocationPayment}
                     setEndDate={setUpdatedAllocationEndDate}
                     setNewAllocationRate={setUpdatedAllocationRate}
                     setSelectedCurrency={setSelectedCurrency}

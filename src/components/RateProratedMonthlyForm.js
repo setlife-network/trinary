@@ -40,7 +40,7 @@ const RateProratedMonthlyForm = (props) => {
         setMonthlyhoursInput(currentRate ? currentRate.total_expected_hours : 160)
         setRateCurrency(currentRate ? currentRate.currency : clientCurrency)
     }, [currentRate])
-    
+
     useEffect(() => {
         if (selectedPayment) {
             setRateCurrency(clientCurrency)

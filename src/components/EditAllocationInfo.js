@@ -39,9 +39,10 @@ const EditAllocationInfo = (props) => {
     //const [selectedPayment, setSelectedPayment] = useState(null)
 
     useEffect(() => {
+        console.log('selectedPayment');
+        console.log(selectedPayment);
         if (!selectedPayment) {
             setSelectedPayment(payments[findIndex(payments, ['amount', allocation.payment])])
-
         }
     })
 
@@ -49,7 +50,11 @@ const EditAllocationInfo = (props) => {
         setOpenPayments(!openPayments)
     }
     const onClickPayment = (payment) => {
-        setSelectedPayment(payment)
+        if (payment.id) {
+            setSelectedPayment(payment)
+        } else {
+            setSelectedPayment(null)
+        }
         setOpenPayments(false)
     }
 
