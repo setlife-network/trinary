@@ -34,7 +34,8 @@ const AllocationOverview = (props) => {
 
     const [contributorAllocation, setContributorAllocation] = useState(null)
     const [contributorRates, setContributorRates] = useState(null)
-    const [newAllocationRate, setNewAllocationRate] = useState({})
+    const [updatedAllocationPayment, setUpdatedAllocationPayment] = useState(null)
+    const [updatedAllocationRate, setUpdatedAllocationRate] = useState({})
     const [openDeleteAllocation, setOpenDeleteAllocation] = useState(false)
     const [selectedCurrency, setSelectedCurrency] = useState(null)
     const [updatedAllocationStartDate, setUpdatedAllocationStartDate] = useState(null)
@@ -113,13 +114,14 @@ const AllocationOverview = (props) => {
 
     useEffect(() => {
         if (contributorAllocation) {
-            setUpdatedAllocationStartDate(moment(allocation.start_date, 'x')['_d'])
-            setUpdatedAllocationEndDate(moment(allocation.end_date, 'x')['_d'])
             getContributorRates({
                 variables: {
                     id: contributorAllocation.contributor.id
                 }
             })
+            setUpdatedAllocationEndDate(moment(allocation.end_date, 'x')['_d'])
+            setUpdatedAllocationPayment(contributorAllocation.payment)
+            setUpdatedAllocationStartDate(moment(allocation.start_date, 'x')['_d'])
         }
     }, [contributorAllocation])
 
@@ -132,10 +134,14 @@ const AllocationOverview = (props) => {
         allocation,
         contributor,
         contributorRates,
+        endDate,
+        payment,
         rate,
         startDate,
-        endDate
     }) => {
+        console.log('payment');
+        console.log(payment);
+        console.log(payment.id);
         //look for rate with same values
         const selectedRate = {}
         const existingRate = findKey(
@@ -170,7 +176,8 @@ const AllocationOverview = (props) => {
                 start_date: moment(startDate).format('YYYY-MM-DD'),
                 end_date: moment(endDate).format('YYYY-MM-DD'),
                 date_paid: null,
-                rate_id: Number(selectedRate.id)
+                rate_id: Number(selectedRate.id),
+                payment_id: payment.id
             }
         })
         if (loadingUpdatedAllocation) return ''
@@ -199,7 +206,9 @@ const AllocationOverview = (props) => {
             <Box m={5}>
                 <EditAllocationInfo
                     allocation={allocation}
-                    payments={[...client.payments, { amount: null, date_paid: null }]}
+                    payments={[...client.payments, { id: null, amount: null, date_paid: null }]}
+                    setSelectedPayment={setUpdatedAllocationPayment}
+                    selectedPayment={updatedAllocationPayment}
                 />
                 <Box my={3}>
                     <hr/>
@@ -210,7 +219,7 @@ const AllocationOverview = (props) => {
                     endDate={updatedAllocationEndDate}
                     rate={allocation.rate}
                     setEndDate={setUpdatedAllocationEndDate}
-                    setNewAllocationRate={setNewAllocationRate}
+                    setNewAllocationRate={setUpdatedAllocationRate}
                     setSelectedCurrency={setSelectedCurrency}
                     setStartDate={setUpdatedAllocationStartDate}
                     startDate={updatedAllocationStartDate}
@@ -227,9 +236,10 @@ const AllocationOverview = (props) => {
                                     allocation: contributorAllocation,
                                     contributor: contributorAllocation.contributor,
                                     contributorRates: dataContributorRates,
-                                    rate: newAllocationRate,
+                                    endDate: updatedAllocationEndDate,
+                                    payment: updatedAllocationPayment,
+                                    rate: updatedAllocationRate,
                                     startDate: updatedAllocationStartDate,
-                                    endDate: updatedAllocationEndDate
                                 })}
                             >
                                 {'Edit'}

@@ -26,7 +26,9 @@ const EditAllocationInfo = (props) => {
 
     const {
         allocation,
-        payments
+        payments,
+        selectedPayment,
+        setSelectedPayment
     } = props
 
     const currencyInformation = selectCurrencyInformation({
@@ -34,7 +36,7 @@ const EditAllocationInfo = (props) => {
     })
 
     const [openPayments, setOpenPayments] = useState(false)
-    const [selectedPayment, setSelectedPayment] = useState(null)
+    //const [selectedPayment, setSelectedPayment] = useState(null)
 
     useEffect(() => {
         if (!selectedPayment) {
