@@ -115,8 +115,6 @@ const AllocationOverview = (props) => {
 
     useEffect(() => {
         if (contributorAllocation) {
-            console.log('contributorAllocation');
-            console.log(contributorAllocation);
             getClientPayments({
                 variables: {
                     clientId: contributorAllocation.project.client.id
