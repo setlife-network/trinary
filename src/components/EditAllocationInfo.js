@@ -74,8 +74,7 @@ const EditAllocationInfo = (props) => {
                 <List component='div' disablePadding>
                     <ListItem button onClick={() => onClickPayment(p)}>
                         <Grid container>
-                            <Grid item xs={3}/>
-                            <Grid item xs={3}>
+                            <Grid item xs={6}>
                                 <ListItemText primary={
                                     `${p.amount
                                         ? `${paymentAmount}`
@@ -130,55 +129,24 @@ const EditAllocationInfo = (props) => {
                 <Typography>
                     {`Payment`}
                 </Typography>
-                <Typography color='primary'>
-                    {`${paymentAmount}`}
-                </Typography>
-                <Typography color='secondary' variant='caption'>
-                    {`Date paid: ${
-                        allocation.date_paid
-                            ? moment(allocation.date_paid, 'x').format('MM/DD/YYYY')
-                            : `Not paid`
-                    }`}
-                </Typography>
-
-            </Grid>
-
-            <Grid item xs={6}>
                 <List component='nav'>
                     <ListItem button onClick={handleClickPayments}>
                         <Grid container>
-                            <Grid item xs={3}>
-                                <PaymentIcon color='primary'/>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <ListItemText primary={
-                                    `${paymentAmount}`
-                                }
-                                />
-                            </Grid>
-                            <Grid item xs={3} align='center'>
-                                <Typography variant='caption' color='secondary'>
-                                    {`${selectedPayment
-                                        ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
-                                        : ''
-                                    }`}
-                                    {`${
-                                        selectedPayment && (
-                                            !selectedPayment.date_paid && selectedPayment.date_incurred
-                                                ? 'Warning: This payment has not been paid'
-                                                : ''
-                                        )
-                                    }`}
+                            <Grid item xs={9}>
+                                <Typography color='primary'>
+                                    <ListItemText
+                                        primary={
+                                            `${paymentAmount}`
+                                        }
+                                    />
                                 </Typography>
                             </Grid>
-
                             <Grid item xs={3} align='right'>
                                 {openPayments
                                     ? <ExpandLess />
                                     : <ExpandMore />
                                 }
                             </Grid>
-
                         </Grid>
                     </ListItem>
 
@@ -187,8 +155,18 @@ const EditAllocationInfo = (props) => {
                             listPayments(payments)
                         }
                     </Collapse>
-
                 </List>
+                <Typography color='secondary' variant='caption'>
+                    {`Date paid: ${selectedPayment
+                        ? selectedPayment.date_paid
+                            ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
+                            : selectedPayment.date_incurred
+                                ? 'Warning: This payment has not been paid'
+                                : 'Proposed'
+                        : ''
+                    }`}
+                </Typography>
+
             </Grid>
 
         </Grid>

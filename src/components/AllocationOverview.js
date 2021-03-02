@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useMutation, useQuery } from '@apollo/client'
+import React, { useEffect, useState } from 'react'
+import { useMutation, useQuery, useLazyQuery } from '@apollo/client'
 import {
     Box,
     Button,
@@ -8,8 +8,9 @@ import {
     Grid,
     Typography
 } from '@material-ui/core/'
-import moment from 'moment'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
+import moment from 'moment'
+import { findKey } from 'lodash'
 
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import EditAllocationInfo from './EditAllocationInfo'
@@ -17,10 +18,11 @@ import EditAllocationRate from './EditAllocationRate'
 import LoadingProgress from './LoadingProgress'
 import { GET_ALLOCATIONS, GET_ALLOCATION_INFO } from '../operations/queries/AllocationQueries'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/ClientQueries'
-import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
+import { GET_CONTRIBUTORS, GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
 import { GET_PAYMENT_ALLOCATIONS } from '../operations/queries/PaymentQueries'
 import { GET_PROJECT_CONTRIBUTORS, GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
-import { DELETE_ALLOCATION } from '../operations/mutations/AllocationMutations'
+import { DELETE_ALLOCATION, UPDATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
+import { CREATE_RATE } from '../operations/mutations/RateMutations'
 
 const AllocationOverview = (props) => {
 
@@ -29,6 +31,14 @@ const AllocationOverview = (props) => {
         onClose,
         open
     } = props
+
+    const [contributorAllocation, setContributorAllocation] = useState(null)
+    const [contributorRates, setContributorRates] = useState(null)
+    const [newAllocationRate, setNewAllocationRate] = useState({})
+    const [openDeleteAllocation, setOpenDeleteAllocation] = useState(false)
+    const [selectedCurrency, setSelectedCurrency] = useState(null)
+    const [updatedAllocationStartDate, setUpdatedAllocationStartDate] = useState(null)
+    const [updatedAllocationEndDate, setUpdatedAllocationEndDate] = useState(null)
 
     const {
         data: dataAllocation,
@@ -49,6 +59,22 @@ const AllocationOverview = (props) => {
             clientId: allocationInfo.project.client.id
         }
     })
+
+    const [getContributorRates, {
+        data: dataContributorRates,
+        loading: loadingContributorRates,
+        error: errorContributorRates
+    }] = useLazyQuery(GET_CONTRIBUTOR_RATES, {
+        onCompleted: dataContributorRates => {
+            setContributorRates(dataContributorRates)
+        }
+    })
+
+    const [createRate, {
+        dataNewRate,
+        loadingNewRate,
+        errorNewRate
+    }] = useMutation(CREATE_RATE)
 
     const [deleteAllocation, {
         dataDeletedPayment,
@@ -72,11 +98,87 @@ const AllocationOverview = (props) => {
         }]
     })
 
-    const [openDeleteAllocation, setOpenDeleteAllocation] = useState(false)
+    const [updateAllocation, {
+        dataUpdatedAllocation,
+        loadingUpdatedAllocation,
+        errorUpdatedAllocation
+    }] = useMutation(UPDATE_ALLOCATION, {
+        refetchQueries: [{
+            query: GET_CONTRIBUTOR_ALLOCATIONS,
+            variables: {
+                id: contributorAllocation ? contributorAllocation.contributor.id : null
+            }
+        }]
+    })
+
+    useEffect(() => {
+        if (contributorAllocation) {
+            setUpdatedAllocationStartDate(moment(allocation.start_date, 'x')['_d'])
+            setUpdatedAllocationEndDate(moment(allocation.end_date, 'x')['_d'])
+            getContributorRates({
+                variables: {
+                    id: contributorAllocation.contributor.id
+                }
+            })
+        }
+    }, [contributorAllocation])
 
     const handleDeleteAllocation = async () => {
         const paymentDeleted = await deleteAllocation()
         onClose()
+    }
+
+    const handleUpdateAllocation = async ({
+        allocation,
+        contributor,
+        contributorRates,
+        rate,
+        startDate,
+        endDate
+    }) => {
+        //look for rate with same values
+        const selectedRate = {}
+        const existingRate = findKey(
+            contributorRates,
+            {
+                'hourly_rate': rate.hourly_rate.toString(),
+                'total_expected_hours': Number(rate.total_expected_hours),
+                'type': rate.type,
+                'currency': selectedCurrency
+            }
+        )
+        if (existingRate) {
+            selectedRate.id = contributorRates[existingRate].id
+        } else {
+            //create rate
+            const newRate = await createRate({
+                variables: {
+                    hourly_rate: rate.hourly_rate.toString(),
+                    total_expected_hours: Number(rate.total_expected_hours),
+                    type: rate.type,
+                    currency: selectedCurrency,
+                    contributor_id: contributor.id
+                }
+            })
+            selectedRate.id = newRate.data.createRate.id
+        }
+        //update allocation with that rate id
+        const updatedAllocation = await updateAllocation({
+            variables: {
+                id: allocation.id,
+                amount: Number(rate.total_amount),
+                start_date: moment(startDate).format('YYYY-MM-DD'),
+                end_date: moment(endDate).format('YYYY-MM-DD'),
+                date_paid: null,
+                rate_id: Number(selectedRate.id)
+            }
+        })
+        if (loadingUpdatedAllocation) return ''
+        else if (updatedAllocation.errors) {
+            console.log('Error updating the allocation');
+        } else {
+            onClose()
+        }
     }
 
     if (loadingAllocation || loadingClientPayments) return <LoadingProgress/>
@@ -85,30 +187,65 @@ const AllocationOverview = (props) => {
     const { getAllocationById: allocation } = dataAllocation
     const { getClientById: client } = dataClientPayments
 
+    if (!contributorAllocation) {
+        setContributorAllocation(allocation)
+    }
+
     return (
         <Dialog className='AllocationOverview' onClose={onClose} open={open}>
             <DialogTitle>
                 {`Allocation Detail`}
             </DialogTitle>
             <Box m={5}>
-                <EditAllocationInfo allocation={allocation} payments={[...client.payments, { amount: null, date_paid: null }]}/>
+                <EditAllocationInfo
+                    allocation={allocation}
+                    payments={[...client.payments, { amount: null, date_paid: null }]}
+                />
                 <Box my={3}>
                     <hr/>
                 </Box>
                 <EditAllocationRate
                     allocation={allocation}
                     currency={allocation.project.client.currency}
+                    endDate={updatedAllocationEndDate}
                     rate={allocation.rate}
-                    onClose={onClose}
+                    setEndDate={setUpdatedAllocationEndDate}
+                    setNewAllocationRate={setNewAllocationRate}
+                    setSelectedCurrency={setSelectedCurrency}
+                    setStartDate={setUpdatedAllocationStartDate}
+                    startDate={updatedAllocationStartDate}
+                    //onClose={onClose}
                 />
+
                 <Box mt={1}>
-                    <Button
-                        color='primary'
-                        onClick={() => setOpenDeleteAllocation(true)}
-                    >
-                        <DeleteOutlinedIcon color='primary'/>
-                    </Button>
+                    <Grid container>
+                        <Grid item xs={3}>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                onClick={() => handleUpdateAllocation({
+                                    allocation: contributorAllocation,
+                                    contributor: contributorAllocation.contributor,
+                                    contributorRates: dataContributorRates,
+                                    rate: newAllocationRate,
+                                    startDate: updatedAllocationStartDate,
+                                    endDate: updatedAllocationEndDate
+                                })}
+                            >
+                                {'Edit'}
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                color='primary'
+                                onClick={() => setOpenDeleteAllocation(true)}
+                            >
+                                <DeleteOutlinedIcon color='primary'/>
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Box>
+
                 <DeleteConfirmationDialog
                     deleteAction={() => handleDeleteAllocation()}
                     deleteItem={`allocation`}
