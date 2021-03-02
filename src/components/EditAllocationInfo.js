@@ -36,7 +36,6 @@ const EditAllocationInfo = (props) => {
     })
 
     const [openPayments, setOpenPayments] = useState(false)
-    //const [selectedPayment, setSelectedPayment] = useState(null)
 
     useEffect(() => {
         if (!selectedPayment) {
@@ -54,8 +53,7 @@ const EditAllocationInfo = (props) => {
     }
 
     const paymentAmount = (
-
-        selectedPayment
+        selectedPayment.amount
             ? selectedPayment.amount
                 ? formatAmount({
                     amount: selectedPayment.amount / 100,
@@ -77,12 +75,13 @@ const EditAllocationInfo = (props) => {
                     <ListItem button onClick={() => onClickPayment(p)}>
                         <Grid container>
                             <Grid item xs={6}>
-                                <ListItemText primary={
-                                    `${p.amount
-                                        ? `${paymentAmount}`
-                                        : 'Propose'
-                                    }`
-                                }
+                                <ListItemText
+                                    primary={
+                                        `${p.amount
+                                            ? `${paymentAmount}`
+                                            : 'Propose'
+                                        }`
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={3} align='center'>

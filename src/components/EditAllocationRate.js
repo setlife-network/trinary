@@ -26,10 +26,8 @@ const EditAllocationRate = (props) => {
     const {
         allocation,
         currency,
-        rate,
-        //onClose,
-
         endDate,
+        rate,
         setEndDate,
         setNewAllocationRate,
         setSelectedCurrency,
@@ -37,30 +35,7 @@ const EditAllocationRate = (props) => {
         startDate
     } = props
 
-    // const [createRate, {
-    //     dataNewRate,
-    //     loadingNewRate,
-    //     errorNewRate
-    // }] = useMutation(CREATE_RATE)
-
-    // const [updateAllocation, {
-    //     dataUpdatedAllocation,
-    //     loadingUpdatedAllocation,
-    //     errorUpdatedAllocation
-    // }] = useMutation(UPDATE_ALLOCATION, {
-    //     refetchQueries: [{
-    //         query: GET_CONTRIBUTOR_ALLOCATIONS,
-    //         variables: {
-    //             id: allocation.contributor.id
-    //         }
-    //     }]
-    // })
-
-    //const [endDate, setEndDate] = useState(moment(allocation.end_date, 'x')['_d'])
-    //const [newAllocationRate, setNewAllocationRate] = useState({})
-    //const [selectedCurrency, setSelectedCurrency] = useState(null)
     const [selectedRateType, setSelectedRateType] = useState(rate.type)
-    //const [startDate, setStartDate] = useState(moment(allocation.start_date, 'x')['_d'])
 
     const getRangedTimeEntries = (dates) => {
         const [start, end] = dates
