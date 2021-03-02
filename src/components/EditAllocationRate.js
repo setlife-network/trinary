@@ -21,7 +21,7 @@ import {
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { UPDATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 
-const EditAllocation = (props) => {
+const EditAllocationRate = (props) => {
 
     const {
         allocation,
@@ -226,4 +226,4 @@ const EditAllocation = (props) => {
 
 }
 
-export default EditAllocation
+export default EditAllocationRate

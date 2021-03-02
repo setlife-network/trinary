@@ -12,14 +12,15 @@ import moment from 'moment'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
-import EditAllocation from './EditAllocation'
+import EditAllocationInfo from './EditAllocationInfo'
+import EditAllocationRate from './EditAllocationRate'
 import LoadingProgress from './LoadingProgress'
 import { GET_ALLOCATIONS, GET_ALLOCATION_INFO } from '../operations/queries/AllocationQueries'
+import { GET_CLIENT_PAYMENTS } from '../operations/queries/ClientQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { GET_PAYMENT_ALLOCATIONS } from '../operations/queries/PaymentQueries'
 import { GET_PROJECT_CONTRIBUTORS, GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { DELETE_ALLOCATION } from '../operations/mutations/AllocationMutations'
-import { formatAmount, selectCurrencyInformation } from '../scripts/selectors'
 
 const AllocationOverview = (props) => {
 
@@ -36,6 +37,16 @@ const AllocationOverview = (props) => {
     } = useQuery(GET_ALLOCATION_INFO, {
         variables: {
             id: allocationInfo.id
+        }
+    })
+
+    const {
+        data: dataClientPayments,
+        loading: loadingClientPayments,
+        error: errorClientPayments
+    } = useQuery(GET_CLIENT_PAYMENTS, {
+        variables: {
+            clientId: allocationInfo.project.client.id
         }
     })
 
@@ -68,22 +79,11 @@ const AllocationOverview = (props) => {
         onClose()
     }
 
-    if (loadingAllocation) return <LoadingProgress/>
-    if (errorAllocation) return `Error ${errorAllocation}`
+    if (loadingAllocation || loadingClientPayments) return <LoadingProgress/>
+    if (errorAllocation || errorClientPayments) return `Error`
 
     const { getAllocationById: allocation } = dataAllocation
-
-    const currencyInformation = selectCurrencyInformation({
-        currency: allocation.project.client.currency
-    })
-    const paymentAmount = (
-        allocation.payment
-            ? formatAmount({
-                amount: allocation.payment.amount / 100,
-                currencyInformation: currencyInformation
-            })
-            : 'Proposed'
-    )
+    const { getClientById: client } = dataClientPayments
 
     return (
         <Dialog className='AllocationOverview' onClose={onClose} open={open}>
@@ -91,51 +91,11 @@ const AllocationOverview = (props) => {
                 {`Allocation Detail`}
             </DialogTitle>
             <Box m={5}>
-                <Grid container spacing={3}>
-                    <Grid item xs={6}>
-                        <Typography>
-                            {`Project`}
-                        </Typography>
-                        <Typography color='primary'>
-                            {`${allocation.project.name}`}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Typography>
-                            {`Contributor`}
-                            <Typography color='primary'>
-                                {`${allocation.contributor.name}`}
-                            </Typography>
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Typography>
-                            {`Client`}
-                        </Typography>
-                        <Typography color='primary'>
-                            {`${allocation.project.client.name}`}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Typography>
-                            {`Payment`}
-                        </Typography>
-                        <Typography color='primary'>
-                            {`${paymentAmount}`}
-                        </Typography>
-                        <Typography color='secondary' variant='caption'>
-                            {`Date paid: ${
-                                allocation.date_paid
-                                    ? moment(allocation.date_paid, 'x').format('MM/DD/YYYY')
-                                    : `Not paid`
-                            }`}
-                        </Typography>
-                    </Grid>
-                </Grid>
+                <EditAllocationInfo allocation={allocation} payments={[...client.payments, { amount: null, date_paid: null }]}/>
                 <Box my={3}>
                     <hr/>
                 </Box>
-                <EditAllocation
+                <EditAllocationRate
                     allocation={allocation}
                     currency={allocation.project.client.currency}
                     rate={allocation.rate}

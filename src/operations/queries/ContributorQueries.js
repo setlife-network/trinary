@@ -35,6 +35,9 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
             allocations {
                 id
                 amount
+                contributor {
+                    id
+                }
                 active
                 start_date
                 end_date

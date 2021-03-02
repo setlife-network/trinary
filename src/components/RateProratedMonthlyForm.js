@@ -37,8 +37,6 @@ const RateProratedMonthlyForm = (props) => {
         if (!rateCurrency) {
             setRateCurrency(clientCurrency)
         }
-        console.log('currentRate');
-        console.log(currentRate);
         setCurrency(rateCurrency)
     }, [rateCurrency])
 
