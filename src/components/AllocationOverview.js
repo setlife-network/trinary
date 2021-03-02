@@ -57,7 +57,7 @@ const AllocationOverview = (props) => {
         loading: loadingClientPayments,
         error: errorClientPayments
     }] = useLazyQuery(GET_CLIENT_PAYMENTS, {
-        onCompleted: dataContributorRates => {
+        onCompleted: dataClientPayments => {
             setClientPayments(dataClientPayments.getClientById)
         }
     })
@@ -68,7 +68,7 @@ const AllocationOverview = (props) => {
         error: errorContributorRates
     }] = useLazyQuery(GET_CONTRIBUTOR_RATES, {
         onCompleted: dataContributorRates => {
-            setContributorRates(dataContributorRates)
+            setContributorRates(dataContributorRates.getContributorById)
         }
     })
 
@@ -242,7 +242,7 @@ const AllocationOverview = (props) => {
                                 onClick={() => handleUpdateAllocation({
                                     allocation: contributorAllocation,
                                     contributor: contributorAllocation.contributor,
-                                    contributorRates: dataContributorRates,
+                                    contributorRates: contributorRates.rates,
                                     endDate: updatedAllocationEndDate,
                                     payment: updatedAllocationPayment,
                                     rate: updatedAllocationRate,
