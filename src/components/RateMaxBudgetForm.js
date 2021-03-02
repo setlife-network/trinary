@@ -22,6 +22,7 @@ const RateMaxBudgetForm = (props) => {
         currentTotal,
         createRate,
         endDate,
+        selectedPayment,
         setCurrency,
         setNewAllocationRate,
         startDate
@@ -38,11 +39,18 @@ const RateMaxBudgetForm = (props) => {
             setCurrency(rateCurrency)
         }
     }, [rateCurrency])
+
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
         setRateCurrency(currentRate ? currentRate.currency : clientCurrency)
     }, [currentRate])
+
+    useEffect(() => {
+        if (selectedPayment) {
+            setRateCurrency(clientCurrency)
+        }
+    }, [selectedPayment])
 
     useEffect(() => {
         setTotalHours(totalAmount && currentRateInput ? ((totalAmount / 100) / currentRateInput).toFixed(2) : 0)
@@ -86,7 +94,8 @@ const RateMaxBudgetForm = (props) => {
                         name='Currency'
                         fullWidth
                         onChange={(event) => setRateCurrency(event.target.value)}
-                        value={rateCurrency}
+                        value={selectedPayment ? clientCurrency : rateCurrency}
+                        disabled={selectedPayment}
                     >
                         {renderCurrencies(CURRENCIES)}
                     </Select>
