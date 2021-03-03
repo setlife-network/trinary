@@ -99,6 +99,10 @@ export const NAV_TITLES = [
         locations: ['/home/clients']
     },
     {
+        title: 'Contributor',
+        locations: ['/contributor']
+    },
+    {
         title: 'Login',
         locations: ['/login']
     },

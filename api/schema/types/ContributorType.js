@@ -5,7 +5,6 @@ module.exports = gql`
     type Contributor {
         id: Int!
         toggl_id: Int
-        total_paid: Int!
         name: String!
         external_data_url: String
         github_id: String
@@ -15,6 +14,9 @@ module.exports = gql`
         permissions: [Permission]
         timeEntries: [TimeEntry]
         rates: [Rate]
+        "The following attributes are calculated and aren't on the database"
+        totalPaid: Int!
+        paidByCurrency: [TotalAllocatedByCurrency]
     }
 
     input CreateContributorInput {
@@ -36,6 +38,11 @@ module.exports = gql`
         external_data_url: String
         github_id: String
         github_handle: String
+    }
+
+    type TotalAllocatedByCurrency {
+        amount: Int
+        currency: String
     }
 
     type Query {

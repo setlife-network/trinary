@@ -1,7 +1,7 @@
 const moment = require('moment')
-const sequelize = require('sequelize');
+const sequelize = require('sequelize')
 const { ApolloError } = require('apollo-server')
-const { col, fn, Op } = require('sequelize');
+const { col, fn, Op } = require('sequelize')
 const { split } = require('lodash')
 
 const { GITHUB, TOGGL } = require('../../config/credentials');
@@ -9,7 +9,7 @@ const github = require('../../handlers/github')
 const toggl = require('../../handlers/toggl')
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const { dataSyncs } = require('../../modules')
-const apiModules = require('../../modules');
+const apiModules = require('../../modules')
 
 module.exports = {
 
@@ -132,7 +132,7 @@ module.exports = {
                 }
             ) || 0
             return {
-                fromPayments: parseInt( totalPaidFromClient / totalIssues, 10),
+                fromPayments: parseInt(totalPaidFromClient / totalIssues, 10),
                 fromAllocations: parseInt(totalPaidFromAllocation / totalIssues, 10)
             }
         },
