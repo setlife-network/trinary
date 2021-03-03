@@ -204,6 +204,9 @@ const AllocationOverview = (props) => {
         setContributorAllocation(allocation)
     }
 
+    console.log('contributorRates');
+    console.log(contributorRates);
+
     return (
         <Dialog className='AllocationOverview' onClose={onClose} open={open}>
             <DialogTitle>

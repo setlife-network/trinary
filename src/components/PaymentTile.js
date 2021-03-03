@@ -67,7 +67,7 @@ const PaymentTile = (props) => {
         setOpenAddAllocationDialog(true)
         setPaymentClicked(props.payment)
     }
-    const handleAllocationOverview = ({ value, allocation }) => {
+    const handleAllocationClicked = ({ value, allocation }) => {
         setSelectedAllocation(allocation)
         setOpenAllocationOverview(value)
     }
@@ -119,7 +119,7 @@ const PaymentTile = (props) => {
 
             return (
                 <Box mb={3}>
-                    <Grid container onClick={() => handleAllocationOverview({ value: true, allocation: a })}>
+                    <Grid container onClick={() => handleAllocationClicked({ value: true, allocation: a })}>
                         <Grid items xs={10} >
                             <Typography color='secondary' variant='caption'>
                                 {`${contributor.name}`}
@@ -274,7 +274,7 @@ const PaymentTile = (props) => {
                 selectedAllocation &&
                 <AllocationOverview
                     allocationInfo={selectedAllocation}
-                    onClose={() => handleAllocationOverview(false)}
+                    onClose={() => handleAllocationClicked(false)}
                     open={openAllocationOverview}
                 />
             }

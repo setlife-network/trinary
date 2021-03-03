@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import {
     Accordion,
@@ -11,10 +11,9 @@ import {
     Typography
 } from '@material-ui/core'
 
+import AllocationOverview from './AllocationOverview'
 import { GET_PROJECT_TOTAL_PROPOSED } from '../operations/queries/ProjectQueries'
-import {
-    formatAmount
-} from '../scripts/selectors'
+import { formatAmount } from '../scripts/selectors'
 
 import moment from 'moment'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -37,6 +36,14 @@ const ProjectProposedAllocationsTile = (props) => {
         }
     })
 
+    const [openAllocationOverview, setOpenAllocationOverview] = useState(null)
+    const [selectedAllocation, setSelectedAllocation] = useState(null)
+
+    const handleAllocationClicked = ({ value, allocation }) => {
+        setSelectedAllocation(allocation)
+        setOpenAllocationOverview(value)
+    }
+
     const renderAllocations = ({ allocations, currencyInformation }) => {
 
         return allocations.map(a => {
@@ -49,7 +56,7 @@ const ProjectProposedAllocationsTile = (props) => {
             return (
                 <Grid item xs={12}>
                     <Box mb={3}>
-                        <Grid container>
+                        <Grid container onClick={() => handleAllocationClicked({ value: true, allocation: a })}>
                             <Grid items xs={10} >
                                 <Typography color='secondary' variant='caption'>
                                     {`${a.contributor.name}`}
@@ -117,7 +124,6 @@ const ProjectProposedAllocationsTile = (props) => {
                         <Grid item xs={12}>
                             {`${totalAllocatedNotPaid}`}
                         </Grid>
-
                     </Grid>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -129,6 +135,14 @@ const ProjectProposedAllocationsTile = (props) => {
                     </Grid>
                 </AccordionDetails>
             </Accordion>
+            {
+                selectedAllocation &&
+                <AllocationOverview
+                    allocationInfo={selectedAllocation}
+                    onClose={() => handleAllocationClicked(false)}
+                    open={openAllocationOverview}
+                />
+            }
         </Box>
 
     )
