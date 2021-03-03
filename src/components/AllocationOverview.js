@@ -56,12 +56,9 @@ const AllocationOverview = (props) => {
     const [getClientPayments, {
         data: dataClientPayments,
         loading: loadingClientPayments,
-        error: errorClientPayments,
-        called
+        error: errorClientPayments
     }] = useLazyQuery(GET_CLIENT_PAYMENTS, {
         onCompleted: dataClientPayments => {
-            console.log('dataClientPayments');
-            console.log(dataClientPayments);
             setClientPayments(dataClientPayments.getClientById)
         }
     })
@@ -119,14 +116,11 @@ const AllocationOverview = (props) => {
 
     useEffect(() => {
         if (contributorAllocation) {
-            console.log('contributorAllocation');
-            console.log(contributorAllocation);
             getClientPayments({
                 variables: {
                     clientId: contributorAllocation.project.client.id
                 }
             })
-            console.log('getContributorRates');
             getContributorRates({
                 variables: {
                     id: contributorAllocation.contributor.id
@@ -146,11 +140,6 @@ const AllocationOverview = (props) => {
     const handleDeleteAllocation = async () => {
         const paymentDeleted = await deleteAllocation()
         onClose()
-    }
-
-    if (called) {
-        console.log('CALLED');
-        console.log(called);
     }
 
     const handleUpdateAllocation = async ({
@@ -212,11 +201,7 @@ const AllocationOverview = (props) => {
     if (errorAllocation || errorClientPayments) return `Error`
 
     const { getAllocationById: allocation } = dataAllocation
-    const payments = [{ id: null, amount: null, date_paid: null }]
-    // console.log('contributorAllocation main');
-    // console.log(contributorAllocation);
-    // console.log('clientPayments');
-    // console.log(clientPayments);
+    const payments = [null]
     if (clientPayments) {
         payments.unshift(...clientPayments.payments)
     }
@@ -224,9 +209,6 @@ const AllocationOverview = (props) => {
     if (!contributorAllocation) {
         setContributorAllocation(allocation)
     }
-
-    console.log('contributorRates');
-    console.log(contributorRates);
 
     return (
         <Dialog

@@ -36,17 +36,11 @@ const EditAllocationInfo = (props) => {
 
     const [openPayments, setOpenPayments] = useState(false)
 
-    useEffect(() => {
-        if (!selectedPayment) {
-            setSelectedPayment(payments[findIndex(payments, ['amount', allocation.payment])])
-        }
-    })
-
     const handleClickPayments = () => {
         setOpenPayments(!openPayments)
     }
     const onClickPayment = (payment) => {
-        if (payment.id) {
+        if (payment) {
             setSelectedPayment(payment)
         } else {
             setSelectedPayment(null)
@@ -56,12 +50,10 @@ const EditAllocationInfo = (props) => {
 
     const paymentAmount = (
         selectedPayment
-            ? selectedPayment.amount
-                ? formatAmount({
-                    amount: selectedPayment.amount / 100,
-                    currencyInformation: currencyInformation
-                })
-                : 'Proposed'
+            ? formatAmount({
+                amount: selectedPayment.amount / 100,
+                currencyInformation: currencyInformation
+            })
             : 'Proposed'
     )
     const datePaid = (
@@ -76,19 +68,23 @@ const EditAllocationInfo = (props) => {
 
     const listPayments = (payments) => {
         const paymentsList = differenceWith(payments, [selectedPayment], isEqual)
-        return paymentsList.map(p => {
-            const paymentAmount = formatAmount({
-                amount: p.amount / 100,
-                currencyInformation: currencyInformation
-            })
+        return paymentsList.map(payment => {
+            const paymentAmount = (
+                payment
+                    ? (formatAmount({
+                        amount: payment.amount / 100,
+                        currencyInformation: currencyInformation
+                    }))
+                    : null
+            )
             return (
                 <List component='div' disablePadding>
-                    <ListItem button onClick={() => onClickPayment(p)}>
+                    <ListItem button onClick={() => onClickPayment(payment)}>
                         <Grid container>
                             <Grid item xs={6}>
                                 <ListItemText
                                     primary={`${
-                                        p.amount
+                                        payment
                                             ? `${paymentAmount}`
                                             : 'Propose'
                                     }`}
@@ -96,9 +92,11 @@ const EditAllocationInfo = (props) => {
                             </Grid>
                             <Grid item xs={3} align='center'>
                                 <Typography variant='caption' color='secondary'>
-                                    {`${p.date_paid
-                                        ? moment(p.date_paid, 'x').format('MM/DD/YYYY')
-                                        : ''
+                                    {`${payment
+                                        ? payment.date_paid
+                                            ? moment(payment.date_paid, 'x').format('MM/DD/YYYY')
+                                            : 'Not paid yet'
+                                        : 'Proposed'
                                     }`}
                                 </Typography>
                             </Grid>
