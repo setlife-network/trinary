@@ -95,12 +95,6 @@ const RateProratedMonthlyForm = (props) => {
             })
         )
     }
-    // const changeRate = ({ clientCurrency, rate, selectedPayment }) => {
-    //
-    // }
-
-    console.log('selectedPayment');
-    console.log(selectedPayment);
 
     return (
         <Grid container className='RateProratedMonthlyForm'>
