@@ -47,6 +47,7 @@ const AllocationOverview = (props) => {
         error: errorAllocation,
         loading: loadingAllocation
     } = useQuery(GET_ALLOCATION_INFO, {
+        fetchPolicy: 'cache-and-network',
         variables: {
             id: allocationInfo.id
         }
@@ -55,9 +56,12 @@ const AllocationOverview = (props) => {
     const [getClientPayments, {
         data: dataClientPayments,
         loading: loadingClientPayments,
-        error: errorClientPayments
+        error: errorClientPayments,
+        called
     }] = useLazyQuery(GET_CLIENT_PAYMENTS, {
         onCompleted: dataClientPayments => {
+            console.log('dataClientPayments');
+            console.log(dataClientPayments);
             setClientPayments(dataClientPayments.getClientById)
         }
     })
@@ -115,11 +119,14 @@ const AllocationOverview = (props) => {
 
     useEffect(() => {
         if (contributorAllocation) {
+            console.log('contributorAllocation');
+            console.log(contributorAllocation);
             getClientPayments({
                 variables: {
                     clientId: contributorAllocation.project.client.id
                 }
             })
+            console.log('getContributorRates');
             getContributorRates({
                 variables: {
                     id: contributorAllocation.contributor.id
@@ -131,9 +138,19 @@ const AllocationOverview = (props) => {
         }
     }, [contributorAllocation])
 
+    const handleClose = () => {
+        setContributorAllocation(null)
+        onClose()
+    }
+
     const handleDeleteAllocation = async () => {
         const paymentDeleted = await deleteAllocation()
         onClose()
+    }
+
+    if (called) {
+        console.log('CALLED');
+        console.log(called);
     }
 
     const handleUpdateAllocation = async ({
@@ -197,20 +214,24 @@ const AllocationOverview = (props) => {
     const { getAllocationById: allocation } = dataAllocation
     //const { getClientById: client } = dataClientPayments
     const payments = [{ id: null, amount: null, date_paid: null }]
-    console.log('clientPayments');
-    console.log(clientPayments);
+    // console.log('contributorAllocation main');
+    // console.log(contributorAllocation);
+    // console.log('clientPayments');
+    // console.log(clientPayments);
     if (clientPayments) {
         payments.unshift(...clientPayments.payments)
     }
-    console.log('payments');
-    console.log(payments);
 
     if (!contributorAllocation) {
         setContributorAllocation(allocation)
     }
 
     return (
-        <Dialog className='AllocationOverview' onClose={onClose} open={open}>
+        <Dialog
+            className='AllocationOverview'
+            onClose={() => handleClose()}
+            open={open}
+        >
             <DialogTitle>
                 {`Allocation Detail`}
             </DialogTitle>
