@@ -73,7 +73,7 @@ const ContributorTile = (props) => {
         return sortedAllocations.map(a => {
 
             const currencyInformation = selectCurrencyInformation({
-                currency: a.payment ? a.payment.client.currency : ''
+                currency: a.rate.currency
             })
             const allocationAmount = formatAmount({
                 amount: a.amount / 100,

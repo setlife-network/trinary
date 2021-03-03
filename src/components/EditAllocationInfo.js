@@ -40,7 +40,6 @@ const EditAllocationInfo = (props) => {
     useEffect(() => {
         if (!selectedPayment) {
             setSelectedPayment(payments[findIndex(payments, ['amount', allocation.payment])])
-
         }
     })
 
@@ -53,14 +52,23 @@ const EditAllocationInfo = (props) => {
     }
 
     const paymentAmount = (
-        selectedPayment.amount
+        selectedPayment
             ? selectedPayment.amount
                 ? formatAmount({
                     amount: selectedPayment.amount / 100,
                     currencyInformation: currencyInformation
                 })
-                : 'Propose'
-            : 'Propose'
+                : 'Proposed'
+            : 'Proposed'
+    )
+    const datePaid = (
+        selectedPayment
+            ? selectedPayment.date_paid
+                ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
+                : selectedPayment.date_incurred
+                    ? 'Warning: This payment has not been paid'
+                    : 'Proposed'
+            : ''
     )
 
     const listPayments = (payments) => {
@@ -158,14 +166,7 @@ const EditAllocationInfo = (props) => {
                     </Collapse>
                 </List>
                 <Typography color='secondary' variant='caption'>
-                    {`Date paid: ${selectedPayment
-                        ? selectedPayment.date_paid
-                            ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
-                            : selectedPayment.date_incurred
-                                ? 'Warning: This payment has not been paid'
-                                : 'Proposed'
-                        : ''
-                    }`}
+                    {`Date paid: ${datePaid}`}
                 </Typography>
 
             </Grid>
