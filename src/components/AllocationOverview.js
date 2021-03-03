@@ -212,7 +212,6 @@ const AllocationOverview = (props) => {
     if (errorAllocation || errorClientPayments) return `Error`
 
     const { getAllocationById: allocation } = dataAllocation
-    //const { getClientById: client } = dataClientPayments
     const payments = [{ id: null, amount: null, date_paid: null }]
     // console.log('contributorAllocation main');
     // console.log(contributorAllocation);
@@ -225,6 +224,9 @@ const AllocationOverview = (props) => {
     if (!contributorAllocation) {
         setContributorAllocation(allocation)
     }
+
+    console.log('contributorRates');
+    console.log(contributorRates);
 
     return (
         <Dialog
@@ -256,9 +258,7 @@ const AllocationOverview = (props) => {
                     setSelectedCurrency={setSelectedCurrency}
                     setStartDate={setUpdatedAllocationStartDate}
                     startDate={updatedAllocationStartDate}
-                    //onClose={onClose}
                 />
-
                 <Box mt={1}>
                     <Grid container>
                         <Grid item xs={3}>
@@ -288,7 +288,6 @@ const AllocationOverview = (props) => {
                         </Grid>
                     </Grid>
                 </Box>
-
                 <DeleteConfirmationDialog
                     deleteAction={() => handleDeleteAllocation()}
                     deleteItem={`allocation`}

@@ -26,10 +26,8 @@ const EditAllocationRate = (props) => {
     const {
         allocation,
         currency,
-        rate,
-        //onClose,
-
         endDate,
+        rate,
         selectedPayment,
         setEndDate,
         setNewAllocationRate,
@@ -38,30 +36,7 @@ const EditAllocationRate = (props) => {
         startDate
     } = props
 
-    // const [createRate, {
-    //     dataNewRate,
-    //     loadingNewRate,
-    //     errorNewRate
-    // }] = useMutation(CREATE_RATE)
-
-    // const [updateAllocation, {
-    //     dataUpdatedAllocation,
-    //     loadingUpdatedAllocation,
-    //     errorUpdatedAllocation
-    // }] = useMutation(UPDATE_ALLOCATION, {
-    //     refetchQueries: [{
-    //         query: GET_CONTRIBUTOR_ALLOCATIONS,
-    //         variables: {
-    //             id: allocation.contributor.id
-    //         }
-    //     }]
-    // })
-
-    //const [endDate, setEndDate] = useState(moment(allocation.end_date, 'x')['_d'])
-    //const [newAllocationRate, setNewAllocationRate] = useState({})
-    //const [selectedCurrency, setSelectedCurrency] = useState(null)
     const [selectedRateType, setSelectedRateType] = useState(rate.type)
-    //const [startDate, setStartDate] = useState(moment(allocation.start_date, 'x')['_d'])
 
     // console.log('selectedPayment');
     // console.log(selectedPayment);
@@ -124,35 +99,33 @@ const EditAllocationRate = (props) => {
                     />
                 </Grid>
             </Grid>
-            {
-                selectedRateType == 'prorated_monthly'
-                    ? (
-                        <RateProratedMonthlyForm
-                            rateCurrency={rate.currency}
-                            clientCurrency={currency}
-                            currentRate={rate}
-                            selectedPayment={selectedPayment}
-                            setNewAllocationRate={setNewAllocationRate}
-                            setCurrency={setSelectedCurrency}
-                            startDate={moment(startDate)}
-                            endDate={moment(endDate)}
-                        />
-                    ) : (
-                        <RateMaxBudgetForm
-                            currentTotal={allocation.amount}
-                            clientCurrency={currency}
-                            currentRate={rate}
-                            selectedPayment={selectedPayment}
-                            setCurrency={setSelectedCurrency}
-                            setNewAllocationRate={setNewAllocationRate}
-                            startDate={moment(startDate)}
-                            endDate={moment(endDate)}
-                        />
-                    )
+            {selectedRateType == 'prorated_monthly'
+                ? (
+                    <RateProratedMonthlyForm
+                        rateCurrency={rate.currency}
+                        clientCurrency={currency}
+                        currentRate={rate}
+                        selectedPayment={selectedPayment}
+                        setNewAllocationRate={setNewAllocationRate}
+                        setCurrency={setSelectedCurrency}
+                        startDate={moment(startDate)}
+                        endDate={moment(endDate)}
+                    />
+                ) : (
+                    <RateMaxBudgetForm
+                        currentTotal={allocation.amount}
+                        clientCurrency={currency}
+                        currentRate={rate}
+                        selectedPayment={selectedPayment}
+                        setCurrency={setSelectedCurrency}
+                        setNewAllocationRate={setNewAllocationRate}
+                        startDate={moment(startDate)}
+                        endDate={moment(endDate)}
+                    />
+                )
             }
         </Box>
     )
-
 }
 
 export default EditAllocationRate

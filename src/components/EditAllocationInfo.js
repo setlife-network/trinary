@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-
 import {
     Collapse,
     Grid,
@@ -36,7 +35,6 @@ const EditAllocationInfo = (props) => {
     })
 
     const [openPayments, setOpenPayments] = useState(false)
-    //const [selectedPayment, setSelectedPayment] = useState(null)
 
     useEffect(() => {
         if (!selectedPayment) {
@@ -57,15 +55,23 @@ const EditAllocationInfo = (props) => {
     }
 
     const paymentAmount = (
-
         selectedPayment
             ? selectedPayment.amount
                 ? formatAmount({
                     amount: selectedPayment.amount / 100,
                     currencyInformation: currencyInformation
                 })
-                : 'Propose'
-            : 'Propose'
+                : 'Proposed'
+            : 'Proposed'
+    )
+    const datePaid = (
+        selectedPayment
+            ? selectedPayment.date_paid
+                ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
+                : selectedPayment.date_incurred
+                    ? 'Warning: This payment has not been paid'
+                    : 'Proposed'
+            : ''
     )
 
     const listPayments = (payments) => {
@@ -80,12 +86,12 @@ const EditAllocationInfo = (props) => {
                     <ListItem button onClick={() => onClickPayment(p)}>
                         <Grid container>
                             <Grid item xs={6}>
-                                <ListItemText primary={
-                                    `${p.amount
-                                        ? `${paymentAmount}`
-                                        : 'Propose'
-                                    }`
-                                }
+                                <ListItemText
+                                    primary={`${
+                                        p.amount
+                                            ? `${paymentAmount}`
+                                            : 'Propose'
+                                    }`}
                                 />
                             </Grid>
                             <Grid item xs={3} align='center'>
@@ -140,9 +146,7 @@ const EditAllocationInfo = (props) => {
                             <Grid item xs={9}>
                                 <Typography color='primary'>
                                     <ListItemText
-                                        primary={
-                                            `${paymentAmount}`
-                                        }
+                                        primary={`${paymentAmount}`}
                                     />
                                 </Typography>
                             </Grid>
@@ -154,7 +158,6 @@ const EditAllocationInfo = (props) => {
                             </Grid>
                         </Grid>
                     </ListItem>
-
                     <Collapse in={openPayments} timeout='auto' unmountOnExit>
                         {payments.length > 1 &&
                             listPayments(payments)
@@ -162,18 +165,9 @@ const EditAllocationInfo = (props) => {
                     </Collapse>
                 </List>
                 <Typography color='secondary' variant='caption'>
-                    {`Date paid: ${selectedPayment
-                        ? selectedPayment.date_paid
-                            ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
-                            : selectedPayment.date_incurred
-                                ? 'Warning: This payment has not been paid'
-                                : 'Proposed'
-                        : ''
-                    }`}
+                    {`Date paid: ${datePaid}`}
                 </Typography>
-
             </Grid>
-
         </Grid>
     )
 }

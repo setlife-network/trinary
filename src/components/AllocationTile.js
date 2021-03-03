@@ -10,7 +10,6 @@ import accounting from 'accounting-js'
 import moment from 'moment'
 
 import AllocationOverview from './AllocationOverview'
-
 import {
     formatAmount,
     selectCurrencyInformation
@@ -26,7 +25,7 @@ const AllocationTile = (props) => {
     const [openAllocationOverview, setOpenAllocationOverview] = useState(false)
 
     const currencyInformation = selectCurrencyInformation({
-        currency: 'USD'
+        currency: allocation.rate.currency
     })
     const paymentAmount = formatAmount({
         amount: allocation.amount / 100,

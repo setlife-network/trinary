@@ -73,7 +73,7 @@ const ContributorTile = (props) => {
         return sortedAllocations.map(a => {
 
             const currencyInformation = selectCurrencyInformation({
-                currency: a.payment ? a.payment.client.currency : ''
+                currency: a.rate.currency
             })
             const allocationAmount = formatAmount({
                 amount: a.amount / 100,
@@ -86,7 +86,11 @@ const ContributorTile = (props) => {
             const isActiveAllocation = moment(a.start_date, 'x').isBefore(moment())
 
             return (
-                <Grid item xs={12} onClick={() => handleAllocationOverview({ value: true, allocation: a })}>
+                <Grid
+                    item
+                    xs={12}
+                    onClick={() => handleAllocationOverview({ value: true, allocation: a })}
+                >
                     <hr/>
                     <Box my={1}>
                         <Grid container>
@@ -242,8 +246,7 @@ const ContributorTile = (props) => {
                     </AccordionDetails>
                 </Accordion>
             </Box>
-            {
-                selectedAllocation &&
+            {selectedAllocation &&
                 <AllocationOverview
                     allocationInfo={selectedAllocation}
                     onClose={() => handleAllocationOverview({ value: false })}
