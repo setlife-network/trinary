@@ -178,23 +178,29 @@ const AllocationOverview = (props) => {
             selectedRate.id = newRate.data.createRate.id
         }
         //update allocation with that rate id
-        const updatedAllocation = await updateAllocation({
-            variables: {
-                id: allocation.id,
-                amount: Number(rate.total_amount),
-                start_date: moment(startDate).format('YYYY-MM-DD'),
-                end_date: moment(endDate).format('YYYY-MM-DD'),
-                date_paid: null,
-                rate_id: Number(selectedRate.id),
-                payment_id: payment ? payment.id : null
+        try {
+            const updatedAllocation = await updateAllocation({
+                variables: {
+                    id: allocation.id,
+                    amount: Number(rate.total_amount),
+                    start_date: moment(startDate).format('YYYY-MM-DD'),
+                    end_date: moment(endDate).format('YYYY-MM-DD'),
+                    date_paid: null,
+                    rate_id: Number(selectedRate.id),
+                    payment_id: payment ? payment.id : null
+                }
+            })
+            if (loadingUpdatedAllocation) return ''
+            else if (updatedAllocation.errors) {
+                throw updatedAllocation.errors
+            } else {
+                onClose()
             }
-        })
-        if (loadingUpdatedAllocation) return ''
-        else if (updatedAllocation.errors) {
-            console.log('Error updating the allocation');
-        } else {
+        } catch (error) {
+            console.log(`error ${error}`);
             onClose()
         }
+
     }
 
     if (loadingAllocation || loadingClientPayments) return <LoadingProgress/>
