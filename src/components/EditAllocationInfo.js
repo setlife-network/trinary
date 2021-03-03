@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-
 import {
     Collapse,
     Grid,
@@ -84,12 +83,11 @@ const EditAllocationInfo = (props) => {
                         <Grid container>
                             <Grid item xs={6}>
                                 <ListItemText
-                                    primary={
-                                        `${p.amount
+                                    primary={`${
+                                        p.amount
                                             ? `${paymentAmount}`
                                             : 'Propose'
-                                        }`
-                                    }
+                                    }`}
                                 />
                             </Grid>
                             <Grid item xs={3} align='center'>
@@ -144,9 +142,7 @@ const EditAllocationInfo = (props) => {
                             <Grid item xs={9}>
                                 <Typography color='primary'>
                                     <ListItemText
-                                        primary={
-                                            `${paymentAmount}`
-                                        }
+                                        primary={`${paymentAmount}`}
                                     />
                                 </Typography>
                             </Grid>
@@ -158,7 +154,6 @@ const EditAllocationInfo = (props) => {
                             </Grid>
                         </Grid>
                     </ListItem>
-
                     <Collapse in={openPayments} timeout='auto' unmountOnExit>
                         {payments.length > 1 &&
                             listPayments(payments)
@@ -168,9 +163,7 @@ const EditAllocationInfo = (props) => {
                 <Typography color='secondary' variant='caption'>
                     {`Date paid: ${datePaid}`}
                 </Typography>
-
             </Grid>
-
         </Grid>
     )
 }

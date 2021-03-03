@@ -119,7 +119,10 @@ const PaymentTile = (props) => {
 
             return (
                 <Box mb={3}>
-                    <Grid container onClick={() => handleAllocationClicked({ value: true, allocation: a })}>
+                    <Grid
+                        container
+                        onClick={() => handleAllocationClicked({ value: true, allocation: a })}
+                    >
                         <Grid items xs={10} >
                             <Typography color='secondary' variant='caption'>
                                 {`${contributor.name}`}
@@ -166,9 +169,7 @@ const PaymentTile = (props) => {
                         <Grid container alignItems='center'>
                             <Grid item xs={5} align='left'>
                                 <Typography variant='h6'>
-                                    {
-                                        `${paymentAmount}`
-                                    }
+                                    {`${paymentAmount}`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={1}>
@@ -177,10 +178,9 @@ const PaymentTile = (props) => {
                                     align='left'
                                     color='secondary'
                                 >
-                                    {
-                                        `${paymentHasBeenMade
-                                            ? formattedDatePaid
-                                            : formattedDateIncurred}`
+                                    {`${paymentHasBeenMade
+                                        ? formattedDatePaid
+                                        : formattedDateIncurred}`
                                     }
                                 </Typography>
                             </Grid>
@@ -225,7 +225,6 @@ const PaymentTile = (props) => {
                                     >
                                         <DeleteOutlinedIcon color='primary'/>
                                     </Button>
-
                                 </Grid>
                             </Grid>
                         </Box>
@@ -270,8 +269,7 @@ const PaymentTile = (props) => {
                 open={openEditPayment}
                 onClose={() => handleEditPayment(false)}
             />
-            {
-                selectedAllocation &&
+            {selectedAllocation &&
                 <AllocationOverview
                     allocationInfo={selectedAllocation}
                     onClose={() => handleAllocationClicked(false)}

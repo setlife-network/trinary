@@ -95,33 +95,31 @@ const EditAllocationRate = (props) => {
                     />
                 </Grid>
             </Grid>
-            {
-                selectedRateType == 'prorated_monthly'
-                    ? (
-                        <RateProratedMonthlyForm
-                            rateCurrency={rate.currency}
-                            clientCurrency={currency}
-                            currentRate={rate}
-                            setNewAllocationRate={setNewAllocationRate}
-                            setCurrency={setSelectedCurrency}
-                            startDate={moment(startDate)}
-                            endDate={moment(endDate)}
-                        />
-                    ) : (
-                        <RateMaxBudgetForm
-                            currentTotal={allocation.amount}
-                            clientCurrency={currency}
-                            currentRate={rate}
-                            setCurrency={setSelectedCurrency}
-                            setNewAllocationRate={setNewAllocationRate}
-                            startDate={moment(startDate)}
-                            endDate={moment(endDate)}
-                        />
-                    )
+            {selectedRateType == 'prorated_monthly'
+                ? (
+                    <RateProratedMonthlyForm
+                        rateCurrency={rate.currency}
+                        clientCurrency={currency}
+                        currentRate={rate}
+                        setNewAllocationRate={setNewAllocationRate}
+                        setCurrency={setSelectedCurrency}
+                        startDate={moment(startDate)}
+                        endDate={moment(endDate)}
+                    />
+                ) : (
+                    <RateMaxBudgetForm
+                        currentTotal={allocation.amount}
+                        clientCurrency={currency}
+                        currentRate={rate}
+                        setCurrency={setSelectedCurrency}
+                        setNewAllocationRate={setNewAllocationRate}
+                        startDate={moment(startDate)}
+                        endDate={moment(endDate)}
+                    />
+                )
             }
         </Box>
     )
-
 }
 
 export default EditAllocationRate

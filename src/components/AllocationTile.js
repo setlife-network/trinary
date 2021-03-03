@@ -10,7 +10,6 @@ import accounting from 'accounting-js'
 import moment from 'moment'
 
 import AllocationOverview from './AllocationOverview'
-
 import {
     formatAmount,
     selectCurrencyInformation

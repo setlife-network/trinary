@@ -56,7 +56,10 @@ const ProjectProposedAllocationsTile = (props) => {
             return (
                 <Grid item xs={12}>
                     <Box mb={3}>
-                        <Grid container onClick={() => handleAllocationClicked({ value: true, allocation: a })}>
+                        <Grid
+                            container
+                            onClick={() => handleAllocationClicked({ value: true, allocation: a })}
+                        >
                             <Grid items xs={10} >
                                 <Typography color='secondary' variant='caption'>
                                     {`${a.contributor.name}`}
@@ -135,8 +138,7 @@ const ProjectProposedAllocationsTile = (props) => {
                     </Grid>
                 </AccordionDetails>
             </Accordion>
-            {
-                selectedAllocation &&
+            {selectedAllocation &&
                 <AllocationOverview
                     allocationInfo={selectedAllocation}
                     onClose={() => handleAllocationClicked(false)}
@@ -144,9 +146,7 @@ const ProjectProposedAllocationsTile = (props) => {
                 />
             }
         </Box>
-
     )
-
 }
 
 export default ProjectProposedAllocationsTile
