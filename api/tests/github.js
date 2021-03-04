@@ -48,20 +48,20 @@ console.log('github');
 //         console.log(err);
 //     })
 
-const issues = github.fetchRepoIssues({
-    auth_key: '5d43fb2bb7be3c47e53c48756d2fd8055b51a121',
-    repo: 'project-trinary',
-    owner: 'setlife-network'
-})
-    .then(res => {
-        console.log('res');
-        console.log(res);
-        return res
-    })
-    .catch(err => {
-        console.log('err');
-        console.log(err);
-    })
+// const issues = github.fetchRepoIssues({
+//     auth_key: '',
+//     repo: 'project-trinary',
+//     owner: 'setlife-network'
+// })
+//     .then(res => {
+//         console.log('res');
+//         console.log(res);
+//         return res
+//     })
+//     .catch(err => {
+//         console.log('err');
+//         console.log(err);
+//     })
 
 // const userPermission = github.fetchUserPermission({
 //     auth_key: '',
@@ -77,3 +77,7 @@ const issues = github.fetchRepoIssues({
 //         console.log('err');
 //         console.log(err);
 //     })
+
+// const userOrganizations = github.fetchUserOrganizations({
+//     auth_key: '',
+// })

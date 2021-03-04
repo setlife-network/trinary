@@ -127,6 +127,15 @@ const github = module.exports = (() => {
         }
     }
 
+    const fetchUserOrganizations = async (params) => {
+        const octokit = await new Octokit({
+            auth: params.auth_key,
+        })
+        const organizations = await octokit.orgs.listForAuthenticatedUser()
+        console.log('organizations');
+        console.log(organizations);
+    }
+
     return {
         fetchAccessToken,
         fetchAuthUserData,
@@ -135,6 +144,7 @@ const github = module.exports = (() => {
         fetchRepoInfo,
         fetchRepoIssues,
         fetchUserData,
-        fetchUserPermission
+        fetchUserPermission,
+        fetchUserOrganizations
     }
 })()
