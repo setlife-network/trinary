@@ -2,6 +2,7 @@ const { AuthenticationError } = require('apollo-server')
 const { col, fn } = require('sequelize')
 
 const toggl = require('../../handlers/toggl')
+const apiModules = require('../../modules');
 
 module.exports = {
     Contributor: {
@@ -83,9 +84,24 @@ module.exports = {
         },
         getContributors: (root, args, { models }) => {
             return models.Contributor.findAll()
+        },
+        getContributorGithubOrganizations: async (root, { id }, { models }) => {
+            const contributorAccessToken = await models.Contributor.findByPk(id)
+            const contributorOrganizations = await apiModules.repoSearcher.getUserOrganizations({
+                auth_key: contributorAccessToken.github_access_token
+            })
+            return contributorOrganizations
         }
     },
     Mutation: {
+        createContributor: (root, { createFields }, { models }) => {
+            return models.Contributor.create({
+                ...createFields
+            })
+        },
+        deleteContributorById: (root, { id }, { models }) => {
+            return models.Contributor.destroy({ where: { id } })
+        },
         linkTogglContributor: async (root, { contributorId, togglAPIKey }, { models }) => {
             const togglUser = await toggl.fetchUserData({ apiToken: togglAPIKey })
             const contributor = await models.Contributor.update({
@@ -96,14 +112,6 @@ module.exports = {
                 }
             })
             return models.Contributor.findByPk(contributorId)
-        },
-        createContributor: (root, { createFields }, { models }) => {
-            return models.Contributor.create({
-                ...createFields
-            })
-        },
-        deleteContributorById: (root, { id }, { models }) => {
-            return models.Contributor.destroy({ where: { id } })
         },
         updateContributorById: async (root, { id, updateFields }, { models }) => {
             await models.Contributor.update({

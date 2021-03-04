@@ -40,6 +40,11 @@ module.exports = gql`
         github_handle: String
     }
 
+    type ContributorOrganizations {
+        id: Int!
+        name: String
+    }
+
     type TotalAllocatedByCurrency {
         amount: Int
         currency: String
@@ -49,14 +54,18 @@ module.exports = gql`
         checkSession: Contributor
         getContributorById(id: Int!): Contributor
         getContributors: [Contributor]
+        getContributorGithubOrganizations(id: Int!): [ContributorOrganizations]
     }
 
     type Mutation {
-        linkTogglContributor(contributorId: Int!, togglAPIKey: String!): Contributor
         createContributor(
             createFields: CreateContributorInput!
         ): Contributor
         deleteContributorById(id: Int!): String
+        linkTogglContributor(
+            contributorId: Int!,
+            togglAPIKey: String!
+        ): Contributor
         updateContributorById(
             id: Int!
             updateFields: UpdateContributorInput!

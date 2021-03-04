@@ -131,9 +131,12 @@ const github = module.exports = (() => {
         const octokit = await new Octokit({
             auth: params.auth_key,
         })
-        const organizations = await octokit.orgs.listForAuthenticatedUser()
-        console.log('organizations');
-        console.log(organizations);
+        const res = await octokit.orgs.listForAuthenticatedUser()
+        if (res.status == 200) {
+            return res.data
+        } else {
+            throw new Error('An error occurred' + res)
+        }
     }
 
     return {
