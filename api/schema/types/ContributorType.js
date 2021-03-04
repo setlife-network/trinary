@@ -43,6 +43,13 @@ module.exports = gql`
     type ContributorOrganizations {
         id: Int!
         name: String
+        repos: [githubRepo]
+    }
+
+    type githubRepo {
+        id: Int
+        name: String
+        githubUrl: String
     }
 
     type TotalAllocatedByCurrency {

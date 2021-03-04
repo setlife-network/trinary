@@ -26,9 +26,10 @@ const github = module.exports = (() => {
         })
         const res = await octokit.users.getAuthenticated({})
         if (res.status == 200) {
-            const { html_url, id, name, email } = res.data
+            const { email, html_url, id, login, name } = res.data
             return {
                 id,
+                login,
                 name,
                 email,
                 githubUrl: html_url
@@ -38,23 +39,31 @@ const github = module.exports = (() => {
         }
     }
 
-    const fetchRepos = (params) => {
-        return new Promise((resolve, reject) => {
-            const octokit = new Octokit({
-                auth: params.auth_key
-            });
-            octokit.repos.listForAuthenticatedUser()
-                .then(result => {
-                    if (result.status == 200) {
-                        resolve(result)
-                    } else {
-                        throw (result.status)
-                    }
-                })
-                .catch(error => {
-                    reject(new Error('An error ocurred ' + error))
-                })
+    const fetchOrganizationRepos = async (params) => {
+        const octokit = new Octokit({
+            auth: params.auth_key
         })
+        const res = await octokit.repos.listForOrg({
+            org: params.organization
+        })
+        if (res.status == 200) {
+            return res.data
+        } else {
+            throw new Error('An error occurred' + res)
+        }
+
+    }
+
+    const fetchRepos = async (params) => {
+        const octokit = new Octokit({
+            auth: params.auth_key
+        })
+        const res = await octokit.repos.listForAuthenticatedUser()
+        if (res.status == 200) {
+            return res.data
+        } else {
+            throw new Error('An error occurred' + res)
+        }
     }
 
     const fetchRepoContributors = async (params) => {
@@ -142,6 +151,7 @@ const github = module.exports = (() => {
     return {
         fetchAccessToken,
         fetchAuthUserData,
+        fetchOrganizationRepos,
         fetchRepos,
         fetchRepoContributors,
         fetchRepoInfo,
