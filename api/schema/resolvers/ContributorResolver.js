@@ -85,8 +85,8 @@ module.exports = {
         getContributors: (root, args, { models }) => {
             return models.Contributor.findAll()
         },
-        getContributorGithubOrganizations: async (root, { id }, { models }) => {
-            const contributorAccessToken = await models.Contributor.findByPk(id)
+        getContributorGithubOrganizations: async (root, { id }, { models, cookies }) => {
+            const contributorAccessToken = await models.Contributor.findByPk(cookies.userSession ? cookies.userSession : id)
             const contributorOrganizations = await apiModules.repoSearcher.getOrganizationRepos({
                 auth_key: contributorAccessToken.github_access_token
             })
