@@ -47,6 +47,7 @@ const AllocationOverview = (props) => {
         error: errorAllocation,
         loading: loadingAllocation
     } = useQuery(GET_ALLOCATION_INFO, {
+        fetchPolicy: 'cache-and-network',
         variables: {
             id: allocationInfo.id
         }
@@ -131,6 +132,11 @@ const AllocationOverview = (props) => {
         }
     }, [contributorAllocation])
 
+    const handleClose = () => {
+        setContributorAllocation(null)
+        onClose()
+    }
+
     const handleDeleteAllocation = async () => {
         const paymentDeleted = await deleteAllocation()
         onClose()
@@ -172,30 +178,36 @@ const AllocationOverview = (props) => {
             selectedRate.id = newRate.data.createRate.id
         }
         //update allocation with that rate id
-        const updatedAllocation = await updateAllocation({
-            variables: {
-                id: allocation.id,
-                amount: Number(rate.total_amount),
-                start_date: moment(startDate).format('YYYY-MM-DD'),
-                end_date: moment(endDate).format('YYYY-MM-DD'),
-                date_paid: null,
-                rate_id: Number(selectedRate.id),
-                payment_id: payment.id
+        try {
+            const updatedAllocation = await updateAllocation({
+                variables: {
+                    id: allocation.id,
+                    amount: Number(rate.total_amount),
+                    start_date: moment(startDate).format('YYYY-MM-DD'),
+                    end_date: moment(endDate).format('YYYY-MM-DD'),
+                    date_paid: null,
+                    rate_id: Number(selectedRate.id),
+                    payment_id: payment ? payment.id : null
+                }
+            })
+            if (loadingUpdatedAllocation) return ''
+            else if (updatedAllocation.errors) {
+                throw updatedAllocation.errors
+            } else {
+                onClose()
             }
-        })
-        if (loadingUpdatedAllocation) return ''
-        else if (updatedAllocation.errors) {
-            console.log('Error updating the allocation');
-        } else {
+        } catch (error) {
+            console.log(`error ${error}`);
             onClose()
         }
+
     }
 
     if (loadingAllocation || loadingClientPayments) return <LoadingProgress/>
     if (errorAllocation || errorClientPayments) return `Error`
 
     const { getAllocationById: allocation } = dataAllocation
-    const payments = [{ id: null, amount: null, date_paid: null }]
+    const payments = [null]
     if (clientPayments) {
         payments.unshift(...clientPayments.payments)
     }
@@ -204,11 +216,12 @@ const AllocationOverview = (props) => {
         setContributorAllocation(allocation)
     }
 
-    console.log('contributorRates');
-    console.log(contributorRates);
-
     return (
-        <Dialog className='AllocationOverview' onClose={onClose} open={open}>
+        <Dialog
+            className='AllocationOverview'
+            onClose={() => handleClose()}
+            open={open}
+        >
             <DialogTitle>
                 {`Allocation Detail`}
             </DialogTitle>
@@ -227,6 +240,7 @@ const AllocationOverview = (props) => {
                     currency={allocation.project.client.currency}
                     endDate={updatedAllocationEndDate}
                     rate={allocation.rate}
+                    selectedPayment={updatedAllocationPayment}
                     setEndDate={setUpdatedAllocationEndDate}
                     setNewAllocationRate={setUpdatedAllocationRate}
                     setSelectedCurrency={setSelectedCurrency}
