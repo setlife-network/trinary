@@ -48,7 +48,7 @@ const theme = createMuiTheme({
         action: {
             main: lightGrey,
         }
-    },
+    }
 })
 
 export default theme

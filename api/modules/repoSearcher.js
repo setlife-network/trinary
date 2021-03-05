@@ -16,11 +16,13 @@ const repoSearcher = module.exports = (() => {
         const userOganizations = []
         userOganizations.push({
             id: githubContributorUser.id,
+            avatar: githubContributorUser.avatar_url,
             name: githubContributorUser.login
         })
         githubUserOrganizations.map(o => {
             userOganizations.push({
                 id: o.id,
+                avatar: o.avatar_url,
                 name: o.login
             })
         })
@@ -41,7 +43,7 @@ const repoSearcher = module.exports = (() => {
                     organizationRepos.push({
                         id: r.id,
                         name: r.name,
-                        githubUrl: r.html_url
+                        githubUrl: r.html_url,
                     })
                 }
             })

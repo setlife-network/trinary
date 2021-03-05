@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import {
+    Avatar,
     Box,
     FormControl,
     Grid,
@@ -55,7 +56,14 @@ const AddProjectFromGithub = (props) => {
         return organizations.map((o, i) => {
             return (
                 <MenuItem value={i}>
-                    {`${o.name ? o.name : 'Select'}`}
+                    <Grid container spacing={3} alignItems='center'>
+                        <Grid item>
+                            <Avatar alt='Avatar' src={o.avatar} className='organization-avatar'/>
+                        </Grid>
+                        <Grid item>
+                            {`${o.name ? o.name : 'Select'}`}
+                        </Grid>
+                    </Grid>
                 </MenuItem>
             )
         })
@@ -79,7 +87,13 @@ const AddProjectFromGithub = (props) => {
     const organizations = [{ repos: [] }, ...getContributorGithubOrganizations]
 
     return (
-        <Grid container spacing={3} justify='space-between' className='AddProjectFromGithub'>
+        <Grid
+            container
+            spacing={3}
+            justify='space-between'
+            alignItems='flex-end'
+            className='AddProjectFromGithub'
+        >
             <Grid item xs={12} align='left'>
                 <Box my={3}>
                     <Typography>

@@ -120,6 +120,7 @@ export const GET_CONTRIBUTOR_ORGANIZATIONS_REPOS_FROM_GITHUB = gql`
     query GithubOrganizationRepos($id: Int) {
         getContributorGithubOrganizations(id: $id) {
             id
+            avatar
             name
             repos {
                 id

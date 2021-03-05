@@ -42,6 +42,7 @@ module.exports = gql`
 
     type ContributorOrganizations {
         id: Int!
+        avatar: String
         name: String
         repos: [githubRepo]
     }
