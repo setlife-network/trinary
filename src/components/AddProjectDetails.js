@@ -31,6 +31,7 @@ const AddProjectDetails = (props) => {
         budgetTimeframe,
         client,
         projectDate,
+        projectName,
         setBudgetTimeframe,
         setProjectBudget,
         setProjectDate,
@@ -75,6 +76,7 @@ const AddProjectDetails = (props) => {
                         fullWidth
                         required
                         onChange={(event) => setProjectName(event.target.value)}
+                        inputProps={{ value: projectName }}
                     />
                 </Box>
             </Grid>

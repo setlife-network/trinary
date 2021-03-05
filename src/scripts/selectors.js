@@ -98,12 +98,7 @@ export const selectCurrencyInformation = (props) => {
     })
 }
 export const verifyGithubURL = (url) => {
-    console.log('url');
-    console.log(url);
     const githubLinkInformation = split(url, '/')
-    console.log('githubLinkInformation');
-    console.log(githubLinkInformation);
-    console.log(githubLinkInformation.length);
     if (githubLinkInformation.length != 5) {
         return 0
     }

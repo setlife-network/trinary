@@ -15,6 +15,9 @@ import {
     TextField,
     Typography
 } from '@material-ui/core'
+import {
+    split
+} from 'lodash'
 
 import AddGithubProjectManually from './AddGithubProjectManually'
 import AddProjectDetails from './AddProjectDetails'
@@ -83,6 +86,12 @@ const AddProjectForm = (props) => {
             setProjectGithub(projectGithubManual)
         }
     }, [projectGithub, projectGithubManual])
+
+    useEffect(() => {
+        const githubLinkInformation = split(projectGithub, '/')
+        setProjectName(githubLinkInformation[githubLinkInformation.length - 1])
+    }, [projectGithub])
+
     const createProject = async () => {
         if (!verifyGithubURL(projectGithub)) {
             setCreateProjectError('The Github URL is invalid')
@@ -184,6 +193,7 @@ const AddProjectForm = (props) => {
                         budgetTimeframe={budgetTimeframe}
                         client={client}
                         projectDate={projectDate}
+                        projectName={projectName}
                         setBudgetTimeframe={setBudgetTimeframe}
                         setProjectDate={setProjectDate}
                         setProjectName={setProjectName}
