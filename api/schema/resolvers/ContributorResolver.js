@@ -1,8 +1,39 @@
 const { AuthenticationError } = require('apollo-server')
+const { col, fn } = require('sequelize')
+
 const toggl = require('../../handlers/toggl')
 
 module.exports = {
     Contributor: {
+        paidByCurrency: async (contributor, args, { models }) => {
+            const totalPaidByCurrencyQuery = await models.Client.findAll({
+                group: 'currency',
+                attributes: ['currency'],
+                raw: true,
+                include: {
+                    model: models.Project,
+                    attributes: [],
+                    required: true,
+                    include: {
+                        model: models.Allocation,
+                        attributes: [[fn('sum', col('amount')), 'amount']],
+                        where: {
+                            contributor_id: contributor.id
+                        },
+                    }
+                }
+            })
+            totalPaidByCurrency = []
+            totalPaidByCurrencyQuery.map(t => {
+                totalPaidByCurrency.push(
+                    {
+                        currency: t['currency'],
+                        amount: t['Projects.Allocations.amount']
+                    }
+                )
+            })
+            return totalPaidByCurrency
+        },
         permissions: (contributor, args, { models }) => {
             return models.Permission.findAll({
                 where: {
@@ -17,7 +48,7 @@ module.exports = {
                 }
             })
         },
-        total_paid: async (contributor, args, { models }) => {
+        totalPaid: async (contributor, args, { models }) => {
             const totalPaid = await models.Allocation.sum('amount', {
                 where: {
                     contributor_id: contributor.id

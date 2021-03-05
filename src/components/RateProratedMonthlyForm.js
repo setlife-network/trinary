@@ -21,6 +21,7 @@ const RateProratedMonthlyForm = (props) => {
         clientCurrency,
         currentRate,
         endDate,
+        selectedPayment,
         setNewAllocationRate,
         setCurrency,
         startDate
@@ -28,16 +29,10 @@ const RateProratedMonthlyForm = (props) => {
 
     const [monthlyHoursInput, setMonthlyhoursInput] = useState(null)
     const [currentRateInput, setCurrentRateInput] = useState(null)
-    const [rateCurrency, setRateCurrency] = useState(clientCurrency)
+    const [rateCurrency, setRateCurrency] = useState(null)
     const [totalAmount, setTotalAmount] = useState(null)
     const [totalWeeks, setTotalWeeks] = useState(null)
     const [totalHours, setTotalHours] = useState(0)
-
-    useEffect(() => {
-        if (rateCurrency) {
-            setCurrency(rateCurrency)
-        }
-    }, [rateCurrency])
 
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
@@ -45,6 +40,19 @@ const RateProratedMonthlyForm = (props) => {
         setMonthlyhoursInput(currentRate ? currentRate.total_expected_hours : 160)
         setRateCurrency(currentRate ? currentRate.currency : clientCurrency)
     }, [currentRate])
+
+    useEffect(() => {
+        if (selectedPayment) {
+            setRateCurrency(clientCurrency)
+        }
+    }, [selectedPayment])
+
+    useEffect(() => {
+        if (!rateCurrency) {
+            setRateCurrency(clientCurrency)
+        }
+        setCurrency(rateCurrency)
+    }, [rateCurrency])
 
     useEffect(() => {
         setTotalAmount(currentRateInput * monthlyHoursInput)
@@ -96,7 +104,8 @@ const RateProratedMonthlyForm = (props) => {
                         name='Currency'
                         fullWidth
                         onChange={(event) => setRateCurrency(event.target.value)}
-                        value={rateCurrency}
+                        value={selectedPayment ? clientCurrency : rateCurrency}
+                        disabled={selectedPayment}
                     >
                         {renderCurrencies(CURRENCIES)}
                     </Select>

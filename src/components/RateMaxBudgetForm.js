@@ -19,8 +19,10 @@ const RateMaxBudgetForm = (props) => {
     const {
         clientCurrency,
         currentRate,
+        currentTotal,
         createRate,
         endDate,
+        selectedPayment,
         setCurrency,
         setNewAllocationRate,
         startDate
@@ -28,7 +30,7 @@ const RateMaxBudgetForm = (props) => {
 
     const [currentRateInput, setCurrentRateInput] = useState(null)
     const [rateCurrency, setRateCurrency] = useState(clientCurrency)
-    const [totalAmount, setTotalAmount] = useState(0)
+    const [totalAmount, setTotalAmount] = useState(currentTotal ? currentTotal / 100 : 0)
     const [totalWeeks, setTotalWeeks] = useState(null)
     const [totalHours, setTotalHours] = useState(0)
 
@@ -37,11 +39,18 @@ const RateMaxBudgetForm = (props) => {
             setCurrency(rateCurrency)
         }
     }, [rateCurrency])
+
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
         setRateCurrency(currentRate ? currentRate.currency : clientCurrency)
     }, [currentRate])
+
+    useEffect(() => {
+        if (selectedPayment) {
+            setRateCurrency(clientCurrency)
+        }
+    }, [selectedPayment])
 
     useEffect(() => {
         setTotalHours(totalAmount && currentRateInput ? ((totalAmount / 100) / currentRateInput).toFixed(2) : 0)
@@ -85,7 +94,8 @@ const RateMaxBudgetForm = (props) => {
                         name='Currency'
                         fullWidth
                         onChange={(event) => setRateCurrency(event.target.value)}
-                        value={rateCurrency}
+                        value={selectedPayment ? clientCurrency : rateCurrency}
+                        disabled={selectedPayment}
                     >
                         {renderCurrencies(CURRENCIES)}
                     </Select>
@@ -113,7 +123,7 @@ const RateMaxBudgetForm = (props) => {
                                 variant='filled'
                                 currencySymbol={`${currencyInformation['symbol']}`}
                                 minimumValue='0'
-                                defautltValue='0'
+                                defaultValue={currentTotal / 100}
                                 outputFormat='string'
                                 decimalCharacter={`${currencyInformation['decimal']}`}
                                 digitGroupSeparator={`${currencyInformation['thousand']}`}

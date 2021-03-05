@@ -35,6 +35,9 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
             allocations {
                 id
                 amount
+                contributor {
+                    id
+                }
                 active
                 start_date
                 end_date
@@ -68,7 +71,11 @@ export const GET_CONTRIBUTOR_INFO = gql`
             github_id
             github_handle
             github_access_token
-            total_paid
+            totalPaid
+            paidByCurrency {
+                currency
+                amount
+            }
         }
     }
 `
@@ -83,6 +90,7 @@ export const GET_CONTRIBUTOR_RATES = gql`
                 active
                 type
                 hourly_rate
+                currency
                 total_expected_hours
             }
 

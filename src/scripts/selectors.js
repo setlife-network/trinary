@@ -71,7 +71,9 @@ export const matchTitlePage = (props) => {
         location
     } = props
     const locationTitle = NAV_TITLES.find(tl => {
-        return tl.locations.find(l => location.match(l))
+        return tl.locations.find(l => {
+            return location.includes(l)
+        })
     })
     return locationTitle
 }

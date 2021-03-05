@@ -108,7 +108,7 @@ const AllocationAddForm = (props) => {
                 rate_id: allocationRate.id
             }
         })
-        if (loadingNewAllocation) return <span>loading...</span>
+        if (loadingNewAllocation) return ''
         else if (allocationCreated.errors) {
             console.log('Error adding the allocation');
         } else {
@@ -231,17 +231,6 @@ const AllocationAddForm = (props) => {
             variables: {
                 contributorId: contributor ? contributor.id : null,
                 projectId: project ? project.id : null
-
-            }
-        }, {
-            query: GET_PAYMENT_ALLOCATIONS,
-            variables: {
-                paymentId: selectedPayment ? selectedPayment.id : null
-            }
-        }, {
-            query: GET_PAYMENT_TOTAL_ALLOCATED,
-            variables: {
-                paymentId: selectedPayment ? selectedPayment.id : null
             }
         }, {
             query: GET_PROJECT_PAYMENTS,
@@ -370,8 +359,7 @@ const AllocationAddForm = (props) => {
     const activeContributors = activeAllocations.map(a => {
         return a.contributor
     })
-
-    if (!rateCurrency) {
+    if (!rateCurrency && clientCurrency) {
         setRateCurrency(clientCurrency)
     }
 
@@ -495,6 +483,7 @@ const AllocationAddForm = (props) => {
                                     <RateProratedMonthlyForm
                                         clientCurrency={clientCurrency}
                                         currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
+                                        selectedPayment={selectedPayment}
                                         setNewAllocationRate={setNewAllocationRate}
                                         setCurrency={setRateCurrency}
                                         startDate={moment(startDate)}
@@ -504,6 +493,7 @@ const AllocationAddForm = (props) => {
                                     <RateMaxBudgetForm
                                         clientCurrency={clientCurrency}
                                         currentRate={mostRecentAllocation ? mostRecentAllocation.rate : null}
+                                        selectedPayment={selectedPayment}
                                         setCurrency={setRateCurrency}
                                         setNewAllocationRate={setNewAllocationRate}
                                         startDate={moment(startDate)}

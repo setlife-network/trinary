@@ -73,6 +73,8 @@ query ClientPayments($clientId: Int!) {
         payments {
             id
             amount
+            date_incurred
+            date_paid
         }
     }
 }

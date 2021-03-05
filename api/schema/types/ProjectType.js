@@ -54,10 +54,11 @@ module.exports = gql`
             toDate: String,
             confirmedOnly: Boolean
         ): Int
+        "The total paid from the client"
         totalPaid(
             fromDate: String,
             toDate: String
-        ): Int # The total paid from the client, takes start date and ed date as attributes
+        ): Int
         totalIncurredPayments: Int # The total incurred not paid from the client
     }
 
