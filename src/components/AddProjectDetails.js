@@ -106,7 +106,7 @@ const AddProjectDetails = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12} md={5}>
-                <Box xs={10} my={2}>
+                <Box my={2}>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             fullWidth
@@ -123,7 +123,7 @@ const AddProjectDetails = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12} md={5}>
-                <Box xs={10} my={2}>
+                <Box my={2}>
                     <FormControl fullWidth>
                         <InputLabel id='demo-simple-select-helper-label'>{`Expected budget timeframe`}</InputLabel>
                         <Select

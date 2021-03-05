@@ -11,7 +11,10 @@ import {
     Typography
 } from '@material-ui/core'
 
-import { GET_CONTRIBUTOR_ORGANIZATIONS_REPOS_FROM_GITHUB } from '../operations/queries/ContributorQueries'
+import LoadingProgress from './LoadingProgress'
+import {
+    GET_CONTRIBUTOR_ORGANIZATIONS_REPOS_FROM_GITHUB
+} from '../operations/queries/ContributorQueries'
 
 const AddProjectFromGithub = (props) => {
     const {
@@ -70,7 +73,7 @@ const AddProjectFromGithub = (props) => {
         })
     }
 
-    if (loadingOrganizationProjects) return ''
+    if (loadingOrganizationProjects) return <LoadingProgress/>
     if (errorOrganizationProjects) return `An error ocurred ${errorOrganizationProjects}`
 
     const { getContributorGithubOrganizations } = dataOrganizationProjects
@@ -86,7 +89,7 @@ const AddProjectFromGithub = (props) => {
                     </Typography>
                 </Box>
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={12} sm={5}>
                 <FormControl fullWidth>
                     <InputLabel>
                         {`Github organization`}
@@ -103,7 +106,7 @@ const AddProjectFromGithub = (props) => {
                     </Select>
                 </FormControl>
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={12} sm={5}>
                 <FormControl fullWidth>
                     <InputLabel>
                         {`Github projects`}

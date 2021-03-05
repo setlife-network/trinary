@@ -125,21 +125,21 @@ const AddProjectForm = (props) => {
     return (
         <Grid container alignItems='center' className='AddProjectForm'>
             <Grid item>
-                <Box color='primary'>
+                <Box mr={2} mb={2}>
                     <Avatar>
                         {`1`}
                     </Avatar>
                 </Box>
             </Grid>
             <Grid item>
-                <Box ml={2}>
-                    <Typography variant='h6'>
-                        {`Link the Github Project`}
-                    </Typography>
-                </Box>
+
+                <Typography variant='h6'>
+                    {`Link the Github Project`}
+                </Typography>
+
             </Grid>
             <Grid item xs={12}>
-                <Box item mt={3}>
+                <Box item mb={3}>
                     <AddProjectFromGithub
                         clientId={clientId}
                         setLinkedRepo={setLinkedRepo}
@@ -148,7 +148,7 @@ const AddProjectForm = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <Box item mt={3}>
+                <Box item mb={3}>
                     <AddGithubProjectManually
                         linkedRepo={linkedRepo}
                         projectGithub={projectGithub}
@@ -157,18 +157,18 @@ const AddProjectForm = (props) => {
                 </Box>
             </Grid>
             <Grid item>
-                <Box color='primary'>
+                <Box mr={3} mb={2}>
                     <Avatar>
                         {`2`}
                     </Avatar>
                 </Box>
             </Grid>
             <Grid item>
-                <Box ml={2}>
-                    <Typography variant='h6'>
-                        {`Add additional information`}
-                    </Typography>
-                </Box>
+
+                <Typography variant='h6'>
+                    {`Add additional information`}
+                </Typography>
+
             </Grid>
             <Grid item xs={12}>
                 <Box item mt={5}>
