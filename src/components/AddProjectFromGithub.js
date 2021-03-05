@@ -46,7 +46,7 @@ const AddProjectFromGithub = (props) => {
     }
 
     const handleGithubRepoChange = ({ organizations, value }) => {
-        setProjectGithub(organizations[selectedGithubOrganization].repos[value])
+        setProjectGithub(organizations[selectedGithubOrganization].repos[value].githubUrl)
         setSelectedGithubRepo(value)
     }
 
