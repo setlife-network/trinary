@@ -37,7 +37,6 @@ const AddProjectFromGithub = (props) => {
 
     const handleGithubOrganizationChange = ({ organizations, value }) => {
         setSelectedGithubOrganization(value)
-        console.log(organizations[value].repos[0]);
         if (organizations[value].repos[0]) {
             setProjectGithub(organizations[value].repos[0].githubUrl)
             setLinkedRepo(true)
