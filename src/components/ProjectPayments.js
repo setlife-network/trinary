@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
-import { filter, orderBy } from 'lodash'
+import { filter, isEmpty, orderBy } from 'lodash'
 
 import LoadingProgress from './LoadingProgress'
 import PaymentsEmptyState from './PaymentsEmptyState'
@@ -100,13 +100,13 @@ const ProjectPayments = (props) => {
                     project={getProjectById}
                     currencyInformation={currencyInformation}
                 />
-                {allocatedPayments.length != 0 &&
+                {!isEmpty(allocatedPayments) &&
                     <PaymentsList
                         payments={payments}
                         project={getProjectById}
                     />
                 }
-                {proposedAllocations.length &&
+                {!isEmpty(proposedAllocations) &&
                     (
                         <Grid container>
                             <Grid item xs={12} md={6}>

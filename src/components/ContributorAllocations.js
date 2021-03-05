@@ -12,7 +12,10 @@ import AllocationAddForm from './AllocationAddForm'
 import AllocationTile from './AllocationTile'
 import EmptyState from './EmptyState'
 import LoadingProgress from './LoadingProgress'
-import { GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_INFO } from '../operations/queries/ContributorQueries'
+import {
+    GET_CONTRIBUTOR_ALLOCATIONS,
+    GET_CONTRIBUTOR_INFO
+} from '../operations/queries/ContributorQueries'
 import { white } from '../styles/colors.scss'
 
 const ContributorAllocations = (props) => {

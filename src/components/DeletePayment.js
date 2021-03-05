@@ -44,7 +44,6 @@ const DeletePayment = (props) => {
             <DeleteConfirmationDialog
                 deleteAction={() => handleDeletePayment()}
                 deleteItem={`payment`}
-                payment={payment}
                 open={open}
                 onClose={onClose}
             />

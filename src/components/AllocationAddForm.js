@@ -108,7 +108,7 @@ const AllocationAddForm = (props) => {
                 rate_id: allocationRate.id
             }
         })
-        if (loadingNewAllocation) return <span>loading...</span>
+        if (loadingNewAllocation) return ''
         else if (allocationCreated.errors) {
             console.log('Error adding the allocation');
         } else {
@@ -231,17 +231,6 @@ const AllocationAddForm = (props) => {
             variables: {
                 contributorId: contributor ? contributor.id : null,
                 projectId: project ? project.id : null
-
-            }
-        }, {
-            query: GET_PAYMENT_ALLOCATIONS,
-            variables: {
-                paymentId: selectedPayment ? selectedPayment.id : null
-            }
-        }, {
-            query: GET_PAYMENT_TOTAL_ALLOCATED,
-            variables: {
-                paymentId: selectedPayment ? selectedPayment.id : null
             }
         }, {
             query: GET_PROJECT_PAYMENTS,
