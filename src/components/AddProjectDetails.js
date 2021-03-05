@@ -94,6 +94,7 @@ const AddProjectDetails = (props) => {
                 <Box xs={10} my={2}>
                     <CurrencyTextField
                         fullWidth
+                        required
                         label='Expected Budget'
                         variant='outlined'
                         currencySymbol={`${currencyInformation['symbol']}`}
@@ -110,6 +111,7 @@ const AddProjectDetails = (props) => {
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             fullWidth
+                            required
                             disableToolbar
                             variant='inline'
                             format='MM/DD/YYYY'
@@ -125,11 +127,12 @@ const AddProjectDetails = (props) => {
             <Grid item xs={12} md={5}>
                 <Box my={2}>
                     <FormControl fullWidth>
-                        <InputLabel id='demo-simple-select-helper-label'>{`Expected budget timeframe`}</InputLabel>
+                        <InputLabel>
+                            {`Expected budget timeframe`}
+                        </InputLabel>
                         <Select
                             fullWidth
                             label={`Expected budget timeframe`}
-                            id='demo-simple-select'
                             value={budgetTimeframe}
                             onChange={(event) => (handleTimeframeChange(event.target.value))}
                         >

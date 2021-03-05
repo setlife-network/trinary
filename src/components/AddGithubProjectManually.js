@@ -18,7 +18,7 @@ const AddGithubProjectManually = (props) => {
         <Grid container justify='space-between' classname='AddGithubProjectManually'>
             <Grid item xs={12} align='left'>
                 <Box my={3}>
-                    <Typography color='secondary'>
+                    <Typography>
                         {`Or add it manually`}
                     </Typography>
                 </Box>

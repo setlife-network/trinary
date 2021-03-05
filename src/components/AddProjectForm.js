@@ -192,7 +192,9 @@ const AddProjectForm = (props) => {
                         disabled={disableAdd}
                         onClick={createProject}
                     >
-                        {`Add Project`}
+                        <Box px={5}>
+                            {`Add Project`}
+                        </Box>
                     </Button>
                 </Box>
             </Grid>

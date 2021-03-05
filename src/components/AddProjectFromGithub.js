@@ -84,7 +84,7 @@ const AddProjectFromGithub = (props) => {
         <Grid container spacing={3} justify='space-between' className='AddProjectFromGithub'>
             <Grid item xs={12} align='left'>
                 <Box my={3}>
-                    <Typography color='secondary'>
+                    <Typography>
                         {`Search from a repo directly from Github`}
                     </Typography>
                 </Box>
