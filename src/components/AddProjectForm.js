@@ -6,13 +6,8 @@ import {
     Avatar,
     Box,
     Button,
-    FormControl,
     Grid,
-    InputLabel,
-    MenuItem,
-    Select,
     Snackbar,
-    TextField,
     Typography
 } from '@material-ui/core'
 import {
