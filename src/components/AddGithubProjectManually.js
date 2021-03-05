@@ -11,7 +11,8 @@ const AddGithubProjectManually = (props) => {
     const {
         linkedRepo,
         projectGithub,
-        setProjectGithub
+        setProjectGithub,
+        setProjectGithubManual
     } = props
 
     return (
@@ -32,7 +33,7 @@ const AddGithubProjectManually = (props) => {
                         fullWidth
                         required
                         disabled={linkedRepo}
-                        onChange={(event) => setProjectGithub(event.target.value)}
+                        onChange={(event) => setProjectGithubManual(event.target.value)}
                     />
                 </Box>
             </Grid>

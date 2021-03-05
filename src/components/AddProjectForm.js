@@ -65,6 +65,7 @@ const AddProjectForm = (props) => {
     const [projectBudget, setProjectBudget] = useState(0)
     const [projectDate, setProjectDate] = useState(null)
     const [projectGithub, setProjectGithub] = useState(null)
+    const [projectGithubManual, setProjectGithubManual] = useState(null)
     const [projectName, setProjectName] = useState('')
     const [projectToggl, setProjectToggl] = useState(null)
 
@@ -76,6 +77,12 @@ const AddProjectForm = (props) => {
         }
     })
 
+    useEffect(() => {
+        //if there's not a linked github repo from the selector use the one inserted manually if exists
+        if (projectGithubManual && !projectGithub) {
+            setProjectGithub(projectGithubManual)
+        }
+    }, [projectGithub, projectGithubManual])
     const createProject = async () => {
         if (!verifyGithubURL(projectGithub)) {
             setCreateProjectError('The Github URL is invalid')
@@ -123,7 +130,11 @@ const AddProjectForm = (props) => {
     const { getClientById: client } = dataClient
 
     return (
-        <Grid container alignItems='center' className='AddProjectForm'>
+        <Grid
+            container
+            alignItems='center'
+            className='AddProjectForm'
+        >
             <Grid item>
                 <Box mr={2} mb={2}>
                     <Avatar>
@@ -132,11 +143,9 @@ const AddProjectForm = (props) => {
                 </Box>
             </Grid>
             <Grid item>
-
                 <Typography variant='h6'>
                     {`Link the Github Project`}
                 </Typography>
-
             </Grid>
             <Grid item xs={12}>
                 <Box item mb={3}>
@@ -153,6 +162,7 @@ const AddProjectForm = (props) => {
                         linkedRepo={linkedRepo}
                         projectGithub={projectGithub}
                         setProjectGithub={setProjectGithub}
+                        setProjectGithubManual={setProjectGithubManual}
                     />
                 </Box>
             </Grid>
@@ -164,11 +174,9 @@ const AddProjectForm = (props) => {
                 </Box>
             </Grid>
             <Grid item>
-
                 <Typography variant='h6'>
                     {`Add additional information`}
                 </Typography>
-
             </Grid>
             <Grid item xs={12}>
                 <Box item mt={5}>
