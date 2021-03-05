@@ -123,8 +123,7 @@ const AllocationClientSpecifics = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
-                                {
-                                    c.github_access_token &&
+                                {c.github_access_token &&
                                     <GitHubIcon color='secondary' fontSize='small'/>
                                 }
                             </Grid>

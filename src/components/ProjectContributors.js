@@ -77,8 +77,12 @@ const ProjectContributors = (props) => {
     }, [])
 
     useEffect(() => {
-        if (githubContributors.length) {
-            setContributors(contributors.concat(...githubContributors))
+        try {
+            if (githubContributors.length) {
+                setContributors(contributors.concat(...githubContributors))
+            }
+        } catch (error) {
+            console.log(`error: ${error}`)
         }
     }, [githubContributors])
 
