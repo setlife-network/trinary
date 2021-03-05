@@ -5,13 +5,7 @@ import ClientsListManager from '../components/ClientsListManager'
 import ClientsList from '../components/ClientsList'
 
 class ClientListPage extends React.Component {
-
     render() {
-
-        const {
-            history
-        } = this.props
-
         return (
             <div>
                 <Grid
@@ -20,13 +14,9 @@ class ClientListPage extends React.Component {
                     className='ClientListPage'
                 >
                     <Grid item xs={12}>
-                        <ClientsListManager
-                            history={history}
-                        />
+                        <ClientsListManager />
                         <Grid container>
-                            <ClientsList
-                                history={history}
-                            />
+                            <ClientsList />
                         </Grid>
                     </Grid>
                 </Grid>
