@@ -64,7 +64,7 @@ const AddProjectDetails = (props) => {
     return (
         <Grid container justify='space-between'>
             <Grid item xs={12} md={5}>
-                <Box xs={10}>
+                <Box xs={10} mb={3}>
                     <TextField
                         label='Project name'
                         id='projectName'
@@ -77,7 +77,7 @@ const AddProjectDetails = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12} md={5}>
-                <Box xs={10}>
+                <Box xs={10} mb={3}>
                     <TextField
                         label='Toggl URL'
                         id='projectToggl'
@@ -88,7 +88,7 @@ const AddProjectDetails = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12} md={5}>
-                <Box xs={10} my={2}>
+                <Box xs={10} mb={3}>
                     <CurrencyTextField
                         fullWidth
                         required
@@ -104,7 +104,7 @@ const AddProjectDetails = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12} md={5}>
-                <Box my={2}>
+                <Box>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             fullWidth
