@@ -15,7 +15,9 @@ import { GET_CONTRIBUTOR_ORGANIZATIONS_REPOS_FROM_GITHUB } from '../operations/q
 
 const AddProjectFromGithub = (props) => {
     const {
-        clientId
+        clientId,
+        setLinkedRepo,
+        setProjectGithub
     } = props
 
     const {
@@ -27,11 +29,24 @@ const AddProjectFromGithub = (props) => {
     const [selectedGithubOrganization, setSelectedGithubOrganization] = useState(0)
     const [selectedGithubRepo, setSelectedGithubRepo] = useState(0)
 
-    const handleGithubOrganizationChange = ({ value }) => {
+    useEffect(() => {
+        setSelectedGithubRepo(0)
+    }, [selectedGithubOrganization])
+
+    const handleGithubOrganizationChange = ({ organizations, value }) => {
         setSelectedGithubOrganization(value)
+        console.log(organizations[value].repos[0]);
+        if (organizations[value].repos[0]) {
+            setProjectGithub(organizations[value].repos[0].githubUrl)
+            setLinkedRepo(true)
+        } else {
+            setProjectGithub(null)
+            setLinkedRepo(false)
+        }
     }
 
-    const handleGithubRepoChange = ({ value }) => {
+    const handleGithubRepoChange = ({ organizations, value }) => {
+        setProjectGithub(organizations[selectedGithubOrganization].repos[value])
         setSelectedGithubRepo(value)
     }
 
@@ -39,17 +54,17 @@ const AddProjectFromGithub = (props) => {
         return organizations.map((o, i) => {
             return (
                 <MenuItem value={i}>
-                    {`${o.name}`}
+                    {`${o.name ? o.name : 'Select'}`}
                 </MenuItem>
             )
         })
     }
 
-    const renderGithubRepos = ({ projects }) => {
-        return projects.map((p, i) => {
+    const renderGithubRepos = ({ repos }) => {
+        return repos.map((r, i) => {
             return (
                 <MenuItem value={i}>
-                    {`${p.name}`}
+                    {`${r.name}`}
                 </MenuItem>
             )
         })
@@ -58,11 +73,20 @@ const AddProjectFromGithub = (props) => {
     if (loadingOrganizationProjects) return ''
     if (errorOrganizationProjects) return `An error ocurred ${errorOrganizationProjects}`
 
-    const { getContributorGithubOrganizations: organizations } = dataOrganizationProjects
+    const { getContributorGithubOrganizations } = dataOrganizationProjects
+
+    const organizations = [{ repos: [] }, ...getContributorGithubOrganizations]
 
     return (
-        <Grid container className='AddProjectFromGithub'>
-            <Grid item xs={6}>
+        <Grid container spacing={3} justify='space-between' className='AddProjectFromGithub'>
+            <Grid item xs={12} align='left'>
+                <Box my={3}>
+                    <Typography color='secondary'>
+                        {`Search from a repo directly from Github`}
+                    </Typography>
+                </Box>
+            </Grid>
+            <Grid item xs={5}>
                 <FormControl fullWidth>
                     <InputLabel>
                         {`Github organization`}
@@ -71,6 +95,7 @@ const AddProjectFromGithub = (props) => {
                         fullWidth
                         value={selectedGithubOrganization}
                         onChange={(event) => handleGithubOrganizationChange({
+                            organizations: organizations,
                             value: event.target.value
                         })}
                     >
@@ -78,7 +103,7 @@ const AddProjectFromGithub = (props) => {
                     </Select>
                 </FormControl>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={5}>
                 <FormControl fullWidth>
                     <InputLabel>
                         {`Github projects`}
@@ -87,10 +112,13 @@ const AddProjectFromGithub = (props) => {
                         fullWidth
                         value={selectedGithubRepo}
                         onChange={(event) => handleGithubRepoChange({
+                            organizations: organizations,
                             value: event.target.value
                         })}
                     >
-                        {renderGithubRepos({ projects: organizations[selectedGithubOrganization].repos })}
+                        {renderGithubRepos({
+                            repos: organizations[selectedGithubOrganization].repos
+                        })}
                     </Select>
                 </FormControl>
             </Grid>

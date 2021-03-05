@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
 import AddProjectForm from '../components/AddProjectForm'
-import AddProjectFromGithub from '../components/AddProjectFromGithub'
 
 class AddProjectPage extends React.Component {
 
@@ -18,32 +17,17 @@ class AddProjectPage extends React.Component {
                 className='AddProjectPage'
             >
                 <Grid item align='center' xs={8}>
-                    <Typography align='left'>
+                    <Typography align='left' variant={'h6'} color='primary'>
                         <strong>
                             {`Enter info below to create a project`}
                         </strong>
                     </Typography>
                 </Grid>
                 <Grid item xs={8}>
-                    <Box item mt={5}>
+                    <Box my={3}>
+
                         <AddProjectForm
                             clientId={clientId}
-                            history={this.props.history}
-                        />
-                    </Box>
-                </Grid>
-                <Grid item align='center' xs={8}>
-                    <Typography align='left'>
-                        <strong>
-                            {`Or select directly from github`}
-                        </strong>
-                    </Typography>
-                </Grid>
-                <Grid item xs={8}>
-                    <Box item my={5}>
-                        <AddProjectFromGithub
-                            clientId={clientId}
-                            history={this.props.history}
                         />
                     </Box>
                 </Grid>
