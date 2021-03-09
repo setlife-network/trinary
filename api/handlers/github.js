@@ -52,7 +52,6 @@ const github = module.exports = (() => {
         } else {
             throw new Error('An error occurred' + res)
         }
-
     }
 
     const fetchRepos = async (params) => {

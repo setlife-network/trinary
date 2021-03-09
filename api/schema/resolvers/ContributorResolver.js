@@ -2,7 +2,7 @@ const { AuthenticationError } = require('apollo-server')
 const { col, fn } = require('sequelize')
 
 const toggl = require('../../handlers/toggl')
-const apiModules = require('../../modules');
+const apiModules = require('../../modules')
 
 module.exports = {
     Contributor: {
@@ -74,7 +74,7 @@ module.exports = {
         }
     },
     Query: {
-        checkSession: (root, args, { models, cookies }) => {
+        checkSession: (root, args, { cookies, models }) => {
             if (cookies.userSession) {
                 return models.Contributor.findByPk(cookies.userSession)
             }
@@ -85,7 +85,7 @@ module.exports = {
         getContributors: (root, args, { models }) => {
             return models.Contributor.findAll()
         },
-        getContributorGithubOrganizations: async (root, { id }, { models, cookies }) => {
+        getContributorGithubOrganizations: async (root, { id }, { cookies, models }) => {
             const contributorAccessToken = (
                 await models.Contributor.findByPk(
                     cookies.userSession

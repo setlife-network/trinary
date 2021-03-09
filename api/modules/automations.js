@@ -13,20 +13,20 @@ const automations = module.exports = (() => {
         const githubUserOrganizations = await github.fetchUserOrganizations({
             auth_key: params.auth_key
         })
-        const userOganizations = []
-        userOganizations.push({
+        const userOrganizations = []
+        userOrganizations.push({
             id: githubContributorUser.id,
             avatar: githubContributorUser.avatar_url,
             name: githubContributorUser.login
         })
         githubUserOrganizations.map(o => {
-            userOganizations.push({
+            userOrganizations.push({
                 id: o.id,
                 avatar: o.avatar_url,
                 name: o.login
             })
         })
-        return userOganizations
+        return userOrganizations
     }
 
     const getOrganizationRepos = async (params) => {
