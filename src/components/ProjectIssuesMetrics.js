@@ -52,7 +52,6 @@ const ProjectIssuesMetrics = (props) => {
                                 <ArrowForwardIcon/>
                             </Typography>
                         </Grid>
-
                     </Grid>
                 </a>
             </Box>

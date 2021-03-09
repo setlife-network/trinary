@@ -49,7 +49,7 @@ console.log('github');
 //     })
 
 const issues = github.fetchRepoIssues({
-    auth_key: '5d43fb2bb7be3c47e53c48756d2fd8055b51a121',
+    auth_key: '',
     repo: 'project-trinary',
     owner: 'setlife-network'
 })

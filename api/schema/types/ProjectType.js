@@ -34,6 +34,16 @@ module.exports = gql`
             toDate:String,
             githubPersonalKey: String
         ): Int
+        githubPullRequestsClosed(
+            fromDate: String,
+            toDate: String,
+            contributorId: Int
+        ): Int
+        githubPullRequestsOpened(
+            fromDate: String,
+            toDate: String,
+            contributorId: Int
+        ): Int
         timeEntries(
             fromDate: String
             toDate: String
