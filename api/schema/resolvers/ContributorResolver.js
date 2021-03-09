@@ -93,7 +93,7 @@ module.exports = {
                         : id
                 )
             )
-            const contributorOrganizations = await apiModules.repoSearcher.getOrganizationRepos({
+            const contributorOrganizations = await apiModules.automations.getOrganizationRepos({
                 auth_key: contributorAccessToken.github_access_token
             })
             return contributorOrganizations

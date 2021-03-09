@@ -1,7 +1,7 @@
 const github = require('../handlers/github')
 const { GITHUB } = require('../config/credentials')
 
-const repoSearcher = module.exports = (() => {
+const automations = module.exports = (() => {
 
     const getUserOrganizations = async (params) => {
         //user organizations are the organizations that the contributor is added as a internal collaborator
