@@ -23,6 +23,7 @@ const ProjectIssuesMetrics = (props) => {
             align='left'
             borderRadius='borderRadius'
             p={3}
+            boxShadow={3}
         >
 
             <Grid container>
