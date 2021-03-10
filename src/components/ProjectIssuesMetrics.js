@@ -27,7 +27,7 @@ const ProjectIssuesMetrics = (props) => {
         >
             <Grid container>
                 <Grid item xs={12} sm={6}>
-                    <Box my={2}>
+                    <Box mb={2}>
                         <Typography color='primary' variant='h5'>
                             <strong>
                                 {`Issues`}
@@ -43,7 +43,7 @@ const ProjectIssuesMetrics = (props) => {
                     </Box>
                 </Grid>
                 <Grid item sm={6}>
-                    <Box my={2}>
+                    <Box mb={2}>
                         <Typography color='primary' variant='h5'>
                             <strong>
                                 {`Pull Requests`}

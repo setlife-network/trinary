@@ -85,7 +85,7 @@ const ProjectIssues = (props) => {
 
     return (
         <Grid container className='ProjectIssues'>
-            <h1>Issues</h1>
+            <h1>{`Issues`}</h1>
             <Grid item xs={12}>
                 <ProjectIssuesMetrics
                     githubURL={project.github_url}
@@ -95,7 +95,7 @@ const ProjectIssues = (props) => {
                     closedPullRequests={project.githubPullRequestsClosed}
                 />
             </Grid>
-            <Grid item xs={4} align='left'>
+            <Grid item xs={6} sm={4} align='left'>
                 <Box mt={3}>
                     <Button
                         variant='outlined'

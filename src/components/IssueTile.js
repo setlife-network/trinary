@@ -18,7 +18,8 @@ const IssueTile = (props) => {
             borderRadius='borderRadius'
             border={1}
             borderColor='secondary.light'
-            p={3}
+            px={3}
+            py={1}
             my={3}
         >
             <Grid container>
@@ -32,12 +33,9 @@ const IssueTile = (props) => {
                         <Typography variant='h6' noWrap>
                             {issue.name}
                         </Typography>
-                        <Typography color='secondary'>
-                            {`Issue # ${issue.github_number}`}
-                        </Typography>
                     </Box>
                 </Grid>
-                <Grid item lg={2}>
+                <Grid item xs={4} lg={2}>
                     <Box
                         bgcolor={`${issueIsOpen ? 'primary.main' : 'primary.light_blue'}`}
                         borderRadius='borderRadius'
@@ -50,6 +48,20 @@ const IssueTile = (props) => {
                         </Typography>
                     </Box>
                 </Grid>
+                <Grid xs={12}/>
+                <Grid item xs={6} mt={1} align='left'>
+                    <Typography color='secondary'>
+                        {`Issue # ${issue.github_number}`}
+                    </Typography>
+                </Grid>
+                <Grid item xs={6} mt={1} align='right'>
+                    <Box>
+                        <Typography color='secondary'>
+                            {`${moment(issue.date_opened, ['x']).format('MM/DD/YYYY')}`}
+                        </Typography>
+                    </Box>
+                </Grid>
+
                 <Grid item xs={12} align='left'/>
                 <Grid item xs={6}>
                     <Box mt={2}>
@@ -71,13 +83,6 @@ const IssueTile = (props) => {
                                 </Grid>
                             </Grid>
                         </a>
-                    </Box>
-                </Grid>
-                <Grid item xs={6} align='right'>
-                    <Box mt={2}>
-                        <Typography color='secondary'>
-                            {`${moment(issue.date_opened, ['x']).format('MM/DD/YYYY')}`}
-                        </Typography>
                     </Box>
                 </Grid>
             </Grid>
