@@ -58,6 +58,7 @@ const ProjectIssues = (props) => {
         }
     })
     const sortedIssues = orderBy(last30DayIssues, ['date_closed'], ['desc'])
+    const openPullRequests = project.githubPullRequestsOpened - project.githubPullRequestsClosed
 
     return (
         <Grid container className='ProjectIssues'>
@@ -67,6 +68,8 @@ const ProjectIssues = (props) => {
                     githubURL={project.github_url}
                     openedIssues={project.githubIssuesOpened}
                     closedIssues={project.githubIssuesClosed}
+                    openPullRequests={openPullRequests}
+                    closedPullRequests={project.githubPullRequestsClosed}
                 />
             </Grid>
             <Grid item xs={12}>
