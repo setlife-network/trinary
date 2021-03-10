@@ -57,11 +57,21 @@ const dataSyncs = module.exports = (() => {
     const syncGithubIssues = async (params) => {
         const newIssues = []
         const repoInformation = split(params.github_url, '/')
-        const issues = await github.fetchRepoIssues({
-            auth_key: params.auth_key,
-            owner: repoInformation[repoInformation.length - 2],
-            repo: repoInformation[repoInformation.length - 1]
-        })
+        const issues = []
+        try {
+            const githubIssues = await github.fetchRepoIssues({
+                auth_key: params.auth_key,
+                owner: repoInformation[repoInformation.length - 2],
+                repo: repoInformation[repoInformation.length - 1]
+            })
+            githubIssues.map(i => {
+                if (!i.pull_request) {
+                    issues.push(i)
+                }
+            })
+        } catch (error) {
+            console.log('error: ' + error);
+        }
         await Promise.all(
             issues.map(async i => {
                 const matchingIssue = await findIssueByGithubUrl(i.html_url)
