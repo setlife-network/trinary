@@ -25,7 +25,6 @@ const ProjectIssuesMetrics = (props) => {
             p={3}
             boxShadow={3}
         >
-
             <Grid container>
                 <Grid item xs={12} sm={6}>
                     <Box my={2}>
@@ -60,7 +59,6 @@ const ProjectIssuesMetrics = (props) => {
                     </Box>
                 </Grid>
             </Grid>
-
             <Box mt={2}>
                 <a
                     href={`${githubURL}/issues`}
@@ -74,7 +72,6 @@ const ProjectIssuesMetrics = (props) => {
                                     Go to issues on Github
                                 </strong>
                             </Typography>
-
                         </Grid>
                         <Grid item>
                             <Typography color='primary'>

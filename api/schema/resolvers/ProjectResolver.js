@@ -581,12 +581,17 @@ module.exports = {
                 contributors: projectContributors
             })
         },
-        syncProjectIssues: async (root, args, { models }) => {
+        syncProjectIssues: async (root, args, { cookies, models }) => {
             const project = await models.Project.findByPk(args.project_id)
+            const contributor = await models.Contributor.findByPk(
+                cookies.userSession
+                    ? cookies.userSession
+                    : args.contributor_id
+            )
             const syncedIssues = await apiModules.dataSyncs.syncGithubIssues({
                 project_id: args.project_id,
                 github_url: project.github_url,
-                auth_key: args.github_personal_key
+                auth_key: contributor.github_access_token
             })
             await models.Project.update({
                 date_last_synced: moment.utc()

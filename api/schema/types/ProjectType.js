@@ -125,7 +125,7 @@ module.exports = gql`
         ): [Contributor]
         syncProjectIssues(
             project_id: Int!,
-            github_personal_key: String
+            contributor_id: Int
         ): [Issue]
         syncTogglProject(
             project_id: Int!

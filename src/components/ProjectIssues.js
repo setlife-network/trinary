@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import {
     Box,
+    Button,
     Grid
 } from '@material-ui/core'
 import moment from 'moment'
@@ -13,6 +14,7 @@ import LoadingProgress from './LoadingProgress'
 import ProjectIssuesMetrics from './ProjectIssuesMetrics'
 
 import { GET_PROJECT_ISSUES } from '../operations/queries/ProjectQueries'
+import { SYNC_GITHUB_ISSUES } from '../operations/mutations/ProjectMutations'
 import { pageName } from '../reactivities/variables'
 
 const ProjectIssues = (props) => {
@@ -29,6 +31,27 @@ const ProjectIssues = (props) => {
         variables: {
             id: Number(projectId)
         }
+    })
+
+    const [
+        getIssues,
+        {
+            data: dataIssues,
+            loading: loadingIssues,
+            error: errorIssues
+        }
+    ] = useMutation(SYNC_GITHUB_ISSUES, {
+        variables: {
+            project_id: Number(projectId)
+        },
+        refetchQueries: [
+            {
+                query: GET_PROJECT_ISSUES,
+                variables: {
+                    id: Number(projectId)
+                }
+            }
+        ]
     })
 
     const renderIssues = (issues) => {
@@ -72,12 +95,25 @@ const ProjectIssues = (props) => {
                     closedPullRequests={project.githubPullRequestsClosed}
                 />
             </Grid>
+            <Grid item xs={4} align='left'>
+                <Box mt={3}>
+                    <Button
+                        variant='outlined'
+                        color='primary'
+                        onClick={() => getIssues()}
+                    >
+                        {`Sync last 30 days issues`}
+                    </Button>
+                </Box>
+            </Grid>
             <Grid item xs={12}>
+                {loadingIssues &&
+                    <LoadingProgress/>
+                }
                 <Grid container>
                     {renderIssues(sortedIssues)}
                 </Grid>
-                <Box my={5}>
-                </Box>
+                <Box my={5}/>
             </Grid>
         </Grid>
     )

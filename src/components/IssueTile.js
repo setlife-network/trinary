@@ -16,7 +16,8 @@ const IssueTile = (props) => {
         <Box
             className='IssueTile'
             borderRadius='borderRadius'
-            boxShadow={3}
+            border={1}
+            borderColor='secondary.light'
             p={3}
             my={3}
         >
@@ -49,9 +50,7 @@ const IssueTile = (props) => {
                         </Typography>
                     </Box>
                 </Grid>
-                <Grid item xs={12} align='left'>
-
-                </Grid>
+                <Grid item xs={12} align='left'/>
                 <Grid item xs={6}>
                     <Box mt={2}>
                         <a
