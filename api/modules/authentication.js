@@ -1,6 +1,6 @@
 const { split } = require('lodash')
 
-const { fetchAuthUserData } = require('../handlers/github')
+const { fetchAuthUserData, fetchUserPermission } = require('../handlers/github')
 const db = require('../models')
 
 const authentication = module.exports = (() => {
