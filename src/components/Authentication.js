@@ -19,9 +19,9 @@ const Authentication = () => {
             }
         }
     }, [data])
-  
+
     if (loading) return <LoadingProgress/>
-      
+
     if (error) return `Error! ${error.message}`
     return (
         <>

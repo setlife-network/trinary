@@ -1,15 +1,12 @@
-const { findIndex } = require('lodash')
+const { findIndex, split } = require('lodash')
 
-import { GITHUB_PERMISSIONS } from '../config/constants'
+const db = require('../models')
+const { GITHUB_PERMISSIONS } = require('../config/constants')
+const { fetchUserPermission } = require('../handlers/github')
 
-module.exports(() => {
+module.exports = (() => {
 
     const createPermission = async ({ contributor, githubPermission, project }) => {
-        // const permission = GITHUB_PERMISSIONS.map(p => {
-        //     if (githubPermission == p.github_permission_level) {
-        //         return p.project_permission_level
-        //     }
-        // })
         const permissionIndex = findIndex(GITHUB_PERMISSIONS, ['github_permission_level', githubPermission])
         const permission = GITHUB_PERMISSIONS[permissionIndex].project_permission_level
         return db.models.Permission.create({
@@ -22,47 +19,45 @@ module.exports(() => {
     const handleContributorPermission = async ({ contributor, githubContributor, project }) => {
         const repoInfo = split(project.github_url, '/')
         const contributorInfo = split(contributor.github_handle, '/')
-        const githubContributorPermission = await fetchUserPermission({
-            auth_key: contributor.github_access_token,
-            owner: repo[repo.length - 2],
-            repo: repo[repo.length - 1],
-            username: contributorInfo[contributorInfo.lenth - 1]
-        })
-        const contributorPermission = await db.models.Permission.findOne({
-            where: {
-                project_id: project.id,
-                contributor_id: contributor.id
-            }
-        })
-        //could happen three things:
-        //1. the first contributor login so it doesent have permissions
-        //2. the contributor has the permission but is outdated
-        //3. the contributor has the correct permission stored on the db
-        if (!contributorPermission) {
-            createPermission({
-                contributor: contributor,
-                permission: githubContributorPermission,
-                project: project
+        try {
+            const githubContributorPermission = await fetchUserPermission({
+                auth_key: githubContributor.accessToken,
+                owner: repoInfo[repoInfo.length - 2],
+                repo: repoInfo[repoInfo.length - 1],
+                username: contributorInfo[contributorInfo.length - 1]
             })
-        } else if (contributorPermission) {
-            //check if it's correct or needs to be updated
-
-            // GITHUB_PERMISSIONS.map(p => {
-            //     if (githubContributorPermission == p.github_permission_level) {
-            //         return p.project_permission_level
-            //     }
-            // })
-
-            const githubPermissionIndex = findIndex(GITHUB_PERMISSIONS, ['github_permission_level', githubContributorPermission])
-            if ((GITHUB_PERMISSIONS[githubPermissionIndex].project_permission_level).toUpperCase() != contributorPermission.toUpperCase()) {
-                //the permission level needs to be updated
-                await updatePermission({
-                    contributorId: contributor.id,
-                    projectId: project.id,
-                    permission: (GITHUB_PERMISSIONS[githubPermissionIndex].project_permission_level).toLowerCase()
+            const contributorPermission = await db.models.Permission.findOne({
+                where: {
+                    project_id: project.id,
+                    contributor_id: contributor.id
+                },
+                raw: true
+            })
+            //could happen three things:
+            //1. the first contributor login so it doesent have permissions
+            //2. the contributor has the permission but is outdated
+            //3. the contributor has the correct permission stored on the db
+            if (!contributorPermission && githubContributorPermission) {
+                await createPermission({
+                    contributor: contributor,
+                    githubPermission: githubContributorPermission,
+                    project: project
                 })
+            } else if (contributorPermission) {
+                //check if it's correct or needs to be updated
+                const githubPermissionIndex = findIndex(GITHUB_PERMISSIONS, ['github_permission_level', githubContributorPermission])
+                if ((GITHUB_PERMISSIONS[githubPermissionIndex].project_permission_level).toUpperCase() != contributorPermission.type.toUpperCase()) {
+                    //the permission level needs to be updated
+                    await updatePermission({
+                        contributorId: contributor.id,
+                        projectId: project.id,
+                        permission: (GITHUB_PERMISSIONS[githubPermissionIndex].project_permission_level).toLowerCase()
+                    })
+                }
+                //at this point the permission had been created, updated or correct
             }
-            //at this point the permission had been created, updated or correct
+        } catch (error) {
+            console.log(`Error: ${error}`);
         }
     }
 

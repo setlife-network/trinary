@@ -88,6 +88,14 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
             }
             //store contributor id in the cookie session
             req.session.userSession = contributorInfo.contributor.id
+            return contributorInfo
+        })
+        .then((contributorInfo) => {
+            //sync the permissions for the contributor
+            apiModules.authentication.giveProjectPermissions({
+                contributor: contributorInfo.contributor.dataValues,
+                githubContributor: contributorInfo.githubContributor
+            })
         })
         .then(() => {
             res.redirect(SITE_ROOT)
