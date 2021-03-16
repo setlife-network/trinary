@@ -31,7 +31,7 @@ const PaymentEditDialog = (props) => {
     const {
         payment,
         onClose,
-        open
+        onOpen
     } = props
 
     const currencyInformation = selectCurrencyInformation({
@@ -108,13 +108,13 @@ const PaymentEditDialog = (props) => {
         handlePaymentAmountChange(payment.amount)
         setDateIncurred(moment(payment.date_incurred, 'x').format('YYYY-MM-DD'))
         setDatePaid(moment(payment.date_paid, 'x').format('YYYY-MM-DD'))
-    }, [open])
+    }, [onOpen])
 
     return (
         <Dialog
             className='PaymentEditDialog'
             onClose={onClose}
-            open={open}
+            open={onOpen}
         >
             <Box mx={5} my={3}>
                 <DialogTitle>

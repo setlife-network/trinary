@@ -266,14 +266,14 @@ const PaymentTile = (props) => {
             }
             <PaymentEditDialog
                 payment={payment}
-                open={openEditPayment}
+                onOpen={openEditPayment}
                 onClose={() => handleEditPayment(false)}
             />
             {selectedAllocation &&
                 <AllocationOverview
                     allocationInfo={selectedAllocation}
                     onClose={() => handleAllocationClicked(false)}
-                    open={openAllocationOverview}
+                    onOpen={openAllocationOverview}
                 />
             }
             <DeletePayment

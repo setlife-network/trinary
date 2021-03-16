@@ -1,17 +1,17 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
 import LoadingProgress from './LoadingProgress'
 import { GET_ACTIVE_CLIENTS_COUNT } from '../operations/queries/ClientQueries'
 
-const ClientListManager = ({
-    history
-}) => {
+const ClientListManager = (props) => {
+    const history = useHistory()
 
     const addClient = () => {
         history.push('/client/add')

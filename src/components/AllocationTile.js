@@ -111,7 +111,7 @@ const AllocationTile = (props) => {
             <AllocationOverview
                 allocationInfo={allocation}
                 onClose={() => setOpenAllocationOverview(false)}
-                open={openAllocationOverview}
+                onOpen={openAllocationOverview}
             />
         </Box>
 
