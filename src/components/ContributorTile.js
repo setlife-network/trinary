@@ -250,7 +250,7 @@ const ContributorTile = (props) => {
                 <AllocationOverview
                     allocationInfo={selectedAllocation}
                     onClose={() => handleAllocationOverview({ value: false })}
-                    open={openAllocationOverview}
+                    onOpen={openAllocationOverview}
                 />
             }
         </Box>
