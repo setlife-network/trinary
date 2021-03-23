@@ -33,6 +33,12 @@ git push -u origin your-branch
 
 - Create a pull request from `your-branch` to `develop` and be sure to include either a video recording/screenshot with proof that the issue is resolved (preferred) OR clear instructions on how to test successfully and wait for a code review. If any changes are required after review, pushing to the same branch again will automatically update the pull request
 
+#### Git Flow
+
+We use a custom flavor of Git Flow for our branching strategy that is summarized in the video below:
+
+https://www.loom.com/share/f93dfcd1bb62451fa8cfdd7b7afa6caf
+
 
 ### Code Quality Principles
 
