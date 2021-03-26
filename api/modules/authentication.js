@@ -1,9 +1,21 @@
 const { split } = require('lodash')
 
-const { fetchAuthUserData } = require('../handlers/github')
+const { fetchAuthUserData, fetchUserPermission } = require('../handlers/github')
+const { handleContributorPermission } = require('../scripts/githubPermissions')
 const db = require('../models')
 
 const authentication = module.exports = (() => {
+
+    const createContributor = async (githubContributor) => {
+        const githubContributorInfo = split(githubContributor.githubUrl, '/')
+        const githubContributorUsername = githubContributorInfo[githubContributorInfo.length - 1]
+        return db.models.Contributor.create({
+            name: githubContributor.name ? githubContributor.name : githubContributorUsername,
+            github_id: githubContributor.id,
+            github_handle: githubContributor.githubUrl,
+            github_access_token: githubContributor.accessToken
+        })
+    }
 
     const getContributor = async ({ githubAccessToken }) => {
         const githubContributor = await fetchAuthUserData({ auth_key: githubAccessToken })
@@ -18,14 +30,16 @@ const authentication = module.exports = (() => {
         }
     }
 
-    const createContributor = async (githubContributor) => {
-        const githubContributorInfo = split(githubContributor.githubUrl, '/')
-        const githubContributorUsername = githubContributorInfo[githubContributorInfo.length - 1]
-        return db.models.Contributor.create({
-            name: githubContributor.name ? githubContributor.name : githubContributorUsername,
-            github_id: githubContributor.id,
-            github_handle: githubContributor.githubUrl,
-            github_access_token: githubContributor.accessToken
+    const grantProjectPermissions = async ({ contributor, githubContributor }) => {
+        const projects = await db.models.Project.findAll({
+            raw: true
+        })
+        projects.map(async p => {
+            await handleContributorPermission({
+                contributor: contributor,
+                githubContributor: githubContributor,
+                project: p,
+            })
         })
     }
 
@@ -42,6 +56,7 @@ const authentication = module.exports = (() => {
     return {
         createContributor,
         getContributor,
+        grantProjectPermissions,
         updateGithubAccessTokenContributor
     }
 
