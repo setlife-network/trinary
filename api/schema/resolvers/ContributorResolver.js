@@ -85,12 +85,12 @@ module.exports = {
         getContributors: (root, args, { models }) => {
             return models.Contributor.findAll()
         },
-        getContributorGithubOrganizations: async (root, { id }, { cookies, models }) => {
+        getGithubOrganizations: async (root, { contributorId }, { cookies, models }) => {
             const contributor = (
                 await models.Contributor.findByPk(
                     cookies.userSession
                         ? cookies.userSession
-                        : id
+                        : contributorId
                 )
             )
             const contributorOrganizations = await apiModules.automations.getOrganizationRepos({

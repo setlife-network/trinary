@@ -62,7 +62,7 @@ module.exports = gql`
         checkSession: Contributor
         getContributorById(id: Int!): Contributor
         getContributors: [Contributor]
-        getContributorGithubOrganizations(id: Int): [ContributorOrganizations]
+        getGithubOrganizations(contributorId: Int): [ContributorOrganizations]
     }
 
     type Mutation {

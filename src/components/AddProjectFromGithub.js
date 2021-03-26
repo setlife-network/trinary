@@ -82,9 +82,9 @@ const AddProjectFromGithub = (props) => {
     if (loadingOrganizationProjects) return <LoadingProgress/>
     if (errorOrganizationProjects) return `An error ocurred ${errorOrganizationProjects}`
 
-    const { getContributorGithubOrganizations } = dataOrganizationProjects
+    const { getGithubOrganizations } = dataOrganizationProjects
 
-    const organizations = [{ repos: [] }, ...getContributorGithubOrganizations]
+    const organizations = [{ repos: [] }, ...getGithubOrganizations]
 
     return (
         <Grid
