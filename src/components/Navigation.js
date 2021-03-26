@@ -29,23 +29,21 @@ const Navigation = (props) => {
             <AppBar className='Navigation' position='sticky' color='white'>
                 <Grid container>
                     <Grid item xs={2} sm={3}>
-                        <Box mt={2} align='center'>
-                            {
-                                props.width == 'xs'
-                                    ? (
-                                        <img
-                                            src={SMALL_LOGO_URL}
-                                            alt='Logo'
-                                            className='icon-image'
-                                        />
-                                    )
-                                    : (
-                                        <img
-                                            src={LOGO_URL}
-                                            alt='Logo'
-                                            className='icon-image'
-                                        />
-                                    )
+                        <Box mt={2} align='center' onClick={() => redirectToHome()}>
+                            {props.width == 'xs'
+                                ? (
+                                    <img
+                                        src={SMALL_LOGO_URL}
+                                        alt='Logo'
+                                        className='icon-image'
+                                    />
+                                ) : (
+                                    <img
+                                        src={LOGO_URL}
+                                        alt='Logo'
+                                        className='icon-image'
+                                    />
+                                )
                             }
                         </Box>
                     </Grid>
@@ -59,7 +57,6 @@ const Navigation = (props) => {
                         </h2>
                     </Grid>
                 </Grid>
-
             </AppBar>
         </Box>
 

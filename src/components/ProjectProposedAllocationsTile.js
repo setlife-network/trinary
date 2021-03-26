@@ -142,7 +142,7 @@ const ProjectProposedAllocationsTile = (props) => {
                 <AllocationOverview
                     allocationInfo={selectedAllocation}
                     onClose={() => handleAllocationClicked(false)}
-                    open={openAllocationOverview}
+                    onOpen={openAllocationOverview}
                 />
             }
         </Box>

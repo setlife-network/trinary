@@ -1,7 +1,9 @@
 import React from 'react'
-import Box from '@material-ui/core/Box'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
+import {
+    Box,
+    Grid,
+    Typography
+} from '@material-ui/core'
 
 import AddProjectForm from '../components/AddProjectForm'
 
@@ -17,17 +19,16 @@ class AddProjectPage extends React.Component {
                 className='AddProjectPage'
             >
                 <Grid item align='center' xs={8}>
-                    <Typography align='left'>
+                    <Typography align='left' variant={'h5'} color='primary'>
                         <strong>
                             {`Enter info below to create a project`}
                         </strong>
                     </Typography>
                 </Grid>
                 <Grid item xs={8}>
-                    <Box item mt={5}>
+                    <Box mt={3} mb={5}>
                         <AddProjectForm
                             clientId={clientId}
-                            history={this.props.history}
                         />
                     </Box>
                 </Grid>

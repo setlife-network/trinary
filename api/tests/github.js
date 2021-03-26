@@ -3,11 +3,11 @@ const github = require('../handlers/github')
 
 console.log('github');
 
-// const userData = github.fetchAuthUserData({ auth_key: '' })
-//     .then(res => {
-//         console.log('res');
-//         console.log(res);
-//     })
+const userData = github.fetchAuthUserData({ auth_key: '' })
+    .then(res => {
+        console.log('res');
+        console.log(res);
+    })
 
 // const fetchRepos = github.fetchRepos({ auth_key: '' })
 //     .then(res => {
@@ -76,4 +76,21 @@ const issues = github.fetchRepoIssues({
 //     .catch(err => {
 //         console.log('err');
 //         console.log(err);
+//     })
+//
+// const userOrganizations = github.fetchUserOrganizations({
+//     auth_key: '',
+// })
+//     .then(res => {
+//         console.log('res');
+//         console.log(res);
+//     })
+//
+// const organizationRepos = github.fetchOrganizationRepos({
+//     auth_key: '',
+//     organization: 'setlife-network'
+// })
+//     .then(res => {
+//         console.log('res');
+//         console.log(res);
 //     })

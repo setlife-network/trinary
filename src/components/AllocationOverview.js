@@ -29,7 +29,7 @@ const AllocationOverview = (props) => {
     const {
         allocationInfo,
         onClose,
-        open
+        onOpen
     } = props
 
     const [clientPayments, setClientPayments] = useState(null)
@@ -53,37 +53,41 @@ const AllocationOverview = (props) => {
         }
     })
 
-    const [getClientPayments, {
-        data: dataClientPayments,
-        loading: loadingClientPayments,
-        error: errorClientPayments
-    }] = useLazyQuery(GET_CLIENT_PAYMENTS, {
+    const [
+        getClientPayments, {
+            data: dataClientPayments,
+            loading: loadingClientPayments,
+            error: errorClientPayments
+        }] = useLazyQuery(GET_CLIENT_PAYMENTS, {
         onCompleted: dataClientPayments => {
             setClientPayments(dataClientPayments.getClientById)
         }
     })
 
-    const [getContributorRates, {
-        data: dataContributorRates,
-        loading: loadingContributorRates,
-        error: errorContributorRates
-    }] = useLazyQuery(GET_CONTRIBUTOR_RATES, {
+    const [
+        getContributorRates, {
+            data: dataContributorRates,
+            loading: loadingContributorRates,
+            error: errorContributorRates
+        }] = useLazyQuery(GET_CONTRIBUTOR_RATES, {
         onCompleted: dataContributorRates => {
             setContributorRates(dataContributorRates.getContributorById)
         }
     })
 
-    const [createRate, {
-        dataNewRate,
-        loadingNewRate,
-        errorNewRate
-    }] = useMutation(CREATE_RATE)
+    const [
+        createRate, {
+            dataNewRate,
+            loadingNewRate,
+            errorNewRate
+        }] = useMutation(CREATE_RATE)
 
-    const [deleteAllocation, {
-        dataDeletedPayment,
-        loadingDeletedPayment,
-        errorDeletedPayment
-    }] = useMutation(DELETE_ALLOCATION, {
+    const [
+        deleteAllocation, {
+            dataDeletedPayment,
+            loadingDeletedPayment,
+            errorDeletedPayment
+        }] = useMutation(DELETE_ALLOCATION, {
         variables: {
             id: allocationInfo.id
         },
@@ -101,11 +105,12 @@ const AllocationOverview = (props) => {
         }]
     })
 
-    const [updateAllocation, {
-        dataUpdatedAllocation,
-        loadingUpdatedAllocation,
-        errorUpdatedAllocation
-    }] = useMutation(UPDATE_ALLOCATION, {
+    const [
+        updateAllocation, {
+            dataUpdatedAllocation,
+            loadingUpdatedAllocation,
+            errorUpdatedAllocation
+        }] = useMutation(UPDATE_ALLOCATION, {
         refetchQueries: [{
             query: GET_CONTRIBUTOR_ALLOCATIONS,
             variables: {
@@ -156,10 +161,10 @@ const AllocationOverview = (props) => {
         const existingRate = findKey(
             contributorRates,
             {
-                'hourly_rate': rate.hourly_rate.toString(),
-                'total_expected_hours': Number(rate.total_expected_hours),
-                'type': rate.type,
-                'currency': selectedCurrency
+                hourly_rate: rate.hourly_rate.toString(),
+                total_expected_hours: Number(rate.total_expected_hours),
+                type: rate.type,
+                currency: selectedCurrency
             }
         )
         if (existingRate) {
@@ -220,7 +225,7 @@ const AllocationOverview = (props) => {
         <Dialog
             className='AllocationOverview'
             onClose={() => handleClose()}
-            open={open}
+            open={onOpen}
         >
             <DialogTitle>
                 {`Allocation Detail`}
