@@ -57,14 +57,24 @@ const dataSyncs = module.exports = (() => {
     const syncGithubIssues = async (params) => {
         const newIssues = []
         const repoInformation = split(params.github_url, '/')
-        const issues = await github.fetchRepoIssues({
-            auth_key: params.auth_key,
-            owner: repoInformation[repoInformation.length - 2],
-            repo: repoInformation[repoInformation.length - 1]
-        })
+        const issues = []
+        try {
+            const githubIssues = await github.fetchRepoIssues({
+                auth_key: params.auth_key,
+                owner: repoInformation[repoInformation.length - 2],
+                repo: repoInformation[repoInformation.length - 1]
+            })
+            githubIssues.map(i => {
+                if (!i.pull_request) {
+                    issues.push(i)
+                }
+            })
+        } catch (error) {
+            console.log('error: ' + error);
+        }
         await Promise.all(
             issues.map(async i => {
-                const matchingIssue = await findIssueByGithubUrl(i.url)
+                const matchingIssue = await findIssueByGithubUrl(i.html_url)
                 if (!matchingIssue) {
                     await db.models.Issue.create({
                         github_url: i.html_url,
@@ -153,6 +163,26 @@ const dataSyncs = module.exports = (() => {
         return syncedPermissions
     }
 
+    const syncPullRequests = async (params) => {
+        const pullRequests = []
+        const repoInformation = split(params.github_url, '/')
+        try {
+            const issues = await github.fetchRepoIssues({
+                auth_key: params.auth_key,
+                owner: repoInformation[repoInformation.length - 2],
+                repo: repoInformation[repoInformation.length - 1]
+            })
+            issues.map(i => {
+                if (i.pull_request) {
+                    pullRequests.push(i)
+                }
+            })
+        } catch (error) {
+            console.log('error: ' + error);
+        }
+        return pullRequests
+    }
+
     const syncTogglProject = async (params) => {
         try {
             const timeEntries = await toggl.fetchWorkspaceTimeEntries({
@@ -166,7 +196,7 @@ const dataSyncs = module.exports = (() => {
                 project_id: params.project_id
             })
         } catch (error) {
-            console.log('error: ' + error);
+            console.log('error: ' + error)
             return
         }
         return true
@@ -177,6 +207,7 @@ const dataSyncs = module.exports = (() => {
         syncGithubIssues,
         syncInvoicelyCSV,
         syncProjectCollaboratorsPermission,
+        syncPullRequests,
         syncTogglProject
     }
 })()
