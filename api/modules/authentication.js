@@ -30,7 +30,7 @@ const authentication = module.exports = (() => {
         }
     }
 
-    const giveProjectPermissions = async ({ contributor, githubContributor }) => {
+    const grantProjectPermissions = async ({ contributor, githubContributor }) => {
         const projects = await db.models.Project.findAll({
             raw: true
         })
@@ -56,7 +56,7 @@ const authentication = module.exports = (() => {
     return {
         createContributor,
         getContributor,
-        giveProjectPermissions,
+        grantProjectPermissions,
         updateGithubAccessTokenContributor
     }
 
