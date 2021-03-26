@@ -3,11 +3,11 @@ const github = require('../handlers/github')
 
 console.log('github');
 
-// const userData = github.fetchAuthUserData({ auth_key: '' })
-//     .then(res => {
-//         console.log('res');
-//         console.log(res);
-//     })
+const userData = github.fetchAuthUserData({ auth_key: '' })
+    .then(res => {
+        console.log('res');
+        console.log(res);
+    })
 
 // const fetchRepos = github.fetchRepos({ auth_key: '' })
 //     .then(res => {
@@ -48,20 +48,21 @@ console.log('github');
 //         console.log(err);
 //     })
 
-// const issues = github.fetchRepoIssues({
-//     auth_key: '',
-//     repo: 'project-trinary',
-//     owner: 'setlife-network'
-// })
-//     .then(res => {
-//         console.log('res');
-//         console.log(res);
-//         return res
-//     })
-//     .catch(err => {
-//         console.log('err');
-//         console.log(err);
-//     })
+
+const issues = github.fetchRepoIssues({
+    auth_key: '',
+    repo: 'project-trinary',
+    owner: 'setlife-network'
+})
+    .then(res => {
+        console.log('res');
+        console.log(res);
+        return res
+    })
+    .catch(err => {
+        console.log('err');
+        console.log(err);
+    })
 
 const userPermission = github.fetchUserPermission({
     auth_key: '',
@@ -77,3 +78,20 @@ const userPermission = github.fetchUserPermission({
         console.log('err');
         console.log(err);
     })
+
+// const userOrganizations = github.fetchUserOrganizations({
+//     auth_key: '',
+// })
+//     .then(res => {
+//         console.log('res');
+//         console.log(res);
+//     })
+//
+// const organizationRepos = github.fetchOrganizationRepos({
+//     auth_key: '',
+//     organization: 'setlife-network'
+// })
+//     .then(res => {
+//         console.log('res');
+//         console.log(res);
+//     })

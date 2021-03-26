@@ -26,9 +26,11 @@ const github = module.exports = (() => {
         })
         const res = await octokit.users.getAuthenticated({})
         if (res.status == 200) {
-            const { html_url, id, name, email } = res.data
+            const { avatar_url, email, html_url, id, login, name } = res.data
             return {
                 id,
+                avatar_url,
+                login,
                 name,
                 email,
                 githubUrl: html_url
@@ -38,23 +40,30 @@ const github = module.exports = (() => {
         }
     }
 
-    const fetchRepos = (params) => {
-        return new Promise((resolve, reject) => {
-            const octokit = new Octokit({
-                auth: params.auth_key
-            });
-            octokit.repos.listForAuthenticatedUser()
-                .then(result => {
-                    if (result.status == 200) {
-                        resolve(result)
-                    } else {
-                        throw (result.status)
-                    }
-                })
-                .catch(error => {
-                    reject(new Error('An error ocurred ' + error))
-                })
+    const fetchOrganizationRepos = async (params) => {
+        const octokit = new Octokit({
+            auth: params.auth_key
         })
+        const res = await octokit.repos.listForOrg({
+            org: params.organization
+        })
+        if (res.status == 200) {
+            return res.data
+        } else {
+            throw new Error('An error occurred' + res)
+        }
+    }
+
+    const fetchRepos = async (params) => {
+        const octokit = new Octokit({
+            auth: params.auth_key
+        })
+        const res = await octokit.repos.listForAuthenticatedUser()
+        if (res.status == 200) {
+            return res.data
+        } else {
+            throw new Error('An error occurred' + res)
+        }
     }
 
     const fetchRepoContributors = async (params) => {
@@ -81,14 +90,9 @@ const github = module.exports = (() => {
         })
     }
 
-    const fetchRepoIssues = async (params) => {
+    const fetchRepoIssues = (params) => {
         const octokit = new Octokit({
             auth: params.auth_key
-        })
-        const res = octokit.paginate(octokit.issues.listForRepo, {
-            owner: params.owner,
-            repo: params.repo,
-            state: 'all'
         })
         return octokit.paginate(octokit.issues.listForRepo, {
             owner: params.owner,
@@ -127,14 +131,28 @@ const github = module.exports = (() => {
         }
     }
 
+    const fetchUserOrganizations = async (params) => {
+        const octokit = await new Octokit({
+            auth: params.auth_key,
+        })
+        const res = await octokit.orgs.listForAuthenticatedUser()
+        if (res.status == 200) {
+            return res.data
+        } else {
+            throw new Error('An error occurred' + res)
+        }
+    }
+
     return {
         fetchAccessToken,
         fetchAuthUserData,
+        fetchOrganizationRepos,
         fetchRepos,
         fetchRepoContributors,
         fetchRepoInfo,
         fetchRepoIssues,
         fetchUserData,
-        fetchUserPermission
+        fetchUserPermission,
+        fetchUserOrganizations
     }
 })()

@@ -1,0 +1,12 @@
+.AddProjectFromGithub{
+    .organization-avatar {
+        height: $extra-small-icon;
+        width: $extra-small-icon
+    }
+}
+
+@media screen and (min-width: $sm) {
+    .AddProjectFromGithub {
+
+    }
+}

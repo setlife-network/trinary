@@ -2,6 +2,7 @@ const { AuthenticationError } = require('apollo-server')
 const { col, fn } = require('sequelize')
 
 const toggl = require('../../handlers/toggl')
+const apiModules = require('../../modules')
 
 module.exports = {
     Contributor: {
@@ -73,7 +74,7 @@ module.exports = {
         }
     },
     Query: {
-        checkSession: (root, args, { models, cookies }) => {
+        checkSession: (root, args, { cookies, models }) => {
             if (cookies.userSession) {
                 return models.Contributor.findByPk(cookies.userSession)
             }
@@ -83,9 +84,30 @@ module.exports = {
         },
         getContributors: (root, args, { models }) => {
             return models.Contributor.findAll()
+        },
+        getGithubOrganizations: async (root, { contributorId }, { cookies, models }) => {
+            const contributor = (
+                await models.Contributor.findByPk(
+                    cookies.userSession
+                        ? cookies.userSession
+                        : contributorId
+                )
+            )
+            const contributorOrganizations = await apiModules.automations.getOrganizationRepos({
+                auth_key: contributor.github_access_token
+            })
+            return contributorOrganizations
         }
     },
     Mutation: {
+        createContributor: (root, { createFields }, { models }) => {
+            return models.Contributor.create({
+                ...createFields
+            })
+        },
+        deleteContributorById: (root, { id }, { models }) => {
+            return models.Contributor.destroy({ where: { id } })
+        },
         linkTogglContributor: async (root, { contributorId, togglAPIKey }, { models }) => {
             const togglUser = await toggl.fetchUserData({ apiToken: togglAPIKey })
             const contributor = await models.Contributor.update({
@@ -96,14 +118,6 @@ module.exports = {
                 }
             })
             return models.Contributor.findByPk(contributorId)
-        },
-        createContributor: (root, { createFields }, { models }) => {
-            return models.Contributor.create({
-                ...createFields
-            })
-        },
-        deleteContributorById: (root, { id }, { models }) => {
-            return models.Contributor.destroy({ where: { id } })
         },
         updateContributorById: async (root, { id, updateFields }, { models }) => {
             await models.Contributor.update({

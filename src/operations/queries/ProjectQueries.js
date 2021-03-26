@@ -153,6 +153,8 @@ export const GET_PROJECT_ISSUES = gql`
                 fromDate: $issuesFromDate,
                 toDate: $issuesToDate
             )
+            githubPullRequestsOpened
+            githubPullRequestsClosed
         }
     }
 `
