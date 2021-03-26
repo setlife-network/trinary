@@ -92,12 +92,14 @@ const ProjectEditDialog = (props) => {
             project_id: project.id,
             date: projectDate,
             expected_budget: Number(expectedBudget),
-            expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value,
+            expected_budget_timeframe: (
+                budgetTimeframe != null
+                    ? EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
+                    : null
+            ),
             github_url: githubURL,
-            name: projectName
-        }
-        if (togglURL) {
-            projectInfoToEdit['toggl_url'] = togglURL
+            name: projectName,
+            toggl_url: togglURL
         }
         const projectEdited = await updateProject({ variables: projectInfoToEdit })
         if (loading) return <LoadingProgress/>
@@ -115,7 +117,10 @@ const ProjectEditDialog = (props) => {
             githubURL == project.github_url &&
             projectName == project.name &&
             togglURL == project.toggl_url &&
-            EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe || 0].label == project.expected_budget_timeframe &&
+            ((budgetTimeframe != null
+                ? EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].label
+                : null
+            ) == project.expected_budget_timeframe) &&
             projectDate == currentDate
         ) {
             setDisableEdit(true)
@@ -129,10 +134,11 @@ const ProjectEditDialog = (props) => {
     useEffect(() => {
         setProjectDate(currentDate)
         if (project.expected_budget_timeframe) {
-            //set the index of the current expected budget timeframe
-            setBudgetTimeframe(findIndex(EXPECTED_BUDGET_TIMEFRAME_OPTIONS, ['label', `${project.expected_budget_timeframe}`]))
+            setBudgetTimeframe(
+                findIndex(EXPECTED_BUDGET_TIMEFRAME_OPTIONS, ['label', project.expected_budget_timeframe])
+            )
         }
-    }, [])
+    }, [open])
 
     const renderTimeframeOptions = ({ timeframes }) => {
         return timeframes.map((timeframe, i) => {
