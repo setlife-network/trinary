@@ -104,7 +104,7 @@ const AddProjectFromGithub = (props) => {
             <Grid item xs={12} sm={5}>
                 <FormControl fullWidth>
                     <InputLabel>
-                        {`Github organization`}
+                        {`User/Organization`}
                     </InputLabel>
                     <Select
                         fullWidth
@@ -121,7 +121,7 @@ const AddProjectFromGithub = (props) => {
             <Grid item xs={12} sm={5}>
                 <FormControl fullWidth>
                     <InputLabel>
-                        {`Github projects`}
+                        {`Repositories`}
                     </InputLabel>
                     <Select
                         fullWidth
