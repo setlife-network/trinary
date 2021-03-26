@@ -35,9 +35,9 @@ const ProjectIssuesMetrics = (props) => {
                         </Typography>
                         <Typography>
                             <strong>
-                                {`${openedIssues} active ${openedIssues == 1 ? 'issue' : 'issues'}`}
+                                {`${openedIssues} active`}
                                 <br/>
-                                {`${closedIssues} closed ${closedIssues == 1 ? 'issue' : 'issues'}`}
+                                {`${closedIssues} closed`}
                             </strong>
                         </Typography>
                     </Box>
@@ -51,9 +51,9 @@ const ProjectIssuesMetrics = (props) => {
                         </Typography>
                         <Typography>
                             <strong>
-                                {`${openPullRequests} open pull ${openPullRequests == 1 ? 'request' : 'requests'}`}
+                                {`${openPullRequests} open`}
                                 <br/>
-                                {`${closedPullRequests} closed pull ${closedPullRequests == 1 ? 'request' : 'requests'}`}
+                                {`${closedPullRequests} closed`}
                             </strong>
                         </Typography>
                     </Box>
@@ -69,7 +69,7 @@ const ProjectIssuesMetrics = (props) => {
                         <Grid item>
                             <Typography color='primary'>
                                 <strong>
-                                    Go to issues on Github
+                                    {`GitHub`}
                                 </strong>
                             </Typography>
                         </Grid>
