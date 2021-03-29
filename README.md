@@ -64,6 +64,7 @@ If you want to set a local databe follow this steps:
 5. In your `.env` file set the MYSQL variables with your own values.
 
 6. Run the `npm run server` or `npm run server-windows` command and the necessary tables will be created.
+
 ## Troubleshooting
 
 If you are encountering an error that says: "react scripts start is not recognized as an internal or external command," or any related error with dependencies, upon running "npm start" or "npm ui" within terminal, run the following command:
