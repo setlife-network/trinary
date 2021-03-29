@@ -35,14 +35,35 @@ npm run ui
 
 4. Open a new Terminal tab and run the web server
 
+If running on MacOS
 ```
 npm run server
+```
+
+If running on Windows
+```
+npm run server-windows
 ```
 
 5. UI should open in the browser at `localhost:6002`
 
 If using VSCode, be sure to disable the Prettier: Format on Save feature to prevent unwanted changes to the code styles.
 
+## Using a local database 
+
+If you want to set a local databe follow this steps:
+
+1. Download MySQL server (Usually it comes with others features).
+
+2. Configure your environment.
+
+3. Create a connection.
+
+4. Create a schema.
+
+5. In your `.env` file set the MYSQL variables with your own values.
+
+6. Run the `npm run server` or `npm run server-windows` command and the necessary tables will be created.
 ## Troubleshooting
 
 If you are encountering an error that says: "react scripts start is not recognized as an internal or external command," or any related error with dependencies, upon running "npm start" or "npm ui" within terminal, run the following command:
