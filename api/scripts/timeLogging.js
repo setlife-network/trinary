@@ -27,7 +27,7 @@ module.exports = (() => {
                         seconds: t.dur / 1000,
                         toggl_id: t.id,
                         start_time: t.start,
-                        description: t.description,
+                        description: t.description || null,
                         contributor_id: contributor.id,
                         project_id: params.project_id,
                     })

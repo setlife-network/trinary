@@ -23,10 +23,6 @@ module.exports = (sequelize) => {
             allowNull: false,
             unique: true
         },
-        description: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
         start_time: {
             type: DataTypes.DATE,
             allowNull: false
@@ -46,6 +42,9 @@ module.exports = (sequelize) => {
                 model: 'Projects',
                 key: 'id',
             }
+        },
+        description: {
+            type: DataTypes.STRING
         }
     },
     {
