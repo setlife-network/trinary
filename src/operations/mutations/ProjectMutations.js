@@ -18,6 +18,25 @@ export const ADD_PROJECT = gql`
     }
 `
 
+export const SYNC_GITHUB_ISSUES = gql`
+    mutation syncGithubIssues($project_id: Int!) {
+        syncProjectIssues(project_id: $project_id) {
+            id
+        }
+    }
+`
+
+export const SYNC_PROJECT_GITHUB_CONTRIBUTORS = gql`
+    mutation syncProjectGithubContributors($project_id: Int!, $github_personal_key: String){
+        syncProjectGithubContributors(project_id: $project_id, github_personal_key: $github_personal_key) {
+            id
+            name
+            github_id
+            github_handle
+        }
+    }
+ `
+
 export const UPDATE_PROJECT = gql`
     mutation updateProjectById($project_id: Int!, $date: String!, $expected_budget:Int!, $name: String!, $github_url: String, $expected_budget_timeframe: String, $toggl_url: String){
         updateProjectById(
@@ -41,14 +60,3 @@ export const UPDATE_PROJECT = gql`
         }
     }
 `
-
-export const SYNC_PROJECT_GITHUB_CONTRIBUTORS = gql`
-    mutation syncProjectGithubContributors($project_id: Int!, $github_personal_key: String){
-        syncProjectGithubContributors(project_id: $project_id, github_personal_key: $github_personal_key) {
-            id
-            name
-            github_id
-            github_handle
-        }
-    }
- `
