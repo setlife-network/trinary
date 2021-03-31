@@ -49,10 +49,25 @@ module.exports = {
         }
     },
     Mutation: {
-        createClient: (root, { createFields }, { models }) => {
-            return models.Client.create({
+        createClient: async (root, { createFields }, { cookies, models }) => {
+            const newlyCreatedClient = await models.Client.create({
                 ...createFields
             })
+            const contributor = (
+                await models.Contributor.findByPk(
+                    cookies ? cookies.userSession : null
+                )
+            )
+            //Grant write access to the contributor that created the client
+            const permissionAttributes = {
+                type: 'write',
+                contributor_id: contributor.id,
+                client_id: newlyCreatedClient.id
+            }
+            await models.Permission.create({
+                ...permissionAttributes
+            })
+            return newlyCreatedClient
         },
         deleteClientById: (root, { id }, { models }) => {
             return models.Client.destroy({ where: { id } })
