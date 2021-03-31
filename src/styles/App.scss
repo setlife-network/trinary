@@ -4,7 +4,11 @@ body {
 
 .App {
     text-align: center;
+    &.disable-touch-manipulation {
+        touch-action: manipulation !important;
+    }
 }
+
 
 .image-button {
     margin-top: 2rem;
