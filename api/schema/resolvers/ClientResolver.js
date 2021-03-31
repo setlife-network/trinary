@@ -55,7 +55,7 @@ module.exports = {
             })
             const contributor = (
                 await models.Contributor.findByPk(
-                    cookies ? cookies.userSession : null
+                    cookies ? cookies.userSession : createFields.client_id
                 )
             )
             //Grant write access to the contributor that created the client
