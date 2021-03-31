@@ -25,6 +25,12 @@ export const CURRENCIES = [
         thousand: ','
     },
     {
+        name: 'SAT',
+        symbol: 'SAT',
+        decimal: '.',
+        thousand: ','
+    },
+    {
         name: '',
         symbol: '',
         decimal: '.',
