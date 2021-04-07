@@ -48,7 +48,7 @@ const EditAllocationRate = (props) => {
     }
 
     return (
-        <Box>
+        <Box className='EditAllocationRate'>
             <Grid container>
                 <Grid item xs={12}>
                     <ButtonGroup color='primary' aria-label='outlined primary button group'>

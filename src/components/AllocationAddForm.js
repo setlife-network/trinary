@@ -42,6 +42,8 @@ import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 
+import { MAX_INT_AMOUNT } from '../constants'
+
 import { red } from '../styles/colors.scss'
 
 const AllocationAddForm = (props) => {
@@ -515,7 +517,7 @@ const AllocationAddForm = (props) => {
                             variant={`contained`}
                             color='primary'
                             disabled={
-                                !newAllocationRate['total_amount'] || !newAllocationRate['hourly_rate']
+                                !newAllocationRate['total_amount'] || !newAllocationRate['hourly_rate'] || newAllocationRate['total_amount'] > MAX_INT_AMOUNT
                                     ? true
                                     : false
                             }

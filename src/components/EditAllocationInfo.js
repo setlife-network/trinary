@@ -109,7 +109,11 @@ const EditAllocationInfo = (props) => {
     }
 
     return (
-        <Grid container spacing={3}>
+        <Grid
+            container
+            className='EdiatAllocationInfo'
+            spacing={3}
+        >
             <Grid item xs={6}>
                 <Typography>
                     {`Project`}

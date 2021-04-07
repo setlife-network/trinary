@@ -16,6 +16,7 @@ import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import EditAllocationInfo from './EditAllocationInfo'
 import EditAllocationRate from './EditAllocationRate'
 import LoadingProgress from './LoadingProgress'
+
 import { GET_ALLOCATIONS, GET_ALLOCATION_INFO } from '../operations/queries/AllocationQueries'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/ClientQueries'
 import { GET_CONTRIBUTORS, GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
@@ -23,6 +24,8 @@ import { GET_PAYMENT_ALLOCATIONS } from '../operations/queries/PaymentQueries'
 import { GET_PROJECT_CONTRIBUTORS, GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { DELETE_ALLOCATION, UPDATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
+
+import { MAX_INT_AMOUNT } from '../constants'
 
 const AllocationOverview = (props) => {
 
@@ -221,6 +224,9 @@ const AllocationOverview = (props) => {
         setContributorAllocation(allocation)
     }
 
+    console.log('updatedAllocationRate');
+    console.log(updatedAllocationRate);
+
     return (
         <Dialog
             className='AllocationOverview'
@@ -258,6 +264,7 @@ const AllocationOverview = (props) => {
                             <Button
                                 variant='contained'
                                 color='primary'
+                                disabled={updatedAllocationRate.total_amount > MAX_INT_AMOUNT}
                                 onClick={() => handleUpdateAllocation({
                                     allocation: contributorAllocation,
                                     contributor: contributorAllocation.contributor,
