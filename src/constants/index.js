@@ -61,7 +61,6 @@ export const EXPECTED_BUDGET_TIMEFRAME_OPTIONS = [
 ]
 export const IS_PRODUCTION = process.env.NODE_ENV == 'production' ? true : false
 export const LOGO_URL = 'https://project-trinary.s3.amazonaws.com/images/Logo.png'
-export const MAX_INT_AMOUNT = 214748364700
 export const NAV_ITEMS = [
     {
         text: 'Home',

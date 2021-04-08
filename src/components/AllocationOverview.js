@@ -25,8 +25,6 @@ import { GET_PROJECT_CONTRIBUTORS, GET_PROJECT_PAYMENTS } from '../operations/qu
 import { DELETE_ALLOCATION, UPDATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 
-import { MAX_INT_AMOUNT } from '../constants'
-
 const AllocationOverview = (props) => {
 
     const {
@@ -264,7 +262,7 @@ const AllocationOverview = (props) => {
                             <Button
                                 variant='contained'
                                 color='primary'
-                                disabled={updatedAllocationRate.total_amount > MAX_INT_AMOUNT}
+                                disabled={updatedAllocationRate.total_amount}
                                 onClick={() => handleUpdateAllocation({
                                     allocation: contributorAllocation,
                                     contributor: contributorAllocation.contributor,

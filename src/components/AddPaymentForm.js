@@ -23,7 +23,6 @@ import LoadingProgress from './LoadingProgress'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/PaymentQueries'
 import { CREATE_PAYMENT } from '../operations/mutations/PaymentMutations'
-import { MAX_INT_AMOUNT } from '../constants'
 import {
     selectCurrencyInformation
 } from '../scripts/selectors'
@@ -104,9 +103,6 @@ const AddPaymentForm = (props) => {
     useEffect(() => {
         if (dateIncurred && paymentAmount) {
             setDisableAdd(false)
-        }
-        if (paymentAmount > MAX_INT_AMOUNT) {
-            setDisableAdd(true)
         }
     })
 
