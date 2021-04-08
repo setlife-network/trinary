@@ -177,7 +177,7 @@ const ProjectEditDialog = (props) => {
                         alignItems='center'
                     >
                         <Grid item xs={12} lg={6}>
-                            <Box my={2} pr={1}>
+                            <Box my={2} px={1}>
                                 <TextField
                                     label='Project name'
                                     variant='outlined'
@@ -189,7 +189,7 @@ const ProjectEditDialog = (props) => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} lg={6}>
-                            <Box my={2} pl={1}>
+                            <Box my={2} px={1}>
                                 <CurrencyTextField
                                     fullWidth
                                     label='Expected Budget'
@@ -205,7 +205,7 @@ const ProjectEditDialog = (props) => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} lg={6}>
-                            <Box my={2} pr={1}>
+                            <Box my={2} px={1}>
                                 <TextField
                                     label='Github URL'
                                     variant='outlined'
@@ -217,7 +217,7 @@ const ProjectEditDialog = (props) => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} lg={6}>
-                            <Box my={2}>
+                            <Box my={2} px={1}>
                                 <TextField
                                     label='Toggl URL'
                                     variant='outlined'
@@ -229,38 +229,44 @@ const ProjectEditDialog = (props) => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <MuiPickersUtilsProvider utils={MomentUtils}>
-                                <KeyboardDatePicker
-                                    disableToolbar
-                                    variant='inline'
-                                    format='MM/DD/YYYY'
-                                    margin='normal'
-                                    id='date-picker-inline'
-                                    label='Project start date'
-                                    value={projectDate}
-                                    onChange={handleDateChange}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
-                                />
-                            </MuiPickersUtilsProvider>
+                            <Box px={1}>
+                                <MuiPickersUtilsProvider utils={MomentUtils}>
+                                    <KeyboardDatePicker
+                                        fullWidth
+                                        disableToolbar
+                                        variant='inline'
+                                        format='MM/DD/YYYY'
+                                        margin='normal'
+                                        id='date-picker-inline'
+                                        label='Project start date'
+                                        value={projectDate}
+                                        onChange={handleDateChange}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change date',
+                                        }}
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </Box>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <MuiPickersUtilsProvider utils={MomentUtils}>
-                                <KeyboardDatePicker
-                                    disableToolbar
-                                    variant='inline'
-                                    format='MM/DD/YYYY'
-                                    margin='normal'
-                                    id='date-picker-inline'
-                                    label='Project end date'
-                                    value={projectEndDate}
-                                    onChange={handleEndDateChange}
-                                />
-                            </MuiPickersUtilsProvider>
+                            <Box px={1}>
+                                <MuiPickersUtilsProvider utils={MomentUtils}>
+                                    <KeyboardDatePicker
+                                        fullWidth
+                                        disableToolbar
+                                        variant='inline'
+                                        format='MM/DD/YYYY'
+                                        margin='normal'
+                                        id='date-picker-inline'
+                                        label='Project end date'
+                                        value={projectEndDate}
+                                        onChange={handleEndDateChange}
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </Box>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Box mb={2} mr={3}>
+                            <Box my={2} px={1}>
                                 <FormControl fullWidth>
                                     <InputLabel>
                                         {`Expected budget timeframe`}
