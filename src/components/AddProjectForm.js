@@ -69,7 +69,7 @@ const AddProjectForm = (props) => {
     const [projectToggl, setProjectToggl] = useState(null)
 
     useEffect(() => {
-        if (!projectName || !projectGithub || !projectDate || budgetTimeframe == null) {
+        if (!projectName || !projectGithub || !projectDate || !projectBudget || budgetTimeframe == null) {
             setDisableAdd(true)
         } else {
             setDisableAdd(false)
@@ -106,6 +106,7 @@ const AddProjectForm = (props) => {
             name: projectName,
             github_url: projectGithub,
             date: projectDate,
+            end_date: projectEndDate,
             expected_budget: Number(projectBudget),
             expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
         }
@@ -201,7 +202,7 @@ const AddProjectForm = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <Box mt={5}>
+                <Box mt={5} pt={5}>
                     <Button
                         variant='contained'
                         color='primary'
