@@ -62,6 +62,7 @@ const AddProjectForm = (props) => {
     const [linkedRepo, setLinkedRepo] = useState(false)
     const [projectBudget, setProjectBudget] = useState(0)
     const [projectDate, setProjectDate] = useState(null)
+    const [projectEndDate, setProjectEndDate] = useState(null)
     const [projectGithub, setProjectGithub] = useState(null)
     const [projectGithubManual, setProjectGithubManual] = useState(null)
     const [projectName, setProjectName] = useState('')
@@ -188,9 +189,11 @@ const AddProjectForm = (props) => {
                         budgetTimeframe={budgetTimeframe}
                         client={client}
                         projectDate={projectDate}
+                        projectEndDate={projectEndDate}
                         projectName={projectName}
                         setBudgetTimeframe={setBudgetTimeframe}
                         setProjectDate={setProjectDate}
+                        setProjectEndDate={setProjectEndDate}
                         setProjectName={setProjectName}
                         setProjectToggl={setProjectToggl}
                         setProjectBudget={setProjectBudget}

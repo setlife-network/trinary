@@ -1,13 +1,23 @@
 import { gql } from '@apollo/client';
 
 export const ADD_PROJECT = gql`
-    mutation createProject($client_id: Int!, $name:String!, $github_url: String!, $toggl_url: String, $date: String!, $expected_budget: Int!, $expected_budget_timeframe: String!){
+    mutation createProject(
+        $client_id: Int!,
+        $name:String!,
+        $github_url: String!,
+        $toggl_url: String,
+        $date: String!,
+        $end_date: String,
+        $expected_budget: Int!,
+        $expected_budget_timeframe: String!
+    ){
         createProject(createFields: {
             client_id: $client_id
             name: $name,
             github_url: $github_url,
             toggl_url: $toggl_url,
             date: $date,
+            end_date: $end_date,
             is_active: true,
             expected_budget :$expected_budget,
             expected_budget_timeframe: $expected_budget_timeframe
