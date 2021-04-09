@@ -1,5 +1,48 @@
 .ProjectTimeTracking {
 
+    .react-google-flight-datepicker .date  {
+        background-color: $white !important;
+    }
+
+
+    .react-google-flight-datepicker .date:focus::after, .react-google-flight-datepicker .date.is-focus::after{
+        border: solid $setlife-blue;
+        border-width: 2px;
+    }
+
+    .react-google-flight-datepicker .icon-calendar {
+        fill: $setlife-blue;
+    }
+
+    .react-google-flight-datepicker .date:focus, .react-google-flight-datepicker .date.is-focus {
+        background-color: $light_blue;
+    }
+
+    .react-google-flight-datepicker .day.selected.hovered::after {
+        background-color: $setlife-blue;
+    }
+
+    .react-google-flight-datepicker .day.hovered {
+        background-color: $light_blue;
+    }
+
+    .react-google-flight-datepicker .day.selected::after {
+        background-color: $setlife-blue;
+    }
+
+    .react-google-flight-datepicker .day:hover::after {
+        border-color: $setlife-blue;
+    }
+
+    .react-google-flight-datepicker .day.selected.hovered {
+        background-color: $light_blue;
+    }
+
+    .react-google-flight-datepicker .day.selected.hovered.end {
+        background-color: $light_blue;
+    }
+
+
     .date-input {
         width: 100%;
         padding: 12px 20px;
