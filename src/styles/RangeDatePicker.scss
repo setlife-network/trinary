@@ -1,0 +1,57 @@
+.RangeDatePicker {
+    :focus {
+         outline: 2px $setlife-blue;
+    }
+
+    .react-google-flight-datepicker .date:focus::after, .react-google-flight-datepicker .date.is-focus::after {
+            border-color: solid  $setlife-blue;
+    }
+    .react-google-flight-datepicker .date:focus::after, .react-google-flight-datepicker .date.is-focus::after{
+        border-width: 0px;
+    }
+
+    .react-google-flight-datepicker {
+        .date  {
+            background-color: $white !important;
+            .is-focus::after {
+                border-color: solid  $setlife-blue;
+            }
+        }
+        .dialog-footer .submit-button {
+            background-color:  $setlife-blue;
+        }
+
+        .icon-calendar {
+            fill: $setlife-blue;
+        }
+
+        .day:hover::after {
+           border-color: $setlife-blue;
+       }
+        .day {
+            &.selected::after {
+                background-color: $setlife-blue;
+            }
+            :focus {
+                background-color: $setlife-blue;
+            }
+            &.selected.hovered::after {
+                background-color: $setlife-blue;
+            }
+            &.hovered {
+                background-color: $light_blue;
+
+            }
+            :hover {
+                border-color: solid $setlife-blue !important;
+            }
+
+            .selected.hovered.end {
+                background-color: $light_blue;
+            }
+        }
+    }
+
+
+
+}

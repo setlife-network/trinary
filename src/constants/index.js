@@ -116,3 +116,30 @@ export const NAV_TITLES = [
     }
 ]
 export const SMALL_LOGO_URL = 'https://project-trinary.s3.amazonaws.com/images/SmallLogo.png'
+export const TIME_RANGES = [
+    {
+        description: 'This week',
+        periodRange: 'weeks',
+        since: 0
+    }, {
+        description: 'Last week',
+        periodRange: 'weeks',
+        since: 1
+    }, {
+        description: 'This month',
+        periodRange: 'months',
+        since: 0
+    }, {
+        description: 'Last month',
+        periodRange: 'months',
+        since: 1
+    }, {
+        description: 'This year',
+        periodRange: 'years',
+        since: 0
+    }, {
+        description: 'Last year',
+        periodRange: 'years',
+        since: 1
+    }
+]
