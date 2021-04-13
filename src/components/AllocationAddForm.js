@@ -444,7 +444,7 @@ const AllocationAddForm = (props) => {
                                     </Button>
                                 </ButtonGroup>
                             </Grid>
-                            <Grid item xs={12} xl={8} className='RangeDatePicker'>
+                            <Grid item xs={12} className='RangeDatePicker'>
                                 <DatePicker
                                     selected={startDate}
                                     startDate={startDate}
