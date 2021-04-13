@@ -11,6 +11,7 @@ import {
     Box,
     Button,
     Grid,
+    Icon,
     Typography
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -18,6 +19,7 @@ import moment from 'moment'
 
 import ContributorTimeTrackedTile from './ContributorTimeTrackedTile'
 import LoadingProgress from './LoadingProgress'
+import RangeDatePickerInput from './RangeDatePickerInput'
 import { GET_PROJECT_TIME_ENTRIES } from '../operations/queries/ProjectQueries'
 import { TIME_RANGES } from '../constants'
 
@@ -61,8 +63,12 @@ const ProjectTimeTracking = (props) => {
     }
 
     const setFixedRangedTime = ({ startDate, endDate }) => {
-        setStartDate(startDate)
-        setEndDate(endDate)
+        console.log('setFixedRangedTime');
+        console.log(startDate);
+        console.log(endDate);
+        setStartDate(startDate['_d'])
+        setEndDate(endDate['_d'])
+        console.log('end setFixedRangedTime');
     }
 
     const renderFixedRangeTimes = (timeRanges) => {
@@ -134,18 +140,17 @@ const ProjectTimeTracking = (props) => {
                     </strong>
                 </Typography>
             </Grid>
-            <Grid item xs={12} lg={10} align='left'>
+            <Grid item xs={12} lg={10} xl={8} align='left'>
                 <Box
-                    className='date-picker'
                     px={2}
                     mt={3}
                     py={2}
                     borderRadius='borderRadius'
                     bgcolor='primary.light'
                 >
-                    <Grid container>
+                    <Grid container className='RangeDatePicker'>
                         {renderFixedRangeTimes(TIME_RANGES)}
-                        <Grid item xs={8} className='RangeDatePicker'>
+                        <Grid item xs={12} xl={8} >
                             <DatePicker
                                 selected={startDate}
                                 startDate={startDate}
@@ -158,35 +163,18 @@ const ProjectTimeTracking = (props) => {
                                         px={2}
                                         borderRadius='borderRadius'
                                         bgcolor='primary.light'
+                                        className='date-picker'
                                     >
-                                        <Grid container>
-                                            <Grid item>
-                                                <Box p={2}>
-                                                    {`${
-                                                        startDate
-                                                            ? moment(startDate).format('MM/DD/YYYY')
-                                                            : 'Start date'
-                                                    }`}
-                                                </Box>
-                                            </Grid>
-                                            <hr p={0} m={0} className='divider'/>
-                                            <Grid item>
-                                                <Box p={2}>
-
-                                                    {`${
-                                                        endDate
-                                                            ? moment(endDate).format('MM/DD/YYYY')
-                                                            : ' End date'
-                                                    }`}
-                                                </Box>
-                                            </Grid>
-                                        </Grid>
+                                        <RangeDatePickerInput
+                                            endDate={endDate}
+                                            startDate={startDate}
+                                        />
                                     </Box>
                                 }
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Box mt={2}>
+                            <Box mt={1}>
                                 <Button
                                     color='primary'
                                     disabled={!startDate && !endDate}

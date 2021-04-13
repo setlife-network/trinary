@@ -1,8 +1,5 @@
 .RangeDatePicker {
 
-    border: 1px solid $light_grey;
-    color: $grey;
-
     .react-datepicker-wrapper {
         width: 100%;
     }
@@ -32,9 +29,24 @@
         }
     }
 
-    .divider {
+
+    .date-picker {
         border: 1px solid $light_grey;
+        color: $grey;
+
+
+
+        .divider {
+            border: 1px solid $light_grey;
+            margin: 0px;
+        }
+
+        .date-holder {
+            margin-top: auto;
+        }
     }
+
+
 
 
 }
