@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { RangeDatePicker } from 'react-google-flight-datepicker'
-import 'react-google-flight-datepicker/dist/main.css'
 import {
     Accordion,
     AccordionDetails,
@@ -63,12 +61,8 @@ const ProjectTimeTracking = (props) => {
     }
 
     const setFixedRangedTime = ({ startDate, endDate }) => {
-        console.log('setFixedRangedTime');
-        console.log(startDate);
-        console.log(endDate);
         setStartDate(startDate['_d'])
         setEndDate(endDate['_d'])
-        console.log('end setFixedRangedTime');
     }
 
     const renderFixedRangeTimes = (timeRanges) => {
