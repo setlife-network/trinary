@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -28,6 +28,10 @@ const ProjectTimeTracking = (props) => {
     const [endDate, setEndDate] = useState(null)
     const [startDate, setStartDate] = useState(null)
 
+    useEffect(() => {
+        getRangedTimeEntries({ startDate, endDate })
+    }, [endDate])
+
     const [
         getProjectTimeEntries,
         {
@@ -47,15 +51,18 @@ const ProjectTimeTracking = (props) => {
         } })
     }
 
-    const getRangedTimeEntries = (dates) => {
+    const setDates = (dates) => {
         const [start, end] = dates
         setStartDate(start)
         setEndDate(end)
-        if (end) {
+    }
+
+    const getRangedTimeEntries = ({ startDate, endDate }) => {
+        if (endDate) {
             getProjectTimeEntries({ variables: {
                 id: projectId,
                 fromDate: moment(startDate).format('YYYY-MM-DD'),
-                toDate: moment(end).format('YYYY-MM-DD')
+                toDate: moment(endDate).format('YYYY-MM-DD')
             } })
         }
     }
@@ -151,7 +158,7 @@ const ProjectTimeTracking = (props) => {
                                 endDate={endDate}
                                 shouldCloseOnSelect={startDate && !endDate}
                                 selectsRange
-                                onChange={(dates) => getRangedTimeEntries(dates)}
+                                onChange={(dates) => setDates(dates)}
                                 customInput={
                                     <Box
                                         px={2}
