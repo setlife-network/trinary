@@ -90,7 +90,6 @@ const ProjectSummary = (props) => {
                                     <Icon className='far fa-flag' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-
                                     {`Start date - ${moment(project.date, 'x').format('MM/DD/YYYY')}`}
                                 </Grid>
                             </Grid>
@@ -102,7 +101,6 @@ const ProjectSummary = (props) => {
                                         <Icon className='fas fa-flag' color='primary'/>
                                     </Grid>
                                     <Grid xs={10} align='left'>
-
                                         {`End date - ${moment(project.end_date, 'x').format('MM/DD/YYYY')}`}
                                     </Grid>
                                 </Grid>
