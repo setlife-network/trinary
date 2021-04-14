@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 export const ADD_PROJECT = gql`
     mutation createProject(
         $client_id: Int!,
-        $name:String!,
+        $name: String!,
         $github_url: String!,
         $toggl_url: String,
         $date: String!,
