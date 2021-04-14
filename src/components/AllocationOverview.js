@@ -131,9 +131,9 @@ const AllocationOverview = (props) => {
                     id: contributorAllocation.contributor.id
                 }
             })
-            setUpdatedAllocationEndDate(moment(allocation.end_date, 'x')['_d'])
+            setUpdatedAllocationEndDate(moment.utc(allocation.end_date, 'x')['_d'])
             setUpdatedAllocationPayment(contributorAllocation.payment)
-            setUpdatedAllocationStartDate(moment(allocation.start_date, 'x')['_d'])
+            setUpdatedAllocationStartDate(moment.utc(allocation.start_date, 'x')['_d'])
         }
     }, [contributorAllocation])
 

@@ -42,7 +42,7 @@ const ProjectEditDialog = (props) => {
         open
     } = props
 
-    const currentDate = moment(project.date, 'x').format('YYYY-MM-DD')
+    const currentDate = moment.utc(project.date, 'x').format('YYYY-MM-DD')
     const currencyInformation = selectCurrencyInformation({
         currency: project.client.currency
     })
@@ -229,9 +229,6 @@ const ProjectEditDialog = (props) => {
                                     label=''
                                     value={projectDate}
                                     onChange={handleDateChange}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
                                 />
                             </MuiPickersUtilsProvider>
                         </Grid>

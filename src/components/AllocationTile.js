@@ -31,8 +31,8 @@ const AllocationTile = (props) => {
         amount: allocation.amount / 100,
         currencyInformation: currencyInformation
     })
-    const futureAllocation = moment(allocation.start_date, 'x').isAfter(moment(), 'days')
-    const weeksOfdDifference = moment(allocation.end_date, 'x').diff(moment(), 'weeks')
+    const futureAllocation = moment.utc(allocation.start_date, 'x').isAfter(moment(), 'days')
+    const weeksOfdDifference = moment.utc(allocation.end_date, 'x').diff(moment(), 'weeks')
 
     return (
 
@@ -78,7 +78,7 @@ const AllocationTile = (props) => {
                             {`Start:`}
                             <br/>
                             <strong>
-                                {`${moment(allocation.start_date, 'x').format('MM/DD/YYYY')}`}
+                                {`${moment.utc(allocation.start_date, 'x').format('MM/DD/YYYY')}`}
                             </strong>
                         </Typography>
                     </Box>

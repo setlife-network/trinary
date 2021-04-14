@@ -38,7 +38,15 @@ export const SYNC_PROJECT_GITHUB_CONTRIBUTORS = gql`
  `
 
 export const UPDATE_PROJECT = gql`
-    mutation updateProjectById($project_id: Int!, $date: String!, $expected_budget:Int!, $name: String!, $github_url: String, $expected_budget_timeframe: String, $toggl_url: String){
+    mutation updateProjectById(
+        $project_id: Int!,
+        $date: String!,
+        $expected_budget:Int!,
+        $name: String!,
+        $github_url: String,
+        $expected_budget_timeframe: String
+        $toggl_url: String
+    ){
         updateProjectById(
             id: $project_id,
             updateFields: {

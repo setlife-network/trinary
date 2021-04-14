@@ -38,9 +38,6 @@ const EditAllocationRate = (props) => {
 
     const [selectedRateType, setSelectedRateType] = useState(rate.type)
 
-    // console.log('selectedPayment');
-    // console.log(selectedPayment);
-
     const getRangedTimeEntries = (dates) => {
         const [start, end] = dates
         setStartDate(start)
@@ -87,11 +84,11 @@ const EditAllocationRate = (props) => {
                             >
                                 {`${
                                     startDate
-                                        ? moment(startDate).format('MM/DD/YYYY')
+                                        ? moment.utc(startDate).format('MM/DD/YYYY')
                                         : 'Start date'
                                 } - ${
                                     endDate
-                                        ? moment(endDate).format('MM/DD/YYYY')
+                                        ? moment.utc(endDate).format('MM/DD/YYYY')
                                         : ' End date'
                                 }`}
                             </Box>

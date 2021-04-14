@@ -93,15 +93,14 @@ const ContributorAllocations = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={5}>
-                        {
-                            !isEmpty(contributorAllocations.allocations)
-                                ? renderAllocations({ allocations: contributorAllocations.allocations })
-                                : (
-                                    <EmptyState
-                                        description='This contributor has no allocations at the moment'
-                                        iconClassname='fas fa-money-check'
-                                    />
-                                )
+                        {isEmpty(contributorAllocations.allocations)
+                            ? renderAllocations({ allocations: contributorAllocations.allocations })
+                            : (
+                                <EmptyState
+                                    description='This contributor has no allocations at the moment'
+                                    iconClassname='fas fa-money-check'
+                                />
+                            )
                         }
                     </Grid>
                 </Grid>

@@ -67,10 +67,11 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-wallet' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-                                    {`
-                                        Expected budget - ${expectedBudgetAmount}
-                                        ${project.expected_budget_timeframe ? project.expected_budget_timeframe : ''}
-                                    `}
+                                    {`Expected budget - ${expectedBudgetAmount} ${
+                                        project.expected_budget_timeframe
+                                            ? project.expected_budget_timeframe
+                                            : ''
+                                    }`}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -90,8 +91,7 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-flag' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-
-                                    {`Start date - ${moment(project.date, 'x').format('MM/DD/YYYY')}`}
+                                    {`Start date - ${moment.utc(project.date, 'x').format('MM/DD/YYYY')}`}
                                 </Grid>
                             </Grid>
                         </Grid>
