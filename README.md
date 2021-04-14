@@ -35,14 +35,8 @@ npm run ui
 
 4. Open a new Terminal tab and run the web server
 
-If running on MacOS
 ```
 npm run server
-```
-
-If running on Windows
-```
-npm run server-windows
 ```
 
 5. UI should open in the browser at `localhost:6002`
@@ -51,19 +45,44 @@ If using VSCode, be sure to disable the Prettier: Format on Save feature to prev
 
 ## Using a local database 
 
-If you want to set a local databe follow this steps:
+If you want to set up a local database, follow these steps or follow [this tutorial](https://dev.mysql.com/doc/refman/8.0/en/tutorial.html):
 
-1. Download MySQL server (Usually it comes with others features).
+1. Download and install [MySQL server](https://dev.mysql.com/doc/refman/8.0/en/installing.html) (Usually it comes with others features like Workbench).
 
-2. Configure your environment.
+2. To connect to the server open the command prompt or shell and type the next command:
+```aidl
+shell> mysql -h host -u user -p
+Enter password: ********
+```
+To disconnect you can use this commands:
+```aidl
+mysql> QUIT
+Bye
+```
+3. To create a database use this command:
+```
+mysql> CREATE DATABASE setLife;
+```
 
-3. Create a connection.
+4. To select the created database use this command:
+```aidl
+shell> mysql -h host -u user -p setLife
+```
 
-4. Create a schema.
+5. If you want to show all the created databases use this command:
+```aidl
+mysql> SHOW DATABASES;
+```
 
-5. In your `.env` file set the MYSQL variables with your own values.
+6. To use the created database in the Trinary project, you need to setup your enviroment variables file also known as `.env` file, an example file is available in the code called `.env.example`, copy the code inside this file into a new one named `.env` on the main path of the project.
 
-6. Run the `npm run server` or `npm run server-windows` command and the necessary tables will be created.
+7. After the `.env` file is created, fill in the variables that start with `MYSQL_DB` with your own values after the equal sign.
+```
+e.g.
+MYSQL_DB_HOST=127.0.0.1
+```
+   
+8. With all database variables filled you can run the `npm run server` or `npm run server-windows` command and the necessary tables will be created.
 
 ## Troubleshooting
 
