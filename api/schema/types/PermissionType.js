@@ -18,5 +18,8 @@ module.exports = gql`
             contributor_id: Int!
         ): Permission
     }
+    type Mutation {
+        syncContributorsPermissions(github_access_token: String!): Int
+    }
 
 `

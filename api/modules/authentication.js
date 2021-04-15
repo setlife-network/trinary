@@ -34,7 +34,7 @@ const authentication = module.exports = (() => {
         const projects = await db.models.Project.findAll({
             raw: true
         })
-        projects.map(async p => {
+        await projects.map(async p => {
             await handleContributorPermission({
                 contributor: contributor,
                 githubContributor: githubContributor,
