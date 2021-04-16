@@ -111,7 +111,7 @@ const EditAllocationInfo = (props) => {
     return (
         <Grid
             container
-            className='EdiatAllocationInfo'
+            className='EditAllocationInfo'
             spacing={3}
         >
             <Grid item xs={6}>
