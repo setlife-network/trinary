@@ -42,6 +42,9 @@ module.exports = (sequelize) => {
                 model: 'Projects',
                 key: 'id',
             }
+        },
+        description: {
+            type: DataTypes.STRING
         }
     },
     {

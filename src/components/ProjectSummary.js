@@ -88,13 +88,25 @@ const ProjectSummary = (props) => {
                         <Grid item xs={12}>
                             <Grid container>
                                 <Grid item xs={2}>
-                                    <Icon className='fas fa-flag' color='primary'/>
+                                    <Icon className='far fa-flag' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
                                     {`Start date - ${moment.utc(project.date, 'x').format('MM/DD/YYYY')}`}
                                 </Grid>
                             </Grid>
                         </Grid>
+                        {project.end_date &&
+                            <Grid item xs={12}>
+                                <Grid container>
+                                    <Grid item xs={2}>
+                                        <Icon className='fas fa-flag' color='primary'/>
+                                    </Grid>
+                                    <Grid xs={10} align='left'>
+                                        {`End date - ${moment(project.end_date, 'x').format('MM/DD/YYYY')}`}
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        }
                     </Grid>
                 </Grid>
                 <Grid
