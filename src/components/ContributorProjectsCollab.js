@@ -77,7 +77,7 @@ const ContributorProjectsCollab = (props) => {
                                 : (
                                     <EmptyState
                                         description='This contributor has no projects at the moment'
-                                        iconClassname='fas fa-code'
+                                        iconClassName='fas fa-code'
                                     />
                                 )
                         }

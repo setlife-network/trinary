@@ -98,7 +98,7 @@ const ContributorAllocations = (props) => {
                             : (
                                 <EmptyState
                                     description='This contributor has no allocations at the moment'
-                                    iconClassname='fas fa-money-check'
+                                    iconClassName='fas fa-money-check'
                                 />
                             )
                         }

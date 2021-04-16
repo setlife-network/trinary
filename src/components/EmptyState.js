@@ -10,7 +10,7 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 const EmptyState = (props) => {
     const {
         description,
-        iconClassname
+        iconClassName
     } = props
 
     return (
