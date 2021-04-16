@@ -24,17 +24,17 @@ console.log('toggl.createTimeEntry()');
 //         console.log(res);
 //     })
 
-const workspaceData = toggl.fetchWorkspacesData({
-    wId: 3070291
-})
-    .then(res => {
-        console.log('res');
-        console.log(res);
-    })
+// const workspaceData = toggl.fetchWorkspacesData({
+//     wId:
+// })
+//     .then(res => {
+//         console.log('res');
+//         console.log(res);
+//     })
 
 const workspaceReport = toggl.fetchWorkspaceTimeEntries({
-    wId: 3070291,
-    pId: 162053371,
+    wId: ,
+    pId: ,
     since: '2020-01-01',
     until: '2020-11-12'
 })
@@ -43,10 +43,10 @@ const workspaceReport = toggl.fetchWorkspaceTimeEntries({
         console.log(res);
     })
 
-const workspaceProjects = toggl.fetchWorkspacesProject({
-    wId: 3070291
-})
-    .then(res => {
-        console.log('projects');
-        console.log(res);
-    })
+// const workspaceProjects = toggl.fetchWorkspacesProject({
+//     wId: 
+// })
+//     .then(res => {
+//         console.log('projects');
+//         console.log(res);
+//     })
