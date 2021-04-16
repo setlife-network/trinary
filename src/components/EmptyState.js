@@ -20,7 +20,7 @@ const EmptyState = (props) => {
                     {`${description}`}
                 </Typography>
                 <Box mt={5} align='center'>
-                    <Icon className={`${iconClassname} empty-icon`} color='secondary'/>
+                    <Icon className={`${iconClassName} empty-icon`} color='secondary'/>
                 </Box>
             </Box>
         </Grid>

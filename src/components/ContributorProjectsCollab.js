@@ -71,15 +71,14 @@ const ContributorProjectsCollab = (props) => {
                         </strong>
                     </Typography>
                     <Grid container>
-                        {
-                            !isEmpty(projects)
-                                ? renderProjects({ projects: projects })
-                                : (
-                                    <EmptyState
-                                        description='This contributor has no projects at the moment'
-                                        iconClassName='fas fa-code'
-                                    />
-                                )
+                        {!isEmpty(projects)
+                            ? renderProjects({ projects: projects })
+                            : (
+                                <EmptyState
+                                    description='This contributor has no projects at the moment'
+                                    iconClassName='fas fa-code'
+                                />
+                            )
                         }
                     </Grid>
                 </Box>

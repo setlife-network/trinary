@@ -93,7 +93,7 @@ const ContributorAllocations = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={5}>
-                        {isEmpty(contributorAllocations.allocations)
+                        {!isEmpty(contributorAllocations.allocations)
                             ? renderAllocations({ allocations: contributorAllocations.allocations })
                             : (
                                 <EmptyState
