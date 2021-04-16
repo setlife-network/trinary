@@ -222,9 +222,6 @@ const AllocationOverview = (props) => {
         setContributorAllocation(allocation)
     }
 
-    console.log('updatedAllocationRate');
-    console.log(updatedAllocationRate);
-
     return (
         <Dialog
             className='AllocationOverview'
