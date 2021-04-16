@@ -97,7 +97,7 @@ const AddProjectFromGithub = (props) => {
             <Grid item xs={12} align='left'>
                 <Box my={3}>
                     <Typography>
-                        {`Search from a repo directly from Github`}
+                        {`Search for a repo directly from Github`}
                     </Typography>
                 </Box>
             </Grid>
