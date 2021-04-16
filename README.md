@@ -43,6 +43,47 @@ npm run server
 
 If using VSCode, be sure to disable the Prettier: Format on Save feature to prevent unwanted changes to the code styles.
 
+## Using a local database 
+
+If you want to set up a local database, follow these steps or follow [this tutorial](https://dev.mysql.com/doc/refman/8.0/en/tutorial.html):
+
+1. Download and install [MySQL server](https://dev.mysql.com/doc/refman/8.0/en/installing.html) (Usually it comes with others features like Workbench).
+
+2. To connect to the server open the command prompt or shell and type the next command:
+```aidl
+shell> mysql -h host -u user -p
+Enter password: ********
+```
+To disconnect you can use this commands:
+```aidl
+mysql> QUIT
+Bye
+```
+3. To create a database use this command:
+```
+mysql> CREATE DATABASE setLife;
+```
+
+4. To select the created database use this command:
+```aidl
+shell> mysql -h host -u user -p setLife
+```
+
+5. If you want to show all the created databases use this command:
+```aidl
+mysql> SHOW DATABASES;
+```
+
+6. To use the created database in the Trinary project, you need to setup your enviroment variables file also known as `.env` file, an example file is available in the code called `.env.example`, copy the code inside this file into a new one named `.env` on the main path of the project.
+
+7. After the `.env` file is created, fill in the variables that start with `MYSQL_DB` with your own values after the equal sign.
+```
+e.g.
+MYSQL_DB_HOST=127.0.0.1
+```
+   
+8. With all database variables filled you can run the `npm run server` or `npm run server-windows` command and the necessary tables will be created.
+
 ## Troubleshooting
 
 If you are encountering an error that says: "react scripts start is not recognized as an internal or external command," or any related error with dependencies, upon running "npm start" or "npm ui" within terminal, run the following command:
