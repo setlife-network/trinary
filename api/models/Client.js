@@ -41,5 +41,4 @@ module.exports = (sequelize) => {
     });
 
     return Client
-
 }
