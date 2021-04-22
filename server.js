@@ -109,12 +109,18 @@ app.post('/api/webhooks/invoices/created', (req, res) => {
     const data = req.body.data.object
     const paymentInformation = {
         amount: data.total,
-        external_uid: data.id,
-        date_icurred: data.created,
-        client_name: data.description,
-        externaluuid_type: 'STRIPE',
+        external_uuid: data.id,
+        date_incurred: data.created,
+        customer_id: data.customer,
+        external_uuid_type: 'STRIPE',
     }
     apiModules.automations.createPayment({ paymentInformation })
+        .then(() => {
+            res.send('payment created')
+        })
+        .catch(err => {
+            console.log(`An error ocurred: ${err}`);
+        })
 
 })
 

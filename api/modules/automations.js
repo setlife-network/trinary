@@ -4,21 +4,26 @@ const db = require('../models')
 
 const automations = module.exports = (() => {
 
-    const createPayment = async (params) => {
-        console.log('params.paymentInformation');
-        console.log(params.paymentInformation);
-        // await db.models.Contributor.create({
-        //     name: contributorInfo.name ? contributorInfo.name : c.login,
-        //     github_id: c.id,
-        //     github_handle: c.html_url
-        // })
-        // return db.models.Payment.create({
-        //     amount,
-        //     external_uid,
-        //     date_icurred,
-        //     client_id,
-        //     externaluuid_type,
-        // })
+    const createPayment = async ({ paymentInformation }) => {
+        const client = await getClientFromExternalId({ id: paymentInformation.customer_id })
+        if (client) {
+            return db.models.Payment.create({
+                amount: paymentInformation.amount,
+                external_uuid: paymentInformation.external_uuid,
+                date_incurred: paymentInformation.date_incurred,
+                client_id: client.id,
+                external_uuid_type: paymentInformation.external_uuid_type
+            })
+        }
+
+    }
+
+    const getClientFromExternalId = (params) => {
+        return db.models.Client.findOne({
+            where: {
+                external_uuid: params.id
+            }
+        })
     }
 
     const getUserOrganizations = async (params) => {
