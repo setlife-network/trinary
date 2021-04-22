@@ -1,7 +1,25 @@
 const github = require('../handlers/github')
 const { GITHUB } = require('../config/credentials')
+const db = require('../models')
 
 const automations = module.exports = (() => {
+
+    const createPayment = async (params) => {
+        console.log('params.paymentInformation');
+        console.log(params.paymentInformation);
+        // await db.models.Contributor.create({
+        //     name: contributorInfo.name ? contributorInfo.name : c.login,
+        //     github_id: c.id,
+        //     github_handle: c.html_url
+        // })
+        // return db.models.Payment.create({
+        //     amount,
+        //     external_uid,
+        //     date_icurred,
+        //     client_id,
+        //     externaluuid_type,
+        // })
+    }
 
     const getUserOrganizations = async (params) => {
         //user organizations are the organizations that the contributor is added as a internal collaborator
@@ -53,6 +71,7 @@ const automations = module.exports = (() => {
     }
 
     return {
+        createPayment,
         getUserOrganizations,
         getOrganizationRepos
     }

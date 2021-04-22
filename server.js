@@ -105,6 +105,19 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         })
 })
 
+app.post('/api/webhooks/invoices/created', (req, res) => {
+    const data = req.body.data.object
+    const paymentInformation = {
+        amount: data.total,
+        external_uid: data.id,
+        date_icurred: data.created,
+        client_name: data.description,
+        externaluuid_type: 'STRIPE',
+    }
+    apiModules.automations.createPayment({ paymentInformation })
+
+})
+
 app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
     console.log(`Incoming API v${req.params.vid} request on worker PID ${process.pid}`)
     next()
