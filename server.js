@@ -110,6 +110,11 @@ app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
     next()
 })
 
+app.post('/api/webhooks/clients/created',express.json(), (req, res, next) => {
+    console.log(req.body)
+    res.sendStatus(200)
+})
+
 const server = new ApolloServer({
     schema,
     context: ({ req }) => ({
