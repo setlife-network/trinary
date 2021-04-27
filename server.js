@@ -105,12 +105,12 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         })
 })
 
-app.post('/api/webhooks/invoices/created', (req, res) => {
+app.post('/api/webhooks/invoices/sent', (req, res) => {
     const data = req.body.data.object
     const paymentInformation = {
         amount: data.total,
         external_uuid: data.id,
-        date_incurred: data.created,
+        date_incurred: data.webhooks_delivered_at,
         customer_id: data.customer,
         external_uuid_type: 'STRIPE',
     }

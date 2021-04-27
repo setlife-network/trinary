@@ -1,3 +1,5 @@
+const moment = require('moment')
+
 const github = require('../handlers/github')
 const { GITHUB } = require('../config/credentials')
 const db = require('../models')
@@ -10,7 +12,7 @@ const automations = module.exports = (() => {
             return db.models.Payment.create({
                 amount: paymentInformation.amount,
                 external_uuid: paymentInformation.external_uuid,
-                date_incurred: paymentInformation.date_incurred,
+                date_incurred: moment(paymentInformation.date_incurred['_d']).format('YYYY-MM-DD HH:mm:ss'),
                 client_id: client.id,
                 external_uuid_type: paymentInformation.external_uuid_type
             })
