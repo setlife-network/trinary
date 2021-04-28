@@ -28,6 +28,18 @@ const automations = module.exports = (() => {
         })
     }
 
+    const getPaymentFromExternalId = (params) => {
+        return db.models.Payment.findOne({
+            where: {
+                external_uuid: params.id
+            }
+        })
+    }
+
+    const getPaymentFromId = (params) => {
+        return db.models.Payment.findByPk(params.id)
+    }
+
     const getUserOrganizations = async (params) => {
         //user organizations are the organizations that the contributor is added as a internal collaborator
         //we also add the self github contributor user for implementation details
@@ -77,10 +89,28 @@ const automations = module.exports = (() => {
         return organizations
     }
 
+    const updateDatePaidPayment = async ({ paymentInformation }) => {
+        const paymentToUpdate = {}
+        if (paymentInformation.external_uuid) {
+            paymentToUpdate.payment = await getPaymentFromExternalId({ id: paymentInformation.external_uuid })
+        } else {
+            paymentToUpdate.payment = await getPaymentFromId({ id: paymentInformation.external_uuid })
+        }
+        paymentToUpdate.payment.date_paid = paymentInformation.date_paid
+        await db.models.Payment.update({
+            date_paid: moment(paymentToUpdate.payment.date_paid['_d'])
+        }, {
+            where: {
+                id: paymentToUpdate.payment.id
+            }
+        })
+    }
+
     return {
         createPayment,
         getUserOrganizations,
-        getOrganizationRepos
+        getOrganizationRepos,
+        updateDatePaidPayment
     }
 
 })()

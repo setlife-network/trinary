@@ -110,7 +110,7 @@ app.post('/api/webhooks/invoices/sent', (req, res) => {
     const paymentInformation = {
         amount: data.total,
         external_uuid: data.id,
-        date_incurred: data.webhooks_delivered_at,
+        date_incurred: data.created,
         customer_id: data.customer,
         external_uuid_type: 'STRIPE',
     }
@@ -119,8 +119,24 @@ app.post('/api/webhooks/invoices/sent', (req, res) => {
             res.send('payment created')
         })
         .catch(err => {
-            console.log(`An error ocurred: ${err}`);
+            console.log(`An error ocurred: ${err}`)
         })
+})
+app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
+    const data = req.body.data
+    try {
+        if (data.status == 'succeeded') {
+            throw 'Payment not succeeded'
+        }
+        const paymentInformation = {
+            date_paid: data.object.created,
+            external_uuid: data.object.invoice
+        }
+        apiModules.automations.updateDatePaidPayment({ paymentInformation })
+        res.send('payment updated')
+    } catch (err) {
+        console.log(`An error ocurred: ${err}`)
+    }
 
 })
 
