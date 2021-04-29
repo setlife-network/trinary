@@ -111,7 +111,13 @@ app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
 })
 
 app.post('/api/webhooks/clients/created',express.json(), (req, res, next) => {
-    console.log(req.body)
+    const body = req.body.data.object
+    const clientInformation = {
+        external_uuid: body.id,
+        email: body.email,
+        currency: body.currency,
+        name: body.description
+    }
     res.sendStatus(200)
 })
 
