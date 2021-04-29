@@ -13,11 +13,11 @@ const automations = module.exports = (() => {
                 amount: paymentInformation.amount,
                 external_uuid: paymentInformation.external_uuid,
                 date_incurred: moment(paymentInformation.date_incurred['_d']).format('YYYY-MM-DD HH:mm:ss'),
+                date_paid: paymentInformation.date_paid ? moment(paymentInformation.date_paid['_d']) : null,
                 client_id: client.id,
                 external_uuid_type: paymentInformation.external_uuid_type
             })
         }
-
     }
 
     const getClientFromExternalId = (params) => {
@@ -96,14 +96,17 @@ const automations = module.exports = (() => {
         } else {
             paymentToUpdate.payment = await getPaymentFromId({ id: paymentInformation.external_uuid })
         }
-        paymentToUpdate.payment.date_paid = paymentInformation.date_paid
-        await db.models.Payment.update({
-            date_paid: moment(paymentToUpdate.payment.date_paid['_d'])
-        }, {
-            where: {
-                id: paymentToUpdate.payment.id
-            }
-        })
+        if (!paymentToUpdate.payment.date_paid) {
+            paymentToUpdate.payment.date_paid = paymentInformation.date_paid
+            await db.models.Payment.update({
+                date_paid: moment(paymentToUpdate.payment.date_paid['_d'])
+            }, {
+                where: {
+                    id: paymentToUpdate.payment.id
+                }
+            })
+        }
+
     }
 
     const updatePaymentFromStripe = async (params) => {
@@ -114,7 +117,9 @@ const automations = module.exports = (() => {
             }
         })
         if (paymentToUpdate) {
-            //do some update here
+            if (paymentInformation.date_paid) {
+                updateDatePaidPayment(params.paymentInformation)
+            }
         } else {
             //the payment is not in the db, proceed to store it
             createPayment({ paymentInformation: params.paymentInformation })

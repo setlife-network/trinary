@@ -139,10 +139,12 @@ app.post('/api/webhooks/invoice/paid', async (req, res) => {
 app.post('/api/webhooks/invoice/updated', (req, res) => {
     const data = req.body.data.object
     if (data.custom_fields[findIndex(data.custom_fields, { 'name': 'ready_to_allocate', 'value': 'true' })]) {
+        const datePaidOverride = data.custom_fields[findIndex(data.custom_fields, { 'name': 'date_paid' })]
         const paymentInformation = {
             amount: data.total,
             external_uuid: data.id,
             date_incurred: data.created,
+            date_paid: datePaidOverride ? datePaidOverride.value : null,
             customer_id: data.customer,
             external_uuid_type: 'STRIPE',
         }

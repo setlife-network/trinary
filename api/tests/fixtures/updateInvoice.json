@@ -30,7 +30,22 @@
             "custom_fields": [
                 {
                     "name": "ready_to_allocate",
-                    "value": "false"
+                    "value": "true"
+                }
+            ]
+        }
+    },{
+        "name": "invoice_edit",
+        "path":"/v1/invoices/${invoice_create:id}",
+        "method": "post",
+        "params": {
+            "custom_fields": [
+                {
+                    "name": "ready_to_allocate",
+                    "value": "true"
+                }, {
+                    "name": "date_paid",
+                    "value": "2020-04-25"
                 }
             ]
         }
