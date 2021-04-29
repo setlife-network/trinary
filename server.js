@@ -179,7 +179,7 @@ app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
     next()
 })
 
-app.post('/api/webhooks/clients/created',express.json(), (req, res, next) => {
+app.post('/api/webhooks/clients',express.json(), (req, res, next) => {
     const body = req.body.data.object
     const clientInformation = {
         email: body.email,
@@ -188,13 +188,24 @@ app.post('/api/webhooks/clients/created',express.json(), (req, res, next) => {
         date_created: req.body.created,
         external_uuid: body.id
     }
-    apiModules.automations.createClient({ clientInformation})
-        .then(()=>{
-            res.sendStatus(200)
-        })
-        .catch(err => {
-            console.log(`An error ocurred: ${err}`)
-        })
+    const webhookType = req.body.type
+    if (webhookType === "customer.created"){
+        apiModules.automations.createClient({ clientInformation})
+            .then(()=>{
+                res.sendStatus(200)
+            })
+            .catch(err => {
+                console.log(`An error ocurred: ${err}`)
+            })
+    }else if (webhookType === "customer.updated"){
+        apiModules.automations.updateClient({ clientInformation })
+            .then(()=>{
+                res.sendStatus(200)
+            })
+            .catch(err => {
+                console.log(`An error ocurred: ${err}`)
+            })
+    }
 })
 
 const server = new ApolloServer({
