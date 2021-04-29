@@ -6,6 +6,7 @@ const { ApolloServer } = require('apollo-server-express') //Apollo server for gr
 const cookieSession = require('cookie-session') //store the user session key
 const cookieParser = require('cookie-parser') //transform cooki session into object with key name
 const moment = require('moment') //momentjs libreary for expitation cookie date
+const { findIndex } = require('lodash')
 
 const schema = require('./api/schema')
 const db = require('./api/models');
@@ -103,6 +104,74 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         .catch(err => {
             console.log('An error ocurred ' + err);
         })
+})
+
+app.post('/api/webhooks/invoices/sent', (req, res) => {
+    const data = req.body.data.object
+    const paymentInformation = {
+        amount: data.total,
+        external_uuid: data.id,
+        date_incurred: data.created,
+        customer_id: data.customer,
+        external_uuid_type: 'STRIPE',
+    }
+    apiModules.automations.createPayment({ paymentInformation })
+        .then(() => {
+            res.send('payment created')
+        })
+        .catch(err => {
+            console.log(`An error ocurred: ${err}`)
+        })
+})
+app.post('/api/webhooks/invoice/paid', async (req, res) => {
+    const data = req.body.data.object
+    try {
+        const paymentInformation = {
+            date_paid: data.webhooks_delivered_at,
+            external_uuid: data.id
+        }
+        await apiModules.automations.updateDatePaidPayment({ paymentInformation })
+        res.send('payment updated')
+    } catch (err) {
+        console.log(`An error ocurred: ${err}`)
+    }
+})
+app.post('/api/webhooks/invoice/updated', (req, res) => {
+    const data = req.body.data.object
+    if (data.custom_fields[findIndex(data.custom_fields, { 'name': 'ready_to_allocate', 'value': 'true' })]) {
+        const paymentInformation = {
+            amount: data.total,
+            external_uuid: data.id,
+            date_incurred: data.created,
+            customer_id: data.customer,
+            external_uuid_type: 'STRIPE',
+        }
+        apiModules.automations.updatePaymentFromStripe({ paymentInformation })
+            .then(() => {
+                res.send('payment updated')
+            })
+            .catch((err) => {
+                console.log(`An error ocurred: ${err}`)
+            })
+    } else {
+        res.send('payment not ready to allocate')
+    }
+})
+app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
+    const data = req.body.data
+    try {
+        if (data.status == 'succeeded') {
+            throw 'Payment not succeeded'
+        }
+        const paymentInformation = {
+            date_paid: data.object.created,
+            external_uuid: data.object.invoice
+        }
+        apiModules.automations.updateDatePaidPayment({ paymentInformation })
+        res.send('payment updated')
+    } catch (err) {
+        console.log(`An error ocurred: ${err}`)
+    }
 })
 
 app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {

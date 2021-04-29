@@ -1,7 +1,44 @@
+const moment = require('moment')
+
 const github = require('../handlers/github')
 const { GITHUB } = require('../config/credentials')
+const db = require('../models')
 
 const automations = module.exports = (() => {
+
+    const createPayment = async ({ paymentInformation }) => {
+        const client = await getClientFromExternalId({ id: paymentInformation.customer_id })
+        if (client) {
+            return db.models.Payment.create({
+                amount: paymentInformation.amount,
+                external_uuid: paymentInformation.external_uuid,
+                date_incurred: moment(paymentInformation.date_incurred['_d']).format('YYYY-MM-DD HH:mm:ss'),
+                client_id: client.id,
+                external_uuid_type: paymentInformation.external_uuid_type
+            })
+        }
+
+    }
+
+    const getClientFromExternalId = (params) => {
+        return db.models.Client.findOne({
+            where: {
+                external_uuid: params.id
+            }
+        })
+    }
+
+    const getPaymentFromExternalId = (params) => {
+        return db.models.Payment.findOne({
+            where: {
+                external_uuid: params.id
+            }
+        })
+    }
+
+    const getPaymentFromId = (params) => {
+        return db.models.Payment.findByPk(params.id)
+    }
 
     const getUserOrganizations = async (params) => {
         //user organizations are the organizations that the contributor is added as a internal collaborator
@@ -52,9 +89,44 @@ const automations = module.exports = (() => {
         return organizations
     }
 
+    const updateDatePaidPayment = async ({ paymentInformation }) => {
+        const paymentToUpdate = {}
+        if (paymentInformation.external_uuid) {
+            paymentToUpdate.payment = await getPaymentFromExternalId({ id: paymentInformation.external_uuid })
+        } else {
+            paymentToUpdate.payment = await getPaymentFromId({ id: paymentInformation.external_uuid })
+        }
+        paymentToUpdate.payment.date_paid = paymentInformation.date_paid
+        await db.models.Payment.update({
+            date_paid: moment(paymentToUpdate.payment.date_paid['_d'])
+        }, {
+            where: {
+                id: paymentToUpdate.payment.id
+            }
+        })
+    }
+
+    const updatePaymentFromStripe = async (params) => {
+        const paymentToUpdate = await db.models.Payment.findOne({
+            where: {
+                external_uuid: params.paymentInformation.external_uuid,
+                external_uuid_type: params.paymentInformation.external_uuid_type
+            }
+        })
+        if (paymentToUpdate) {
+            //do some update here
+        } else {
+            //the payment is not in the db, proceed to store it
+            createPayment({ paymentInformation: params.paymentInformation })
+        }
+    }
+
     return {
+        createPayment,
         getUserOrganizations,
-        getOrganizationRepos
+        getOrganizationRepos,
+        updateDatePaidPayment,
+        updatePaymentFromStripe
     }
 
 })()
