@@ -187,7 +187,14 @@ app.post('/api/webhooks/clients/created',express.json(), (req, res, next) => {
         currency: body.currency,
         name: body.description
     }
-    res.sendStatus(200)
+    apiModules.automations.createClient({ clientInformation})
+        .then(()=>{
+            res.sendStatus(200)
+        })
+        .catch(err => {
+            console.log(`An error ocurred: ${err}`)
+        })
+
 })
 
 const server = new ApolloServer({
