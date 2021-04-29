@@ -19,7 +19,29 @@ const automations = module.exports = (() => {
                 external_uuid: clientInformation.external_uuid
             })
         }
+    }
 
+    const updateClient = async (params) => {
+        const clientToUpdate = await db.models.Client.findOne({
+            where: {
+                external_uuid: params.clientInformation.external_uuid
+            }
+        })
+        if (clientToUpdate) {
+            return db.models.Client.update({
+                email: params.clientInformation.email,
+                currency: params.clientInformation.currency,
+                name: params.clientInformation.name,
+                updated_at: moment(params.clientInformation.date_created),
+                external_uuid: params.clientInformation.external_uuid
+            }, {
+                where: {
+                    id: clientToUpdate.id
+                }
+            })
+        } else {
+            createClient({ clientInformation: params.clientInformation })
+        }
     }
 
     const createPayment = async ({ paymentInformation }) => {
@@ -139,6 +161,7 @@ const automations = module.exports = (() => {
 
     return {
         createClient,
+        updateClient,
         createPayment,
         getUserOrganizations,
         getOrganizationRepos,
