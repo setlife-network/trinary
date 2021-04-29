@@ -123,17 +123,14 @@ app.post('/api/webhooks/invoices/sent', (req, res) => {
             console.log(`An error ocurred: ${err}`)
         })
 })
-app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
-    const data = req.body.data
+app.post('/api/webhooks/invoice/paid', async (req, res) => {
+    const data = req.body.data.object
     try {
-        if (data.status == 'succeeded') {
-            throw 'Payment not succeeded'
-        }
         const paymentInformation = {
-            date_paid: data.object.created,
-            external_uuid: data.object.invoice
+            date_paid: data.webhooks_delivered_at,
+            external_uuid: data.id
         }
-        apiModules.automations.updateDatePaidPayment({ paymentInformation })
+        await apiModules.automations.updateDatePaidPayment({ paymentInformation })
         res.send('payment updated')
     } catch (err) {
         console.log(`An error ocurred: ${err}`)
@@ -160,25 +157,20 @@ app.post('/api/webhooks/invoice/updated', (req, res) => {
         res.send('payment not ready to allocate')
     }
 })
-app.post('/api/webhooks/invoice/updated', (req, res) => {
-    const data = req.body.data.object
-    if (data.custom_fields[findIndex(data.custom_fields, { 'name': 'ready_to_allocate', 'value': 'true' })]) {
-        const paymentInformation = {
-            amount: data.total,
-            external_uuid: data.id,
-            date_incurred: data.created,
-            customer_id: data.customer,
-            external_uuid_type: 'STRIPE',
+app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
+    const data = req.body.data
+    try {
+        if (data.status == 'succeeded') {
+            throw 'Payment not succeeded'
         }
-        apiModules.automations.updatePaymentFromStripe({ paymentInformation })
-            .then(() => {
-                res.send('payment updated')
-            })
-            .catch((err) => {
-                console.log(`An error ocurred: ${err}`)
-            })
-    } else {
-        res.send('payment not ready to allocate')
+        const paymentInformation = {
+            date_paid: data.object.created,
+            external_uuid: data.object.invoice
+        }
+        apiModules.automations.updateDatePaidPayment({ paymentInformation })
+        res.send('payment updated')
+    } catch (err) {
+        console.log(`An error ocurred: ${err}`)
     }
 })
 

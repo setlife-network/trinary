@@ -28,8 +28,13 @@
         "method": "post"
     },
     {
+        "name": "invoice_send",
+        "path":"/v1/invoices/${invoice_finalize:id}/send",
+        "method": "post"
+    },
+    {
         "name": "invoice_pay",
-        "path":"/v1/invoices/${invoice_finalize:id}/pay",
+        "path":"/v1/payment_intents/${invoice_send:payment_intent}/confirm",
         "method": "post"
     }]
 }
