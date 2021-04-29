@@ -6,6 +6,22 @@ const db = require('../models')
 
 const automations = module.exports = (() => {
 
+    const createClient = async ({ clientInformation }) => {
+        const client = await getClientFromExternalId({ id: clientInformation.external_uuid })
+        if (!client) {
+            return db.models.Client.create({
+                email: clientInformation.email,
+                currency: clientInformation.currency,
+                name: clientInformation.description,
+                is_active: 1,
+                created_at: moment(clientInformation.date_created),
+                updated_at: moment(clientInformation.date_created),
+                external_uuid: clientInformation.external_uuid
+            })
+        }
+
+    }
+
     const createPayment = async ({ paymentInformation }) => {
         const client = await getClientFromExternalId({ id: paymentInformation.customer_id })
         if (client) {
@@ -122,6 +138,7 @@ const automations = module.exports = (() => {
     }
 
     return {
+        createClient,
         createPayment,
         getUserOrganizations,
         getOrganizationRepos,

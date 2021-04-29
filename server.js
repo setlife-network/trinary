@@ -182,11 +182,13 @@ app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
 app.post('/api/webhooks/clients/created',express.json(), (req, res, next) => {
     const body = req.body.data.object
     const clientInformation = {
-        external_uuid: body.id,
         email: body.email,
         currency: body.currency,
-        name: body.description
+        name: body.description,
+        date_created: req.body.created,
+        external_uuid: body.id
     }
+    console.log(clientInformation)
     apiModules.automations.createClient({ clientInformation})
         .then(()=>{
             res.sendStatus(200)
