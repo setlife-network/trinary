@@ -159,7 +159,27 @@ app.post('/api/webhooks/invoice/updated', (req, res) => {
     } else {
         res.send('payment not ready to allocate')
     }
-
+})
+app.post('/api/webhooks/invoice/updated', (req, res) => {
+    const data = req.body.data.object
+    if (data.custom_fields[findIndex(data.custom_fields, { 'name': 'ready_to_allocate', 'value': 'true' })]) {
+        const paymentInformation = {
+            amount: data.total,
+            external_uuid: data.id,
+            date_incurred: data.created,
+            customer_id: data.customer,
+            external_uuid_type: 'STRIPE',
+        }
+        apiModules.automations.updatePaymentFromStripe({ paymentInformation })
+            .then(() => {
+                res.send('payment updated')
+            })
+            .catch((err) => {
+                console.log(`An error ocurred: ${err}`)
+            })
+    } else {
+        res.send('payment not ready to allocate')
+    }
 })
 
 app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
