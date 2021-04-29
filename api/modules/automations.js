@@ -106,11 +106,27 @@ const automations = module.exports = (() => {
         })
     }
 
+    const updatePaymentFromStripe = async (params) => {
+        const paymentToUpdate = await db.models.Payment.findOne({
+            where: {
+                external_uuid: params.paymentInformation.external_uuid,
+                external_uuid_type: params.paymentInformation.external_uuid_type
+            }
+        })
+        if (paymentToUpdate) {
+            //do some update here
+        } else {
+            //the payment is not in the db, proceed to store it
+            createPayment({ paymentInformation: params.paymentInformation })
+        }
+    }
+
     return {
         createPayment,
         getUserOrganizations,
         getOrganizationRepos,
-        updateDatePaidPayment
+        updateDatePaidPayment,
+        updatePaymentFromStripe
     }
 
 })()
