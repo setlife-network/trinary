@@ -12,7 +12,7 @@ const automations = module.exports = (() => {
             return db.models.Client.create({
                 email: clientInformation.email,
                 currency: clientInformation.currency,
-                name: clientInformation.description,
+                name: clientInformation.name,
                 is_active: 1,
                 created_at: moment(clientInformation.date_created),
                 updated_at: moment(clientInformation.date_created),
