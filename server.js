@@ -106,23 +106,23 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         })
 })
 
-app.post('/api/webhooks/invoices/sent', (req, res) => {
-    const data = req.body.data.object
-    const paymentInformation = {
-        amount: data.total,
-        external_uuid: data.id,
-        date_incurred: data.created,
-        customer_id: data.customer,
-        external_uuid_type: 'STRIPE',
-    }
-    apiModules.automations.createPayment({ paymentInformation })
-        .then(() => {
-            res.send('payment created')
-        })
-        .catch(err => {
-            console.log(`An error ocurred: ${err}`)
-        })
-})
+// app.post('/api/webhooks/invoices/sent', (req, res) => {
+//     const data = req.body.data.object
+//     const paymentInformation = {
+//         amount: data.total,
+//         external_uuid: data.id,
+//         date_incurred: data.created,
+//         customer_id: data.customer,
+//         external_uuid_type: 'STRIPE',
+//     }
+//     apiModules.automations.createPayment({ paymentInformation })
+//         .then(() => {
+//             res.send('payment created')
+//         })
+//         .catch(err => {
+//             console.log(`An error ocurred: ${err}`)
+//         })
+// })
 app.post('/api/webhooks/invoice/paid', async (req, res) => {
     const data = req.body.data.object
     try {
@@ -138,7 +138,7 @@ app.post('/api/webhooks/invoice/paid', async (req, res) => {
 })
 app.post('/api/webhooks/invoice/updated', (req, res) => {
     const data = req.body.data.object
-    if (data.custom_fields[findIndex(data.custom_fields, { 'name': 'ready_to_allocate', 'value': 'true' })]) {
+    if (findIndex(data.custom_fields, { 'name': 'ready_to_allocate', 'value': 'true' }) != -1) {
         const datePaidOverride = data.custom_fields[findIndex(data.custom_fields, { 'name': 'date_paid' })]
         const paymentInformation = {
             amount: data.total,

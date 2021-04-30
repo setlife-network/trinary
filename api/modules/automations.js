@@ -117,8 +117,8 @@ const automations = module.exports = (() => {
             }
         })
         if (paymentToUpdate) {
-            if (paymentInformation.date_paid) {
-                updateDatePaidPayment(params.paymentInformation)
+            if (params.paymentInformation.date_paid) {
+                updateDatePaidPayment({ paymentInformation: params.paymentInformation })
             }
         } else {
             //the payment is not in the db, proceed to store it
