@@ -8,7 +8,8 @@ const automations = module.exports = (() => {
 
     const createClient = async ({ clientInformation }) => {
         const client = await getClientFromExternalId({ id: clientInformation.external_uuid })
-        if (!client) {
+        const email = await getClientFromEmail( { email: clientInformation.email })
+        if (!client || !email) {
             return db.models.Client.create({
                 email: clientInformation.email,
                 currency: clientInformation.currency,
@@ -18,15 +19,27 @@ const automations = module.exports = (() => {
                 updated_at: moment(clientInformation.date_created),
                 external_uuid: clientInformation.external_uuid
             })
+        } else if (!client || email) {
+            updateClient({ clientInformation: clientInformation})
         }
     }
 
     const updateClient = async (params) => {
-        const clientToUpdate = await db.models.Client.findOne({
-            where: {
-                external_uuid: params.clientInformation.external_uuid
-            }
-        })
+        let clientToUpdate
+        if (params.clientInformation.external_uuid){
+            clientToUpdate = await db.models.Client.findOne({
+                where: {
+                    external_uuid: params.clientInformation.external_uuid
+                }
+            })
+        }else{
+            clientToUpdate = await db.models.Client.findOne({
+                where: {
+                    email: params.clientInformation.email
+                }
+            })
+        }
+
         if (clientToUpdate) {
             return db.models.Client.update({
                 email: params.clientInformation.email,
@@ -57,6 +70,15 @@ const automations = module.exports = (() => {
         }
 
     }
+
+    const getClientFromEmail = (params) => {
+        return db.models.Client.findOne({
+            where: {
+                email: params.email
+            }
+        })
+    }
+
 
     const getClientFromExternalId = (params) => {
         return db.models.Client.findOne({
