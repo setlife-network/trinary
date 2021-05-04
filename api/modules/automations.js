@@ -9,7 +9,7 @@ const automations = module.exports = (() => {
     const createClient = async ({ clientInformation }) => {
         const client = await getClientFromExternalId({ id: clientInformation.external_uuid })
         const email = await getClientFromEmail( { email: clientInformation.email })
-        if (!client || !email) {
+        if (!client && !email) {
             return db.models.Client.create({
                 email: clientInformation.email,
                 currency: clientInformation.currency,
@@ -19,7 +19,7 @@ const automations = module.exports = (() => {
                 updated_at: moment(clientInformation.date_created),
                 external_uuid: clientInformation.external_uuid
             })
-        } else if (!client || email) {
+        } else if ((!client && email) || (client && email)) {
             updateClient({ clientInformation: clientInformation})
         }
     }
@@ -32,14 +32,14 @@ const automations = module.exports = (() => {
                     external_uuid: params.clientInformation.external_uuid
                 }
             })
-        }else{
+        }
+        if (params.clientInformation.email && (clientToUpdate === null)){
             clientToUpdate = await db.models.Client.findOne({
                 where: {
                     email: params.clientInformation.email
                 }
             })
         }
-
         if (clientToUpdate) {
             return db.models.Client.update({
                 email: params.clientInformation.email,
