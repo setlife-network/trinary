@@ -19,7 +19,7 @@ const automations = module.exports = (() => {
                 updated_at: moment(clientInformation.date_created),
                 external_uuid: clientInformation.external_uuid
             })
-        } else if ((!client && email) || (client && email)) {
+        } else {
             updateClient({ clientInformation: clientInformation})
         }
     }
