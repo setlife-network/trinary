@@ -99,7 +99,7 @@ const automations = module.exports = (() => {
         if (!paymentToUpdate.payment.date_paid) {
             paymentToUpdate.payment.date_paid = paymentInformation.date_paid
             await db.models.Payment.update({
-                date_paid: moment(paymentToUpdate.payment.date_paid['_d'])
+                date_paid: moment(paymentToUpdate.payment.date_paid, 'YYYY-MM-DD')
             }, {
                 where: {
                     id: paymentToUpdate.payment.id

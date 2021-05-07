@@ -8,7 +8,7 @@
         "path": "/v1/invoiceitems",
         "method": "post",
         "params": {
-            "customer": "cus_JIPyFiju3uXkrH",
+            "customer": "cus_JOnJhSOsnehCg3",
             "price": "price_1IguGfIXnygo2ixqCXUYPpde"
         }
     },
@@ -17,7 +17,7 @@
         "path": "/v1/invoices",
         "method": "post",
         "params": {
-            "customer": "cus_JIPyFiju3uXkrH",
+            "customer": "cus_JOnJhSOsnehCg3",
             "collection_method": "send_invoice",
             "days_until_due": 30
         }
@@ -34,7 +34,8 @@
                 }
             ]
         }
-    },{
+    },
+    {
         "name": "invoice_edit",
         "path":"/v1/invoices/${invoice_create:id}",
         "method": "post",
@@ -49,5 +50,5 @@
                 }
             ]
         }
-    }]
-}
+    }
+]}
