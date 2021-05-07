@@ -21,6 +21,7 @@ import AllocationAddSpecifics from './AllocationAddSpecifics'
 import AllocationClientSpecifics from './AllocationClientSpecifics'
 import AllocationProposeSpecifics from './AllocationProposeSpecifics'
 import LoadingProgress from './LoadingProgress'
+import RangeDatePickerInput from './RangeDatePickerInput'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 
@@ -443,31 +444,25 @@ const AllocationAddForm = (props) => {
                                     </Button>
                                 </ButtonGroup>
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} className='RangeDatePicker'>
                                 <DatePicker
                                     selected={startDate}
                                     startDate={startDate}
                                     endDate={endDate}
                                     shouldCloseOnSelect={startDate && !endDate}
                                     selectsRange
-                                    onChange={(date) => getRangedTimeEntries(date)}
+                                    onChange={(dates) => getRangedTimeEntries(dates)}
                                     customInput={
                                         <Box
                                             px={2}
-                                            py={1}
-                                            boxShadow={3}
                                             borderRadius='borderRadius'
                                             bgcolor='primary.light'
+                                            className='date-picker'
                                         >
-                                            {`${
-                                                startDate
-                                                    ? moment(startDate).format('MM/DD/YYYY')
-                                                    : 'Start date'
-                                            } - ${
-                                                endDate
-                                                    ? moment(endDate).format('MM/DD/YYYY')
-                                                    : ' End date'
-                                            }`}
+                                            <RangeDatePickerInput
+                                                endDate={endDate}
+                                                startDate={startDate}
+                                            />
                                         </Box>
                                     }
                                 />
