@@ -9,7 +9,6 @@ import {
     differenceBy,
     filter
 } from 'lodash'
-import moment from 'moment'
 
 import AllocationAddForm from './AllocationAddForm'
 import LoadingProgress from './LoadingProgress'

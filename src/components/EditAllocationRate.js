@@ -83,8 +83,14 @@ const EditAllocationRate = (props) => {
                                 className='date-picker'
                             >
                                 <RangeDatePickerInput
-                                    endDate={endDate}
-                                    startDate={startDate}
+                                    startDate={startDate
+                                        ? moment.utc(startDate).format('MM/DD/YYYY')
+                                        : 'Start date'
+                                    }
+                                    endDate={endDate
+                                        ? moment.utc(endDate).format('MM/DD/YYYY')
+                                        : 'End date'
+                                    }
                                 />
                             </Box>
                         }

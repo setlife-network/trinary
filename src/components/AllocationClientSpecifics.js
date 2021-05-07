@@ -189,7 +189,7 @@ const AllocationClientSpecifics = (props) => {
                                 <Grid item xs={6} align='center'>
                                     <Typography variant='caption' color='secondary'>
                                         {`${payment.date_paid
-                                            ? moment(payment.date_paid, 'x').format('MM/DD/YYYY')
+                                            ? moment.utc(payment.date_paid, 'x').format('MM/DD/YYYY')
                                             : ''
                                         }`}
                                         {`${
