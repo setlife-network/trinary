@@ -96,7 +96,6 @@ const PaymentTile = (props) => {
         amount: payment.amount / 100,
         currencyInformation: currencyInformation
     })
-    const paymentIsEditable = payment.external_uuid_type
     const numberOfContributorsAllocated = allocations.length
 
     const renderPaymentAllocations = (props) => {
@@ -215,7 +214,7 @@ const PaymentTile = (props) => {
                                     <Button
                                         color='primary'
                                         onClick={() => handleEditPayment(true)}
-                                        disabled={paymentIsEditable}
+                                        disabled={payment.external_uuid_type}
                                     >
                                         {'Edit Payment'.toUpperCase()}
                                     </Button>
