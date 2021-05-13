@@ -3,28 +3,10 @@
     "template_version": 0
   },
   "fixtures": [
-    {
-        "name": "invoice_item_add",
-        "path": "/v1/invoiceitems",
-        "method": "post",
-        "params": {
-            "customer": "cus_JOnJhSOsnehCg3",
-            "price": "price_1IguGfIXnygo2ixqCXUYPpde"
-        }
-    },
-    {
-        "name": "invoice_create",
-        "path": "/v1/invoices",
-        "method": "post",
-        "params": {
-            "customer": "cus_JOnJhSOsnehCg3",
-            "collection_method": "send_invoice",
-            "days_until_due": 30
-        }
-    },
+
     {
         "name": "invoice_edit",
-        "path":"/v1/invoices/${invoice_create:id}",
+        "path":"/v1/invoices/in_1IqhaYIXnygo2ixqVYPZ0ljj",
         "method": "post",
         "params": {
             "custom_fields": [
@@ -37,7 +19,7 @@
     },
     {
         "name": "invoice_edit",
-        "path":"/v1/invoices/${invoice_create:id}",
+        "path":"/v1/invoices/in_1IqhaYIXnygo2ixqVYPZ0ljj",
         "method": "post",
         "params": {
             "custom_fields": [

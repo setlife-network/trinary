@@ -46,7 +46,6 @@ var whitelist = [
     'https://trinary.setlife.tech',
     'https://trinary-staging.herokuapp.com'
 ];
-
 var corsOptions = {
     origin: function(origin, callback) {
         var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
@@ -58,20 +57,21 @@ var corsOptions = {
 }
 
 app.use(cors(corsOptions));
-
 app.use(bodyParser.json());
-
 app.use(cookieParser())
 app.use(cookieSession({
     name: 'session',
     keys: ['userSession'],
     expires: moment().add(180, 'days').toDate()
 }))
+app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
+    console.log(`Incoming API v${req.params.vid} request on worker PID ${process.pid}`)
+    next()
+})
 
 app.get('/api/login', (req, res) => {
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.OAUTH_CLIENT_ID}&scope=repo`)
 })
-
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in the Github App
     github.fetchAccessToken({ code: req.query.code })
         .then(async githubAccessToken => {
@@ -106,23 +106,6 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         })
 })
 
-// app.post('/api/webhooks/invoices/sent', (req, res) => {
-//     const data = req.body.data.object
-//     const paymentInformation = {
-//         amount: data.total,
-//         external_uuid: data.id,
-//         date_incurred: data.created,
-//         customer_id: data.customer,
-//         external_uuid_type: 'STRIPE',
-//     }
-//     apiModules.automations.createPayment({ paymentInformation })
-//         .then(() => {
-//             res.send('payment created')
-//         })
-//         .catch(err => {
-//             console.log(`An error ocurred: ${err}`)
-//         })
-// })
 app.post('/api/webhooks/invoice/paid', async (req, res) => {
     const data = req.body.data.object
     try {
@@ -138,6 +121,7 @@ app.post('/api/webhooks/invoice/paid', async (req, res) => {
 })
 app.post('/api/webhooks/invoice/updated', (req, res) => {
     const data = req.body.data.object
+    //1. see if payment is ready to allocate, if not do nothing
     if (findIndex(data.custom_fields, { 'name': 'ready_to_allocate', 'value': 'true' }) != -1) {
         const datePaidOverride = data.custom_fields[findIndex(data.custom_fields, { 'name': 'date_paid' })]
         const paymentInformation = {
@@ -174,11 +158,6 @@ app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
     } catch (err) {
         console.log(`An error ocurred: ${err}`)
     }
-})
-
-app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
-    console.log(`Incoming API v${req.params.vid} request on worker PID ${process.pid}`)
-    next()
 })
 
 const server = new ApolloServer({

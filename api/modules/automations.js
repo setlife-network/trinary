@@ -32,12 +32,15 @@ const automations = module.exports = (() => {
         return db.models.Payment.findOne({
             where: {
                 external_uuid: params.id
-            }
+            },
+            raw: true,
         })
     }
 
     const getPaymentFromId = (params) => {
-        return db.models.Payment.findByPk(params.id)
+        return db.models.Payment.findByPk(params.id, {
+            raw: true
+        })
     }
 
     const getUserOrganizations = async (params) => {
@@ -92,20 +95,19 @@ const automations = module.exports = (() => {
     const updateDatePaidPayment = async ({ paymentInformation }) => {
         const paymentToUpdate = {}
         if (paymentInformation.external_uuid) {
-            paymentToUpdate.payment = await getPaymentFromExternalId({ id: paymentInformation.external_uuid })
+            Object.assign(paymentToUpdate, await getPaymentFromExternalId({ id: paymentInformation.external_uuid }))
         } else {
-            paymentToUpdate.payment = await getPaymentFromId({ id: paymentInformation.external_uuid })
+            Object.assign(paymentToUpdate, await getPaymentFromId({ id: paymentInformation.id }))
         }
-        if (!paymentToUpdate.payment.date_paid) {
-            paymentToUpdate.payment.date_paid = paymentInformation.date_paid
-            await db.models.Payment.update({
-                date_paid: moment(paymentToUpdate.payment.date_paid, 'YYYY-MM-DD')
-            }, {
-                where: {
-                    id: paymentToUpdate.payment.id
-                }
-            })
-        }
+
+        paymentToUpdate.date_paid = paymentInformation.date_paid
+        await db.models.Payment.update({
+            date_paid: moment(paymentToUpdate.date_paid, 'YYYY-MM-DD')
+        }, {
+            where: {
+                id: paymentToUpdate.id
+            }
+        })
 
     }
 
