@@ -52,7 +52,8 @@ export const UPDATE_PROJECT = gql`
         $project_id: Int!,
         $date: String!,
         $end_date: String,
-        $expected_budget:Int!, $name: String!,
+        $expected_budget:Int!,
+        $name: String!,
         $github_url: String,
         $expected_budget_timeframe: String,
         $toggl_url: String

@@ -42,7 +42,7 @@ const ProjectEditDialog = (props) => {
         open
     } = props
 
-    const currentDate = moment(project.date, 'x').format('YYYY-MM-DD')
+    const currentDate = moment.utc(project.date, 'x').format('YYYY-MM-DD')
     const endDate = project.end_date ? moment(project.end_date, 'x').format('YYYY-MM-DD') : null
     const currencyInformation = selectCurrencyInformation({
         currency: project.client.currency

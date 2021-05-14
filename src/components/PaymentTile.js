@@ -37,8 +37,8 @@ const PaymentTile = (props) => {
         project
     } = props
 
-    const formattedDatePaid = moment(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
-    const formattedDateIncurred = moment(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
+    const formattedDatePaid = moment.utc(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
+    const formattedDateIncurred = moment.utc(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
     const paymentHasBeenMade = payment.date_paid != null
 
     const {
@@ -118,7 +118,7 @@ const PaymentTile = (props) => {
             })
 
             return (
-                <Box mb={3}>
+                <Box mb={3} className='PaymentTile'>
                     <Grid
                         container
                         onClick={() => handleAllocationClicked({ value: true, allocation: a })}
@@ -142,7 +142,7 @@ const PaymentTile = (props) => {
                         </Grid>
                         <Grid item xs={5} align='right'>
                             <Typography color='secondary' variant='caption'>
-                                {`Ends ${moment(end_date, 'x').format('MM/DD/YYYY')} `}
+                                {`Ends ${moment.utc(end_date, 'x').format('MM/DD/YYYY')} `}
                             </Typography>
                         </Grid>
                     </Grid>
@@ -214,6 +214,7 @@ const PaymentTile = (props) => {
                                     <Button
                                         color='primary'
                                         onClick={() => handleEditPayment(true)}
+                                        disabled={payment.external_uuid_type}
                                     >
                                         {'Edit Payment'.toUpperCase()}
                                     </Button>
