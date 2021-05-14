@@ -37,6 +37,11 @@ module.exports = {
         },
     },
     Mutation: {
+        createPermission: (root, { createFields }, { models }) => {
+            return models.Permission.create({
+                ...createFields
+            })
+        },
         syncContributorsPermissions: async (root, { github_access_token }, { models }) => {
             const contributors = await models.Contributor.findAll({
                 raw: true
