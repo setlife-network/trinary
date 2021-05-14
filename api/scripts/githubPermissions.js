@@ -16,12 +16,22 @@ module.exports = (() => {
         })
     }
 
-    const handleContributorPermission = async ({ contributor, githubContributor, project }) => {
+    const handleContributorPermission = async ({ contributor, project }) => {
+        const projectOwner = await db.models.Contributor.findOne({
+            include: [{
+                model: db.models.Permission,
+                where: {
+                    project_id: project.id,
+                    type: 'owner'
+                }
+            }],
+            raw: true
+        })
         const repoInfo = split(project.github_url, '/')
         const contributorInfo = split(contributor.github_handle, '/')
         try {
             const githubContributorPermission = await fetchUserPermission({
-                auth_key: githubContributor.accessToken,
+                auth_key: projectOwner.github_access_token,
                 owner: repoInfo[repoInfo.length - 2],
                 repo: repoInfo[repoInfo.length - 1],
                 username: contributorInfo[contributorInfo.length - 1]

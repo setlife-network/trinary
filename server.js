@@ -93,8 +93,7 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         .then((contributorInfo) => {
             //sync the permissions for the contributor
             apiModules.authentication.grantProjectPermissions({
-                contributor: contributorInfo.contributor.dataValues,
-                githubContributor: contributorInfo.githubContributor
+                contributor: contributorInfo.contributor.dataValues
             })
         })
         .then(() => {
