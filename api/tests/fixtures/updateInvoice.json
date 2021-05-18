@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "template_version": 0
+  },
+  "fixtures": [
+
+    {
+        "name": "invoice_edit",
+        "path":"/v1/invoices/in_1IqhaYIXnygo2ixqVYPZ0ljj",
+        "method": "post",
+        "params": {
+            "custom_fields": [
+                {
+                    "name": "ready_to_allocate",
+                    "value": "true"
+                }
+            ]
+        }
+    },
+    {
+        "name": "invoice_edit",
+        "path":"/v1/invoices/in_1IqhaYIXnygo2ixqVYPZ0ljj",
+        "method": "post",
+        "params": {
+            "custom_fields": [
+                {
+                    "name": "ready_to_allocate",
+                    "value": "true"
+                }, {
+                    "name": "date_paid",
+                    "value": "2020-04-25"
+                }
+            ]
+        }
+    }
+]}
