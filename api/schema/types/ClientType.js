@@ -8,6 +8,7 @@ module.exports = gql`
         name: String!
         email: String!
         currency: String!
+        external_uuid: String!
         payments: [Payment]
         projects: [Project]
         totalPaid(

@@ -12,6 +12,7 @@ module.exports = gql`
         date: String!
         date_last_synced: String
         client_id: Int!
+        end_date: String
         toggl_id: String
         expected_budget_timeframe: String
         allocations(contributorId: Int): [Allocation]
@@ -33,6 +34,16 @@ module.exports = gql`
             fromDate: String,
             toDate:String,
             githubPersonalKey: String
+        ): Int
+        githubPullRequestsClosed(
+            fromDate: String,
+            toDate: String,
+            contributorId: Int
+        ): Int
+        githubPullRequestsOpened(
+            fromDate: String,
+            toDate: String,
+            contributorId: Int
         ): Int
         timeEntries(
             fromDate: String
@@ -81,6 +92,7 @@ module.exports = gql`
         toggl_url: String
         client_id: Int!
         date: String!
+        end_date: String
         expected_budget_timeframe: String
     }
 
@@ -93,6 +105,7 @@ module.exports = gql`
         client_id: Int
         toggl_id: String
         date: String
+        end_date: String
         date_last_synced:String
         expected_budget_timeframe: String
     }
@@ -115,7 +128,7 @@ module.exports = gql`
         ): [Contributor]
         syncProjectIssues(
             project_id: Int!,
-            github_personal_key: String
+            contributor_id: Int
         ): [Issue]
         syncTogglProject(
             project_id: Int!

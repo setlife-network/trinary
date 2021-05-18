@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import moment from 'moment'
 import {
     Box,
     Fab,

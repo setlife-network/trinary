@@ -1,25 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLazyQuery, useQuery } from '@apollo/client'
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
     Box,
     Button,
     Grid,
+    Icon,
     Typography
 } from '@material-ui/core'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment'
 
 import ContributorTimeTrackedTile from './ContributorTimeTrackedTile'
 import LoadingProgress from './LoadingProgress'
+import RangeDatePickerInput from './RangeDatePickerInput'
 import { GET_PROJECT_TIME_ENTRIES } from '../operations/queries/ProjectQueries'
+import { TIME_RANGES } from '../constants'
 
 const ProjectTimeTracking = (props) => {
 
     const { projectId } = props
 
-    const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
+    const [startDate, setStartDate] = useState(null)
+
+    useEffect(() => {
+        getRangedTimeEntries({ startDate, endDate })
+    }, [endDate])
 
     const [
         getProjectTimeEntries,
@@ -40,17 +51,49 @@ const ProjectTimeTracking = (props) => {
         } })
     }
 
-    const getRangedTimeEntries = (dates) => {
+    const setDates = (dates) => {
         const [start, end] = dates
         setStartDate(start)
         setEndDate(end)
-        if (end) {
+    }
+
+    const getRangedTimeEntries = ({ startDate, endDate }) => {
+        if (endDate) {
             getProjectTimeEntries({ variables: {
                 id: projectId,
                 fromDate: moment(startDate).format('YYYY-MM-DD'),
-                toDate: moment(end).format('YYYY-MM-DD')
+                toDate: moment(endDate).format('YYYY-MM-DD')
             } })
         }
+    }
+
+    const setFixedRangedTime = ({ startDate, endDate }) => {
+        setStartDate(startDate['_d'])
+        setEndDate(endDate['_d'])
+    }
+
+    const renderFixedRangeTimes = (timeRanges) => {
+
+        return timeRanges.map(tr => {
+
+            const day = moment().subtract(tr.since, tr.periodRange)
+            const startDate = day.clone().startOf(tr.periodRange)
+            const endDate = day.clone().endOf(tr.periodRange)
+
+            return (
+                <Grid item md={2} className='time-ranges'>
+                    <Box align='left' mb={2}>
+                        <Button
+                            color='primary'
+                            onClick={() => setFixedRangedTime({ startDate, endDate })}
+                        >
+                            {tr.description}
+                        </Button>
+                    </Box>
+                </Grid>
+            )
+        })
+
     }
 
     const {
@@ -98,47 +141,54 @@ const ProjectTimeTracking = (props) => {
                     </strong>
                 </Typography>
             </Grid>
-            <Grid item xs={12} sm={5} lg={4} align='left'>
-                <Box mt={2}>
-                    <DatePicker
-                        selected={startDate}
-                        startDate={startDate}
-                        endDate={endDate}
-                        shouldCloseOnSelect={startDate && !endDate}
-                        selectsRange
-                        onChange={(date) => getRangedTimeEntries(date)}
-                        customInput={
-                            <Box
-                                px={2}
-                                py={1}
-                                boxShadow={3}
-                                borderRadius='borderRadius'
-                                bgcolor='primary.light'
-                            >
-                                {`${
-                                    startDate
-                                        ? moment(startDate).format('MM/DD/YYYY')
-                                        : 'Start date'
-                                } - ${
-                                    endDate
-                                        ? moment(endDate).format('MM/DD/YYYY')
-                                        : ' End date'
-                                }`}
+            <Grid item xs={12} lg={10} xl={8} align='left'>
+                <Box
+                    px={2}
+                    mt={3}
+                    py={2}
+                    borderRadius='borderRadius'
+                    bgcolor='primary.light'
+                >
+                    <Grid container className='RangeDatePicker'>
+                        {renderFixedRangeTimes(TIME_RANGES)}
+                        <Grid item xs={12} xl={8} >
+                            <DatePicker
+                                selected={startDate}
+                                startDate={startDate}
+                                endDate={endDate}
+                                shouldCloseOnSelect={startDate && !endDate}
+                                selectsRange
+                                onChange={(dates) => setDates(dates)}
+                                customInput={
+                                    <Box
+                                        px={2}
+                                        borderRadius='borderRadius'
+                                        bgcolor='primary.light'
+                                        className='date-picker'
+                                    >
+                                        <RangeDatePickerInput
+                                            endDate={endDate}
+                                            startDate={startDate}
+                                        />
+                                    </Box>
+                                }
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Box mt={1}>
+                                <Button
+                                    color='primary'
+                                    disabled={!startDate && !endDate}
+                                    onClick={() => clearDateInput()}
+                                >
+                                    {`Clear dates`}
+                                </Button>
                             </Box>
-                        }
-                    />
+                        </Grid>
+                    </Grid>
+
                 </Box>
-            </Grid>
-            <Grid item xs={12} sm={6} align='left'>
-                <Box mt={1} px={2}>
-                    <Button
-                        color='primary'
-                        disabled={!startDate && !endDate}
-                        onClick={() => clearDateInput()}
-                    >
-                        {`Clear dates`}
-                    </Button>
-                </Box>
+
             </Grid>
             <Grid item xs={12}/>
             <Grid item xs={12} sm={4}>

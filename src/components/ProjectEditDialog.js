@@ -42,7 +42,8 @@ const ProjectEditDialog = (props) => {
         open
     } = props
 
-    const currentDate = moment(project.date, 'x').format('YYYY-MM-DD')
+    const currentDate = moment.utc(project.date, 'x').format('YYYY-MM-DD')
+    const endDate = project.end_date ? moment(project.end_date, 'x').format('YYYY-MM-DD') : null
     const currencyInformation = selectCurrencyInformation({
         currency: project.client.currency
     })
@@ -56,6 +57,7 @@ const ProjectEditDialog = (props) => {
     const [expectedBudget, setExpectedBudget] = useState(project.expected_budget)
     const [githubURL, setGithubURL] = useState(project.github_url)
     const [projectDate, setProjectDate] = useState(null)
+    const [projectEndDate, setProjectEndDate] = useState(null)
     const [projectName, setProjectName] = useState(project.name)
     const [togglURL, setTogglURL] = useState(project.toggl_url)
 
@@ -71,6 +73,9 @@ const ProjectEditDialog = (props) => {
     }
     const handleDateChange = (date) => {
         setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
+    }
+    const handleEndDateChange = (date) => {
+        setProjectEndDate(moment(date['_d']).format('YYYY-MM-DD'))
     }
     const handleTimeframeChange = (timeframe) => {
         setBudgetTimeframe(timeframe)
@@ -91,13 +96,16 @@ const ProjectEditDialog = (props) => {
         const projectInfoToEdit = {
             project_id: project.id,
             date: projectDate,
+            end_date: projectEndDate,
             expected_budget: Number(expectedBudget),
-            expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value,
+            expected_budget_timeframe: (
+                budgetTimeframe != null
+                    ? EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
+                    : null
+            ),
             github_url: githubURL,
-            name: projectName
-        }
-        if (togglURL) {
-            projectInfoToEdit['toggl_url'] = togglURL
+            name: projectName,
+            toggl_url: togglURL
         }
         const projectEdited = await updateProject({ variables: projectInfoToEdit })
         if (loading) return <LoadingProgress/>
@@ -115,8 +123,12 @@ const ProjectEditDialog = (props) => {
             githubURL == project.github_url &&
             projectName == project.name &&
             togglURL == project.toggl_url &&
-            EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe || 0].label == project.expected_budget_timeframe &&
-            projectDate == currentDate
+            ((budgetTimeframe != null
+                ? EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].label
+                : null
+            ) == project.expected_budget_timeframe) &&
+            projectDate == currentDate &&
+            endDate == projectEndDate
         ) {
             setDisableEdit(true)
         } else if (!expectedBudget || !githubURL || !projectName) {
@@ -128,11 +140,15 @@ const ProjectEditDialog = (props) => {
 
     useEffect(() => {
         setProjectDate(currentDate)
-        if (project.expected_budget_timeframe) {
-            //set the index of the current expected budget timeframe
-            setBudgetTimeframe(findIndex(EXPECTED_BUDGET_TIMEFRAME_OPTIONS, ['label', `${project.expected_budget_timeframe}`]))
+        if (endDate) {
+            setProjectEndDate(endDate)
         }
-    }, [])
+        if (project.expected_budget_timeframe) {
+            setBudgetTimeframe(
+                findIndex(EXPECTED_BUDGET_TIMEFRAME_OPTIONS, ['label', project.expected_budget_timeframe])
+            )
+        }
+    }, [open])
 
     const renderTimeframeOptions = ({ timeframes }) => {
         return timeframes.map((timeframe, i) => {
@@ -161,7 +177,7 @@ const ProjectEditDialog = (props) => {
                         alignItems='center'
                     >
                         <Grid item xs={12} lg={6}>
-                            <Box my={2} pr={1}>
+                            <Box my={2} px={1}>
                                 <TextField
                                     label='Project name'
                                     variant='outlined'
@@ -173,7 +189,7 @@ const ProjectEditDialog = (props) => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} lg={6}>
-                            <Box my={2} pl={1}>
+                            <Box my={2} px={1}>
                                 <CurrencyTextField
                                     fullWidth
                                     label='Expected Budget'
@@ -189,7 +205,7 @@ const ProjectEditDialog = (props) => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} lg={6}>
-                            <Box my={2} pr={1}>
+                            <Box my={2} px={1}>
                                 <TextField
                                     label='Github URL'
                                     variant='outlined'
@@ -201,7 +217,7 @@ const ProjectEditDialog = (props) => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} lg={6}>
-                            <Box my={2}>
+                            <Box my={2} px={1}>
                                 <TextField
                                     label='Toggl URL'
                                     variant='outlined'
@@ -212,25 +228,45 @@ const ProjectEditDialog = (props) => {
                                 />
                             </Box>
                         </Grid>
-                        <Grid item xs={12}>
-                            <MuiPickersUtilsProvider utils={MomentUtils}>
-                                <KeyboardDatePicker
-                                    disableToolbar
-                                    variant='inline'
-                                    format='MM/DD/YYYY'
-                                    margin='normal'
-                                    id='date-picker-inline'
-                                    label=''
-                                    value={projectDate}
-                                    onChange={handleDateChange}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
-                                />
-                            </MuiPickersUtilsProvider>
+                        <Grid item xs={12} sm={6}>
+                            <Box px={1}>
+                                <MuiPickersUtilsProvider utils={MomentUtils}>
+                                    <KeyboardDatePicker
+                                        fullWidth
+                                        disableToolbar
+                                        variant='inline'
+                                        format='MM/DD/YYYY'
+                                        margin='normal'
+                                        id='date-picker-inline'
+                                        label='Project start date'
+                                        value={projectDate}
+                                        onChange={handleDateChange}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change date',
+                                        }}
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </Box>
                         </Grid>
-                        <Grid item xs={12} lg={6}>
-                            <Box mb={2}>
+                        <Grid item xs={12} sm={6}>
+                            <Box px={1}>
+                                <MuiPickersUtilsProvider utils={MomentUtils}>
+                                    <KeyboardDatePicker
+                                        fullWidth
+                                        disableToolbar
+                                        variant='inline'
+                                        format='MM/DD/YYYY'
+                                        margin='normal'
+                                        id='date-picker-inline'
+                                        label='Project end date'
+                                        value={projectEndDate}
+                                        onChange={handleEndDateChange}
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Box my={2} px={1}>
                                 <FormControl fullWidth>
                                     <InputLabel>
                                         {`Expected budget timeframe`}

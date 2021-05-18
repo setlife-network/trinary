@@ -45,6 +45,9 @@ module.exports = (sequelize) => {
             type: DataTypes.DATE,
             allowNull: false
         },
+        end_date: {
+            type: DataTypes.DATE,
+        },
         date_last_synced: {
             type: DataTypes.DATE,
         },

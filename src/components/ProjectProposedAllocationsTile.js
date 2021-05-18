@@ -79,7 +79,7 @@ const ProjectProposedAllocationsTile = (props) => {
                             </Grid>
                             <Grid item xs={5} align='right'>
                                 <Typography color='secondary' variant='caption'>
-                                    {`Ends ${moment(a.end_date, 'x').format('MM/DD/YYYY')} `}
+                                    {`Ends ${moment.utc(a.end_date, 'x').format('MM/DD/YYYY')} `}
                                 </Typography>
                             </Grid>
                         </Grid>
