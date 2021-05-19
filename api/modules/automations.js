@@ -56,11 +56,11 @@ const automations = module.exports = (() => {
                 amount: paymentInformation.amount,
                 external_uuid: paymentInformation.external_uuid,
                 date_incurred: moment(paymentInformation.date_incurred['_d']).format('YYYY-MM-DD HH:mm:ss'),
+                date_paid: paymentInformation.date_paid ? moment(paymentInformation.date_paid['_d']) : null,
                 client_id: client.id,
                 external_uuid_type: paymentInformation.external_uuid_type
             })
         }
-
     }
 
     const getClientFromEmail = (params) => {
@@ -84,12 +84,15 @@ const automations = module.exports = (() => {
         return db.models.Payment.findOne({
             where: {
                 external_uuid: params.id
-            }
+            },
+            raw: true,
         })
     }
 
     const getPaymentFromId = (params) => {
-        return db.models.Payment.findByPk(params.id)
+        return db.models.Payment.findByPk(params.id, {
+            raw: true
+        })
     }
 
     const getUserOrganizations = async (params) => {
@@ -144,18 +147,20 @@ const automations = module.exports = (() => {
     const updateDatePaidPayment = async ({ paymentInformation }) => {
         const paymentToUpdate = {}
         if (paymentInformation.external_uuid) {
-            paymentToUpdate.payment = await getPaymentFromExternalId({ id: paymentInformation.external_uuid })
+            Object.assign(paymentToUpdate, await getPaymentFromExternalId({ id: paymentInformation.external_uuid }))
         } else {
-            paymentToUpdate.payment = await getPaymentFromId({ id: paymentInformation.external_uuid })
+            Object.assign(paymentToUpdate, await getPaymentFromId({ id: paymentInformation.id }))
         }
-        paymentToUpdate.payment.date_paid = paymentInformation.date_paid
+
+        paymentToUpdate.date_paid = paymentInformation.date_paid
         await db.models.Payment.update({
-            date_paid: moment(paymentToUpdate.payment.date_paid['_d'])
+            date_paid: moment(paymentToUpdate.date_paid, 'YYYY-MM-DD')
         }, {
             where: {
-                id: paymentToUpdate.payment.id
+                id: paymentToUpdate.id
             }
         })
+
     }
 
     const updatePaymentFromStripe = async (params) => {
@@ -166,7 +171,9 @@ const automations = module.exports = (() => {
             }
         })
         if (paymentToUpdate) {
-            //do some update here
+            if (params.paymentInformation.date_paid) {
+                updateDatePaidPayment({ paymentInformation: params.paymentInformation })
+            }
         } else {
             //the payment is not in the db, proceed to store it
             createPayment({ paymentInformation: params.paymentInformation })
