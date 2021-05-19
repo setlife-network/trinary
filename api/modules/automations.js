@@ -15,8 +15,6 @@ const automations = module.exports = (() => {
                 currency: clientInformation.currency,
                 name: clientInformation.name,
                 is_active: 1,
-                created_at: moment(clientInformation.date_created),
-                updated_at: moment(clientInformation.date_created),
                 external_uuid: clientInformation.external_uuid
             })
         } else {
@@ -41,17 +39,11 @@ const automations = module.exports = (() => {
             })
         }
         if (clientToUpdate) {
-            return db.models.Client.update({
-                email: params.clientInformation.email,
-                currency: params.clientInformation.currency,
-                name: params.clientInformation.name,
-                updated_at: moment(params.clientInformation.date_created),
-                external_uuid: params.clientInformation.external_uuid
-            }, {
-                where: {
-                    id: clientToUpdate.id
-                }
-            })
+            clientToUpdate.email = params.clientInformation.email
+            clientToUpdate.currency = params.clientInformation.currency
+            clientToUpdate.name = params.clientInformation.name
+            clientToUpdate.external_uuid = params.clientInformation.external_uuid
+            await clientToUpdate.save()
         } else {
             createClient({ clientInformation: params.clientInformation })
         }
