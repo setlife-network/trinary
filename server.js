@@ -179,19 +179,20 @@ app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
     next()
 })
 
-app.post('/api/webhooks/clients',express.json(), (req, res, next) => {
-    const body = req.body.data.object
+app.post('/api/webhooks/clients', express.json(), (req, res, next) => {
+
+    const clientData = req.body.data.object
     const clientInformation = {
-        email: body.email,
-        currency: body.currency,
-        name: body.name,
+        email: clientData.email,
+        currency: clientData.currency,
+        name: clientData.name,
         date_created: req.body.created,
-        external_uuid: body.id
+        external_uuid: clientData.id
     }
     const webhookType = req.body.type
-    if (webhookType === "customer.created"){
-        apiModules.automations.createClient({ clientInformation})
-            .then(()=>{
+    if (webhookType === 'customer.created'){
+        apiModules.automations.createClient({ clientInformation })
+            .then(() => {
                 res.sendStatus(200)
             })
             .catch(err => {
@@ -199,7 +200,7 @@ app.post('/api/webhooks/clients',express.json(), (req, res, next) => {
             })
     }else if (webhookType === "customer.updated"){
         apiModules.automations.updateClient({ clientInformation })
-            .then(()=>{
+            .then(() => {
                 res.sendStatus(200)
             })
             .catch(err => {
