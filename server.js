@@ -171,7 +171,7 @@ app.post('/api/webhooks/clients', express.json(), (req, res, next) => {
         external_uuid: clientData.id
     }
     const webhookType = req.body.type
-    if (webhookType === 'customer.created'){
+    if (webhookType === 'customer.created') {
         apiModules.automations.createClient({ clientInformation })
             .then(() => {
                 res.sendStatus(200)
@@ -179,7 +179,7 @@ app.post('/api/webhooks/clients', express.json(), (req, res, next) => {
             .catch(err => {
                 console.log(`An error ocurred: ${err}`)
             })
-    }else if (webhookType === "customer.updated"){
+    } else if (webhookType === 'customer.updated' ) {
         apiModules.automations.updateClient({ clientInformation })
             .then(() => {
                 res.sendStatus(200)
