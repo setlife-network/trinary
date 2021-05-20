@@ -18,20 +18,20 @@ const automations = module.exports = (() => {
                 external_uuid: clientInformation.external_uuid
             })
         } else {
-            updateClient({ clientInformation: clientInformation})
+            updateClient({ clientInformation: clientInformation })
         }
     }
 
     const updateClient = async (params) => {
         let clientToUpdate
-        if (params.clientInformation.external_uuid){
+        if (params.clientInformation.external_uuid) {
             clientToUpdate = await db.models.Client.findOne({
                 where: {
                     external_uuid: params.clientInformation.external_uuid
                 }
             })
         }
-        if (params.clientInformation.email && (clientToUpdate === null)){
+        if (params.clientInformation.email && (clientToUpdate === null)) {
             clientToUpdate = await db.models.Client.findOne({
                 where: {
                     email: params.clientInformation.email
@@ -70,7 +70,6 @@ const automations = module.exports = (() => {
             }
         })
     }
-
 
     const getClientFromExternalId = (params) => {
         return db.models.Client.findOne({
