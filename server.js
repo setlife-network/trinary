@@ -160,7 +160,7 @@ app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
     }
 })
 
-app.post('/api/webhooks/clients', (req, res, next) => {
+app.post('/api/webhooks/clients', async (req, res, next) => {
 
     const clientData = req.body.data.object
     const clientInformation = {
@@ -172,21 +172,19 @@ app.post('/api/webhooks/clients', (req, res, next) => {
     }
     const webhookType = req.body.type
     if (webhookType === 'customer.created') {
-        apiModules.automations.createClient({ clientInformation })
-            .then(() => {
-                res.sendStatus(200)
-            })
-            .catch(err => {
-                console.log(`An error ocurred: ${err}`)
-            })
+        try {
+            await apiModules.automations.createClient({ clientInformation })
+            res.sendStatus(200)
+        } catch (err) {
+            console.log(`An error ocurred: ${err}`)
+        }
     } else if (webhookType === 'customer.updated' ) {
-        apiModules.automations.updateClient({ clientInformation })
-            .then(() => {
-                res.sendStatus(200)
-            })
-            .catch(err => {
-                console.log(`An error ocurred: ${err}`)
-            })
+        try {
+            await apiModules.automations.updateClient({ clientInformation })
+            res.sendStatus(200)
+        } catch (err) {
+            console.log(`An error ocurred: ${err}`)
+        }
     }
 })
 
