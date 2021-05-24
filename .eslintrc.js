@@ -32,7 +32,7 @@ module.exports = {
         'jsx-quotes': ['error', 'prefer-single'],
         'keyword-spacing': ['error', { 'after': true }],
         'lines-between-class-members': 'off',
-        'linebreak-style': ['error', 'windows'], //For windows user using ESlint.
+        //'linebreak-style': ['error', 'off'],
         'max-len': 'off',
         'new-cap': 'off',
         'no-bitwise': 'off',
