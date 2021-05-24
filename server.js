@@ -160,7 +160,7 @@ app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
     }
 })
 
-app.post('/api/webhooks/clients', express.json(), (req, res, next) => {
+app.post('/api/webhooks/clients', (req, res, next) => {
 
     const clientData = req.body.data.object
     const clientInformation = {
