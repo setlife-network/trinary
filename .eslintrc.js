@@ -33,6 +33,7 @@ module.exports = {
         'keyword-spacing': ['error', { 'after': true }],
         'lines-between-class-members': 'off',
         //'linebreak-style': ['error', 'off'],
+        //'linebreak-style': ['error', 'windows'],
         'max-len': 'off',
         'new-cap': 'off',
         'no-bitwise': 'off',
