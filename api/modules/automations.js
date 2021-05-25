@@ -3,6 +3,7 @@ const moment = require('moment')
 const github = require('../handlers/github')
 const { GITHUB } = require('../config/credentials')
 const db = require('../models')
+const { STRIPE } = require('../config/credentials')
 
 const automations = module.exports = (() => {
 
@@ -16,6 +17,27 @@ const automations = module.exports = (() => {
                 date_paid: paymentInformation.date_paid ? moment(paymentInformation.date_paid['_d']) : null,
                 client_id: client.id,
                 external_uuid_type: paymentInformation.external_uuid_type
+            })
+        }
+    }
+
+    const updateClientToStripe = async (params) => {
+        const stripeClient = stripeAPI(STRIPE.API_KEY)
+        const client = getClientFromExternalId(params.createdClient.external_uuid)
+        stripe_uuid = client.external_uuid
+        if (client) {
+            return stripeClient.customers.update({
+                stripe_uuid,
+                email: params.createdClient.email,
+                name: params.createdClient.name,
+                description: params.createdClient.description,
+            })
+        } else {
+            return stripeClient.customers.create({
+                email: params.createdClient.email,
+                name: params.createdClient.name,
+                description: params.createdClient.description,
+                currency: params.createdClient.currency
             })
         }
     }
@@ -133,7 +155,8 @@ const automations = module.exports = (() => {
         getUserOrganizations,
         getOrganizationRepos,
         updateDatePaidPayment,
-        updatePaymentFromStripe
+        updatePaymentFromStripe,
+        updateClientToStripe
     }
 
 })()

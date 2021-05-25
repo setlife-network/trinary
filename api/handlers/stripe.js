@@ -23,18 +23,6 @@ const stripe = module.exports = (() => {
         return paymentIntent
     }
 
-    const updateClientToStripe = async (params) => {
-        const stripeClient = stripeAPI(STRIPE.API_KEY)
-        const client = getClientFromStripe(params) //todo create function to search customers on stripe
-        if (client) {
-            return await stripeClient.customers.create({
-                email: params.email,
-                name: params.name,
-                description: params.description,
-            })
-        }
-    }
-
     return {
         requestPaymentIntent
     }

@@ -1,5 +1,6 @@
 const moment = require('moment')
 const { fn, col, Op } = require('sequelize')
+const apiModules = require('../../modules')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
 
@@ -50,9 +51,11 @@ module.exports = {
     },
     Mutation: {
         createClient: (root, { createFields }, { models }) => {
-            return models.Client.create({
+            const createdClient = models.Client.create({
                 ...createFields
             })
+            apiModules.automations.updateClientToStripe(createdClient)
+            return createdClient
         },
         deleteClientById: (root, { id }, { models }) => {
             return models.Client.destroy({ where: { id } })
