@@ -21,12 +21,18 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             unique: true
         },
+        external_uuid_type: {
+            type: DataTypes.STRING
+        },
         date_incurred: {
             type: DataTypes.DATE,
             allowNull: false
         },
         date_paid: {
             type: DataTypes.DATE
+        },
+        external_uuid_type: {
+            type: DataTypes.STRING
         },
         client_id: { //FK
             type: DataTypes.INTEGER,

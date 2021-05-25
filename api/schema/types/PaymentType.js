@@ -9,6 +9,8 @@ module.exports = gql`
         date_paid: String
         client_id: Int!
         totalAllocated: Int
+        external_uuid: String
+        external_uuid_type: String
         client: Client
         allocations: [Allocation]
     }

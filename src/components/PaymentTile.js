@@ -214,6 +214,7 @@ const PaymentTile = (props) => {
                                     <Button
                                         color='primary'
                                         onClick={() => handleEditPayment(true)}
+                                        disabled={payment.external_uuid_type}
                                     >
                                         {'Edit Payment'.toUpperCase()}
                                     </Button>
