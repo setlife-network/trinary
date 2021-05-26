@@ -160,6 +160,34 @@ app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
     }
 })
 
+app.post('/api/webhooks/clients', async (req, res, next) => {
+
+    const clientData = req.body.data.object
+    const clientInformation = {
+        email: clientData.email,
+        currency: clientData.currency,
+        name: clientData.name,
+        date_created: req.body.created,
+        external_uuid: clientData.id
+    }
+    const webhookType = req.body.type
+    if (webhookType === 'customer.created') {
+        try {
+            await apiModules.automations.createClient({ clientInformation })
+            res.sendStatus(200)
+        } catch (err) {
+            console.log(`An error ocurred: ${err}`)
+        }
+    } else if (webhookType === 'customer.updated' ) {
+        try {
+            await apiModules.automations.updateClient({ clientInformation })
+            res.sendStatus(200)
+        } catch (err) {
+            console.log(`An error ocurred: ${err}`)
+        }
+    }
+})
+
 const server = new ApolloServer({
     schema,
     context: ({ req }) => ({
