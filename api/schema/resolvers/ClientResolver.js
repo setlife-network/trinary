@@ -51,7 +51,6 @@ module.exports = {
     },
     Mutation: {
         createClient: async (root, {createFields}, {models}) => {
-            console.log('enter on created')
             const createdClient = models.Client.create({
                 ...createFields
             })
