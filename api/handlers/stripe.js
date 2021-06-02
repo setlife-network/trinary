@@ -21,7 +21,6 @@ const stripe = module.exports = (() => {
     }
 
     return {
-        requestPaymentIntent,
         pushUpdatedClient
     }
 
