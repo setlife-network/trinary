@@ -20,6 +20,14 @@ const automations = module.exports = (() => {
         }
     }
 
+    const getClientFromEmail = (params) => {
+        return db.models.Client.findOne({
+            where: {
+                email: params.email
+            }
+        })
+    }
+
     const getClientWithExternalId = (params) => {
         return db.models.Client.findOne({
             where: {
@@ -133,6 +141,7 @@ const automations = module.exports = (() => {
         getClientWithExternalId,
         getUserOrganizations,
         getOrganizationRepos,
+        updateClient,
         updateDatePaidPayment,
         updatePaymentFromStripe
     }
