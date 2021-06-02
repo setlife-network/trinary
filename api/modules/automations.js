@@ -6,6 +6,49 @@ const db = require('../models')
 
 const automations = module.exports = (() => {
 
+    const createClient = async ({ clientInformation }) => {
+        const client = await getClientFromExternalId({ id: clientInformation.external_uuid })
+        const email = await getClientFromEmail( { email: clientInformation.email })
+        if (!client && !email) {
+            return db.models.Client.create({
+                email: clientInformation.email,
+                currency: clientInformation.currency,
+                name: clientInformation.name,
+                is_active: 1,
+                external_uuid: clientInformation.external_uuid
+            })
+        } else {
+            updateClient({ clientInformation: clientInformation })
+        }
+    }
+
+    const updateClient = async (params) => {
+        let clientToUpdate
+        if (params.clientInformation.external_uuid) {
+            clientToUpdate = await db.models.Client.findOne({
+                where: {
+                    external_uuid: params.clientInformation.external_uuid
+                }
+            })
+        }
+        if (params.clientInformation.email && (clientToUpdate === null)) {
+            clientToUpdate = await db.models.Client.findOne({
+                where: {
+                    email: params.clientInformation.email
+                }
+            })
+        }
+        if (clientToUpdate) {
+            clientToUpdate.email = params.clientInformation.email
+            clientToUpdate.currency = params.clientInformation.currency
+            clientToUpdate.name = params.clientInformation.name
+            clientToUpdate.external_uuid = params.clientInformation.external_uuid
+            await clientToUpdate.save()
+        } else {
+            createClient({ clientInformation: params.clientInformation })
+        }
+    }
+
     const createPayment = async ({ paymentInformation }) => {
         const client = await getClientFromExternalId({ id: paymentInformation.customer_id })
         if (client) {
@@ -18,6 +61,14 @@ const automations = module.exports = (() => {
                 external_uuid_type: paymentInformation.external_uuid_type
             })
         }
+    }
+
+    const getClientFromEmail = (params) => {
+        return db.models.Client.findOne({
+            where: {
+                email: params.email
+            }
+        })
     }
 
     const getClientFromExternalId = (params) => {
@@ -129,6 +180,8 @@ const automations = module.exports = (() => {
     }
 
     return {
+        createClient,
+        updateClient,
         createPayment,
         getUserOrganizations,
         getOrganizationRepos,
