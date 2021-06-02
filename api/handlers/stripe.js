@@ -13,9 +13,12 @@ const stripe = module.exports = (() => {
                 id: params.updatedFields.id
             }
         })
-        if (client.external_uuid) {
+        const stripe_uuid = client.external_uuid
+        if (stripe_uuid) {
             return await stripeClient.customer.update({
-
+                stripe_uuid,
+                name: client.name,
+                email: client.email
             })
         }
     }
