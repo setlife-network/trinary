@@ -8,7 +8,7 @@ const db = require('../models')
 const stripe = module.exports = (() => {
     const stripeClient = stripeAPI(STRIPE.SECRET)
 
-    const updateClientToStripe = async (params) => {
+    const createClient = async (params) => {
         const client = db.models.Client.findOne({
             where: {
                 email: params.createFields.email
@@ -23,7 +23,7 @@ const stripe = module.exports = (() => {
     }
 
     return {
-        updateClientToStripe
+        createClient
     }
 
 })();
