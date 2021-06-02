@@ -5,26 +5,24 @@ const {
 } = require('../config/credentials')
 
 const stripe = module.exports = (() => {
+    const stripeClient = stripeAPI(STRIPE.API_KEY)
 
-    const requestPaymentIntent = (params) => {
-        const paymentIntent = new Promise((resolve, reject) => {
-            const stripeClient = stripeAPI(STRIPE.API_KEY)
-            stripeClient.paymentIntents.create({
-                amount: 1000,
-                currency: 'usd',
-                payment_method_types: ['card'],
-                receipt_email: 'test@example.com',
-            })
-                .then(response => {
-                    resolve(response)
-                })
-                .catch(error => reject(new Error(error)))
+    const pushUpdatedClient = async (params) => {
+        const client = db.models.Client.findOne({
+            where: {
+                id: params.updatedFields.id
+            }
         })
-        return paymentIntent
+        if (client.external_uuid) {
+            return await stripeClient.customer.update({
+
+            })
+        }
     }
 
     return {
-        requestPaymentIntent
+        requestPaymentIntent,
+        pushUpdatedClient
     }
 
 })();

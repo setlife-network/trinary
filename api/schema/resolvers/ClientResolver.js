@@ -2,6 +2,7 @@ const moment = require('moment')
 const { fn, col, Op } = require('sequelize')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
+const stripe = require('../../handlers/stripe');
 
 module.exports = {
 
@@ -65,6 +66,7 @@ module.exports = {
                     id
                 }
             })
+            await stripe.pushUpdatedClient({ updateFields })
             return models.Client.findByPk(id)
         }
     }
