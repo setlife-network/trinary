@@ -141,7 +141,6 @@ const automations = module.exports = (() => {
         getClientWithExternalId,
         getUserOrganizations,
         getOrganizationRepos,
-        updateClient,
         updateDatePaidPayment,
         updatePaymentFromStripe
     }
