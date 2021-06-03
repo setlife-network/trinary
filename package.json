@@ -57,6 +57,7 @@
   "scripts": {
     "ui": "cross-env PORT=6002 react-scripts start",
     "server": "cross-env PORT=6001 node server",
+    "dev-server": "cross-env PORT=6001 nodemon server",
     "start": "node server",
     "build": "react-scripts build",
     "test": "react-scripts test",
