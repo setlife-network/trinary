@@ -4,6 +4,11 @@ body {
 
 .App {
     text-align: center;
+
+    // For development purposes only
+    .SwipeableNavigation {
+        position: absolute;
+    }
 }
 
 .image-button {

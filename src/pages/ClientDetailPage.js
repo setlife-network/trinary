@@ -22,7 +22,7 @@ class ClientDetailPage extends React.Component {
                 justify='center'
                 className='ClientDetailPage'
             >
-                <Grid item xs={8} lg={5}>
+                <Grid item xs={10} lg={5}>
                     <ClientInfo
                         clientId={clientId}
                     />
