@@ -3,20 +3,21 @@ const stripeAPI = require('stripe');
 const {
     STRIPE
 } = require('../config/credentials')
+const db = require('../models')
 
 const stripe = module.exports = (() => {
-    const stripeClient = stripeAPI(STRIPE.API_KEY)
+    const stripeClient = stripeAPI(STRIPE.SECRET)
 
     const pushUpdatedClient = async (params) => {
-        const client = db.models.Client.findOne({
+        const client = await db.models.Client.findOne({
             where: {
-                id: params.updatedFields.id
+                email: params.updateFields.email
             }
         })
         const stripe_uuid = client.external_uuid
         if (stripe_uuid) {
-            return await stripeClient.customer.update({
-                stripe_uuid,
+            return await stripeClient.customers.update(
+                stripe_uuid, {
                 name: client.name,
                 email: client.email
             })
