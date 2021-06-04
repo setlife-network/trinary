@@ -145,7 +145,7 @@ const EditAllocationInfo = (props) => {
                 <List component='nav'>
                     <ListItem button onClick={handleClickPayments}>
                         <Grid container>
-                            <Grid item xs={9}>
+                            <Grid item xs={10}>
                                 <Typography color='primary'>
                                     <ListItemText
                                         primary={`${paymentAmount}`}

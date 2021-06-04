@@ -113,7 +113,7 @@ const ProjectIssues = (props) => {
                 <Grid container>
                     {renderIssues(sortedIssues)}
                 </Grid>
-                <Box my={5}/>
+                <Box my={[2, 5]}/>
             </Grid>
         </Grid>
     )

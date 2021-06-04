@@ -135,7 +135,7 @@ const ProjectTimeTracking = (props) => {
     return (
         <Grid container className='ProjectTimeTracking' alignItems='flex-end'>
             <Grid item xs={12}>
-                <Typography variant='h4' align='left'>
+                <Typography variant='h5' align='left'>
                     <strong>
                         {'Time Tracking'}
                     </strong>
@@ -204,7 +204,7 @@ const ProjectTimeTracking = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <Box my={5} pb={3}>
+                <Box my={[2, 5]} pb={3}>
                     {renderContributorTimeEntries(contributorTimeEntries)}
                 </Box>
             </Grid>

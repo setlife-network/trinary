@@ -58,7 +58,13 @@ const github = module.exports = (() => {
         const octokit = new Octokit({
             auth: params.auth_key
         })
-        const res = await octokit.repos.listForAuthenticatedUser()
+        const res = await octokit.repos.listForAuthenticatedUser({
+            affiliation: ['owner'],
+            per_page: 100,
+            sort: 'updated',
+            direction: 'desc',
+        })
+        
         if (res.status == 200) {
             return res.data
         } else {
