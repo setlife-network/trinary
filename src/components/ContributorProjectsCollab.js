@@ -64,7 +64,7 @@ const ContributorProjectsCollab = (props) => {
     return (
         <Grid container className='ContributorProjectsCollab'>
             <Grid item xs={12} align='left'>
-                <Box my={5} mx={3}>
+                <Box my={[2, 5]} mx={3}>
                     <Typography variant='h5' color='primary'>
                         <strong>
                             {`Project Involvement`}

@@ -4,10 +4,13 @@ body {
 
 .App {
     text-align: center;
+    padding-bottom: 50px;
 
     // For development purposes only
     .SwipeableNavigation {
         position: absolute;
+        top: 0;
+        right: 0;
     }
 }
 

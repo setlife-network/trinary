@@ -26,7 +26,7 @@ class AddPaymentPage extends React.Component {
                     justify='center'
                     alignItems='center'
                 />
-                <Grid item xs={8}>
+                <Grid item xs={10}>
                     <Typography align='left'>
                         <strong>
                             {`Enter info below to add a payment`}

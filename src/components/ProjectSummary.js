@@ -42,7 +42,8 @@ const ProjectSummary = (props) => {
 
     return (
         <Box
-            p={3}
+            px={[1, 3]}
+            pt={3}
             borderRadius='borderRadius'
             bgcolor='primary.light_blue'
             fontWeight='fontWeightBold'

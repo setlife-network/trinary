@@ -4,37 +4,43 @@ export const CURRENCIES = [
         name: 'USD',
         symbol: '$',
         decimal: '.',
-        thousand: ','
+        thousand: ',',
+        precision: 2,
     },
     {
         name: 'MXN',
         symbol: '$',
         decimal: '.',
-        thousand: ','
+        thousand: ',',
+        precision: 2,
     },
     {
         name: 'EUR',
         symbol: '€',
         decimal: ',',
-        thousand: '.'
+        thousand: '.',
+        precision: 2,
     },
     {
         name: 'BTC',
         symbol: '₿',
         decimal: '.',
-        thousand: ','
+        thousand: ',',
+        precision: 2,
     },
     {
         name: 'SATS',
-        symbol: 'SATS',
+        symbol: 's ',
         decimal: '.',
-        thousand: ','
+        thousand: ',',
+        precision: 0,
     },
     {
         name: '',
         symbol: '',
         decimal: '.',
-        thousand: ','
+        thousand: ',',
+        precision: 2,
     }
 ]
 export const EXPECTED_BUDGET_TIMEFRAME_OPTIONS = [

@@ -27,8 +27,8 @@ class ClientDetailPage extends React.Component {
                         clientId={clientId}
                     />
                 </Grid>
-                <Grid item xs={8}>
-                    <Box my={5} py={3}>
+                <Grid item xs={10}>
+                    <Box my={[2, 5]} py={3}>
                         <Typography align='left' variant='h4'>
                             <strong>
                                 {`Projects`}
@@ -43,7 +43,7 @@ class ClientDetailPage extends React.Component {
                             history={this.props.history}
                         />
                     </Box>
-                    <Box my={5} py={3}>
+                    <Box my={[2, 5]} py={3}>
                         <ClientPaymentsManager
                             clientId={clientId}
                         />

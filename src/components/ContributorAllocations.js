@@ -69,7 +69,7 @@ const ContributorAllocations = (props) => {
     const { getContributorById: contributor } = dataContributor
 
     return (
-        <Box my={5} mx={3} className='ContributorAllocations'>
+        <Box my={[2, 5]} mx={3} className='ContributorAllocations'>
             <Grid container spacing={4}>
                 <Grid item xs='auto'>
                     <Typography variant='h5' color='primary'>

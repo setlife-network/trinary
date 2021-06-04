@@ -127,9 +127,17 @@ const automations = module.exports = (() => {
         const repos = await github.fetchRepos({
             auth_key: params.auth_key
         })
+        console.log('organizations')
+        console.log(organizations.length)
+        console.log('repos')
+        console.log(repos.length)
         organizations.map(async o => {
             const organizationRepos = []
             repos.map(r => {
+                console.log(r)
+                if (o.name == 'otech47') {
+                    console.log(r.owner.login)
+                }
                 if (r.owner.login == o.name) {
                     organizationRepos.push({
                         id: r.id,

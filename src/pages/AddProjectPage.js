@@ -18,14 +18,14 @@ class AddProjectPage extends React.Component {
                 justify='center'
                 className='AddProjectPage'
             >
-                <Grid item align='center' xs={8}>
+                <Grid item align='center' xs={10}>
                     <Typography align='left' variant={'h5'} color='primary'>
                         <strong>
                             {`Enter info below to create a project`}
                         </strong>
                     </Typography>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={10}>
                     <Box mt={3} mb={5}>
                         <AddProjectForm
                             clientId={clientId}
