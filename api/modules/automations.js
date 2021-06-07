@@ -40,7 +40,6 @@ const automations = module.exports = (() => {
         }
         if (clientToUpdate) {
             clientToUpdate.email = params.clientInformation.email
-            clientToUpdate.currency = params.clientInformation.currency
             clientToUpdate.name = params.clientInformation.name
             clientToUpdate.external_uuid = params.clientInformation.external_uuid
             await clientToUpdate.save()
