@@ -15,7 +15,7 @@ const stripe = module.exports = (() => {
             }
         })
         if (!client.external_uuid) {
-            return await stripeClient.customers.create({
+            return stripeClient.customers.create({
                 email: params.createFields.email,
                 name: params.createFields.name,
             })
