@@ -6,51 +6,8 @@ const db = require('../models')
 
 const automations = module.exports = (() => {
 
-    const createClient = async ({ clientInformation }) => {
-        const client = await getClientFromExternalId({ id: clientInformation.external_uuid })
-        const email = await getClientFromEmail( { email: clientInformation.email })
-        if (!client && !email) {
-            return db.models.Client.create({
-                email: clientInformation.email,
-                currency: clientInformation.currency,
-                name: clientInformation.name,
-                is_active: 1,
-                external_uuid: clientInformation.external_uuid
-            })
-        } else {
-            updateClient({ clientInformation: clientInformation })
-        }
-    }
-
-    const updateClient = async (params) => {
-        let clientToUpdate
-        if (params.clientInformation.external_uuid) {
-            clientToUpdate = await db.models.Client.findOne({
-                where: {
-                    external_uuid: params.clientInformation.external_uuid
-                }
-            })
-        }
-        if (params.clientInformation.email && (clientToUpdate === null)) {
-            clientToUpdate = await db.models.Client.findOne({
-                where: {
-                    email: params.clientInformation.email
-                }
-            })
-        }
-        if (clientToUpdate) {
-            clientToUpdate.email = params.clientInformation.email
-            clientToUpdate.currency = params.clientInformation.currency
-            clientToUpdate.name = params.clientInformation.name
-            clientToUpdate.external_uuid = params.clientInformation.external_uuid
-            await clientToUpdate.save()
-        } else {
-            createClient({ clientInformation: params.clientInformation })
-        }
-    }
-
     const createPayment = async ({ paymentInformation }) => {
-        const client = await getClientFromExternalId({ id: paymentInformation.customer_id })
+        const client = await getClientWithExternalId({ id: paymentInformation.customer_id })
         if (client) {
             return db.models.Payment.create({
                 amount: paymentInformation.amount,
@@ -71,7 +28,7 @@ const automations = module.exports = (() => {
         })
     }
 
-    const getClientFromExternalId = (params) => {
+    const getClientWithExternalId = (params) => {
         return db.models.Client.findOne({
             where: {
                 external_uuid: params.id
@@ -79,7 +36,7 @@ const automations = module.exports = (() => {
         })
     }
 
-    const getPaymentFromExternalId = (params) => {
+    const getPaymentWithExternalId = (params) => {
         return db.models.Payment.findOne({
             where: {
                 external_uuid: params.id
@@ -88,7 +45,7 @@ const automations = module.exports = (() => {
         })
     }
 
-    const getPaymentFromId = (params) => {
+    const getPaymentWithId = (params) => {
         return db.models.Payment.findByPk(params.id, {
             raw: true
         })
@@ -154,9 +111,9 @@ const automations = module.exports = (() => {
     const updateDatePaidPayment = async ({ paymentInformation }) => {
         const paymentToUpdate = {}
         if (paymentInformation.external_uuid) {
-            Object.assign(paymentToUpdate, await getPaymentFromExternalId({ id: paymentInformation.external_uuid }))
+            Object.assign(paymentToUpdate, await getPaymentWithExternalId({ id: paymentInformation.external_uuid }))
         } else {
-            Object.assign(paymentToUpdate, await getPaymentFromId({ id: paymentInformation.id }))
+            Object.assign(paymentToUpdate, await getPaymentWithId({ id: paymentInformation.id }))
         }
 
         paymentToUpdate.date_paid = paymentInformation.date_paid
@@ -188,9 +145,8 @@ const automations = module.exports = (() => {
     }
 
     return {
-        createClient,
-        updateClient,
         createPayment,
+        getClientWithExternalId,
         getUserOrganizations,
         getOrganizationRepos,
         updateDatePaidPayment,

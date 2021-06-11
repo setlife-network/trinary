@@ -2,6 +2,7 @@ const moment = require('moment')
 const { fn, col, Op } = require('sequelize')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
+const stripe = require('../../handlers/stripe')
 
 module.exports = {
 
@@ -49,10 +50,12 @@ module.exports = {
         }
     },
     Mutation: {
-        createClient: (root, { createFields }, { models }) => {
-            return models.Client.create({
+        createClient: async (root, { createFields }, { models }) => {
+            const createdClient = models.Client.create({
                 ...createFields
             })
+            await stripe.createClient({ createFields })
+            return createdClient
         },
         deleteClientById: (root, { id }, { models }) => {
             return models.Client.destroy({ where: { id } })
