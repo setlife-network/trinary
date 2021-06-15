@@ -143,6 +143,15 @@ app.post('/api/webhooks/invoice/updated', (req, res) => {
         res.send('payment not ready to allocate')
     }
 })
+app.post('/api/webhooks/invoice/delete', async (req, res) => {
+    const invoiceId = req.body.data.object.id
+    try {
+        await apiModules.automations.deleteDraftInvoicesFromStripe({ invoiceId })
+        res.sendStatus(200)
+    } catch (err) {
+        console.log(`An error ocurred: ${err}`)
+    }
+})
 app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
     const data = req.body.data
     try {
