@@ -12,7 +12,16 @@ const clientManagement = module.exports = (() => {
         return createdClient
     }
 
+    const findClientWithEmail = async (params) => {
+        return db.models.Client.findOne({
+            where: {
+                email: params.email
+            }
+        })
+    }
+
     return {
-        createClient
+        createClient,
+        findClientWithEmail
     }
 })()

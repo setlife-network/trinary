@@ -4,26 +4,19 @@ const {
     STRIPE
 } = require('../config/credentials')
 const db = require('../models')
+const apiModules = require('../modules')
 
 const stripe = module.exports = (() => {
     const stripeClient = stripeAPI(STRIPE.SECRET)
 
     const createCustomer = async (params) => {
-        const client = await findClientWithEmail(params.createFields)
+        const client = await apiModules.clientManagement.findClientWithEmail(params.createFields)
         if (!client.external_uuid) {
-            return await stripeClient.customers.create({
+            return stripeClient.customers.create({
                 email: params.createFields.email,
                 name: params.createFields.name,
             })
         }
-    }
-
-    const findClientWithEmail = async (params) => {
-        return await db.models.Client.findOne({
-            where: {
-                email: params.email
-            }
-        })
     }
 
     const pushUpdatedClient = async (params) => {
