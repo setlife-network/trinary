@@ -94,8 +94,8 @@ const PaymentEditDialog = (props) => {
         if (!dateIncurred || !paymentAmount) {
             setDisableEdit(true)
         } else if (
-            dateIncurred == moment(payment.date_incurred, 'x').format('YYYY-MM-DD') &&
-            datePaid == moment(payment.date_paid, 'x').format('YYYY-MM-DD') &&
+            dateIncurred == moment.utc(payment.date_incurred, 'x').format('YYYY-MM-DD') &&
+            datePaid == moment.utc(payment.date_paid, 'x').format('YYYY-MM-DD') &&
             paymentAmount == payment.amount / 100
         ) {
             setDisableEdit(true)
@@ -106,8 +106,8 @@ const PaymentEditDialog = (props) => {
 
     useEffect(() => {
         handlePaymentAmountChange(payment.amount)
-        setDateIncurred(moment(payment.date_incurred, 'x').format('YYYY-MM-DD'))
-        setDatePaid(moment(payment.date_paid, 'x').format('YYYY-MM-DD'))
+        setDateIncurred(moment.utc(payment.date_incurred, 'x').format('YYYY-MM-DD'))
+        setDatePaid(moment.utc(payment.date_paid, 'x').format('YYYY-MM-DD'))
     }, [onOpen])
 
     return (

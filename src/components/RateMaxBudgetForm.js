@@ -8,7 +8,6 @@ import {
     TextField,
     Typography
 } from '@material-ui/core/'
-import moment from 'moment'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import { CURRENCIES } from '../constants'
@@ -71,7 +70,7 @@ const RateMaxBudgetForm = (props) => {
     }
 
     const currencyInformation = selectCurrencyInformation({
-        currency: rateCurrency
+        currency: rateCurrency ? rateCurrency : 'USD'
     })
 
     const renderCurrencies = (currencies) => {

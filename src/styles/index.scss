@@ -36,8 +36,10 @@ code {
 
 //Components
 @import './AllocationAddForm.scss';
+@import './EditAllocationRate.scss';
 @import './EmptyState.scss';
 @import './Header.scss';
 @import './LoadingProgress.scss';
 @import './Navigation.scss';
-@import './ProjectTimeTracking';
+@import './ProjectTimeTracking.scss';
+@import './RangeDatePicker.scss';

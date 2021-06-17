@@ -64,22 +64,21 @@ const ContributorProjectsCollab = (props) => {
     return (
         <Grid container className='ContributorProjectsCollab'>
             <Grid item xs={12} align='left'>
-                <Box my={5} mx={3}>
+                <Box my={[2, 5]} mx={3}>
                     <Typography variant='h5' color='primary'>
                         <strong>
                             {`Project Involvement`}
                         </strong>
                     </Typography>
                     <Grid container>
-                        {
-                            !isEmpty(projects)
-                                ? renderProjects({ projects: projects })
-                                : (
-                                    <EmptyState
-                                        description='This contributor has no projects at the moment'
-                                        iconClassname='fas fa-code'
-                                    />
-                                )
+                        {!isEmpty(projects)
+                            ? renderProjects({ projects: projects })
+                            : (
+                                <EmptyState
+                                    description='This contributor has no projects at the moment'
+                                    iconClassName='fas fa-code'
+                                />
+                            )
                         }
                     </Grid>
                 </Box>

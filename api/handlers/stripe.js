@@ -3,28 +3,39 @@ const stripeAPI = require('stripe');
 const {
     STRIPE
 } = require('../config/credentials')
+const db = require('../models')
+const apiModules = require('../modules')
 
 const stripe = module.exports = (() => {
+    const stripeClient = stripeAPI(STRIPE.SECRET)
 
-    const requestPaymentIntent = (params) => {
-        const paymentIntent = new Promise((resolve, reject) => {
-            const stripeClient = stripeAPI(STRIPE.API_KEY)
-            stripeClient.paymentIntents.create({
-                amount: 1000,
-                currency: 'usd',
-                payment_method_types: ['card'],
-                receipt_email: 'test@example.com',
+    const createCustomer = async (params) => {
+        const client = await apiModules.clientManagement.findClientWithEmail(params.createFields)
+        if (!client.external_uuid) {
+            return stripeClient.customers.create({
+                email: params.createFields.email,
+                name: params.createFields.name,
             })
-                .then(response => {
-                    resolve(response)
-                })
-                .catch(error => reject(new Error(error)))
-        })
-        return paymentIntent
+        }
+    }
+
+    const pushUpdatedClient = async (params) => {
+        const client = await findClientWithEmail(params.updateFields)
+        const stripe_uuid = client.external_uuid
+        if (stripe_uuid) {
+            return stripeClient.customers.update(
+                stripe_uuid, 
+                {
+                    name: client.name,
+                    email: client.email
+                }
+            )
+        }
     }
 
     return {
-        requestPaymentIntent
+        createCustomer,
+        pushUpdatedClient
     }
 
 })();

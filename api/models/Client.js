@@ -27,6 +27,9 @@ module.exports = (sequelize) => {
         currency: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        external_uuid: {
+            type: DataTypes.STRING
         }
     },
     {
@@ -38,5 +41,4 @@ module.exports = (sequelize) => {
     });
 
     return Client
-
 }

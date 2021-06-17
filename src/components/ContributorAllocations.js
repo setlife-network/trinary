@@ -69,7 +69,7 @@ const ContributorAllocations = (props) => {
     const { getContributorById: contributor } = dataContributor
 
     return (
-        <Box my={5} mx={3} className='ContributorAllocations'>
+        <Box my={[2, 5]} mx={3} className='ContributorAllocations'>
             <Grid container spacing={4}>
                 <Grid item xs='auto'>
                     <Typography variant='h5' color='primary'>
@@ -93,15 +93,14 @@ const ContributorAllocations = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={5}>
-                        {
-                            !isEmpty(contributorAllocations.allocations)
-                                ? renderAllocations({ allocations: contributorAllocations.allocations })
-                                : (
-                                    <EmptyState
-                                        description='This contributor has no allocations at the moment'
-                                        iconClassname='fas fa-money-check'
-                                    />
-                                )
+                        {!isEmpty(contributorAllocations.allocations)
+                            ? renderAllocations({ allocations: contributorAllocations.allocations })
+                            : (
+                                <EmptyState
+                                    description='This contributor has no allocations at the moment'
+                                    iconClassName='fas fa-money-check'
+                                />
+                            )
                         }
                     </Grid>
                 </Grid>

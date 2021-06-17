@@ -37,8 +37,8 @@ const PaymentTile = (props) => {
         project
     } = props
 
-    const formattedDatePaid = moment(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
-    const formattedDateIncurred = moment(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
+    const formattedDatePaid = moment.utc(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
+    const formattedDateIncurred = moment.utc(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
     const paymentHasBeenMade = payment.date_paid != null
 
     const {
@@ -113,12 +113,13 @@ const PaymentTile = (props) => {
                 rate
             } = a
             const paymentAmount = formatAmount({
-                amount: amount / 100,
+                amount: parseFloat(amount / 100).toFixed(2),
+                // amount: parseFloat((amount / 100).toFixed(2)).toString(),
                 currencyInformation: currencyInformation
             })
 
             return (
-                <Box mb={3}>
+                <Box mb={3} className='PaymentTile'>
                     <Grid
                         container
                         onClick={() => handleAllocationClicked({ value: true, allocation: a })}
@@ -142,7 +143,7 @@ const PaymentTile = (props) => {
                         </Grid>
                         <Grid item xs={5} align='right'>
                             <Typography color='secondary' variant='caption'>
-                                {`Ends ${moment(end_date, 'x').format('MM/DD/YYYY')} `}
+                                {`Ends ${moment.utc(end_date, 'x').format('MM/DD/YYYY')} `}
                             </Typography>
                         </Grid>
                     </Grid>
@@ -163,16 +164,28 @@ const PaymentTile = (props) => {
                     <AccordionSummary
                         expandIcon={
                             project &&
-                            <ExpandMoreIcon />
+                            <Grid item xs={1}>
+                                <ExpandMoreIcon />
+                            </Grid>
                         }
+                        IconButtonProps={{
+                            style: {
+                                // position: 'absolute'
+                            }
+                        }}
                     >
                         <Grid container alignItems='center'>
-                            <Grid item xs={5} align='left'>
+                            <Grid item xs={8} align='left'>
                                 <Typography variant='h6'>
                                     {`${paymentAmount}`}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={1}>
+                            <Grid item xs={4} align='right'>
+                                <MonetizationOnIcon
+                                    color={`${paymentHasBeenMade ? 'primary' : 'secondary'}`}
+                                />
+                            </Grid>
+                            <Grid item xs={8}>
                                 <Typography
                                     variant='caption'
                                     align='left'
@@ -184,25 +197,19 @@ const PaymentTile = (props) => {
                                     }
                                 </Typography>
                             </Grid>
-                            <Grid item xs={6} align='right'>
-                                <MonetizationOnIcon
-                                    color={`${paymentHasBeenMade ? 'primary' : 'secondary'}`}
-                                />
-                            </Grid>
                             {project &&
                                 <Grid item xs={12}>
-                                    <Typography variant='subtitle1'>
-                                        <Box
-                                            align='left'
-                                            color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
-                                        >
-                                            {`
-                                                ${totalAllocated}
-                                                ${numberOfContributorsAllocated && `allocated to ${numberOfContributorsAllocated}`}
-                                                ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}
-                                            `}
-                                        </Box>
-                                    </Typography>
+                                    <Box
+                                        mt={2}
+                                        align='left'
+                                        color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
+                                    >
+                                        <Typography variant='subtitle2'>
+                                            {`${totalAllocated} allocated`}
+                                            <br/>
+                                            {`to ${numberOfContributorsAllocated} ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}`}
+                                        </Typography>
+                                    </Box>
                                 </Grid>
                             }
                         </Grid>
@@ -214,6 +221,7 @@ const PaymentTile = (props) => {
                                     <Button
                                         color='primary'
                                         onClick={() => handleEditPayment(true)}
+                                        disabled={payment.external_uuid_type}
                                     >
                                         {'Edit Payment'.toUpperCase()}
                                     </Button>

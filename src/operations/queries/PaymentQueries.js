@@ -9,6 +9,8 @@ export const GET_CLIENT_PAYMENTS = gql`
             amount
             date_incurred
             date_paid
+            external_uuid
+            external_uuid_type
             client {
                 id
                 name

@@ -28,10 +28,12 @@ const AddProjectDetails = (props) => {
         budgetTimeframe,
         client,
         projectDate,
+        projectEndDate,
         projectName,
         setBudgetTimeframe,
         setProjectBudget,
         setProjectDate,
+        setProjectEndDate,
         setProjectName,
         setProjectToggl
     } = props
@@ -42,6 +44,9 @@ const AddProjectDetails = (props) => {
     }
     const handleDateChange = (date) => {
         setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
+    }
+    const handleEndDateChange = (date) => {
+        setProjectEndDate(moment(date['_d']).format('YYYY-MM-DD'))
     }
     const handleTimeframeChange = (timeframe) => {
         setBudgetTimeframe(timeframe)
@@ -64,7 +69,7 @@ const AddProjectDetails = (props) => {
     return (
         <Grid container justify='space-between'>
             <Grid item xs={12} md={5}>
-                <Box xs={10} mb={3}>
+                <Box>
                     <TextField
                         label='Project name'
                         id='projectName'
@@ -77,7 +82,7 @@ const AddProjectDetails = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12} md={5}>
-                <Box xs={10} mb={3}>
+                <Box>
                     <TextField
                         label='Toggl URL'
                         id='projectToggl'
@@ -88,23 +93,7 @@ const AddProjectDetails = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12} md={5}>
-                <Box xs={10} mb={3}>
-                    <CurrencyTextField
-                        fullWidth
-                        required
-                        label='Expected Budget'
-                        variant='outlined'
-                        currencySymbol={`${currencyInformation['symbol']}`}
-                        minimumValue='0'
-                        outputFormat='string'
-                        decimalCharacter={`${currencyInformation['decimal']}`}
-                        digitGroupSeparator={`${currencyInformation['thousand']}`}
-                        onChange={(event) => handleBudgetChange(event.target.value)}
-                    />
-                </Box>
-            </Grid>
-            <Grid item xs={12} md={5}>
-                <Box>
+                <Box mt={3}>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             fullWidth
@@ -122,7 +111,40 @@ const AddProjectDetails = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12} md={5}>
-                <Box my={2}>
+                <Box mt={3}>
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                        <KeyboardDatePicker
+                            fullWidth
+                            disableToolbar
+                            variant='inline'
+                            format='MM/DD/YYYY'
+                            margin='normal'
+                            id='date-picker-inline'
+                            label='Project end date'
+                            value={projectEndDate}
+                            onChange={handleEndDateChange}
+                        />
+                    </MuiPickersUtilsProvider>
+                </Box>
+            </Grid>
+            <Grid item xs={12} md={5}>
+                <Box mt={5}>
+                    <CurrencyTextField
+                        fullWidth
+                        required
+                        label='Expected Budget'
+                        variant='outlined'
+                        currencySymbol={`${currencyInformation['symbol']}`}
+                        minimumValue='0'
+                        outputFormat='string'
+                        decimalCharacter={`${currencyInformation['decimal']}`}
+                        digitGroupSeparator={`${currencyInformation['thousand']}`}
+                        onChange={(event) => handleBudgetChange(event.target.value)}
+                    />
+                </Box>
+            </Grid>
+            <Grid item xs={12} md={5}>
+                <Box mt={5}>
                     <FormControl fullWidth>
                         <InputLabel>
                             {`Expected budget timeframe`}
