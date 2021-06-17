@@ -29,7 +29,7 @@ const automations = module.exports = (() => {
                 }
             })
         } catch (err) {
-            console.log(`An error ocurred while deleting invoice: ${err}`)
+            console.log(`An error ocurred: ${err}`)
         }
         return deletedInvoice
     }
