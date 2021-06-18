@@ -26,7 +26,7 @@ module.exports = gql`
     }
     type Mutation {
         createPermission(createFields: CreatePermissionInput): Permission
-        syncContributorsPermissions(github_access_token: String!): Int
+        syncContributorsPermissions: Int
     }
 
 `

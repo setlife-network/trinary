@@ -42,20 +42,14 @@ module.exports = {
                 ...createFields
             })
         },
-        syncContributorsPermissions: async (root, { github_access_token }, { models }) => {
+        syncContributorsPermissions: async (root, args, { models }) => {
             const contributors = await models.Contributor.findAll({
                 raw: true
             })
             await Promise.all(contributors.map(async c => {
-                if (c.github_access_token) {
-                    const githubContributor = {
-                        accessToken: github_access_token
-                    }
-                    await authentication.grantProjectPermissions({
-                        contributor: c,
-                        githubContributor: githubContributor
-                    })
-                }
+                await authentication.grantProjectPermissions({
+                    contributor: c
+                })
             }))
             return contributors.length
         }
