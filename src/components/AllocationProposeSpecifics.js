@@ -149,7 +149,7 @@ const AllocationProposeSpecifics = (props) => {
                             <Grid item xs={3} align='center'>
                                 <Typography variant='caption' color='secondary'>
                                     {`${payment.date_paid
-                                        ? moment(payment.date_paid, 'x').format('MM/DD/YYYY')
+                                        ? moment.utc(payment.date_paid, 'x').format('MM/DD/YYYY')
                                         : ''
                                     }`}
                                 </Typography>
@@ -275,7 +275,7 @@ const AllocationProposeSpecifics = (props) => {
                                     <Typography variant='caption' color='secondary'>
                                         {`${selectedPayment &&
                                             selectedPayment.date_paid
-                                            ? moment(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
+                                            ? moment.utc(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
                                             : ''
                                         }`}
                                         {`${

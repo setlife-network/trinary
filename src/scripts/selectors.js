@@ -30,12 +30,14 @@ export const formatAmount = (props) => {
         amount,
         currencyInformation
     } = props
+
     return accounting.formatMoney(
         amount,
         {
             symbol: currencyInformation['symbol'],
             thousand: currencyInformation['thousand'],
             decimal: currencyInformation['decimal'],
+            precision: amount % 1 == 0 ? 0 : currencyInformation['precision'],
             format: '%s %v'
         }
     )

@@ -74,13 +74,14 @@ const AddProjectForm = (props) => {
     const [linkedRepo, setLinkedRepo] = useState(false)
     const [projectBudget, setProjectBudget] = useState(0)
     const [projectDate, setProjectDate] = useState(null)
+    const [projectEndDate, setProjectEndDate] = useState(null)
     const [projectGithub, setProjectGithub] = useState(null)
     const [projectGithubManual, setProjectGithubManual] = useState(null)
     const [projectName, setProjectName] = useState('')
     const [projectToggl, setProjectToggl] = useState(null)
 
     useEffect(() => {
-        if (!projectName || !projectGithub || !projectDate || budgetTimeframe == null) {
+        if (!projectName || !projectGithub || !projectDate || !projectBudget || budgetTimeframe == null) {
             setDisableAdd(true)
         } else {
             setDisableAdd(false)
@@ -117,6 +118,7 @@ const AddProjectForm = (props) => {
             name: projectName,
             github_url: projectGithub,
             date: projectDate,
+            end_date: projectEndDate,
             expected_budget: Number(projectBudget),
             expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
         }
@@ -205,9 +207,11 @@ const AddProjectForm = (props) => {
                         budgetTimeframe={budgetTimeframe}
                         client={client}
                         projectDate={projectDate}
+                        projectEndDate={projectEndDate}
                         projectName={projectName}
                         setBudgetTimeframe={setBudgetTimeframe}
                         setProjectDate={setProjectDate}
+                        setProjectEndDate={setProjectEndDate}
                         setProjectName={setProjectName}
                         setProjectToggl={setProjectToggl}
                         setProjectBudget={setProjectBudget}
@@ -215,7 +219,7 @@ const AddProjectForm = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <Box mt={5}>
+                <Box mt={5} pt={5}>
                     <Button
                         variant='contained'
                         color='primary'

@@ -6,6 +6,7 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
+import GitHubIcon from '@material-ui/icons/GitHub'
 
 const ProjectOverviewExternalLinks = (props) => {
 
@@ -25,9 +26,12 @@ const ProjectOverviewExternalLinks = (props) => {
                         disabled={github_url ? 0 : 1}
                         onClick={() => window.open(github_url, '_blank')}
                     >
-                        <Typography variant='h6'>
-                            {`Check Github profile`}
-                        </Typography>
+                        <Box mr={2}>
+                            <Typography variant='h6' mr={2}>
+                                {`Open GitHub`}
+                            </Typography>
+                        </Box>
+                        <GitHubIcon color='primary' fontSize='small'/>
                     </Button>
                 </Box>
             </Grid>
@@ -41,7 +45,7 @@ const ProjectOverviewExternalLinks = (props) => {
                         onClick={() => window.open(toggl_url, '_blank')}
                     >
                         <Typography variant='h6'>
-                            {`Check Toggl profile`}
+                            {`Open Toggl`}
                         </Typography>
                     </Button>
                 </Box>
