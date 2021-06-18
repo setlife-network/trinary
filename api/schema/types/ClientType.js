@@ -19,9 +19,9 @@ module.exports = gql`
 
     input ClientCreateInput {
         is_active: Boolean,
-        name: String,
-        email: String,
-        currency: String,
+        name: String!,
+        email: String!
+        currency: String!
         contributor_id: Int
     }
 
