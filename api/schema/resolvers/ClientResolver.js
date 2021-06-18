@@ -53,11 +53,12 @@ module.exports = {
     Mutation: {
         createClient: async (root, { createFields }, { cookies, models }) => {
             try {
+                if (!cookies.userSession || createFields.contributor_id) {
+                    throw new Error('A contributor id is required');
+                }
                 const newlyCreatedClient = await models.Client.create({
                     ...createFields
                 })
-                console.log('createFields');
-                console.log(createFields);
                 const contributor = (
                     await models.Contributor.findByPk(
                         cookies ? cookies.userSession : createFields.contributor_id
