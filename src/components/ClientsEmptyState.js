@@ -12,7 +12,7 @@ const ClientsEmptyState = () => {
         <Grid container justify='center' className='EmptyState'>
             <Box mt={5}>
                 <Typography color='secondary' variant='h6'>
-                    There are currently no clients. Add a client to get started
+                    There are currently no clients. Add a client to get started. No Stripe added
                 </Typography>
                 <Box mt={5}>
                     <Icon className='fas fa-user-plus empty-icon' color='secondary'/>
