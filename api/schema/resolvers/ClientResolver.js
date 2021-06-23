@@ -3,6 +3,7 @@ const { fn, col, Op } = require('sequelize')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const stripe = require('../../handlers/stripe')
+const apiModules = require('../../modules')
 
 module.exports = {
 
@@ -50,12 +51,33 @@ module.exports = {
         }
     },
     Mutation: {
-        createClient: async (root, { createFields }, { models }) => {
-            const createdClient = models.Client.create({
-                ...createFields
-            })
-            await stripe.createClient({ createFields })
-            return createdClient
+        createClient: async (root, { createFields }, { cookies, models }) => {
+            try {
+                if (!cookies.userSession || createFields.contributor_id) {
+                    throw new Error('A contributor id is required');
+                }
+                const newlyCreatedClient = await models.Client.create({
+                    ...createFields
+                })
+                const contributor = (
+                    await models.Contributor.findByPk(
+                        cookies ? cookies.userSession : createFields.contributor_id
+                    )
+                )
+                //Grant write access to the contributor that created the client
+                const permissionAttributes = {
+                    type: 'write',
+                    contributor_id: contributor.id,
+                    client_id: newlyCreatedClient.id
+                }
+                await models.Permission.create({
+                    ...permissionAttributes
+                })
+                return newlyCreatedClient
+            } catch (error) {
+                console.log('An error ocurred: ' + error);
+            }
+
         },
         deleteClientById: (root, { id }, { models }) => {
             return models.Client.destroy({ where: { id } })
@@ -68,6 +90,7 @@ module.exports = {
                     id
                 }
             })
+            await stripe.pushUpdatedClient({ updateFields })
             return models.Client.findByPk(id)
         }
     }
