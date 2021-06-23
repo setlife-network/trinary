@@ -15,7 +15,7 @@ const ClientsEmptyStateStripe = () => {
             <Box mt={5}>
                 <Typography color='secondary' variant='h6'>
                     There are currently no clients.
-                    Stripe credentials are detected. You can manage client from the
+                    Stripe credentials are detected. You can manage clients from the...
                     <Link href='https://dashboard.stripe.com/dashboard'>
                         Stripe dashboard
                     </Link>
