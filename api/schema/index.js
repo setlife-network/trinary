@@ -4,6 +4,7 @@ const { mergeTypeDefs, mergeResolvers } = require('@graphql-tools/merge');
 //import resolvers
 const AllocationResolver = require('./resolvers/AllocationResolver')
 const ClientResolver = require('./resolvers/ClientResolver')
+const ConfigResolver = require('./resolvers/ConfigResolver')
 const ContributorResolver = require('./resolvers/ContributorResolver')
 const IssueResolver = require('./resolvers/IssueResolver')
 const PaymentResolver = require('./resolvers/PaymentResolver')
@@ -15,6 +16,7 @@ const TimeEntryResolver = require('./resolvers/TimeEntryResolver')
 //import types
 const AllocationType = require('./types/AllocationType')
 const ClientType = require('./types/ClientType')
+const ConfigType = require('./types/ConfigType')
 const ContributorType = require('./types/ContributorType')
 const IssueType = require('./types/IssueType')
 const PaymentType = require('./types/PaymentType')
@@ -27,6 +29,7 @@ const TimeEntry = require('./types/TimeEntryType')
 const typeDefs = mergeTypeDefs([
     AllocationType,
     ClientType,
+    ConfigType,
     ContributorType,
     IssueType,
     PaymentType,
@@ -40,6 +43,7 @@ const typeDefs = mergeTypeDefs([
 const resolvers = mergeResolvers([
     AllocationResolver,
     ClientResolver,
+    ConfigResolver,
     ContributorResolver,
     IssueResolver,
     PaymentResolver,
