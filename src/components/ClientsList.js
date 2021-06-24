@@ -9,6 +9,7 @@ import ClientsEmptyState from './ClientsEmptyState'
 import ClientsEmptyStateStripe from './ClientsEmptyStateStripe'
 import LoadingProgress from './LoadingProgress'
 import { GET_CLIENTS } from '../operations/queries/ClientQueries'
+import { HAS_VALID_STRIPE_CREDENTIALS } from '../operations/queries/ConfigQueries';
 
 const ClientsList = (props) => {
     const history = useHistory()
@@ -27,11 +28,13 @@ const ClientsList = (props) => {
             )
         })
     }
+    const stripeData = useQuery(HAS_VALID_STRIPE_CREDENTIALS)
 
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`;
 
     const clients = orderBy(data.getClients, 'is_active', 'desc')
+
     return (
         <>
             {
@@ -39,7 +42,7 @@ const ClientsList = (props) => {
                     ? (
                         renderClientTiles(clients)
                     ) : (
-                        clients
+                        stripeData.checkForValidStripeCredentials
                             ? (
                                 <ClientsEmptyStateStripe/>
                             ) : (

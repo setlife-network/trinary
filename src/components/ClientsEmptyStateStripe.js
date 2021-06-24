@@ -15,15 +15,12 @@ const ClientsEmptyStateStripe = () => {
             <Box mt={5}>
                 <Typography color='secondary' variant='h6'>
                     There are currently no clients.
-                    Stripe credentials are detected. You can manage clients from the...
-                    <Link href='https://dashboard.stripe.com/dashboard'>
-                        Stripe dashboard
-                    </Link>
-                    and go to
-                    <Link href='https://dashboard.stripe.com/customers'>
-                        Customers
-                    </Link>
-                    page. Add a customer and it will automatically create the new customer as a client on trinary app.
+                    Stripe credentials are detected.
+                </Typography>
+                <Typography color='secondary' variant='h6'>
+                    Creating or updating a Stripe customer will trigger a synchronized Client
+
+                    Any updates to the name and email of a Client will reflect in your<Link href='https://dashboard.stripe.com/dashboard'> Stripe dashboard</Link>
                 </Typography>
                 <Box mt={5}>
                     <Icon className='fas fa-user-plus empty-icon' color='secondary'/>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
     Box,
     Grid,
-    Icon,
+    Icon, Link,
     Typography
 } from '@material-ui/core'
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
@@ -12,7 +12,11 @@ const ClientsEmptyState = () => {
         <Grid container justify='center' className='EmptyState'>
             <Box mt={5}>
                 <Typography color='secondary' variant='h6'>
-                    There are currently no clients. Add a client to get started. No Stripe added
+                    There are currently no clients. Add a client to get started.
+                </Typography>
+                <Typography color='secondary' variant='h6'>
+                    To integrate with Stripe for client management, please configure the application with valid Stripe credentials (see example environment configuration<Link href='https://github.com/setlife-network/trinary/blob/develop/.env.example#L13'> here</Link>)
+                    Please see the<Link href='https://stripe.com/docs/keys'> Stripe documentation </Link> to generate valid credentials
                 </Typography>
                 <Box mt={5}>
                     <Icon className='fas fa-user-plus empty-icon' color='secondary'/>
