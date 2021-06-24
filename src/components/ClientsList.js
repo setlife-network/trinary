@@ -13,7 +13,7 @@ import { HAS_VALID_STRIPE_CREDENTIALS } from '../operations/queries/ConfigQuerie
 
 const ClientsList = (props) => {
     const history = useHistory()
-
+    const { loading: loadingS, error: errorS, data: dataStripe } = useQuery(HAS_VALID_STRIPE_CREDENTIALS);
     const { loading, error, data } = useQuery(GET_CLIENTS);
 
     const renderClientTiles = (clients) => {
@@ -28,7 +28,6 @@ const ClientsList = (props) => {
             )
         })
     }
-    const stripeData = useQuery(HAS_VALID_STRIPE_CREDENTIALS)
 
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`;
@@ -42,7 +41,7 @@ const ClientsList = (props) => {
                     ? (
                         renderClientTiles(clients)
                     ) : (
-                        stripeData.checkForValidStripeCredentials
+                        dataStripe.checkForValidStripeCredentials
                             ? (
                                 <ClientsEmptyStateStripe/>
                             ) : (
