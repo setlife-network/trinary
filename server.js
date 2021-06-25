@@ -6,6 +6,7 @@ const { ApolloServer } = require('apollo-server-express') //Apollo server for gr
 const cookieSession = require('cookie-session') //store the user session key
 const cookieParser = require('cookie-parser') //transform cooki session into object with key name
 const moment = require('moment') //momentjs libreary for expitation cookie date
+const { findIndex } = require('lodash')
 
 const schema = require('./api/schema')
 const db = require('./api/models');
@@ -45,7 +46,6 @@ var whitelist = [
     'https://trinary.setlife.tech',
     'https://trinary-staging.herokuapp.com'
 ];
-
 var corsOptions = {
     origin: function(origin, callback) {
         var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
@@ -57,20 +57,21 @@ var corsOptions = {
 }
 
 app.use(cors(corsOptions));
-
 app.use(bodyParser.json());
-
 app.use(cookieParser())
 app.use(cookieSession({
     name: 'session',
     keys: ['userSession'],
     expires: moment().add(180, 'days').toDate()
 }))
+app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
+    console.log(`Incoming API v${req.params.vid} request on worker PID ${process.pid}`)
+    next()
+})
 
 app.get('/api/login', (req, res) => {
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.OAUTH_CLIENT_ID}&scope=repo`)
 })
-
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in the Github App
     github.fetchAccessToken({ code: req.query.code })
         .then(async githubAccessToken => {
@@ -105,9 +106,95 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         })
 })
 
-app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
-    console.log(`Incoming API v${req.params.vid} request on worker PID ${process.pid}`)
-    next()
+app.post('/api/webhooks/invoice/paid', async (req, res) => {
+    const data = req.body.data.object
+    try {
+        const paymentInformation = {
+            date_paid: data.webhooks_delivered_at,
+            external_uuid: data.id
+        }
+        await apiModules.automations.updateDatePaidPayment({ paymentInformation })
+        res.send('payment updated')
+    } catch (err) {
+        console.log(`An error ocurred: ${err}`)
+    }
+})
+app.post('/api/webhooks/invoice/updated', (req, res) => {
+    const data = req.body.data.object
+    //1. see if payment is ready to allocate, if not do nothing
+    if (findIndex(data.custom_fields, { 'name': 'ready_to_allocate', 'value': 'true' }) != -1) {
+        const datePaidOverride = data.custom_fields[findIndex(data.custom_fields, { 'name': 'date_paid' })]
+        const paymentInformation = {
+            amount: data.total,
+            external_uuid: data.id,
+            date_incurred: data.created,
+            date_paid: datePaidOverride ? datePaidOverride.value : null,
+            customer_id: data.customer,
+            external_uuid_type: 'STRIPE',
+        }
+        apiModules.automations.updatePaymentFromStripe({ paymentInformation })
+            .then(() => {
+                res.send('payment updated')
+            })
+            .catch((err) => {
+                console.log(`An error ocurred: ${err}`)
+            })
+    } else {
+        res.send('payment not ready to allocate')
+    }
+})
+app.post('/api/webhooks/invoice/delete', async (req, res) => {
+    const invoiceId = req.body.data.object.id
+    try {
+        await apiModules.automations.deleteDraftInvoicesFromStripe({ invoiceId })
+        res.sendStatus(200)
+    } catch (err) {
+        console.log(`An error ocurred: ${err}`)
+    }
+})
+app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
+    const data = req.body.data
+    try {
+        if (data.status == 'succeeded') {
+            throw 'Payment not succeeded'
+        }
+        const paymentInformation = {
+            date_paid: data.object.created,
+            external_uuid: data.object.invoice
+        }
+        apiModules.automations.updateDatePaidPayment({ paymentInformation })
+        res.send('payment updated')
+    } catch (err) {
+        console.log(`An error ocurred: ${err}`)
+    }
+})
+
+app.post('/api/webhooks/clients', async (req, res, next) => {
+
+    const clientData = req.body.data.object
+    const clientInformation = {
+        email: clientData.email,
+        currency: clientData.currency,
+        name: clientData.name,
+        date_created: req.body.created,
+        external_uuid: clientData.id
+    }
+    const webhookType = req.body.type
+    if (webhookType === 'customer.created') {
+        try {
+            await apiModules.automations.createClient({ clientInformation })
+            res.sendStatus(200)
+        } catch (err) {
+            console.log(`An error ocurred: ${err}`)
+        }
+    } else if (webhookType === 'customer.updated' ) {
+        try {
+            await apiModules.automations.updateClient({ clientInformation })
+            res.sendStatus(200)
+        } catch (err) {
+            console.log(`An error ocurred: ${err}`)
+        }
+    }
 })
 
 const server = new ApolloServer({

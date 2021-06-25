@@ -60,8 +60,8 @@ const ProjectOverview = (props) => {
             justify='center'
         >
             <Grid item xs={12}>
-                <Box p={3}>
-                    <Typography variant='h4'>
+                <Box pb={3}>
+                    <Typography variant='h4' align='center'>
                         <strong>
                             {'Overview'}
                         </strong>
@@ -72,7 +72,7 @@ const ProjectOverview = (props) => {
                     github_url={project.github_url}
                     toggl_url={project.toggl_url}
                 />
-                <Box mt={8}>
+                <Box mt={[4, 8]}>
                     <ProjectTimeTracking
                         projectId={id}
                         timeEntries={timeEntries}

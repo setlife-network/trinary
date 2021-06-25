@@ -12,6 +12,7 @@ import DatePicker from 'react-datepicker'
 import { findKey } from 'lodash'
 
 import LoadingProgress from './LoadingProgress'
+import RangeDatePickerInput from './RangeDatePickerInput'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import {
@@ -38,9 +39,6 @@ const EditAllocationRate = (props) => {
 
     const [selectedRateType, setSelectedRateType] = useState(rate.type)
 
-    // console.log('selectedPayment');
-    // console.log(selectedPayment);
-
     const getRangedTimeEntries = (dates) => {
         const [start, end] = dates
         setStartDate(start)
@@ -48,7 +46,7 @@ const EditAllocationRate = (props) => {
     }
 
     return (
-        <Box>
+        <Box className='EditAllocationRate'>
             <Grid container>
                 <Grid item xs={12}>
                     <ButtonGroup color='primary' aria-label='outlined primary button group'>
@@ -68,32 +66,32 @@ const EditAllocationRate = (props) => {
                         </Button>
                     </ButtonGroup>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} xl={8} className='RangeDatePicker'>
                     <DatePicker
                         selected={startDate}
                         startDate={startDate}
                         endDate={endDate}
                         shouldCloseOnSelect={startDate && !endDate}
                         selectsRange
-                        onChange={(date) => getRangedTimeEntries(date)}
+                        onChange={(dates) => getRangedTimeEntries(dates)}
                         customInput={
                             <Box
                                 px={2}
-                                py={1}
-                                boxShadow={3}
                                 mt={3}
                                 borderRadius='borderRadius'
                                 bgcolor='primary.light'
+                                className='date-picker'
                             >
-                                {`${
-                                    startDate
-                                        ? moment(startDate).format('MM/DD/YYYY')
+                                <RangeDatePickerInput
+                                    startDate={startDate
+                                        ? moment.utc(startDate).format('MM/DD/YYYY')
                                         : 'Start date'
-                                } - ${
-                                    endDate
-                                        ? moment(endDate).format('MM/DD/YYYY')
-                                        : ' End date'
-                                }`}
+                                    }
+                                    endDate={endDate
+                                        ? moment.utc(endDate).format('MM/DD/YYYY')
+                                        : 'End date'
+                                    }
+                                />
                             </Box>
                         }
                     />

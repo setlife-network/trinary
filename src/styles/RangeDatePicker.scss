@@ -1,0 +1,52 @@
+.RangeDatePicker {
+
+    .react-datepicker-wrapper {
+        width: 100%;
+    }
+
+    .react-datepicker__day--in-range {
+        background: $setlife-blue;
+        &:hover {
+            background: $setlife-blue;
+        }
+    }
+    .react-datepicker__day--selected {
+        background: $setlife-blue;
+        &:hover {
+            background: $setlife-blue;
+        }
+    }
+    .react-datepicker__day--in-selecting-range {
+        background: $setlife-blue;
+        &:hover {
+            background: $setlife-blue;
+        }
+    }
+    .react-datepicker__day--keyboard-selected {
+        background: $setlife-blue;
+        &:hover {
+            background: $setlife-blue;
+        }
+    }
+
+
+    .date-picker {
+        border: 1px solid $light_grey;
+        color: $grey;
+
+
+
+        .divider {
+            border: 1px solid $light_grey;
+            margin: 0px;
+        }
+
+        .date-holder {
+            margin-top: auto;
+        }
+    }
+
+
+
+
+}

@@ -9,7 +9,7 @@ const GithubAccessBlocked = (props) => {
     return (
         <Grid container className='GithubAccessBlocked'>
             <Grid item xs={12}>
-                <Box my={5} >
+                <Box my={[2, 5]} >
                     <Typography align='center' variant='h6'>
                         {props.message}
                     </Typography>

@@ -16,6 +16,7 @@ import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import EditAllocationInfo from './EditAllocationInfo'
 import EditAllocationRate from './EditAllocationRate'
 import LoadingProgress from './LoadingProgress'
+
 import { GET_ALLOCATIONS, GET_ALLOCATION_INFO } from '../operations/queries/AllocationQueries'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/ClientQueries'
 import { GET_CONTRIBUTORS, GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
@@ -131,9 +132,9 @@ const AllocationOverview = (props) => {
                     id: contributorAllocation.contributor.id
                 }
             })
-            setUpdatedAllocationEndDate(moment(allocation.end_date, 'x')['_d'])
+            setUpdatedAllocationEndDate(moment.utc(allocation.end_date, 'x')['_d'])
             setUpdatedAllocationPayment(contributorAllocation.payment)
-            setUpdatedAllocationStartDate(moment(allocation.start_date, 'x')['_d'])
+            setUpdatedAllocationStartDate(moment.utc(allocation.start_date, 'x')['_d'])
         }
     }, [contributorAllocation])
 
@@ -258,6 +259,7 @@ const AllocationOverview = (props) => {
                             <Button
                                 variant='contained'
                                 color='primary'
+                                disabled={updatedAllocationRate.total_amount}
                                 onClick={() => handleUpdateAllocation({
                                     allocation: contributorAllocation,
                                     contributor: contributorAllocation.contributor,

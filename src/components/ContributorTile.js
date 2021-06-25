@@ -83,13 +83,14 @@ const ContributorTile = (props) => {
                 amount: a.rate.hourly_rate,
                 currencyInformation: currencyInformation
             })
-            const isActiveAllocation = moment(a.start_date, 'x').isBefore(moment())
+            const isActiveAllocation = moment.utc(a.start_date, 'x').isBefore(moment())
 
             return (
                 <Grid
                     item
                     xs={12}
                     onClick={() => handleAllocationOverview({ value: true, allocation: a })}
+                    className='ContributorTile'
                 >
                     <hr/>
                     <Box my={1}>
@@ -142,7 +143,7 @@ const ContributorTile = (props) => {
                                         {`Start date:`}
                                     </strong>
                                     <br/>
-                                    {`${moment(a.start_date, 'x').format('MM/DD/YYYY')}`}
+                                    {`${moment.utc(a.start_date, 'x').format('MM/DD/YYYY')}`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>
@@ -154,7 +155,7 @@ const ContributorTile = (props) => {
                                         {`End date:`}
                                     </strong>
                                     <br/>
-                                    {`${moment(a.end_date, 'x').format('MM/DD/YYYY')}`}
+                                    {`${moment.utc(a.end_date, 'x').format('MM/DD/YYYY')}`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>
@@ -167,7 +168,7 @@ const ContributorTile = (props) => {
                                     </strong>
                                     <br/>
                                     {`${a.date_paid
-                                        ? moment(a.date_paid, 'x').format('MM/DD/YYYY')
+                                        ? moment.utc(a.date_paid, 'x').format('MM/DD/YYYY')
                                         : 'Proposed'
                                     }`}
                                 </Typography>

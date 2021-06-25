@@ -25,11 +25,11 @@ const Navigation = (props) => {
     const optionalLocationTitle = useReactiveVar(pageName)
 
     return (
-        <Box bgcolor={lightBlue} mb={5}>
+        <Box bgcolor={lightBlue} mb={[3, 5]}>
             <AppBar className='Navigation' position='sticky' color='white'>
-                <Grid container>
+                <Grid container alignItems='center'>
                     <Grid item xs={2} sm={3}>
-                        <Box mt={2} align='center' onClick={() => redirectToHome()}>
+                        <Box align='center' onClick={() => redirectToHome()}>
                             {props.width == 'xs'
                                 ? (
                                     <img

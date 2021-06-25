@@ -8,6 +8,7 @@ module.exports = gql`
         name: String!
         email: String!
         currency: String!
+        external_uuid: String!
         payments: [Payment]
         projects: [Project]
         totalPaid(
@@ -16,11 +17,19 @@ module.exports = gql`
         ): String
     }
 
+    input ClientCreateInput {
+        is_active: Boolean,
+        name: String!,
+        email: String!
+        currency: String!
+        contributor_id: Int
+    }
+
     input ClientInput {
         is_active: Boolean,
         name: String,
         email: String,
-        currency: String,
+        currency: String
     }
 
     type Query {
@@ -31,7 +40,7 @@ module.exports = gql`
 
     type Mutation {
         createClient(
-            createFields: ClientInput!
+            createFields: ClientCreateInput!
         ): Client!
 
         deleteClientById(id: Int!): String

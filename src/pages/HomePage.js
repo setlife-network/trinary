@@ -29,7 +29,7 @@ class HomePage extends React.Component {
                 alignItems='center'
                 className='HomePage'
             >
-                <Grid item xs={8}>
+                <Grid item xs={10}>
                     <Grid
                         container
                         justify='space-between'
