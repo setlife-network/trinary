@@ -29,8 +29,36 @@ const clientManagement = module.exports = (() => {
         })
     }
 
+    const updateClient = async (params) => {
+        let clientToUpdate
+        if (params.clientInformation.external_uuid) {
+            clientToUpdate = await db.models.Client.findOne({
+                where: {
+                    external_uuid: params.clientInformation.external_uuid
+                }
+            })
+        }
+        if (params.clientInformation.email && (clientToUpdate === null)) {
+            clientToUpdate = await db.models.Client.findOne({
+                where: {
+                    email: params.clientInformation.email
+                }
+            })
+        }
+        if (clientToUpdate) {
+            clientToUpdate.email = params.clientInformation.email
+            clientToUpdate.currency = params.clientInformation.currency
+            clientToUpdate.name = params.clientInformation.name
+            clientToUpdate.external_uuid = params.clientInformation.external_uuid
+            await clientToUpdate.save()
+        } else {
+            createClient({ createFields: params.clientInformation })
+        }
+    }
+
     return {
         createClient,
-        findClientWithEmail
+        findClientWithEmail,
+        updateClient
     }
 })()

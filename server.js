@@ -194,7 +194,7 @@ app.post('/api/webhooks/clients', async (req, res, next) => {
         }
     } else if (webhookType === 'customer.updated' ) {
         try {
-            await apiModules.automations.updateClient({ clientInformation })
+            await apiModules.clientManagement.updateClient({ clientInformation })
             res.sendStatus(200)
         } catch (err) {
             console.log(`An error ocurred: ${err}`)
