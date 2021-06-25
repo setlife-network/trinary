@@ -4,14 +4,20 @@ const clientManagement = module.exports = (() => {
 
     const createClient = async (params) => {
         const stripe = require('../handlers/stripe')
-        console.log(stripe)
-        console.log(stripe.createCustomer)
 
-        const fields = params.createFields
-        const createdClient = db.models.Client.create({
-            ...fields
+        const { createFields } = params
+
+        const createdClient = await db.models.Client.create({
+            ...createFields
         })
-        await stripe.createCustomer({ fields })
+
+        if (!createFields.external_uuid) {
+            await stripe.createCustomer({
+                email: createFields.email,
+                name: createFields.name,
+            })
+        }
+
         return createdClient
     }
 

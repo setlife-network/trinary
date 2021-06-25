@@ -10,13 +10,12 @@ const stripe = module.exports = (() => {
     const stripeClient = stripeAPI(STRIPE.SECRET)
 
     const createCustomer = async (params) => {
-        const client = await apiModules.clientManagement.findClientWithEmail(params.createFields)
-        if (!client.external_uuid) {
-            return stripeClient.customers.create({
-                email: params.createFields.email,
-                name: params.createFields.name,
-            })
-        }
+        const { email, name } = params
+
+        stripeClient.customers.create({
+            email,
+            name,
+        })
     }
 
     const pushUpdatedClient = async (params) => {
