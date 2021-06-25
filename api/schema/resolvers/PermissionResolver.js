@@ -46,11 +46,11 @@ module.exports = {
             const contributors = await models.Contributor.findAll({
                 raw: true
             })
-            await Promise.all(contributors.map(async c => {
+            contributors.map(async c => {
                 await authentication.grantProjectPermissions({
                     contributor: c
                 })
-            }))
+            })
             return contributors.length
         }
     }
