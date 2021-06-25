@@ -6,7 +6,7 @@ const clientManagement = module.exports = (() => {
         const stripe = require('../handlers/stripe')
 
         const { createFields } = params
-
+        
         const createdClient = await db.models.Client.create({
             ...createFields
         })

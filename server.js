@@ -170,15 +170,16 @@ app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
 })
 
 app.post('/api/webhooks/clients', async (req, res, next) => {
-    const { data: webhookPayload } = req.body
-    const stripeCustomerObject = webhookPayload.object
+    const webhookPayload = req.body
+    const stripeCustomerObject = webhookPayload.data.object
 
     const clientInformation = {
         email: stripeCustomerObject.email,
-        currency: stripeCustomerObject.currency,
+        currency: stripeCustomerObject.currency || 'SATS',
         name: stripeCustomerObject.name,
         date_created: stripeCustomerObject.created,
-        external_uuid: stripeCustomerObject.id
+        external_uuid: stripeCustomerObject.id,
+        is_active: 1
     }
     const webhookType = webhookPayload.type
 
