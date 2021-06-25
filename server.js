@@ -182,7 +182,7 @@ app.post('/api/webhooks/clients', async (req, res, next) => {
     const webhookType = req.body.type
     if (webhookType === 'customer.created') {
         try {
-            await apiModules.automations.createClient({ clientInformation })
+            await apiModules.clientManagement.createClient({ clientInformation })
             res.sendStatus(200)
         } catch (err) {
             console.log(`An error ocurred: ${err}`)
