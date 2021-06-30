@@ -22,7 +22,17 @@ const stripe = module.exports = (() => {
     const checkCredentials = async () => {
         if (!STRIPE.SECRET || !STRIPE.API_KEY) {
             return false
-        } else return stripeClient ? true : false;
+        } else {
+            try {
+                await stripeClient.events.list({
+                    limit: 1,
+                });
+
+                return true
+            } catch {
+                return false
+            }
+        }
     }
 
     const pushUpdatedClient = async (params) => {
