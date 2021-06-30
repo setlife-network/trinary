@@ -19,7 +19,7 @@ const { SITE_ROOT } = require('./api/config/constants')
 const app = express()
 
 const isProduction = process.env.NODE_ENV === 'production';
-var port = isProduction ? process.env.PORT : 6001;
+const port = isProduction ? process.env.PORT : 6001;
 
 // Serve static assets
 app.use(express.static(__dirname + '/build'));
