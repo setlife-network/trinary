@@ -155,21 +155,12 @@ app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
 app.post('/api/webhooks/clients', async (req, res, next) => {
     const webhookPayload = req.body
     const stripeCustomerObject = webhookPayload.data.object
-
-    const clientInformation = {
-        email: stripeCustomerObject.email,
-        currency: stripeCustomerObject.currency || 'SATS',
-        name: stripeCustomerObject.name,
-        date_created: stripeCustomerObject.created,
-        external_uuid: stripeCustomerObject.id,
-        is_active: 1
-    }
     const webhookType = webhookPayload.type
 
     if (webhookType === 'customer.created') {
         try {
             await apiModules.clientManagement.createClient({
-                createFields: clientInformation
+                stripeCustomerObject
             })
             res.sendStatus(200)
         } catch (err) {
