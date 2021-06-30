@@ -18,7 +18,7 @@ const { SITE_ROOT } = require('./api/config/constants')
 
 const app = express()
 
-var isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === 'production';
 var port = isProduction ? process.env.PORT : 6001;
 
 // Serve static assets
@@ -34,7 +34,7 @@ app.get('*', function(req, res, next) {
     });
 })
 
-var whitelist = [
+const whitelist = [
     'http://localhost:8080',
     'http://localhost:3000',
     'http://localhost:4000',
@@ -46,9 +46,9 @@ var whitelist = [
     'https://trinary.setlife.tech',
     'https://trinary-staging.herokuapp.com'
 ];
-var corsOptions = {
+const corsOptions = {
     origin: function(origin, callback) {
-        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        const originIsWhitelisted = whitelist.indexOf(origin) !== -1;
         callback(null, originIsWhitelisted);
     },
     credentials: true,
@@ -109,11 +109,7 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
 app.post('/api/webhooks/invoice/paid', async (req, res) => {
     const data = req.body.data.object
     try {
-        const paymentInformation = {
-            date_paid: data.webhooks_delivered_at,
-            external_uuid: data.id
-        }
-        await apiModules.budgeting.updateDatePaidPayment({ paymentInformation })
+        await apiModules.budgeting.updateDatePaidPayment({ data })
         res.send('payment updated')
     } catch (err) {
         console.log(`An error ocurred: ${err}`)

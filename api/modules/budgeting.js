@@ -30,7 +30,26 @@ const budgeting = module.exports = (() => {
         return deletedPayment
     }
 
-    const updateDatePaidPayment = async ({ paymentInformation }) => {
+    const getPaymentWithExternalId = (params) => {
+        return db.models.Payment.findOne({
+            where: {
+                external_uuid: params.id
+            },
+            raw: true,
+        })
+    }
+
+    const getPaymentWithId = (params) => {
+        return db.models.Payment.findByPk(params.id, {
+            raw: true
+        })
+    }
+
+    const updateDatePaidPayment = async ({ data }) => {
+        const paymentInformation = {
+            date_paid: data.webhooks_delivered_at,
+            external_uuid: data.id
+        }
         const paymentToUpdate = {}
         if (paymentInformation.external_uuid) {
             Object.assign(paymentToUpdate, await getPaymentWithExternalId({ id: paymentInformation.external_uuid }))
@@ -46,7 +65,6 @@ const budgeting = module.exports = (() => {
                 id: paymentToUpdate.id
             }
         })
-
     }
 
     const updatePaymentByStripeInvoiceId = async (params) => {
