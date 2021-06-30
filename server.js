@@ -113,7 +113,7 @@ app.post('/api/webhooks/invoice/paid', async (req, res) => {
             date_paid: data.webhooks_delivered_at,
             external_uuid: data.id
         }
-        await apiModules.automations.updateDatePaidPayment({ paymentInformation })
+        await apiModules.budgeting.updateDatePaidPayment({ paymentInformation })
         res.send('payment updated')
     } catch (err) {
         console.log(`An error ocurred: ${err}`)
@@ -132,7 +132,7 @@ app.post('/api/webhooks/invoice/updated', (req, res) => {
             customer_id: data.customer,
             external_uuid_type: 'STRIPE',
         }
-        apiModules.automations.updatePaymentFromStripe({ paymentInformation })
+        apiModules.budgeting.updatePaymentByStripeInvoiceId({ paymentInformation })
             .then(() => {
                 res.send('payment updated')
             })
@@ -162,7 +162,7 @@ app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
             date_paid: data.object.created,
             external_uuid: data.object.invoice
         }
-        apiModules.automations.updateDatePaidPayment({ paymentInformation })
+        apiModules.budgeting.updateDatePaidPayment({ paymentInformation })
         res.send('payment updated')
     } catch (err) {
         console.log(`An error ocurred: ${err}`)
