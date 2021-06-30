@@ -67,20 +67,29 @@ const budgeting = module.exports = (() => {
         })
     }
 
-    const updatePaymentByStripeInvoiceId = async (params) => {
+    const updatePaymentByStripeInvoiceId = async ({ data }) => {
+        const datePaidOverride = data.custom_fields[findIndex(data.custom_fields, { 'name': 'date_paid' })]
+        const paymentInformation = {
+            amount: data.total,
+            external_uuid: data.id,
+            date_incurred: data.created,
+            date_paid: datePaidOverride ? datePaidOverride.value : null,
+            customer_id: data.customer,
+            external_uuid_type: 'STRIPE',
+        }
         const paymentToUpdate = await db.models.Payment.findOne({
             where: {
-                external_uuid: params.paymentInformation.external_uuid,
-                external_uuid_type: params.paymentInformation.external_uuid_type
+                external_uuid: paymentInformation.external_uuid,
+                external_uuid_type: paymentInformation.external_uuid_type
             }
         })
         if (paymentToUpdate) {
-            if (params.paymentInformation.date_paid) {
-                updateDatePaidPayment({ paymentInformation: params.paymentInformation })
+            if (paymentInformation.date_paid) {
+                updateDatePaidPayment({ paymentInformation: paymentInformation })
             }
         } else {
             //the payment is not in the db, proceed to store it
-            createPayment({ paymentInformation: params.paymentInformation })
+            createPayment({ paymentInformation: paymentInformation })
         }
     }
     

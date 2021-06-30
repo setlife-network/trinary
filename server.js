@@ -119,16 +119,7 @@ app.post('/api/webhooks/invoice/updated', (req, res) => {
     const data = req.body.data.object
     //1. see if payment is ready to allocate, if not do nothing
     if (findIndex(data.custom_fields, { 'name': 'ready_to_allocate', 'value': 'true' }) != -1) {
-        const datePaidOverride = data.custom_fields[findIndex(data.custom_fields, { 'name': 'date_paid' })]
-        const paymentInformation = {
-            amount: data.total,
-            external_uuid: data.id,
-            date_incurred: data.created,
-            date_paid: datePaidOverride ? datePaidOverride.value : null,
-            customer_id: data.customer,
-            external_uuid_type: 'STRIPE',
-        }
-        apiModules.budgeting.updatePaymentByStripeInvoiceId({ paymentInformation })
+        apiModules.budgeting.updatePaymentByStripeInvoiceId({ data })
             .then(() => {
                 res.send('payment updated')
             })
@@ -154,11 +145,7 @@ app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
         if (data.status == 'succeeded') {
             throw 'Payment not succeeded'
         }
-        const paymentInformation = {
-            date_paid: data.object.created,
-            external_uuid: data.object.invoice
-        }
-        apiModules.budgeting.updateDatePaidPayment({ paymentInformation })
+        apiModules.budgeting.updateDatePaidPayment({ data })
         res.send('payment updated')
     } catch (err) {
         console.log(`An error ocurred: ${err}`)
