@@ -1,3 +1,5 @@
+const { authentication, dataSyncs } = require('../../modules')
+
 module.exports = {
     Permission: {
         contributor: (permission, args, { models }) => {
@@ -32,6 +34,24 @@ module.exports = {
                     contributor_id
                 }
             })
+        },
+    },
+    Mutation: {
+        createPermission: (root, { createFields }, { models }) => {
+            return models.Permission.create({
+                ...createFields
+            })
+        },
+        syncContributorsPermissions: async (root, args, { models }) => {
+            const contributors = await models.Contributor.findAll({
+                raw: true
+            })
+            contributors.map(async c => {
+                await authentication.grantProjectPermissions({
+                    contributor: c
+                })
+            })
+            return contributors.length
         }
     }
 }

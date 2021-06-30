@@ -48,7 +48,6 @@ const userData = github.fetchAuthUserData({ auth_key: '' })
 //         console.log(err);
 //     })
 
-
 const issues = github.fetchRepoIssues({
     auth_key: '',
     repo: 'project-trinary',
