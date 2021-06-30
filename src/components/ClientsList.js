@@ -6,12 +6,14 @@ import { orderBy } from 'lodash'
 
 import ClientTile from './ClientTile'
 import ClientsEmptyState from './ClientsEmptyState'
+import ClientsEmptyStateStripe from './ClientsEmptyStateStripe'
 import LoadingProgress from './LoadingProgress'
 import { GET_CLIENTS } from '../operations/queries/ClientQueries'
+import { HAS_VALID_STRIPE_CREDENTIALS } from '../operations/queries/ConfigQueries';
 
 const ClientsList = (props) => {
     const history = useHistory()
-
+    const { loading: loadingS, error: errorS, data: dataStripe } = useQuery(HAS_VALID_STRIPE_CREDENTIALS);
     const { loading, error, data } = useQuery(GET_CLIENTS);
 
     const renderClientTiles = (clients) => {
@@ -39,7 +41,12 @@ const ClientsList = (props) => {
                     ? (
                         renderClientTiles(clients)
                     ) : (
-                        <ClientsEmptyState/>
+                        dataStripe.checkForValidStripeCredentials
+                            ? (
+                                <ClientsEmptyStateStripe/>
+                            ) : (
+                                <ClientsEmptyState/>
+                            )
                     )
             }
         </>

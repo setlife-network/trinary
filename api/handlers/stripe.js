@@ -18,6 +18,22 @@ const stripe = module.exports = (() => {
         })
     }
 
+    const checkCredentials = async () => {
+        if (!STRIPE.SECRET || !STRIPE.API_KEY) {
+            return false
+        } else {
+            try {
+                await stripeClient.events.list({
+                    limit: 1,
+                });
+
+                return true
+            } catch {
+                return false
+            }
+        }
+    }
+
     const pushUpdatedClient = async (params) => {
         const client = await findClientWithEmail(params.updateFields)
         const stripe_uuid = client.external_uuid
@@ -34,6 +50,7 @@ const stripe = module.exports = (() => {
 
     return {
         createCustomer,
+        checkCredentials,
         pushUpdatedClient
     }
 
