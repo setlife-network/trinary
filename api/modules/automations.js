@@ -1,39 +1,13 @@
-const moment = require('moment')
-
 const github = require('../handlers/github')
-const { GITHUB } = require('../config/credentials')
 const db = require('../models')
 
 const automations = module.exports = (() => {
-
-    const getClientFromEmail = (params) => {
-        return db.models.Client.findOne({
-            where: {
-                email: params.email
-            }
-        })
-    }
 
     const getClientWithExternalId = (params) => {
         return db.models.Client.findOne({
             where: {
                 external_uuid: params.id
             }
-        })
-    }
-
-    const getPaymentWithExternalId = (params) => {
-        return db.models.Payment.findOne({
-            where: {
-                external_uuid: params.id
-            },
-            raw: true,
-        })
-    }
-
-    const getPaymentWithId = (params) => {
-        return db.models.Payment.findByPk(params.id, {
-            raw: true
         })
     }
 
@@ -95,7 +69,6 @@ const automations = module.exports = (() => {
     }
 
     return {
-        createPayment,
         getClientWithExternalId,
         getUserOrganizations,
         getOrganizationRepos,
