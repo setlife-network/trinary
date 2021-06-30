@@ -146,7 +146,7 @@ app.post('/api/webhooks/invoice/updated', (req, res) => {
 app.post('/api/webhooks/invoice/delete', async (req, res) => {
     const invoiceId = req.body.data.object.id
     try {
-        await apiModules.automations.deleteDraftInvoicesFromStripe({ invoiceId })
+        await apiModules.budgeting.deletePaymentByStripeInvoiceId({ invoiceId })
         res.sendStatus(200)
     } catch (err) {
         console.log(`An error ocurred: ${err}`)

@@ -20,20 +20,6 @@ const automations = module.exports = (() => {
         }
     }
 
-    const deleteDraftInvoicesFromStripe = (params) => {
-        let deletedInvoice
-        try {
-            deletedInvoice = db.models.Payment.destroy({
-                where: {
-                    external_uuid: params.invoiceId
-                }
-            })
-        } catch (err) {
-            console.log(`An error ocurred: ${err}`)
-        }
-        return deletedInvoice
-    }
-
     const getClientFromEmail = (params) => {
         return db.models.Client.findOne({
             where: {
