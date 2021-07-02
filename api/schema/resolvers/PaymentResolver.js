@@ -49,12 +49,18 @@ module.exports = {
                 date_incurred: createFields['date_incurred'],
                 date_paid: createFields['date_paid']
             })
-            const client = await apiModules.clientManagement.findClientWithId(createFields['client_id'])
+            const client = await models.Client.findOne({
+                where: {
+                    id: createFields['client_id']
+                }
+            })
+            console.log('client');
+            console.log(client);
             //Check if the client has a stripe associated account
             //If it is proceed to store the payment on stripe
             if (client.external_uuid) {
                 console.log('client.external_uuid');
-                const stripePayment = await apiModules.paymentsManagement.handleStripeIncomingPayment({
+                const stripePayment = await apiModules.paymentManagement.handleStripeIncomingPayment({
                     clientId: client.id,
                     amount: createFields['amount'],
                     currency: client.currency

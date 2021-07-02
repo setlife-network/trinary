@@ -6,7 +6,7 @@ const {
 const db = require('../models')
 const apiModules = require('../modules')
 
-const stripe = module.exports = (() => {
+const stripeHandler = module.exports = (() => {
     const stripeClient = stripeAPI(STRIPE.SECRET)
 
     const createCustomer = async (params) => {
