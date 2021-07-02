@@ -19,12 +19,29 @@ const stripe = module.exports = (() => {
         }
     }
 
+    const createInvoice = async (params) => {
+        const invoiceItem = await stripeClient.invoiceItems.create({
+            customer: client.external_uuid,
+            currency: params.currency,
+            price_data: {
+                currency: params.currency,
+                product: 'prod_JJXofAMeGR4HIS',
+                unit_amount: params.amount
+            }
+        })
+        return stripeClient.invoices.create({
+            customer: client.external_uuid,
+            description: 'payment charged from trinary'
+        })
+
+    }
+
     const pushUpdatedClient = async (params) => {
         const client = await findClientWithEmail(params.updateFields)
         const stripe_uuid = client.external_uuid
         if (stripe_uuid) {
             return stripeClient.customers.update(
-                stripe_uuid, 
+                stripe_uuid,
                 {
                     name: client.name,
                     email: client.email
@@ -35,6 +52,7 @@ const stripe = module.exports = (() => {
 
     return {
         createCustomer,
+        createInvoice,
         pushUpdatedClient
     }
 

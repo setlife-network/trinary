@@ -1,8 +1,9 @@
 const apiModules = module.exports = (() => {
     return {
+        paymentManagement: require('./paymentManagement'),
         authentication: require('./authentication'),
-        dataSyncs: require('./dataSyncs'),
         automations: require('./automations'),
-        clientManagement: require('./clientManagement')
+        clientManagement: require('./clientManagement'),
+        dataSyncs: require('./dataSyncs')
     }
 })()

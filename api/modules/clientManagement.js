@@ -20,8 +20,14 @@ const clientManagement = module.exports = (() => {
         })
     }
 
+    const findClientWithId = async (clientId) => {
+        console.log('findClientWithId');
+        return db.models.Client.findByPk(clientId)
+    }
+
     return {
         createClient,
-        findClientWithEmail
+        findClientWithEmail,
+        findClientWithId
     }
 })()
