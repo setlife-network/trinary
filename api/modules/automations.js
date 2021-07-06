@@ -7,7 +7,7 @@ const db = require('../models')
 const automations = module.exports = (() => {
 
     const createPayment = async ({ paymentInformation }) => {
-        const client = await getClientFromExternalId({ id: paymentInformation.customer_id })
+        const client = await getClientWithExternalId({ id: paymentInformation.customer_id })
         if (client) {
             return db.models.Payment.create({
                 amount: paymentInformation.amount,
@@ -20,7 +20,29 @@ const automations = module.exports = (() => {
         }
     }
 
-    const getClientFromExternalId = (params) => {
+    const deleteDraftInvoicesFromStripe = (params) => {
+        let deletedInvoice
+        try {
+            deletedInvoice = db.models.Payment.destroy({
+                where: {
+                    external_uuid: params.invoiceId
+                }
+            })
+        } catch (err) {
+            console.log(`An error ocurred: ${err}`)
+        }
+        return deletedInvoice
+    }
+
+    const getClientFromEmail = (params) => {
+        return db.models.Client.findOne({
+            where: {
+                email: params.email
+            }
+        })
+    }
+
+    const getClientWithExternalId = (params) => {
         return db.models.Client.findOne({
             where: {
                 external_uuid: params.id
@@ -28,7 +50,7 @@ const automations = module.exports = (() => {
         })
     }
 
-    const getPaymentFromExternalId = (params) => {
+    const getPaymentWithExternalId = (params) => {
         return db.models.Payment.findOne({
             where: {
                 external_uuid: params.id
@@ -37,7 +59,7 @@ const automations = module.exports = (() => {
         })
     }
 
-    const getPaymentFromId = (params) => {
+    const getPaymentWithId = (params) => {
         return db.models.Payment.findByPk(params.id, {
             raw: true
         })
@@ -76,9 +98,17 @@ const automations = module.exports = (() => {
         const repos = await github.fetchRepos({
             auth_key: params.auth_key
         })
+        console.log('organizations')
+        console.log(organizations.length)
+        console.log('repos')
+        console.log(repos.length)
         organizations.map(async o => {
             const organizationRepos = []
             repos.map(r => {
+                console.log(r)
+                if (o.name == 'otech47') {
+                    console.log(r.owner.login)
+                }
                 if (r.owner.login == o.name) {
                     organizationRepos.push({
                         id: r.id,
@@ -95,9 +125,9 @@ const automations = module.exports = (() => {
     const updateDatePaidPayment = async ({ paymentInformation }) => {
         const paymentToUpdate = {}
         if (paymentInformation.external_uuid) {
-            Object.assign(paymentToUpdate, await getPaymentFromExternalId({ id: paymentInformation.external_uuid }))
+            Object.assign(paymentToUpdate, await getPaymentWithExternalId({ id: paymentInformation.external_uuid }))
         } else {
-            Object.assign(paymentToUpdate, await getPaymentFromId({ id: paymentInformation.id }))
+            Object.assign(paymentToUpdate, await getPaymentWithId({ id: paymentInformation.id }))
         }
 
         paymentToUpdate.date_paid = paymentInformation.date_paid
@@ -130,6 +160,8 @@ const automations = module.exports = (() => {
 
     return {
         createPayment,
+        deleteDraftInvoicesFromStripe,
+        getClientWithExternalId,
         getUserOrganizations,
         getOrganizationRepos,
         updateDatePaidPayment,

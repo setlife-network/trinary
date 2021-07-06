@@ -51,12 +51,14 @@
     "react-scripts": "3.4.3",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
+    "stripe": "^8.150.0",
     "toggl-api": "^1.0.1",
     "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
     "ui": "cross-env PORT=6002 react-scripts start",
     "server": "cross-env PORT=6001 node server",
+    "dev-server": "cross-env PORT=6001 nodemon server",
     "start": "node server",
     "build": "react-scripts build",
     "test": "react-scripts test",

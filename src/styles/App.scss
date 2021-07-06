@@ -4,7 +4,20 @@ body {
 
 .App {
     text-align: center;
+    padding-bottom: 50px;
+  
+    &.disable-touch-manipulation {
+        touch-action: manipulation !important;
+    }
+
+    // For development purposes only
+    .SwipeableNavigation {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
 }
+
 
 .image-button {
     margin-top: 2rem;

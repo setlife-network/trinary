@@ -1,5 +1,6 @@
 const { split } = require('lodash')
 
+const authentication = require('./authentication')
 const amazon = require('../handlers/amazon')
 const github = require('../handlers/github')
 const toggl = require('../handlers/toggl')

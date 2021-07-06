@@ -37,9 +37,13 @@ npm run ui
 
 ```
 npm run server
+// or for hot-reloaded backend code
+npm run dev-server
 ```
 
 5. UI should open in the browser at `localhost:6002`
+
+6. An API Explorer is accessible in the browser at `localhost:6001/api/graph`
 
 If using VSCode, be sure to disable the Prettier: Format on Save feature to prevent unwanted changes to the code styles.
 
@@ -82,7 +86,7 @@ e.g.
 MYSQL_DB_HOST=127.0.0.1
 ```
    
-8. With all database variables filled you can run the `npm run server` or `npm run server-windows` command and the necessary tables will be created.
+8. With all database variables filled you can run the `npm run server` or `npm run dev-server` command and the necessary tables will be created.
 
 ## Troubleshooting
 

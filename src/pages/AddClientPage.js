@@ -18,7 +18,7 @@ class AddClientPage extends React.Component {
                 className='AddClientPage'
                 justify='center'
             >
-                <Grid item xs={8}>
+                <Grid item xs={10}>
                     <Typography align='left'>
                         <strong>
                             Enter info below to create a client

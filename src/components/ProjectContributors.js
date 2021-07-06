@@ -172,7 +172,7 @@ const ProjectContributors = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <Box my={5}>
+                <Box my={[2, 5]}>
                     <Typography align='left' variant='h5'>
                         {`Active contributors`}
                     </Typography>
@@ -189,7 +189,7 @@ const ProjectContributors = (props) => {
                         }
                     </Grid>
                 </Box>
-                <Box my={5}>
+                <Box my={[2, 5]}>
                     <Typography align='left' variant='h5'>
                         {`Upcoming contributors`}
                     </Typography>
@@ -225,7 +225,7 @@ const ProjectContributors = (props) => {
                         }
                     </Grid>
                 </Box>
-                <Box my={5} py={5}/>
+                <Box my={[2, 5]} py={5}/>
             </Grid>
             <Grid item xs={12}>
                 {

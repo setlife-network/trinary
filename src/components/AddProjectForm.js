@@ -19,6 +19,7 @@ import AddProjectDetails from './AddProjectDetails'
 import AddProjectFromGithub from './AddProjectFromGithub'
 import LoadingProgress from './LoadingProgress'
 
+import { sessionUser } from '../reactivities/variables'
 import {
     verifyGithubURL,
     verifyTogglURL
@@ -26,6 +27,7 @@ import {
 import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS } from '../constants'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
+import { CREATE_PERMISSION } from '../operations/mutations/PermissionMutations'
 
 const AddProjectForm = (props) => {
 
@@ -52,6 +54,16 @@ const AddProjectForm = (props) => {
             loading,
             error
         }] = useMutation(ADD_PROJECT, {
+        errorPolicy: 'all'
+    })
+
+    const [
+        createPermission,
+        {
+            data: dataNewPermission,
+            loadin: loadingNewPermission,
+            error: errorNewPermission
+        }] = useMutation(CREATE_PERMISSION, {
         errorPolicy: 'all'
     })
 
@@ -101,7 +113,7 @@ const AddProjectForm = (props) => {
                 return
             }
         }
-        const variables = {
+        const newProjectVariables = {
             client_id: Number(clientId),
             name: projectName,
             github_url: projectGithub,
@@ -111,14 +123,20 @@ const AddProjectForm = (props) => {
             expected_budget_timeframe: EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
         }
         if (projectToggl) {
-            variables.toggl_url = projectToggl
+            newProjectVariables.toggl_url = projectToggl
         }
-        const newProject = await addProject({ variables })
+        const newProject = await addProject({ variables: newProjectVariables })
         if (loading) return <LoadingProgress/>
         if (newProject.errors) {
             setCreateProjectError(`${Object.keys(newProject.errors[0].extensions.exception.fields)[0]} already exists`)
             setDisplayError(true)
         } else {
+            const newPermission = await createPermission({
+                variables: {
+                    contributor_id: sessionUser().id,
+                    project_id: newProject.data.createProject.id,
+                    type: 'owner'
+                } })
             history.push(`/projects/${newProject.data.createProject.id}`)
         }
     }
@@ -129,7 +147,6 @@ const AddProjectForm = (props) => {
         }
         setDisplayError(false)
     }
-
     if (errorClient) return `An error ocurred: ${errorClient}`
     if (loadingClient) return <LoadingProgress/>
 

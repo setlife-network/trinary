@@ -7,7 +7,7 @@ import { CHECK_SESSION } from '../operations/queries/ContributorQueries'
 
 const PrivateRoute = (props) => {
 
-    //IMPORTANT: use CHECK_SESSION qeury for reloading and staying on sape page
+    //IMPORTANT: use CHECK_SESSION query for reloading and staying on sape page
     const { error, loading, data } = useQuery(CHECK_SESSION)
 
     if (loading) {

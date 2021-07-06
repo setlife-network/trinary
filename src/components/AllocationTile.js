@@ -60,7 +60,7 @@ const AllocationTile = (props) => {
                         {`${allocation.project.client.name}`}
                     </Typography>
                 </Grid>
-                <Box my={5}/>
+                <Box my={[2, 5]}/>
                 <Grid item xs={6}>
                     <Box
                         color={
