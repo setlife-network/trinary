@@ -54,25 +54,33 @@ const clientManagement = module.exports = (() => {
             external_uuid: stripeCustomerObject.id,
             is_active: 1
         }
+
+        const {
+            email,
+            name,
+            currency,
+            external_uuid
+        } = clientInformation
+
         if (clientInformation.external_uuid) {
             clientToUpdate = await db.models.Client.findOne({
                 where: {
-                    external_uuid: clientInformation.external_uuid
+                    external_uuid
                 }
             })
         }
         if (clientInformation.email && (clientToUpdate === null)) {
             clientToUpdate = await db.models.Client.findOne({
                 where: {
-                    email: clientInformation.email
+                    email
                 }
             })
         }
         if (clientToUpdate) {
-            clientToUpdate.email = clientInformation.email
-            clientToUpdate.currency = clientInformation.currency
-            clientToUpdate.name = clientInformation.name
-            clientToUpdate.external_uuid = clientInformation.external_uuid
+            clientToUpdate.email = email
+            clientToUpdate.currency = currency
+            clientToUpdate.name = name
+            clientToUpdate.external_uuid = external_uuid
             await clientToUpdate.save()
         } else {
             createClient({ clientInformation })
