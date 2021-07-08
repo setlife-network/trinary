@@ -6,14 +6,23 @@ const budgeting = module.exports = (() => {
 
     const createPayment = async ({ paymentInformation }) => {
         const client = await clientManagement.getClientWithExternalId({ id: paymentInformation.customer_id })
+
+        const {
+            amount,
+            external_uuid,
+            date_incurred,
+            date_paid,
+            external_uuid_type
+        } = paymentInformation
+
         if (client) {
             return db.models.Payment.create({
-                amount: paymentInformation.amount,
-                external_uuid: paymentInformation.external_uuid,
-                date_incurred: moment(paymentInformation.date_incurred['_d']).format('YYYY-MM-DD HH:mm:ss'),
-                date_paid: paymentInformation.date_paid ? moment(paymentInformation.date_paid['_d']) : null,
+                amount,
+                external_uuid,
+                date_incurred: moment(date_incurred['_d']).format('YYYY-MM-DD HH:mm:ss'),
+                date_paid: date_paid ? moment(date_paid['_d']) : null,
                 client_id: client.id,
-                external_uuid_type: paymentInformation.external_uuid_type
+                external_uuid_type
             })
         }
     }
