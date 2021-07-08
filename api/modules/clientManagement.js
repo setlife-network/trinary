@@ -36,6 +36,14 @@ const clientManagement = module.exports = (() => {
         })
     }
 
+    const getClientWithExternalId = (params) => {
+        return db.models.Client.findOne({
+            where: {
+                external_uuid: params.id
+            }
+        })
+    }
+
     const updateClient = async ({ stripeCustomerObject }) => {
         let clientToUpdate
         const clientInformation = {
@@ -74,6 +82,7 @@ const clientManagement = module.exports = (() => {
     return {
         createClient,
         findClientWithEmail,
+        getClientWithExternalId,
         updateClient
     }
 })()

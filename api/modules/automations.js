@@ -3,14 +3,6 @@ const db = require('../models')
 
 const automations = module.exports = (() => {
 
-    const getClientWithExternalId = (params) => {
-        return db.models.Client.findOne({
-            where: {
-                external_uuid: params.id
-            }
-        })
-    }
-
     const getUserOrganizations = async (params) => {
         //user organizations are the organizations that the contributor is added as a internal collaborator
         //we also add the self github contributor user for implementation details

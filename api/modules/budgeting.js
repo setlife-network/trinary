@@ -1,10 +1,11 @@
-const db = require('../models');
+const db = require('../models')
 const moment = require('moment')
+const clientManagement = require('./clientManagement')
 
 const budgeting = module.exports = (() => {
 
     const createPayment = async ({ paymentInformation }) => {
-        const client = await getClientWithExternalId({ id: paymentInformation.customer_id })
+        const client = await clientManagement.getClientWithExternalId({ id: paymentInformation.customer_id })
         if (client) {
             return db.models.Payment.create({
                 amount: paymentInformation.amount,
