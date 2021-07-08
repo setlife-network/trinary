@@ -56,10 +56,10 @@ const budgeting = module.exports = (() => {
         })
     }
 
-    const updateDatePaidPayment = async ({ data }) => {
+    const updateDatePaidPayment = async ({ paymentObjectPayload }) => {
         const paymentInformation = {
-            date_paid: data.webhooks_delivered_at,
-            external_uuid: data.id
+            date_paid: paymentObjectPayload.webhooks_delivered_at,
+            external_uuid: paymentObjectPayload.id
         }
         const paymentToUpdate = {}
         if (paymentInformation.external_uuid) {
@@ -78,14 +78,14 @@ const budgeting = module.exports = (() => {
         })
     }
 
-    const updatePaymentByStripeInvoiceId = async ({ data }) => {
-        const datePaidOverride = data.custom_fields[findIndex(data.custom_fields, { 'name': 'date_paid' })]
+    const updatePaymentByStripeInvoiceId = async ({ paymentObjectPayload }) => {
+        const datePaidOverride = paymentObjectPayload.custom_fields[findIndex(paymentObjectPayload.custom_fields, { 'name': 'date_paid' })]
         const paymentInformation = {
-            amount: data.total,
-            external_uuid: data.id,
-            date_incurred: data.created,
+            amount: paymentObjectPayload.total,
+            external_uuid: paymentObjectPayload.id,
+            date_incurred: paymentObjectPayload.created,
             date_paid: datePaidOverride ? datePaidOverride.value : null,
-            customer_id: data.customer,
+            customer_id: paymentObjectPayload.customer,
             external_uuid_type: 'STRIPE',
         }
         const paymentToUpdate = await db.models.Payment.findOne({

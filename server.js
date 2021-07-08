@@ -107,19 +107,19 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
 })
 
 app.post('/api/webhooks/invoice/paid', async (req, res) => {
-    const data = req.body.data.object
+    const paymentObjectPayload = req.body.data.object
     try {
-        await apiModules.budgeting.updateDatePaidPayment({ data })
+        await apiModules.budgeting.updateDatePaidPayment({ paymentObjectPayload })
         res.send('payment updated')
     } catch (err) {
         console.log(`An error ocurred: ${err}`)
     }
 })
 app.post('/api/webhooks/invoice/updated', (req, res) => {
-    const data = req.body.data.object
+    const paymentObjectPayload = req.body.data.object
     //1. see if payment is ready to allocate, if not do nothing
-    if (findIndex(data.custom_fields, { 'name': 'ready_to_allocate', 'value': 'true' }) != -1) {
-        apiModules.budgeting.updatePaymentByStripeInvoiceId({ data })
+    if (findIndex(paymentObjectPayload.custom_fields, { 'name': 'ready_to_allocate', 'value': 'true' }) != -1) {
+        apiModules.budgeting.updatePaymentByStripeInvoiceId({ paymentObjectPayload })
             .then(() => {
                 res.send('payment updated')
             })
@@ -140,12 +140,12 @@ app.post('/api/webhooks/invoice/delete', async (req, res) => {
     }
 })
 app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
-    const data = req.body.data
+    const paymentObjectPayload = req.body.data
     try {
-        if (data.status == 'succeeded') {
+        if (paymentObjectPayload.status == 'succeeded') {
             throw 'Payment not succeeded'
         }
-        apiModules.budgeting.updateDatePaidPayment({ data })
+        apiModules.budgeting.updateDatePaidPayment({ paymentObjectPayload })
         res.send('payment updated')
     } catch (err) {
         console.log(`An error ocurred: ${err}`)
