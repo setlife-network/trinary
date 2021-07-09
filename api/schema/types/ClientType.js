@@ -35,6 +35,7 @@ module.exports = gql`
     type Query {
         getClientById(id: Int!): Client
         getClients: [Client]
+        getInactiveClients: [Client]
         getActiveClientsCount: Int!
         getInactiveClientsCount: Int!
     }
