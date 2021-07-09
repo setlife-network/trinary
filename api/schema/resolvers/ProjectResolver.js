@@ -530,7 +530,7 @@ module.exports = {
         }
     },
     Mutation: {
-        createProject: (root, { createFields }, { models }) => {
+        createProject: async (root, { createFields }, { models }) => {
             validateDatesFormat({
                 date: createFields['date']
             })
@@ -543,9 +543,13 @@ module.exports = {
                 const togglId = togglArray[togglArray.length - 1]
                 projectToCreate['toggl_id'] = togglId
             }
-            return models.Project.create({
+            const newProject = await models.Project.create({
                 ...projectToCreate
             })
+            if (newProject.id) {
+                //create owner permission to contributor who created the project
+            }
+            return newProject
         },
         deleteProjectById: (root, { id }, { models }) => {
             return models.Project.destroy({ where: { id } })

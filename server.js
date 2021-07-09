@@ -94,8 +94,7 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         .then((contributorInfo) => {
             //sync the permissions for the contributor
             apiModules.authentication.grantProjectPermissions({
-                contributor: contributorInfo.contributor.dataValues,
-                githubContributor: contributorInfo.githubContributor
+                contributor: contributorInfo.contributor.dataValues
             })
         })
         .then(() => {
@@ -143,6 +142,15 @@ app.post('/api/webhooks/invoice/updated', (req, res) => {
         res.send('payment not ready to allocate')
     }
 })
+app.post('/api/webhooks/invoice/delete', async (req, res) => {
+    const invoiceId = req.body.data.object.id
+    try {
+        await apiModules.automations.deleteDraftInvoicesFromStripe({ invoiceId })
+        res.sendStatus(200)
+    } catch (err) {
+        console.log(`An error ocurred: ${err}`)
+    }
+})
 app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
     const data = req.body.data
     try {
@@ -161,26 +169,31 @@ app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
 })
 
 app.post('/api/webhooks/clients', async (req, res, next) => {
+    const webhookPayload = req.body
+    const stripeCustomerObject = webhookPayload.data.object
 
-    const clientData = req.body.data.object
     const clientInformation = {
-        email: clientData.email,
-        currency: clientData.currency,
-        name: clientData.name,
-        date_created: req.body.created,
-        external_uuid: clientData.id
+        email: stripeCustomerObject.email,
+        currency: stripeCustomerObject.currency || 'SATS',
+        name: stripeCustomerObject.name,
+        date_created: stripeCustomerObject.created,
+        external_uuid: stripeCustomerObject.id,
+        is_active: 1
     }
-    const webhookType = req.body.type
+    const webhookType = webhookPayload.type
+
     if (webhookType === 'customer.created') {
         try {
-            await apiModules.automations.createClient({ clientInformation })
+            await apiModules.clientManagement.createClient({
+                createFields: clientInformation
+            })
             res.sendStatus(200)
         } catch (err) {
             console.log(`An error ocurred: ${err}`)
         }
     } else if (webhookType === 'customer.updated' ) {
         try {
-            await apiModules.automations.updateClient({ clientInformation })
+            await apiModules.clientManagement.updateClient({ clientInformation })
             res.sendStatus(200)
         } catch (err) {
             console.log(`An error ocurred: ${err}`)

@@ -1,14 +1,23 @@
-const stripe = require('../handlers/stripe')
 const db = require('../models')
 
 const clientManagement = module.exports = (() => {
 
     const createClient = async (params) => {
-        const fields = params.createFields
-        const createdClient = db.models.Client.create({
-            ...fields
+        const stripe = require('../handlers/stripe')
+
+        const { createFields } = params
+
+        const createdClient = await db.models.Client.create({
+            ...createFields
         })
-        await stripe.createCustomer({ fields })
+
+        if (!createFields.external_uuid) {
+            await stripe.createCustomer({
+                email: createFields.email,
+                name: createFields.name,
+            })
+        }
+
         return createdClient
     }
 
@@ -21,13 +30,40 @@ const clientManagement = module.exports = (() => {
     }
 
     const findClientWithId = async (clientId) => {
-        console.log('findClientWithId');
         return db.models.Client.findByPk(clientId)
+    }
+
+    const updateClient = async (params) => {
+        let clientToUpdate
+        if (params.clientInformation.external_uuid) {
+            clientToUpdate = await db.models.Client.findOne({
+                where: {
+                    external_uuid: params.clientInformation.external_uuid
+                }
+            })
+        }
+        if (params.clientInformation.email && (clientToUpdate === null)) {
+            clientToUpdate = await db.models.Client.findOne({
+                where: {
+                    email: params.clientInformation.email
+                }
+            })
+        }
+        if (clientToUpdate) {
+            clientToUpdate.email = params.clientInformation.email
+            clientToUpdate.currency = params.clientInformation.currency
+            clientToUpdate.name = params.clientInformation.name
+            clientToUpdate.external_uuid = params.clientInformation.external_uuid
+            await clientToUpdate.save()
+        } else {
+            createClient({ createFields: params.clientInformation })
+        }
     }
 
     return {
         createClient,
         findClientWithEmail,
-        findClientWithId
+        findClientWithId,
+        updateClient
     }
 })()

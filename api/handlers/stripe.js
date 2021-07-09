@@ -13,12 +13,27 @@ const stripeHandler = module.exports = (() => {
     const stripeClient = stripeAPI(STRIPE.SECRET)
 
     const createCustomer = async (params) => {
-        const client = await apiModules.clientManagement.findClientWithEmail(params.createFields)
-        if (!client.external_uuid) {
-            return stripeClient.customers.create({
-                email: params.createFields.email,
-                name: params.createFields.name,
-            })
+        const { email, name } = params
+
+        stripeClient.customers.create({
+            email,
+            name,
+        })
+    }
+
+    const checkCredentials = async () => {
+        if (!STRIPE.SECRET || !STRIPE.API_KEY) {
+            return false
+        } else {
+            try {
+                await stripeClient.events.list({
+                    limit: 1,
+                });
+
+                return true
+            } catch {
+                return false
+            }
         }
     }
 
@@ -71,6 +86,7 @@ const stripeHandler = module.exports = (() => {
 
     return {
         createCustomer,
+        checkCredentials,
         createInvoice,
         finalizeInvoice,
         pushUpdatedClient
