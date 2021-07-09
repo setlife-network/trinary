@@ -54,19 +54,16 @@ module.exports = {
                     id: createFields['client_id']
                 }
             })
-            console.log('client');
-            console.log(client);
+
             //Check if the client has a stripe associated account
             //If it is proceed to store the payment on stripe
             if (client.external_uuid) {
-                console.log('client.external_uuid');
                 const stripePayment = await apiModules.paymentManagement.handleStripeIncomingPayment({
                     clientId: client.id,
                     amount: createFields['amount'],
                     currency: client.currency
                 })
-                console.log('stripePayment');
-                console.log(stripePayment);
+                createFields['external_uuid'] = stripePayment.id
             }
             return models.Payment.create({
                 ...createFields
