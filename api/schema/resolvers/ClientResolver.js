@@ -48,6 +48,13 @@ module.exports = {
                     is_active: true
                 }
             })
+        },
+        getInactiveClientsCount: (root, args, { models }) => {
+            return models.Client.count({
+                where: {
+                    is_active: false
+                }
+            })
         }
     },
     Mutation: {
