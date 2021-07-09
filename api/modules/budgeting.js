@@ -19,7 +19,7 @@ const budgeting = module.exports = (() => {
             return db.models.Payment.create({
                 amount,
                 external_uuid,
-                date_incurred: moment(date_incurred['_d']).format('YYYY-MM-DD HH:mm:ss'),
+                date_incurred: date_incurred.format('YYYY-MM-DD HH:mm:ss'),
                 date_paid: date_paid ? moment(date_paid['_d']) : null,
                 client_id: client.id,
                 external_uuid_type
@@ -79,7 +79,12 @@ const budgeting = module.exports = (() => {
     }
 
     const updatePaymentByStripeInvoiceId = async ({ paymentObjectPayload }) => {
-        const datePaidOverride = paymentObjectPayload.custom_fields[findIndex(paymentObjectPayload.custom_fields, { 'name': 'date_paid' })]
+        const datePaidOverride = paymentObjectPayload.custom_fields[
+            findIndex(
+                paymentObjectPayload.custom_fields, 
+                { 'name': 'date_paid' }
+            )
+        ]
         const paymentInformation = {
             amount: paymentObjectPayload.total,
             external_uuid: paymentObjectPayload.id,

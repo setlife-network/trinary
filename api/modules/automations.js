@@ -61,7 +61,6 @@ const automations = module.exports = (() => {
     }
 
     return {
-        getClientWithExternalId,
         getUserOrganizations,
         getOrganizationRepos,
     }
