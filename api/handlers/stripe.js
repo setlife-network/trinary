@@ -19,14 +19,20 @@ const stripeHandler = module.exports = (() => {
         }
     }
 
-    const createInvoice = async (params) => {
+    const createInvoice = async ({
+        amount,
+        clientId,
+        currency,
+        external_uuid
+    }) => {
+        const client = await apiModules.clientManagement.findClientWithId(clientId)
         const invoiceItem = await stripeClient.invoiceItems.create({
             customer: client.external_uuid,
-            currency: params.currency,
+            currency: currency,
             price_data: {
-                currency: params.currency,
+                currency: currency,
                 product: 'prod_JJXofAMeGR4HIS',
-                unit_amount: params.amount
+                unit_amount: amount
             }
         })
         return stripeClient.invoices.create({
