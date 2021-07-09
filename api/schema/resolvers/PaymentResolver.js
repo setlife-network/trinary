@@ -59,9 +59,10 @@ module.exports = {
             //If it is proceed to store the payment on stripe
             if (client.external_uuid) {
                 const stripePayment = await apiModules.paymentManagement.handleStripeIncomingPayment({
-                    clientId: client.id,
                     amount: createFields['amount'],
-                    currency: client.currency
+                    clientId: client.id,
+                    currency: client.currency,
+                    date_paid: createFields['date_paid']
                 })
                 createFields['external_uuid'] = stripePayment.id
             }
