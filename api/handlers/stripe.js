@@ -3,6 +3,9 @@ const stripeAPI = require('stripe');
 const {
     STRIPE
 } = require('../config/credentials')
+const {
+    STRIPE_PRODUCT_PLACEHOLDER_ID
+} = require('../config/constants')
 const db = require('../models')
 const apiModules = require('../modules')
 
@@ -32,7 +35,7 @@ const stripeHandler = module.exports = (() => {
             currency: currency,
             price_data: {
                 currency: currency,
-                product: 'prod_JJXofAMeGR4HIS',
+                product: STRIPE_PRODUCT_PLACEHOLDER_ID,
                 unit_amount: amount
             }
         }
