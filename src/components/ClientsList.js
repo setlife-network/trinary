@@ -41,7 +41,7 @@ const ClientsList = (props) => {
                     ? (
                         renderClientTiles(clients)
                     ) : (
-                        dataStripe.checkForValidStripeCredentials
+                        dataStripe?.checkForValidStripeCredentials
                             ? (
                                 <ClientsEmptyStateStripe/>
                             ) : (
