@@ -14,7 +14,7 @@ const clientManagement = module.exports = (() => {
         }
 
         // Do not create the Client if the email already exists
-        let client = db.models.Client.findOne({
+        let client = await db.models.Client.findOne({
             where: {
                 email: clientInformation.email
             }
