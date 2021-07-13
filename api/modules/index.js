@@ -1,5 +1,6 @@
 const apiModules = module.exports = (() => {
     return {
+        accessManagement: require('./accessManagement'),
         authentication: require('./authentication'),
         automations: require('./automations'),
         budgeting: require('./budgeting'),

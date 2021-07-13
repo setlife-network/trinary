@@ -70,9 +70,12 @@ const stripeHandler = module.exports = (() => {
         return stripeClient.invoices.finalizeInvoice(invoice.id)
     }
 
-    const pushUpdatedClient = async (params) => {
-        const client = await findClientWithEmail(params.updateFields)
+    const updateCustomerWithClientId = async (params) => {
+        const { clientId } = params
+
+        const client = await findClientWithId(clientId)
         const stripe_uuid = client.external_uuid
+
         if (stripe_uuid) {
             return stripeClient.customers.update(
                 stripe_uuid,
@@ -81,6 +84,9 @@ const stripeHandler = module.exports = (() => {
                     email: client.email
                 }
             )
+        } else {
+            console.log('Client does not have an external_uuid')
+            return false
         }
     }
 
@@ -89,7 +95,7 @@ const stripeHandler = module.exports = (() => {
         checkCredentials,
         createInvoice,
         finalizeInvoice,
-        pushUpdatedClient
+        updateCustomerWithClientId
     }
 
 })();
