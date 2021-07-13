@@ -82,7 +82,7 @@ const budgeting = module.exports = (() => {
         const datePaidOverride = paymentObjectPayload.custom_fields[
             findIndex(
                 paymentObjectPayload.custom_fields, 
-                { 'name': 'date_paid' }
+                { name: 'date_paid' }
             )
         ]
         const paymentInformation = {
