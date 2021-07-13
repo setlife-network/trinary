@@ -55,16 +55,16 @@ module.exports = {
                 }
             })
 
-            //Check if the client has a stripe associated account
-            //If it is proceed to store the payment on stripe
+            // Check if the client has an associated Stripe account
+            // If it does, proceed to create the invoice on Stripe
             if (client.external_uuid) {
-                const stripePayment = await apiModules.paymentManagement.handleStripeIncomingPayment({
+                const stripeInvoice = await apiModules.paymentManagement.processStripeInvoiceWithPayment({
                     amount: createFields['amount'],
                     clientId: client.id,
                     currency: client.currency,
                     date_paid: createFields['date_paid']
                 })
-                createFields['external_uuid'] = stripePayment.id
+                createFields['external_uuid'] = stripeInvoice.id
             }
             return models.Payment.create({
                 ...createFields

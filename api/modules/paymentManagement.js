@@ -2,27 +2,29 @@ const db = require('../models')
 
 const paymentManagement = module.exports = (() => {
 
-    const handleStripeIncomingPayment = async (params) => {
+    const processStripeInvoiceWithPayment = async (params) => {
+        const stripe = require('../handlers/stripe')
         const {
             amount,
             clientId,
             currency,
             date_paid
         } = params
-        const stripe = require('../handlers/stripe')
-        const fields = {
-            clientId: clientId,
-            amount: amount,
-            currency: currency
-        }
-        const newInvoice = await stripe.createInvoice(fields)
+
+        const createdInvoice = await stripe.createInvoice({
+            clientId,
+            amount,
+            currency
+        })
+
         if (date_paid) {
-            return stripe.finalizeInvoice({ invoice: newInvoice })
+            return stripe.finalizeInvoice({ invoice: createdInvoice })
         }
-        return newInvoice
+
+        return createdInvoice
     }
 
     return {
-        handleStripeIncomingPayment
+        processStripeInvoiceWithPayment
     }
 })()
