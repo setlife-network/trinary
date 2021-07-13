@@ -20,9 +20,6 @@ const clientManagement = module.exports = (() => {
             }
         })
 
-        console.log('client')
-        console.log(client)
-
         if (client == null) {
             client = await createClient({
                 createFields: clientInformation
