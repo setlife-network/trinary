@@ -20,12 +20,14 @@ const clientManagement = module.exports = (() => {
             }
         })
 
+        console.log('client')
+        console.log(client)
+
         if (client == null) {
             client = await createClient({
                 createFields: clientInformation
             })
-        // Make sure existing Client has external_uuid set
-        } else if (!client.external_uuid) {
+        } else if (client.external_uuid == null) {
             client.external_uuid = clientInformation.external_uuid
             await client.save()
         }
