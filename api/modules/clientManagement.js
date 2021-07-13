@@ -2,19 +2,28 @@ const db = require('../models')
 
 const clientManagement = module.exports = (() => {
 
-    const createClient = async (params) => {
+    const createClientFromStripeCustomer = async (params) => {
         const stripe = require('../handlers/stripe')
 
-        const { createFields } = params
+        const { stripeCustomerObject } = params
 
+        const clientInformation = {
+            email: stripeCustomerObject.email,
+            currency: stripeCustomerObject.currency || 'SATS',
+            name: stripeCustomerObject.name,
+            date_created: stripeCustomerObject.created,
+            external_uuid: stripeCustomerObject.id,
+            is_active: 1
+        }
+        
         const createdClient = await db.models.Client.create({
-            ...createFields
+            ...clientInformation
         })
 
-        if (!createFields.external_uuid) {
+        if (!clientInformation.external_uuid) {
             await stripe.createCustomer({
-                email: createFields.email,
-                name: createFields.name,
+                email: clientInformation.email,
+                name: clientInformation.name,
             })
         }
 
@@ -33,36 +42,62 @@ const clientManagement = module.exports = (() => {
         return db.models.Client.findByPk(clientId)
     }
 
-    const updateClient = async (params) => {
+    const findClientWithExternalId = (params) => {
+        return db.models.Client.findOne({
+            where: {
+                external_uuid: params.id
+            }
+        })
+    }
+
+    const updateClient = async ({ stripeCustomerObject }) => {
+
         let clientToUpdate
-        if (params.clientInformation.external_uuid) {
+        const clientInformation = {
+            email: stripeCustomerObject.email,
+            currency: stripeCustomerObject.currency || 'SATS',
+            name: stripeCustomerObject.name,
+            date_created: stripeCustomerObject.created,
+            external_uuid: stripeCustomerObject.id,
+            is_active: 1
+        }
+
+        const {
+            email,
+            name,
+            currency,
+            external_uuid
+        } = clientInformation
+
+        if (clientInformation.external_uuid) {
             clientToUpdate = await db.models.Client.findOne({
                 where: {
-                    external_uuid: params.clientInformation.external_uuid
+                    external_uuid
                 }
             })
         }
-        if (params.clientInformation.email && (clientToUpdate === null)) {
+        if (clientInformation.email && (clientToUpdate === null)) {
             clientToUpdate = await db.models.Client.findOne({
                 where: {
-                    email: params.clientInformation.email
+                    email
                 }
             })
         }
         if (clientToUpdate) {
-            clientToUpdate.email = params.clientInformation.email
-            clientToUpdate.currency = params.clientInformation.currency
-            clientToUpdate.name = params.clientInformation.name
-            clientToUpdate.external_uuid = params.clientInformation.external_uuid
+            clientToUpdate.email = email
+            clientToUpdate.currency = currency
+            clientToUpdate.name = name
+            clientToUpdate.external_uuid = external_uuid
             await clientToUpdate.save()
         } else {
-            createClient({ createFields: params.clientInformation })
+            createClientFromStripeCustomer({ clientInformation })
         }
     }
 
     return {
-        createClient,
+        createClientFromStripeCustomer,
         findClientWithEmail,
+        findClientWithExternalId,
         findClientWithId,
         updateClient
     }
