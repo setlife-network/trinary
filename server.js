@@ -167,7 +167,7 @@ app.post('/api/webhooks/clients', async (req, res, next) => {
         }
     } else if (webhookType === 'customer.updated' ) {
         try {
-            await apiModules.clientManagement.updateClient({ stripeCustomerObject })
+            await apiModules.clientManagement.updateClientFromStripeCustomer({ stripeCustomerObject })
             res.sendStatus(200)
         } catch (err) {
             console.log(`An error ocurred: ${err}`)
