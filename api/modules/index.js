@@ -4,6 +4,7 @@ const apiModules = module.exports = (() => {
         automations: require('./automations'),
         budgeting: require('./budgeting'),
         clientManagement: require('./clientManagement'),
-        dataSyncs: require('./dataSyncs')
+        dataSyncs: require('./dataSyncs'),
+        paymentManagement: require('./paymentManagement'),
     }
 })()

@@ -2,8 +2,10 @@ const db = require('../models')
 
 const clientManagement = module.exports = (() => {
 
-    const createClient = async ({ stripeCustomerObject }) => {
+    const createClientFromStripeCustomer = async (params) => {
         const stripe = require('../handlers/stripe')
+
+        const { stripeCustomerObject } = params
 
         const clientInformation = {
             email: stripeCustomerObject.email,
@@ -36,7 +38,11 @@ const clientManagement = module.exports = (() => {
         })
     }
 
-    const getClientWithExternalId = (params) => {
+    const findClientWithId = async (clientId) => {
+        return db.models.Client.findByPk(clientId)
+    }
+
+    const findClientWithExternalId = (params) => {
         return db.models.Client.findOne({
             where: {
                 external_uuid: params.id
@@ -45,6 +51,7 @@ const clientManagement = module.exports = (() => {
     }
 
     const updateClient = async ({ stripeCustomerObject }) => {
+
         let clientToUpdate
         const clientInformation = {
             email: stripeCustomerObject.email,
@@ -83,14 +90,15 @@ const clientManagement = module.exports = (() => {
             clientToUpdate.external_uuid = external_uuid
             await clientToUpdate.save()
         } else {
-            createClient({ clientInformation })
+            createClientFromStripeCustomer({ clientInformation })
         }
     }
 
     return {
-        createClient,
+        createClientFromStripeCustomer,
         findClientWithEmail,
-        getClientWithExternalId,
+        findClientWithExternalId,
+        findClientWithId,
         updateClient
     }
 })()

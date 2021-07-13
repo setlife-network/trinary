@@ -5,7 +5,9 @@ const clientManagement = require('./clientManagement')
 const budgeting = module.exports = (() => {
 
     const createPayment = async ({ paymentInformation }) => {
-        const client = await clientManagement.getClientWithExternalId({ id: paymentInformation.customer_id })
+        const client = await clientManagement.findClientWithExternalId({
+            id: paymentInformation.customer_id
+        })
 
         const {
             amount,

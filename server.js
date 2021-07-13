@@ -158,7 +158,7 @@ app.post('/api/webhooks/clients', async (req, res, next) => {
 
     if (webhookType === 'customer.created') {
         try {
-            await apiModules.clientManagement.createClient({
+            await apiModules.clientManagement.createClientFromStripeCustomer({
                 stripeCustomerObject
             })
             res.sendStatus(200)
