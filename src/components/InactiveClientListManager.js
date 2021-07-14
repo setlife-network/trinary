@@ -8,12 +8,12 @@ import Switch from '@material-ui/core/Switch';
 
 import LoadingProgress from './LoadingProgress'
 import { GET_INACTIVE_CLIENTS_COUNT } from '../operations/queries/ClientQueries'
-import InactiveClientsList from "./InactiveClientsList";
+import InactiveClientsList from './InactiveClientsList'
 
 const InactiveClientListManager = (props) => {
 
     const { loading, error, data } = useQuery(GET_INACTIVE_CLIENTS_COUNT);
-
+    console.log(data)
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`;
     return (
