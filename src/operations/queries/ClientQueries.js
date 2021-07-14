@@ -72,6 +72,17 @@ export const GET_CLIENTS = gql`
     }
 `
 
+export const GET_INACTIVE_CLIENTS = gql`
+    query Clients {
+        getInactiveClients {
+            id
+            name
+            currency
+            is_active
+        }
+    }
+`
+
 export const GET_CLIENT_PAYMENTS = gql`
 query ClientPayments($clientId: Int!) {
     getClientById(id: $clientId){

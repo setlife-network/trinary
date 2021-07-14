@@ -8,16 +8,9 @@ import Switch from '@material-ui/core/Switch';
 
 import LoadingProgress from './LoadingProgress'
 import { GET_INACTIVE_CLIENTS_COUNT } from '../operations/queries/ClientQueries'
+import InactiveClientsList from "./InactiveClientsList";
 
 const InactiveClientListManager = (props) => {
-
-    const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked })
-    }
-
-    const [state, setState] = React.useState({
-        checkedA: false,
-    });
 
     const { loading, error, data } = useQuery(GET_INACTIVE_CLIENTS_COUNT);
 
@@ -31,46 +24,11 @@ const InactiveClientListManager = (props) => {
         >
             {
                 data.getInactiveClientsCount != 0
-                ? (
-                        <FormGroup>
-                            <FormControlLabel
-                                control={<Switch checked={state.checkedA} onChange={handleChange} name='checkedA' />}
-                                label='Show inactive clients'
-                            />
-                        </FormGroup>
+                    ? (
+                       <InactiveClientsList />
                     ) : ( false )
             }
-            <Grid
-                container
-                direction='row'
-                justify='space-between'
-                alignItems='flex-end'
-            >
-                {
-                    state.checkedA == true
-                        ? (
-                            <Grid item xs={8} sm={6} md={4}>
-                                <Box
-                                    bgcolor='primary.black'
-                                    color='primary.light'
-                                    borderRadius='borderRadius'
-                                    px={2}
-                                    px-lg={5}
-                                    py={1}
-                                >
-                                    {
-                                        `${data.getInactiveClientsCount} inactive ${data.getInactiveClientsCount == 1
-                                            ? 'client'
-                                            : 'clients'
-                                        }`
-                                    }
-                                </Box>
-                            </Grid>
-                        ) : (
-                            false
-                        )
-                }
-            </Grid>
+
         </Box>
 
     )
