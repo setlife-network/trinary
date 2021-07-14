@@ -6,6 +6,12 @@ export const GET_ACTIVE_CLIENTS_COUNT = gql`
     }
 `
 
+export const GET_INACTIVE_CLIENTS_COUNT = gql`
+    query Clients {
+        getInactiveClientsCount
+    }
+`
+
 export const GET_CLIENT_INFO = gql`
     query Client($id: Int!) {
         getClientById(id: $id){
