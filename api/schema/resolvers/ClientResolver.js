@@ -42,6 +42,13 @@ module.exports = {
         getClients: (root, args, { models }) => {
             return models.Client.findAll()
         },
+        getActiveClients: (root, args, { models }) => {
+            return models.Client.findAll( {
+                where: {
+                    is_active: true
+                }
+            })
+        },
         getInactiveClients: (root, args, { models }) => {
             return models.Client.findAll( {
                 where: {

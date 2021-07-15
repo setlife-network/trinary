@@ -72,6 +72,17 @@ export const GET_CLIENTS = gql`
     }
 `
 
+export const GET_ACTIVE_CLIENTS = gql`
+    query Clients {
+        getActiveClients {
+            id
+            name
+            currency
+            is_active
+        }
+    }
+`
+
 export const GET_INACTIVE_CLIENTS = gql`
     query Clients {
         getInactiveClients {
