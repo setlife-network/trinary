@@ -20,9 +20,6 @@ const clientManagement = module.exports = (() => {
             }
         })
 
-        console.log('client')
-        console.log(client)
-
         if (client == null) {
             client = await createClient({
                 createFields: clientInformation
@@ -107,7 +104,9 @@ const clientManagement = module.exports = (() => {
             clientToUpdate.external_uuid = external_uuid
             await clientToUpdate.save()
         } else {
-            createClientFromStripeCustomer({ clientInformation })
+            createClientFromStripeCustomer({
+                stripeCustomerObject: clientInformation
+            })
         }
     }
 

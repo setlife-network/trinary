@@ -117,7 +117,7 @@ app.post('/api/webhooks/invoice/paid', async (req, res) => {
 app.post('/api/webhooks/invoice/updated', (req, res) => {
     const paymentObjectPayload = req.body.data.object
     //1. see if payment is ready to allocate, if not do nothing
-    if (findIndex(paymentObjectPayload.custom_fields, { 'name': 'ready_to_allocate', 'value': 'true' }) != -1) {
+    if (findIndex(paymentObjectPayload.metadata, { 'name': 'ready_to_allocate', 'value': 'true' }) != -1) {
         apiModules.budgeting.updatePaymentByStripeInvoiceId({ paymentObjectPayload })
             .then(() => {
                 res.send('payment updated')

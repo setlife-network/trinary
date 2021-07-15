@@ -81,9 +81,9 @@ const budgeting = module.exports = (() => {
     }
 
     const updatePaymentByStripeInvoiceId = async ({ paymentObjectPayload }) => {
-        const datePaidOverride = paymentObjectPayload.custom_fields[
+        const datePaidOverride = paymentObjectPayload.metadata[
             findIndex(
-                paymentObjectPayload.custom_fields, 
+                paymentObjectPayload.metadata, 
                 { name: 'date_paid' }
             )
         ]
