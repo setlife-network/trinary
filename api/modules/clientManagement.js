@@ -104,7 +104,9 @@ const clientManagement = module.exports = (() => {
             clientToUpdate.external_uuid = external_uuid
             await clientToUpdate.save()
         } else {
-            createClientFromStripeCustomer({ clientInformation })
+            createClientFromStripeCustomer({
+                stripeCustomerObject: clientInformation
+            })
         }
     }
 
