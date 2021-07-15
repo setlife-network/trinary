@@ -99,6 +99,10 @@ export const NAV_ITEMS = [
 ]
 export const NAV_TITLES = [
     {
+        title: 'Add Client',
+        locations: ['/client/add']
+    },
+    {
         title: 'Add Project',
         locations: ['/project/add/']
     },

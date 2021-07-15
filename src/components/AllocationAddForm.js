@@ -99,7 +99,7 @@ const AllocationAddForm = (props) => {
         //create allocation with that rate id
         const allocationCreated = await createAllocation({
             variables: {
-                amount: Number(rate.total_amount),
+                amount: Number(Number(rate.total_amount).toFixed(2)),
                 start_date: moment(startDate).format('YYYY-MM-DD'),
                 end_date: moment(endDate).format('YYYY-MM-DD'),
                 date_paid: null,
@@ -376,41 +376,40 @@ const AllocationAddForm = (props) => {
                 </DialogTitle>
                 <Grid container spacing={5} justify='center'>
                     <Grid item xs={12}>
-                        {
-                            project
+                        {project
+                            ? (
+                                <AllocationAddSpecifics
+                                    contributor={contributor}
+                                    contributors={contributors}
+                                    currency={clientCurrency}
+                                    payment={payment}
+                                    payments={payments}
+                                    project={project}
+                                    setNewAllocation={setNewAllocation}
+                                    selectedContributor={selectedContributor ? selectedContributor : contributors[0]}
+                                    setContributor={setSelectedContributor}
+                                    setPayment={setSelectedPayment}
+                                />
+                            )
+                            : client
                                 ? (
-                                    <AllocationAddSpecifics
-                                        contributor={contributor}
-                                        contributors={contributors}
-                                        currency={clientCurrency}
+                                    <AllocationClientSpecifics
+                                        client={client}
+                                        contributor={selectedContributor}
                                         payment={payment}
-                                        payments={payments}
-                                        project={project}
+                                        project={selectedProject}
                                         setNewAllocation={setNewAllocation}
-                                        selectedContributor={selectedContributor ? selectedContributor : contributors[0]}
                                         setContributor={setSelectedContributor}
+                                        setProject={setSelectedProject}
+                                    />
+                                ) : (
+                                    <AllocationProposeSpecifics
+                                        contributor={contributor}
+                                        setNewAllocation={setNewAllocation}
                                         setPayment={setSelectedPayment}
+                                        setProject={setSelectedProject}
                                     />
                                 )
-                                : client
-                                    ? (
-                                        <AllocationClientSpecifics
-                                            client={client}
-                                            contributor={selectedContributor}
-                                            payment={payment}
-                                            project={selectedProject}
-                                            setNewAllocation={setNewAllocation}
-                                            setContributor={setSelectedContributor}
-                                            setProject={setSelectedProject}
-                                        />
-                                    ) : (
-                                        <AllocationProposeSpecifics
-                                            contributor={contributor}
-                                            setNewAllocation={setNewAllocation}
-                                            setPayment={setSelectedPayment}
-                                            setProject={setSelectedProject}
-                                        />
-                                    )
                         }
                         <hr/>
                     </Grid>

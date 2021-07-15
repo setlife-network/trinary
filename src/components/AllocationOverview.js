@@ -221,6 +221,11 @@ const AllocationOverview = (props) => {
     if (!contributorAllocation) {
         setContributorAllocation(allocation)
     }
+    
+    const editButtonDisabled = (
+        updatedAllocationRate.total_amount == allocationInfo.amount &&
+        updatedAllocationRate.hourly_rate == allocationInfo.rate.hourly_rate
+    )
 
     return (
         <Dialog
@@ -259,7 +264,7 @@ const AllocationOverview = (props) => {
                             <Button
                                 variant='contained'
                                 color='primary'
-                                disabled={updatedAllocationRate.total_amount}
+                                disabled={editButtonDisabled}
                                 onClick={() => handleUpdateAllocation({
                                     allocation: contributorAllocation,
                                     contributor: contributorAllocation.contributor,

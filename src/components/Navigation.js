@@ -49,11 +49,9 @@ const Navigation = (props) => {
                     </Grid>
                     <Grid item xs={8} sm={6}>
                         <h2 className='navigation-title'>
-                            {
-                                capitalizeWord({
-                                    word: locationTitle.title || optionalLocationTitle
-                                })
-                            }
+                            {capitalizeWord({
+                                word: locationTitle.title || optionalLocationTitle
+                            })}
                         </h2>
                     </Grid>
                 </Grid>
