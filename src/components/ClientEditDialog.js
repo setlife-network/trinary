@@ -10,11 +10,13 @@ import {
     Grid,
     MenuItem,
     Select,
-    TextField
+    TextField,
+    FormGroup,
 } from '@material-ui/core/'
 
 import { UPDATE_CLIENT } from '../operations/mutations/ClientMutations'
 import { CURRENCIES } from '../constants'
+import Switch from '@material-ui/core/Switch';
 
 const ClientEditDialog = (props) => {
 
@@ -29,6 +31,7 @@ const ClientEditDialog = (props) => {
     const [clientName, setClientName] = useState(client.name)
     const [clientEmail, setClientEmail] = useState(client.email)
     const [clientCurrency, setClientCurrency] = useState(client.currency)
+    const [clientIsActive, setClientIsActive] = useState(client.is_active)
     const [disableEdit, setDisableEdit] = useState(true)
 
     const onEdit = async () => {
@@ -41,6 +44,9 @@ const ClientEditDialog = (props) => {
         }
         if (clientCurrency) {
             clientInfoToEdit['currency'] = clientCurrency
+        }
+        if (clientIsActive) {
+            clientInfoToEdit['is_active'] = clientIsActive
         }
         updateClient({
             variables: clientInfoToEdit
@@ -63,12 +69,26 @@ const ClientEditDialog = (props) => {
     useEffect(() => {
         if (!clientName || !clientCurrency) {
             setDisableEdit(true)
-        } else if (clientName == client.name && clientCurrency == client.currency && clientEmail == client.email) {
+        } else if (
+            clientName == client.name &&
+            clientCurrency == client.currency &&
+            clientEmail == client.email &&
+            clientIsActive == client.is_active
+        ) {
             setDisableEdit(true)
         } else {
             setDisableEdit(false)
         }
     })
+
+    const handleChange = (event) => {
+        setState({ ...state, [event.target.name]: event.target.checked })
+        setClientIsActive(event.target.checked)
+    }
+
+    const [state, setState] = React.useState({
+        checkedA: client.is_active,
+    });
 
     return (
         <Dialog className='ClientEditDialog' onClose={onClose} open={open}>
@@ -106,7 +126,7 @@ const ClientEditDialog = (props) => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} lg={5}>
-                            <Box width={1}>
+                            <Box my={2}>
                                 <Select
                                     name='Currency'
                                     defaultValue={client.currency}
@@ -118,6 +138,22 @@ const ClientEditDialog = (props) => {
                                 <FormHelperText>
                                     {`Select currency`}
                                 </FormHelperText>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12} lg={5}>
+                            <Box my={2}>
+                                <Grid component='label' container alignItems='center' spacing={1}>
+                                    <Grid item>Inactive</Grid>
+                                    <Grid item>
+                                        <Switch
+                                            checked={state.checkedA}
+                                            onChange={handleChange}
+                                            name='checkedA'
+                                            color='primary'
+                                        />
+                                    </Grid>
+                                    <Grid item>Active</Grid>
+                                </Grid>
                             </Box>
                         </Grid>
                         <Grid item xs={12}>

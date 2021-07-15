@@ -16,7 +16,6 @@ const InactiveClientsList = (props) => {
     const history = useHistory()
     const { loading, error, data } = useQuery(GET_INACTIVE_CLIENTS);
 
-
     const handleChange = (event) => {
         setState({ ...state, [event.target.name]: event.target.checked })
     }

@@ -25,7 +25,7 @@ const InactiveClientListManager = (props) => {
             {
                 data.getInactiveClientsCount != 0
                     ? (
-                       <InactiveClientsList />
+                        <InactiveClientsList />
                     ) : ( false )
             }
 

@@ -45,7 +45,7 @@ module.exports = {
         getInactiveClients: (root, args, { models }) => {
             return models.Client.findAll( {
                 where: {
-                    is_active: 2
+                    is_active: false
                 }
             })
         },
@@ -59,7 +59,7 @@ module.exports = {
         getInactiveClientsCount: (root, args, { models }) => {
             return models.Client.count({
                 where: {
-                    is_active: 2
+                    is_active: false
                 }
             })
         }
