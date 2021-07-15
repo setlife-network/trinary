@@ -44,11 +44,28 @@ module.exports = {
         }
     },
     Mutation: {
-        createPayment: (root, { createFields }, { models }) => {
+        createPayment: async (root, { createFields }, { models }) => {
             validateDatesFormat({
                 date_incurred: createFields['date_incurred'],
                 date_paid: createFields['date_paid']
             })
+            const client = await models.Client.findOne({
+                where: {
+                    id: createFields['client_id']
+                }
+            })
+
+            // Check if the client has an associated Stripe account
+            // If it does, proceed to create the invoice on Stripe
+            if (client.external_uuid) {
+                const stripeInvoice = await apiModules.paymentManagement.processStripeInvoiceWithPayment({
+                    amount: createFields['amount'],
+                    clientId: client.id,
+                    currency: client.currency,
+                    date_paid: createFields['date_paid']
+                })
+                createFields['external_uuid'] = stripeInvoice.id
+            }
             return models.Payment.create({
                 ...createFields
             })
