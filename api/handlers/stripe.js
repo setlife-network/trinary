@@ -35,7 +35,7 @@ const stripe = module.exports = (() => {
     }
 
     const pushUpdatedClient = async (params) => {
-        const client = await findClientWithEmail(params.updateFields)
+        const client = await apiModules.clientManagement.findClientWithEmail(params.updateFields)
         const stripe_uuid = client.external_uuid
         if (stripe_uuid) {
             return stripeClient.customers.update(

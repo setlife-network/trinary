@@ -45,9 +45,9 @@ const ClientEditDialog = (props) => {
         if (clientCurrency) {
             clientInfoToEdit['currency'] = clientCurrency
         }
-        if (clientIsActive) {
-            clientInfoToEdit['is_active'] = clientIsActive
-        }
+        clientInfoToEdit['is_active'] = clientIsActive
+
+        console.log(clientInfoToEdit)
         updateClient({
             variables: clientInfoToEdit
         })
