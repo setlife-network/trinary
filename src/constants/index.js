@@ -103,6 +103,10 @@ export const NAV_TITLES = [
         locations: ['/client/add']
     },
     {
+        title: 'Add Payment',
+        locations: ['/payments/add']
+    },
+    {
         title: 'Add Project',
         locations: ['/project/add/']
     },
