@@ -20,7 +20,8 @@ import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
 import {
     formatAmount,
     selectActiveAndUpcomingAllocations,
-    selectCurrencyInformation
+    selectCurrencyInformation,
+    estimatedHours
 } from '../scripts/selectors'
 
 const ContributorTile = (props) => {
@@ -84,6 +85,10 @@ const ContributorTile = (props) => {
                 currencyInformation: currencyInformation
             })
             const isActiveAllocation = moment.utc(a.start_date, 'x').isBefore(moment())
+            const expectedHoursMaxBudget = estimatedHours({
+                amount: a.amount / 100,
+                hourlyRate : a.rate.hourly_rate
+            })
 
             return (
                 <Grid
@@ -130,7 +135,7 @@ const ContributorTile = (props) => {
                                     <br/>
                                     {`${a.rate.total_expected_hours
                                         ? `${a.rate.total_expected_hours} h.`
-                                        : `Doesn't apply`
+                                        : `${expectedHoursMaxBudget} h.`
                                     }`}
                                 </Typography>
                             </Grid>
