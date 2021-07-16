@@ -21,7 +21,7 @@ import {
     formatAmount,
     selectActiveAndUpcomingAllocations,
     selectCurrencyInformation,
-    estimatedHours
+    getExpectedHours
 } from '../scripts/selectors'
 
 const ContributorTile = (props) => {
@@ -85,9 +85,9 @@ const ContributorTile = (props) => {
                 currencyInformation: currencyInformation
             })
             const isActiveAllocation = moment.utc(a.start_date, 'x').isBefore(moment())
-            const expectedHoursMaxBudget = estimatedHours({
-                amount: a.amount / 100,
-                hourlyRate : a.rate.hourly_rate
+            const expectedHoursMaxBudget = getExpectedHours({
+                amount: Number((a.amount / 100).toFixed(2)),
+                hourlyRate: a.rate.hourly_rate
             })
 
             return (

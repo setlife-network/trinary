@@ -42,14 +42,14 @@ export const formatAmount = (props) => {
         }
     )
 }
-export const estimatedHours = (props) => {
+export const getExpectedHours = (props) => {
     const {
         amount,
         hourlyRate
     } = props
 
-    return(
-        Math.round(amount/parseInt(hourlyRate))
+    return (
+        Math.round(amount / Number(hourlyRate))
     )
 }
 export const getAllocatedContributors = ({ allocations }) => {
