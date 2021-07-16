@@ -7,7 +7,7 @@ const clientManagement = module.exports = (() => {
 
         const clientInformation = {
             email: stripeCustomerObject.email,
-            currency: stripeCustomerObject.currency || 'SATS',
+            currency: stripeCustomerObject.currency.toUpperCase() || 'SATS',
             name: stripeCustomerObject.name,
             external_uuid: stripeCustomerObject.id,
             is_active: 1
@@ -19,9 +19,6 @@ const clientManagement = module.exports = (() => {
                 email: clientInformation.email
             }
         })
-
-        console.log('client')
-        console.log(client)
 
         if (client == null) {
             client = await createClient({
@@ -107,7 +104,9 @@ const clientManagement = module.exports = (() => {
             clientToUpdate.external_uuid = external_uuid
             await clientToUpdate.save()
         } else {
-            createClientFromStripeCustomer({ clientInformation })
+            createClientFromStripeCustomer({
+                stripeCustomerObject
+            })
         }
     }
 
