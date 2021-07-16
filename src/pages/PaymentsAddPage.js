@@ -20,12 +20,6 @@ class PaymentsAddPage extends React.Component {
                 align='center'
                 className='PaymentsAdd'
             >
-                <Header
-                    title='Add Payment'
-                    direction='row'
-                    justify='center'
-                    alignItems='center'
-                />
                 <Grid item xs={10}>
                     <Typography align='left'>
                         <strong>
