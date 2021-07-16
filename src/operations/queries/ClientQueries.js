@@ -6,6 +6,12 @@ export const GET_ACTIVE_CLIENTS_COUNT = gql`
     }
 `
 
+export const GET_INACTIVE_CLIENTS_COUNT = gql`
+    query Clients {
+        getInactiveClientsCount
+    }
+`
+
 export const GET_CLIENT_INFO = gql`
     query Client($id: Int!) {
         getClientById(id: $id){
@@ -58,6 +64,28 @@ export const GET_CLIENT_TOTAL_PAID = gql`
 export const GET_CLIENTS = gql`
     query Clients {
         getClients {
+            id
+            name
+            currency
+            is_active
+        }
+    }
+`
+
+export const GET_ACTIVE_CLIENTS = gql`
+    query Clients {
+        getActiveClients {
+            id
+            name
+            currency
+            is_active
+        }
+    }
+`
+
+export const GET_INACTIVE_CLIENTS = gql`
+    query Clients {
+        getInactiveClients {
             id
             name
             currency

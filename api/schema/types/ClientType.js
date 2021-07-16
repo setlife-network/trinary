@@ -35,7 +35,10 @@ module.exports = gql`
     type Query {
         getClientById(id: Int!): Client
         getClients: [Client]
+        getActiveClients: [Client]
+        getInactiveClients: [Client]
         getActiveClientsCount: Int!
+        getInactiveClientsCount: Int!
     }
 
     type Mutation {
