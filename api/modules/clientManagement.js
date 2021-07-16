@@ -7,7 +7,7 @@ const clientManagement = module.exports = (() => {
 
         const clientInformation = {
             email: stripeCustomerObject.email,
-            currency: stripeCustomerObject.currency || 'SATS',
+            currency: stripeCustomerObject.currency.toUpperCase() || 'SATS',
             name: stripeCustomerObject.name,
             external_uuid: stripeCustomerObject.id,
             is_active: 1
