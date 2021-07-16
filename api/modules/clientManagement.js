@@ -105,7 +105,7 @@ const clientManagement = module.exports = (() => {
             await clientToUpdate.save()
         } else {
             createClientFromStripeCustomer({
-                stripeCustomerObject: clientInformation
+                stripeCustomerObject
             })
         }
     }
