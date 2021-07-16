@@ -206,6 +206,7 @@ const AddProjectForm = (props) => {
                     <AddProjectDetails
                         budgetTimeframe={budgetTimeframe}
                         client={client}
+                        projectBudget={projectBudget}
                         projectDate={projectDate}
                         projectEndDate={projectEndDate}
                         projectName={projectName}
