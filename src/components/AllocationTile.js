@@ -35,11 +35,11 @@ const AllocationTile = (props) => {
     const weeksOfdDifference = moment.utc(allocation.end_date, 'x').diff(moment(), 'weeks')
 
     return (
-
         <Box
             p={2}
             boxShadow={3}
             borderRadius='borderRadius'
+            className='AllocationTile'
         >
             <Grid container alignItems='center' onClick={() => setOpenAllocationOverview(true)}>
                 <Grid item xs={4} md={1}>

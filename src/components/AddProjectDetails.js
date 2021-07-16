@@ -27,6 +27,7 @@ const AddProjectDetails = (props) => {
     const {
         budgetTimeframe,
         client,
+        projectBudget,
         projectDate,
         projectEndDate,
         projectName,
@@ -136,6 +137,7 @@ const AddProjectDetails = (props) => {
                         variant='outlined'
                         currencySymbol={`${currencyInformation['symbol']}`}
                         minimumValue='0'
+                        maximumValue='2147483647'
                         outputFormat='string'
                         decimalCharacter={`${currencyInformation['decimal']}`}
                         digitGroupSeparator={`${currencyInformation['thousand']}`}
@@ -155,7 +157,9 @@ const AddProjectDetails = (props) => {
                             value={budgetTimeframe}
                             onChange={(event) => (handleTimeframeChange(event.target.value))}
                         >
-                            {renderTimeframeOptions({ timeframes: EXPECTED_BUDGET_TIMEFRAME_OPTIONS })}
+                            {renderTimeframeOptions(
+                                { timeframes: EXPECTED_BUDGET_TIMEFRAME_OPTIONS }
+                            )}
                         </Select>
                     </FormControl>
                 </Box>
