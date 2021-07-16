@@ -2,7 +2,6 @@ const moment = require('moment')
 const { fn, col, Op } = require('sequelize')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
-const stripe = require('../../handlers/stripe')
 const apiModules = require('../../modules')
 
 module.exports = {
@@ -72,38 +71,52 @@ module.exports = {
         }
     },
     Mutation: {
-        createClient: async (root, { createFields }, { cookies, models }) => {
-            try {
-                if (!cookies.userSession || createFields.contributor_id) {
-                    throw new Error('A contributor id is required');
-                }
-                const newlyCreatedClient = await models.Client.create({
-                    ...createFields
-                })
-                const contributor = (
-                    await models.Contributor.findByPk(
-                        cookies ? cookies.userSession : createFields.contributor_id
-                    )
-                )
-                //Grant write access to the contributor that created the client
-                const permissionAttributes = {
-                    type: 'write',
-                    contributor_id: contributor.id,
-                    client_id: newlyCreatedClient.id
-                }
-                await models.Permission.create({
-                    ...permissionAttributes
-                })
-                return newlyCreatedClient
-            } catch (error) {
-                console.log('An error ocurred: ' + error);
+        createClient: async (root, args, { cookies, models }) => {
+            const stripeHandler = require('../../handlers/stripe')
+
+            const { createFields } = args
+
+            if (!cookies.userSession || createFields.contributor_id) {
+                throw new Error('You must either be logged in as a contributor or provide a value for createFields.contributor_id');
             }
 
+            let createdClient
+            try {
+                createdClient = await apiModules.clientManagement.createClient({
+                    createFields
+                })
+            } catch {
+                throw new Error('Failed to create Client')
+            }
+
+            // Create a Stripe Customer if possible
+            // external_uuid will be linked to Client via Stripe webhooks
+            try {
+                await stripeHandler.createCustomer({
+                    name: createFields.name,
+                    email: createFields.email,
+                })
+            } catch {
+                throw new Error('Failed to create Stripe Customer')
+            }
+
+            // Grant owner access to the contributor that created the client
+            await apiModules.accessManagement.grantClientPermissionToContributor({
+                accessLevel: 'owner',
+                clientId: createdClient.id,
+                contributorId: cookies
+                    ? cookies.userSession
+                    : createFields.contributor_id
+            })
+
+            return createdClient
         },
         deleteClientById: (root, { id }, { models }) => {
             return models.Client.destroy({ where: { id } })
         },
         updateClientById: async (root, { id, updateFields }, { models }) => {
+            const stripeHandler = require('../../handlers/stripe')
+
             await models.Client.update({
                 ...updateFields
             }, {
@@ -111,7 +124,16 @@ module.exports = {
                     id
                 }
             })
-            await stripe.pushUpdatedClient({ updateFields })
+
+            // Update Stripe Customer if possible
+            try {
+                await stripeHandler.updateCustomerWithClientId({
+                    clientId: id,
+                })
+            } catch {
+                console.error('Failed to update Stripe Customer')
+            }
+
             return models.Client.findByPk(id)
         }
     }

@@ -28,5 +28,6 @@ module.exports = {
             github_permission_level: 'admin',
             project_permission_level: 'write'
         },
-    ]
+    ],
+    STRIPE_PRODUCT_PLACEHOLDER_ID: process.env.STRIPE_PRODUCT_PLACEHOLDER_ID || ''
 }

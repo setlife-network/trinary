@@ -21,7 +21,8 @@ const sequelize = new Sequelize(
             max: 5,
             min: 0,
             idle: 10000
-        }
+        },
+        logging: false
     }
 );
 
