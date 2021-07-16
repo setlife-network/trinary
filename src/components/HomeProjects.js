@@ -11,7 +11,9 @@ const HomeProjects = ({
     history
 }) => {
 
-    const { loading, error, data } = useQuery(GET_ALL_PROJECTS);
+    const { loading, error, data } = useQuery(GET_ALL_PROJECTS, {
+        fetchPolicy: "cache-and-network"
+    });
 
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`;
