@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { Grid } from '@material-ui/core'
@@ -14,7 +14,9 @@ import { HAS_VALID_STRIPE_CREDENTIALS } from '../operations/queries/ConfigQuerie
 const ClientsList = (props) => {
     const history = useHistory()
     const { loading: loadingS, error: errorS, data: dataStripe } = useQuery(HAS_VALID_STRIPE_CREDENTIALS);
-    const { loading, error, data } = useQuery(GET_CLIENTS);
+    const { loading, error, data } = useQuery(GET_CLIENTS, {
+        fetchPolicy: "cache-and-network"
+    });
 
     const renderClientTiles = (clients) => {
         return clients.map(c => {

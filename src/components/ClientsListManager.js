@@ -17,7 +17,9 @@ const ClientListManager = (props) => {
         history.push('/client/add')
     }
 
-    const { loading, error, data } = useQuery(GET_ACTIVE_CLIENTS_COUNT);
+    const { loading, error, data } = useQuery(GET_ACTIVE_CLIENTS_COUNT, {
+        fetchPolicy: "cache-and-network"
+    });
 
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`;
