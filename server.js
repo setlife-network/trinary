@@ -122,8 +122,7 @@ app.post('/api/webhooks/invoice/updated', async (req, res) => {
     //1. see if payment is ready to allocate, if not do nothing
     if (
         invoiceObjectPayload.metadata &&
-        invoiceObjectPayload.metadata.ready_to_allocate &&
-        invoiceObjectPayload.metadata.ready_to_allocate == true
+        invoiceObjectPayload.metadata.ready_to_allocate
     ) {
         try {
             await apiModules.budgeting.updatePaymentByStripeInvoiceId({
