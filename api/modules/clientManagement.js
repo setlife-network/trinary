@@ -1,4 +1,3 @@
-
 const clientManagement = module.exports = (() => {
     const db = require('../models')
 
@@ -7,7 +6,9 @@ const clientManagement = module.exports = (() => {
 
         const clientInformation = {
             email: stripeCustomerObject.email,
-            currency: stripeCustomerObject.currency.toUpperCase() || 'SATS',
+            currency: stripeCustomerObject.currency
+                ? stripeCustomerObject.currency.toUpperCase()
+                : 'SATS',
             name: stripeCustomerObject.name,
             external_uuid: stripeCustomerObject.id,
             is_active: 1
