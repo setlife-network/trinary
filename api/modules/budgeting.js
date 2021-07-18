@@ -1,8 +1,8 @@
-const db = require('../models')
 const moment = require('moment')
-const clientManagement = require('./clientManagement')
 
 const budgeting = module.exports = (() => {
+    const db = require('../models')
+    const clientManagement = require('./clientManagement')
 
     const createPayment = async ({ paymentInformation }) => {
         const client = await clientManagement.findClientWithExternalId({
@@ -58,41 +58,32 @@ const budgeting = module.exports = (() => {
         })
     }
 
-    const updateDatePaidPayment = async ({ paymentObjectPayload }) => {
-        const paymentInformation = {
-            date_paid: paymentObjectPayload.webhooks_delivered_at,
-            external_uuid: paymentObjectPayload.id
-        }
-        const paymentToUpdate = {}
-        if (paymentInformation.external_uuid) {
-            Object.assign(paymentToUpdate, await getPaymentWithExternalId({ id: paymentInformation.external_uuid }))
-        } else {
-            Object.assign(paymentToUpdate, await getPaymentWithId({ id: paymentInformation.id }))
-        }
+    const updateDatePaidPayment = async ({ stripeInvoice }) => {
+        const existingPayment = await getPaymentWithExternalId({ id: stripeInvoice.id })
 
-        paymentToUpdate.date_paid = paymentInformation.date_paid
-        await db.models.Payment.update({
-            date_paid: moment(paymentToUpdate.date_paid, 'YYYY-MM-DD')
-        }, {
-            where: {
-                id: paymentToUpdate.id
-            }
-        })
+        if (existingPayment && existingPayment.date_paid == null) {
+            const datePaid = moment(stripeInvoice.webhooks_delivered_at)
+
+            await db.models.Payment.update({
+                date_paid: datePaid.format('YYYY-MM-DD')
+            }, {
+                where: {
+                    id: existingPayment.id
+                }
+            })
+        }
     }
 
-    const updatePaymentByStripeInvoiceId = async ({ paymentObjectPayload }) => {
-        const datePaidOverride = paymentObjectPayload.metadata[
-            findIndex(
-                paymentObjectPayload.metadata, 
-                { name: 'date_paid' }
-            )
-        ]
+    const updatePaymentByStripeInvoiceId = async ({ stripeInvoice }) => {
+        const datePaidOverride = stripeInvoice.metadata.date_paid || null
+        const dateIncurredOverride = stripeInvoice.metadata.date_incurred || null
+        
         const paymentInformation = {
-            amount: paymentObjectPayload.total,
-            external_uuid: paymentObjectPayload.id,
-            date_incurred: paymentObjectPayload.created,
-            date_paid: datePaidOverride ? datePaidOverride.value : null,
-            customer_id: paymentObjectPayload.customer,
+            amount: stripeInvoice.total,
+            external_uuid: stripeInvoice.id,
+            date_incurred: dateIncurredOverride || stripeInvoice.created,
+            date_paid: datePaidOverride,
+            customer_id: stripeInvoice.customer,
             external_uuid_type: 'STRIPE',
         }
         const paymentToUpdate = await db.models.Payment.findOne({
@@ -102,7 +93,7 @@ const budgeting = module.exports = (() => {
             }
         })
         if (paymentToUpdate) {
-            if (paymentInformation.date_paid) {
+            if (datePaidOverride || dateIncurredOverride) {
                 updateDatePaidPayment({ paymentInformation: paymentInformation })
             }
         } else {
@@ -114,6 +105,8 @@ const budgeting = module.exports = (() => {
     return {
         createPayment,
         deletePaymentByStripeInvoiceId,
+        getPaymentWithId,
+        getPaymentWithExternalId,
         updateDatePaidPayment,
         updatePaymentByStripeInvoiceId,
     }

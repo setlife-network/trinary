@@ -6,10 +6,9 @@ const {
 const {
     STRIPE_PRODUCT_PLACEHOLDER_ID
 } = require('../config/constants')
-const db = require('../models')
-const apiModules = require('../modules')
 
 const stripeHandler = module.exports = (() => {
+    const { clientManagement } = require('../modules')
     const stripeClient = stripeAPI(STRIPE.SECRET)
 
     const createCustomer = async (params) => {
@@ -44,7 +43,7 @@ const stripeHandler = module.exports = (() => {
             currency,
             external_uuid
         } = params
-        const client = await apiModules.clientManagement.findClientWithId(clientId)
+        const client = await clientManagement.findClientWithId(clientId)
         const invoiceItemProps = {
             customer: client.external_uuid,
             currency: currency,
@@ -73,8 +72,16 @@ const stripeHandler = module.exports = (() => {
     const updateCustomerWithClientId = async (params) => {
         const { clientId } = params
 
-        const client = await apiModules.clientManagement.findClientWithId(clientId)
+        console.log('clientId')
+        console.log(clientId)
+        console.log(apiModules)
+        console.log(apiModules.clientManagement)
+
+        const client = await clientManagement.findClientWithId(clientId)
         const stripe_uuid = client.external_uuid
+
+        console.log('client')
+        console.log(client)
 
         if (stripe_uuid) {
             return stripeClient.customers.update(
