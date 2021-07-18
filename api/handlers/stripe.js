@@ -70,7 +70,7 @@ const stripeHandler = module.exports = (() => {
     }
 
     const updateCustomerWithClientId = async (params) => {
-        const { clientId } = VREyeParameters
+        const { clientId } = params
 
         const client = await clientManagement.findClientWithId(clientId)
         const stripe_uuid = client.external_uuid
