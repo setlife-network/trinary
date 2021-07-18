@@ -96,7 +96,7 @@ const budgeting = module.exports = (() => {
     }
     
     return {
-        createPayment,
+        createPaymentFromStripeInvoice,
         deletePaymentByStripeInvoiceId,
         getPaymentWithId,
         getPaymentWithExternalId,
