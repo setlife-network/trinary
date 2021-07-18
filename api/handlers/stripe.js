@@ -74,8 +74,7 @@ const stripeHandler = module.exports = (() => {
 
         console.log('clientId')
         console.log(clientId)
-        console.log(apiModules)
-        console.log(apiModules.clientManagement)
+        console.log(clientManagement)
 
         const client = await clientManagement.findClientWithId(clientId)
         const stripe_uuid = client.external_uuid
