@@ -108,7 +108,7 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
 app.post('/api/webhooks/invoice/paid', async (req, res) => {
     const invoiceObjectPayload = req.body.data.object
     try {
-        await apiModules.budgeting.updateDatePaidPayment({
+        await apiModules.budgeting.updatePaymentFromStripeInvoice({
             stripeInvoice: invoiceObjectPayload
         })
         res.send('payment updated')
@@ -125,7 +125,7 @@ app.post('/api/webhooks/invoice/updated', async (req, res) => {
         invoiceObjectPayload.metadata.ready_to_allocate
     ) {
         try {
-            await apiModules.budgeting.updatePaymentByStripeInvoiceId({
+            await apiModules.budgeting.processPaymentFromStripeInvoice({
                 stripeInvoice: invoiceObjectPayload
             })
             res.send('Payment created from invoice')
@@ -143,18 +143,6 @@ app.post('/api/webhooks/invoice/delete', async (req, res) => {
     try {
         await apiModules.budgeting.deletePaymentByStripeInvoiceId({ invoiceId })
         res.sendStatus(200)
-    } catch (err) {
-        console.log(`An error ocurred: ${err}`)
-    }
-})
-app.post('/api/webhooks/payment_intent/succeeded', (req, res) => {
-    const paymentObjectPayload = req.body.data
-    try {
-        if (paymentObjectPayload.status == 'succeeded') {
-            throw 'Payment not succeeded'
-        }
-        apiModules.budgeting.updateDatePaidPayment({ paymentObjectPayload })
-        res.send('payment updated')
     } catch (err) {
         console.log(`An error ocurred: ${err}`)
     }
