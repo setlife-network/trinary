@@ -106,29 +106,39 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
 })
 
 app.post('/api/webhooks/invoice/paid', async (req, res) => {
-    const paymentObjectPayload = req.body.data.object
+    const invoiceObjectPayload = req.body.data.object
     try {
-        await apiModules.budgeting.updateDatePaidPayment({ paymentObjectPayload })
+        await apiModules.budgeting.updateDatePaidPayment({
+            stripeInvoice: invoiceObjectPayload
+        })
         res.send('payment updated')
     } catch (err) {
         console.log(`An error ocurred: ${err}`)
     }
 })
-app.post('/api/webhooks/invoice/updated', (req, res) => {
-    const paymentObjectPayload = req.body.data.object
+
+app.post('/api/webhooks/invoice/updated', async (req, res) => {
+    const invoiceObjectPayload = req.body.data.object
     //1. see if payment is ready to allocate, if not do nothing
-    if (findIndex(paymentObjectPayload.metadata, { 'name': 'ready_to_allocate', 'value': 'true' }) != -1) {
-        apiModules.budgeting.updatePaymentByStripeInvoiceId({ paymentObjectPayload })
-            .then(() => {
-                res.send('payment updated')
+    if (
+        invoiceObjectPayload.metadata &&
+        invoiceObjectPayload.metadata.ready_to_allocate &&
+        invoiceObjectPayload.metadata.ready_to_allocate == true
+    ) {
+        try {
+            await apiModules.budgeting.updatePaymentByStripeInvoiceId({
+                stripeInvoice: invoiceObjectPayload
             })
-            .catch((err) => {
-                console.log(`An error ocurred: ${err}`)
-            })
+            res.send('Payment created from invoice')
+        } catch {
+            console.log(`An error ocurred: ${err}`)
+            res.send(`An error ocurred: ${err}`);
+        }
     } else {
         res.send('payment not ready to allocate')
     }
 })
+
 app.post('/api/webhooks/invoice/delete', async (req, res) => {
     const invoiceId = req.body.data.object.id
     try {
