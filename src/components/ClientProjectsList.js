@@ -14,6 +14,7 @@ const ClientProjectsList = ({
 }) => {
 
     const { loading, error, data, networkStatus } = useQuery(GET_CLIENT_INFO, {
+        fetchPolicy: "cache-and-network",
         variables: { id: Number(clientId) }
     })
 
