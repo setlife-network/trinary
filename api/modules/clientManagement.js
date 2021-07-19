@@ -1,6 +1,6 @@
-const db = require('../models')
 
 const clientManagement = module.exports = (() => {
+    const db = require('../models')
 
     const createClientFromStripeCustomer = async (params) => {
         const { stripeCustomerObject } = params
