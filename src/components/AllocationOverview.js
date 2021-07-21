@@ -213,9 +213,11 @@ const AllocationOverview = (props) => {
     if (errorAllocation || errorClientPayments) return `Error`
 
     const { getAllocationById: allocation } = dataAllocation
-    const payments = [null]
-    if (clientPayments) {
-        payments.unshift(...clientPayments.payments)
+    const payments = dataClientPayments
+        ? [...dataClientPayments.getClientById.payments, { amount: null, date_paid: null }].sort((a, b) => b.date_incurred - a.date_incurred)
+        : [null]
+    if (payments) {
+        payments.pop();
     }
 
     if (!contributorAllocation) {
@@ -223,8 +225,7 @@ const AllocationOverview = (props) => {
     }
     
     const editButtonDisabled = (
-        updatedAllocationRate.total_amount == allocationInfo.amount &&
-        updatedAllocationRate.hourly_rate == allocationInfo.rate.hourly_rate
+        updatedAllocationRate.total_amount <= 0 
     )
 
     return (
@@ -259,11 +260,16 @@ const AllocationOverview = (props) => {
                     startDate={updatedAllocationStartDate}
                 />
                 <Box mt={1}>
-                    <Grid container>
-                        <Grid item xs={3}>
+                    <Grid 
+                        container 
+                        justify='space-between'
+                        style={{ textAlign: 'center' }}
+                    >
+                        <Grid item xs={12} sm={3}>
                             <Button
                                 variant='contained'
                                 color='primary'
+                                className='edit-delete'
                                 disabled={editButtonDisabled}
                                 onClick={() => handleUpdateAllocation({
                                     allocation: contributorAllocation,
@@ -278,9 +284,10 @@ const AllocationOverview = (props) => {
                                 {'Edit'}
                             </Button>
                         </Grid>
-                        <Grid item>
+                        <Grid item xs={12} sm={3}>
                             <Button
                                 color='primary'
+                                className='edit-delete'
                                 onClick={() => setOpenDeleteAllocation(true)}
                             >
                                 <DeleteOutlinedIcon color='primary'/>
