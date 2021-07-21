@@ -42,6 +42,16 @@ export const formatAmount = (props) => {
         }
     )
 }
+export const getExpectedHours = (props) => {
+    const {
+        amount,
+        hourlyRate
+    } = props
+
+    return (
+        Math.round(amount / Number(hourlyRate))
+    )
+}
 export const getAllocatedContributors = ({ allocations }) => {
     const contributorsAllocated = []
     allocations.map(a => {
