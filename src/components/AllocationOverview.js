@@ -214,10 +214,10 @@ const AllocationOverview = (props) => {
 
     const { getAllocationById: allocation } = dataAllocation
     const payments = dataClientPayments
-        ? [...dataClientPayments.getClientById.payments, { amount: null, date_paid: null }].sort((a, b) => b.date_incurred - a.date_incurred)
+        ? [...dataClientPayments.getClientById.payments].sort((a, b) => b.date_incurred - a.date_incurred)
         : [null]
-    if (payments) {
-        payments.pop();
+    if (payments.length) {
+        payments.push(null)
     }
 
     if (!contributorAllocation) {
