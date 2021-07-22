@@ -14,7 +14,7 @@ import { HAS_VALID_STRIPE_CREDENTIALS } from '../operations/queries/ConfigQuerie
 const ClientsList = (props) => {
     const history = useHistory()
     const { loading: loadingS, error: errorS, data: dataStripe } = useQuery(HAS_VALID_STRIPE_CREDENTIALS);
-    const { loading, error, data } = useQuery(GET_CLIENTS, {
+    const { loading, error, data } = useQuery(GET_ACTIVE_CLIENTS, {
         fetchPolicy: 'cache-and-network'
     });
 

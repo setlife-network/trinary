@@ -18,7 +18,7 @@ const ClientListManager = (props) => {
     }
 
     const { loading, error, data } = useQuery(GET_ACTIVE_CLIENTS_COUNT, {
-        fetchPolicy: "cache-and-network"
+        fetchPolicy: 'cache-and-network'
     });
 
     if (loading) return <LoadingProgress/>

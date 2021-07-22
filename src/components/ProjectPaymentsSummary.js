@@ -21,7 +21,7 @@ const ProjectPaymentsSummary = (props) => {
         error: errorPaymentsSummary,
         loading: loadingPaymentsSummary
     } = useQuery(GET_PROJECT_PAYMENTS_SUMMARY, {
-        fetchPolicy: "cache-and-network",
+        fetchPolicy: 'cache-and-network',
         variables: {
             id: Number(project.id)
         }
