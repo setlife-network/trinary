@@ -14,6 +14,7 @@ import {
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
+import EditIcon from '@material-ui/icons/Edit';
 
 import AllocationAddForm from './AllocationAddForm'
 import AllocationOverview from './AllocationOverview'
@@ -122,7 +123,7 @@ const PaymentTile = (props) => {
                 <Box mb={3} className='PaymentTile'>
                     <Grid
                         container
-                        onClick={() => handleAllocationClicked({ value: true, allocation: a })}
+                        className='cursor-grid'
                     >
                         <Grid items xs={10} >
                             <Typography color='secondary' variant='caption'>
@@ -145,6 +146,14 @@ const PaymentTile = (props) => {
                             <Typography color='secondary' variant='caption'>
                                 {`Ends ${moment.utc(end_date, 'x').format('MM/DD/YYYY')} `}
                             </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button 
+                                fullWidth
+                                onClick={() => handleAllocationClicked({ value: true, allocation: a })}
+                            >
+                                <EditIcon color='secondary' />
+                            </Button>
                         </Grid>
                     </Grid>
                 </Box>
