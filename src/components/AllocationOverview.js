@@ -225,7 +225,8 @@ const AllocationOverview = (props) => {
     }
     
     const editButtonDisabled = (
-        updatedAllocationRate.total_amount <= 0 
+        updatedAllocationRate.total_amount <= 0 ||
+        updatedAllocationRate.hourly_rate <= 0
     )
 
     return (
