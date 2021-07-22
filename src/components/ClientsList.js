@@ -8,14 +8,14 @@ import ClientTile from './ClientTile'
 import ClientsEmptyState from './ClientsEmptyState'
 import ClientsEmptyStateStripe from './ClientsEmptyStateStripe'
 import LoadingProgress from './LoadingProgress'
-import { GET_CLIENTS } from '../operations/queries/ClientQueries'
+import { GET_ACTIVE_CLIENTS } from '../operations/queries/ClientQueries'
 import { HAS_VALID_STRIPE_CREDENTIALS } from '../operations/queries/ConfigQueries';
 
 const ClientsList = (props) => {
     const history = useHistory()
     const { loading: loadingS, error: errorS, data: dataStripe } = useQuery(HAS_VALID_STRIPE_CREDENTIALS);
     const { loading, error, data } = useQuery(GET_CLIENTS, {
-        fetchPolicy: "cache-and-network"
+        fetchPolicy: 'cache-and-network'
     });
 
     const renderClientTiles = (clients) => {
@@ -34,7 +34,7 @@ const ClientsList = (props) => {
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`;
 
-    const clients = orderBy(data.getClients, 'is_active', 'desc')
+    const clients = orderBy(data.getActiveClients, 'is_active', 'desc')
 
     return (
         <>
