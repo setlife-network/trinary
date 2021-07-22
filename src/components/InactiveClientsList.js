@@ -6,7 +6,7 @@ import { orderBy } from 'lodash'
 
 import ClientTile from './ClientTile'
 import LoadingProgress from './LoadingProgress'
-import {GET_INACTIVE_CLIENTS, GET_INACTIVE_CLIENTS_COUNT} from '../operations/queries/ClientQueries'
+import { GET_INACTIVE_CLIENTS, GET_INACTIVE_CLIENTS_COUNT } from '../operations/queries/ClientQueries'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
