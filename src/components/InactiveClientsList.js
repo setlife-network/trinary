@@ -14,19 +14,28 @@ import Box from '@material-ui/core/Box'
 
 const InactiveClientsList = (props) => {
     const history = useHistory()
-    const { loading, error, data } = useQuery(GET_INACTIVE_CLIENTS);
+    const {
+        loading: loadingInactiveClient,
+        error: errorInactiveClient,
+        data: dataInactiveClient
+    } = useQuery(GET_INACTIVE_CLIENTS);
 
     const handleChange = (event) => {
         setState({ ...state, [event.target.name]: event.target.checked })
     }
 
     const [state, setState] = React.useState({
-        checkedA: false,
+        inactiveClientsCheck: false,
     });
-    const { loading: loadingInactive , error: errorInactive, data: dataInactive } = useQuery(GET_INACTIVE_CLIENTS_COUNT);
 
-    if (loadingInactive) return <LoadingProgress/>
-    if (errorInactive) return `Error! ${errorInactive.message}`;
+    const {
+        loading: loadingInactiveClientsCount,
+        error: errorInactiveClientsCount,
+        data: dataInactiveClientsCount
+    } = useQuery(GET_INACTIVE_CLIENTS_COUNT);
+
+    if (loadingInactiveClientsCount) return <LoadingProgress/>
+    if (errorInactiveClientsCount) return `Error! ${errorInactiveClientsCount.message}`;
 
     const renderClientTiles = (clients) => {
         return clients.map(c => {
@@ -41,9 +50,9 @@ const InactiveClientsList = (props) => {
         })
     }
 
-    if (loading) return <LoadingProgress/>
-    if (error) return `Error! ${error.message}`;
-    const clients = orderBy(data.getInactiveClients, 'is_active', 'desc')
+    if (loadingInactiveClient) return <LoadingProgress/>
+    if (errorInactiveClient) return `Error! ${errorInactiveClient.message}`;
+    const clients = orderBy(dataInactiveClient.getInactiveClients, 'is_active', 'desc')
 
     return (
         <>
@@ -52,9 +61,9 @@ const InactiveClientsList = (props) => {
                     control=
                         {
                             <Switch
-                                checked={state.checkedA}
+                                checked={state.inactiveClientsCheck}
                                 onChange={handleChange}
-                                name='checkedA'
+                                name='inactiveClientsCheck'
                             />
                         }
                     label='Show inactive clients'
@@ -67,7 +76,7 @@ const InactiveClientsList = (props) => {
                 alignItems='flex-end'
             >
                 {
-                    state.checkedA == true
+                    state.inactiveClientsCheck == true
                         ? (
                             <Grid item xs={12} sm={6} md={4}>
                                 <Box
@@ -79,20 +88,22 @@ const InactiveClientsList = (props) => {
                                     py={1}
                                 >
                                     {
-                                        `${dataInactive.getInactiveClientsCount} inactive ${dataInactive.getInactiveClientsCount == 1
+                                        `${dataInactiveClientsCount.getInactiveClientsCount} inactive ${dataInactiveClientsCount.getInactiveClientsCount == 1
                                             ? 'client'
                                             : 'clients'
                                         }`
                                     }
                                 </Box>
                             </Grid>
-                        ) : (
-                            false
-                        )
+                        ) : null
                 }
                 <Grid container>
                     {
-                        state.checkedA ? clients.length != 0 ? renderClientTiles(clients) : false : false
+                        state.inactiveClientsCheck
+                            ? clients.length != 0
+                                ? renderClientTiles(clients)
+                                : null
+                            : null
                     }
                 </Grid>
             </Grid>

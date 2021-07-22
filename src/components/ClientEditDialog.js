@@ -12,11 +12,11 @@ import {
     Select,
     TextField,
     FormGroup,
+    Switch
 } from '@material-ui/core/'
 
 import { UPDATE_CLIENT } from '../operations/mutations/ClientMutations'
 import { CURRENCIES } from '../constants'
-import Switch from '@material-ui/core/Switch';
 
 const ClientEditDialog = (props) => {
 
@@ -47,7 +47,6 @@ const ClientEditDialog = (props) => {
         }
         clientInfoToEdit['is_active'] = clientIsActive
 
-        console.log(clientInfoToEdit)
         updateClient({
             variables: clientInfoToEdit
         })
@@ -87,7 +86,7 @@ const ClientEditDialog = (props) => {
     }
 
     const [state, setState] = React.useState({
-        checkedA: client.is_active,
+        clientActiveSwitch: client.is_active,
     });
 
     return (
@@ -146,7 +145,7 @@ const ClientEditDialog = (props) => {
                                     <Grid item>Inactive</Grid>
                                     <Grid item>
                                         <Switch
-                                            checked={state.checkedA}
+                                            checked={state.clientActiveSwitch}
                                             onChange={handleChange}
                                             name='checkedA'
                                             color='primary'
