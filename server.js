@@ -185,6 +185,17 @@ app.post('/api/webhooks/clients', async (req, res, next) => {
     }
 })
 
+app.post('/api/webhooks/customer/delete', async (req, res) => {
+    const stripeCustomerObject = req.body.data.object
+
+    try {
+        await apiModules.clientManagement.deleteClientUuid( { stripeCustomerObject } )
+        res.sendStatus(200)
+    } catch (err) {
+        console.log(`An error ocurred: ${err}`)
+    }
+})
+
 const server = new ApolloServer({
     schema,
     context: ({ req }) => ({
