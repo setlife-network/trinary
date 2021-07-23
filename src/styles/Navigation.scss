@@ -3,12 +3,21 @@
         max-height: 16px;
         cursor: pointer;
     }
+    .navigation-title {
+        margin: 12px;
+        color: $dark-blue;
+        font-weight: bold;
+        font-size: 1rem;
+    }
 }
 
 @media screen and (min-width: $sm) {
     .Navigation {
         .icon-image {
             max-height: 25px;
+        }
+        .navigation-title {
+            font-size: 1.5rem
         }
     }
 }
