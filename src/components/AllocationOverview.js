@@ -213,9 +213,13 @@ const AllocationOverview = (props) => {
     if (errorAllocation || errorClientPayments) return `Error`
 
     const { getAllocationById: allocation } = dataAllocation
+    
     const payments = dataClientPayments
-        ? [...dataClientPayments.getClientById.payments].sort((a, b) => b.date_incurred - a.date_incurred)
+        ? [
+            ...dataClientPayments.getClientById.payments
+        ].sort((a, b) => b.date_incurred - a.date_incurred)
         : [null]
+
     if (payments.length) {
         payments.push(null)
     }
@@ -225,8 +229,7 @@ const AllocationOverview = (props) => {
     }
     
     const editButtonDisabled = (
-        updatedAllocationRate.total_amount <= 0 ||
-        updatedAllocationRate.hourly_rate <= 0
+        updatedAllocationRate.total_amount <= 0 
     )
 
     return (
