@@ -13,7 +13,8 @@ import {
 
 import LoadingProgress from './LoadingProgress'
 import {
-    GET_CONTRIBUTOR_ORGANIZATIONS_REPOS_FROM_GITHUB
+    GET_CONTRIBUTOR_ORGANIZATIONS_FROM_GITHUB,
+    GET_CONTRIBUTOR_REPOS_FROM_GITHUB
 } from '../operations/queries/ContributorQueries'
 
 const AddProjectFromGithub = (props) => {
@@ -24,10 +25,16 @@ const AddProjectFromGithub = (props) => {
     } = props
 
     const {
-        error: errorOrganizationProjects,
-        data: dataOrganizationProjects,
-        loading: loadingOrganizationProjects
-    } = useQuery(GET_CONTRIBUTOR_ORGANIZATIONS_REPOS_FROM_GITHUB)
+        error: errorOrganizations,
+        data: dataOrganizations,
+        loading: loadingOrganizations
+    } = useQuery(GET_CONTRIBUTOR_ORGANIZATIONS_FROM_GITHUB)
+
+    const {
+        error: errorOrganizationRepos,
+        data: dataOrganizationRepos,
+        loading: loadingOrganizationRepos
+    } = useQuery(GET_CONTRIBUTOR_REPOS_FROM_GITHUB)
 
     const [selectedGithubOrganization, setSelectedGithubOrganization] = useState(0)
     const [selectedGithubRepo, setSelectedGithubRepo] = useState(0)
@@ -79,12 +86,17 @@ const AddProjectFromGithub = (props) => {
         })
     }
 
-    if (loadingOrganizationProjects) return <LoadingProgress/>
-    if (errorOrganizationProjects) return `An error ocurred ${errorOrganizationProjects}`
+    if (loadingOrganizations) return <LoadingProgress/>
+    if (errorOrganizations) return `An error ocurred ${errorOrganizations}`
 
-    const { getGithubOrganizations } = dataOrganizationProjects
+    if (loadingOrganizationRepos) return <LoadingProgress/>
+    if (errorOrganizationRepos) return `An error ocurred ${errorOrganizationRepos}`
 
-    const organizations = [{ repos: [] }, ...getGithubOrganizations]
+    const { getGithubOrganizations } = dataOrganizations
+    const { getGithubRepos } = dataOrganizationRepos
+
+    const organizations = [...getGithubOrganizations]
+    const repos = [...getGithubRepos]
 
     return (
         <Grid
@@ -110,7 +122,7 @@ const AddProjectFromGithub = (props) => {
                         fullWidth
                         value={selectedGithubOrganization}
                         onChange={(event) => handleGithubOrganizationChange({
-                            organizations: organizations,
+                            organizations: repos,
                             value: event.target.value
                         })}
                     >
@@ -127,12 +139,12 @@ const AddProjectFromGithub = (props) => {
                         fullWidth
                         value={selectedGithubRepo}
                         onChange={(event) => handleGithubRepoChange({
-                            organizations: organizations,
+                            organizations: repos,
                             value: event.target.value
                         })}
                     >
                         {renderGithubRepos({
-                            repos: organizations[selectedGithubOrganization].repos
+                            repos: repos[selectedGithubOrganization].repos
                         })}
                     </Select>
                 </FormControl>

@@ -120,9 +120,19 @@ export const GET_CONTRIBUTOR_PROJECTS = gql`
     }
 `
 
-export const GET_CONTRIBUTOR_ORGANIZATIONS_REPOS_FROM_GITHUB = gql`
-    query GithubOrganizationRepos($id: Int) {
+export const GET_CONTRIBUTOR_ORGANIZATIONS_FROM_GITHUB = gql`
+    query GithubOrganizations($id: Int) {
         getGithubOrganizations(contributorId: $id) {
+            id
+            avatar
+            name
+        }
+    }
+`
+
+export const GET_CONTRIBUTOR_REPOS_FROM_GITHUB = gql`
+    query GithubOrganizationRepos($id: Int) {
+        getGithubRepos(contributorId: $id) {
             id
             avatar
             name
