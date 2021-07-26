@@ -96,6 +96,18 @@ const RateProratedMonthlyForm = (props) => {
         )
     }
 
+    const changeMonthlyHoursInput = (value) => {
+        if (Number(value) >= 0 || null ) {
+            setMonthlyhoursInput(value)
+        }
+    }
+
+    const changeCurrentRateInput = (value) => {
+        if (Number(value) >= 0 || null ) {
+            setCurrentRateInput(value)
+        }
+    }
+
     return (
         <Grid container className='RateProratedMonthlyForm'>
             <Grid item xs={6} md={5}>
@@ -124,7 +136,7 @@ const RateProratedMonthlyForm = (props) => {
                                 defaultValue='0'
                                 value={`${monthlyHoursInput}`}
                                 fullWidth
-                                onChange={(event) => setMonthlyhoursInput(event.target.value)}
+                                onChange={(event) => changeMonthlyHoursInput(event.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -133,7 +145,7 @@ const RateProratedMonthlyForm = (props) => {
                                 variant='filled'
                                 value={`${currentRateInput}`}
                                 fullWidth
-                                onChange={(event) => setCurrentRateInput(event.target.value)}
+                                onChange={(event) => changeCurrentRateInput(event.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
