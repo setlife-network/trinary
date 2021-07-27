@@ -49,6 +49,7 @@ const clientManagement = module.exports = (() => {
     const deleteClientUuid = async (params) => {
         const { stripeCustomerObject } = params
         const client = await findClientWithExternalId(stripeCustomerObject)
+
         if (client) {
             client.external_uuid = null
             await client.save()
