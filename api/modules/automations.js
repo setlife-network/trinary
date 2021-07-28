@@ -34,7 +34,8 @@ const automations = module.exports = (() => {
             auth_key: params.auth_key
         })
         const repos = await github.fetchRepos({
-            auth_key: params.auth_key
+            auth_key: params.auth_key,
+            organizationName: params.organizationName
         })
         console.log('organizations')
         console.log(organizations.length)
@@ -44,9 +45,6 @@ const automations = module.exports = (() => {
             const organizationRepos = []
             repos.map(r => {
                 console.log(r)
-                if (o.name == 'otech47') {
-                    console.log(r.owner.login)
-                }
                 if (r.owner.login == o.name) {
                     organizationRepos.push({
                         id: r.id,
