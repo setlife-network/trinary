@@ -15,6 +15,7 @@ import LoadingProgress from './LoadingProgress'
 import RangeDatePickerInput from './RangeDatePickerInput'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
+import MonthWeekYearInput from './MonthWeekYearInput'
 import {
     GET_CONTRIBUTOR_ALLOCATIONS,
     GET_CONTRIBUTOR_RATES
@@ -66,8 +67,8 @@ const EditAllocationRate = (props) => {
                         </Button>
                     </ButtonGroup>
                 </Grid>
-                <Grid item xs={12} xl={8} className='RangeDatePicker'>
-                    <DatePicker
+                <Grid item xs={12} className='RangeDatePicker'>
+                    {/* <DatePicker
                         selected={startDate}
                         startDate={startDate}
                         endDate={endDate}
@@ -94,6 +95,10 @@ const EditAllocationRate = (props) => {
                                 />
                             </Box>
                         }
+                    /> */}
+                    <MonthWeekYearInput 
+                        startDate={moment.utc(startDate).format('MM/DD/YYYY')}
+                        endDate={moment.utc(endDate).format('MM/DD/YYYY')}
                     />
                 </Grid>
             </Grid>
