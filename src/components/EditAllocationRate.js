@@ -68,7 +68,7 @@ const EditAllocationRate = (props) => {
                     </ButtonGroup>
                 </Grid>
                 <Grid item xs={12} className='RangeDatePicker'>
-                    {/* <DatePicker
+                    <DatePicker
                         selected={startDate}
                         startDate={startDate}
                         endDate={endDate}
@@ -95,7 +95,9 @@ const EditAllocationRate = (props) => {
                                 />
                             </Box>
                         }
-                    /> */}
+                    />
+                </Grid>
+                <Grid item xs={12}>
                     <MonthWeekYearInput 
                         startDate={moment.utc(startDate).format('MM/DD/YYYY')}
                         endDate={moment.utc(endDate).format('MM/DD/YYYY')}
