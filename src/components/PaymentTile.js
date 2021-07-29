@@ -47,6 +47,7 @@ const PaymentTile = (props) => {
         error: errorPaymentAllocations,
         data: dataPaymentAllocations
     } = useQuery(GET_PAYMENT_ALLOCATIONS, {
+        fetchPolicy: 'cache-and-network',
         variables: { paymentId: Number(payment.id) }
     })
     const {
@@ -54,6 +55,7 @@ const PaymentTile = (props) => {
         error: errorTotalAllocated,
         data: dataTotalAllocated
     } = useQuery(GET_PAYMENT_TOTAL_ALLOCATED, {
+        fetchPolicy: 'cache-and-network',
         variables: { paymentId: Number(payment.id) }
     })
 
