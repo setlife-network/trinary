@@ -132,17 +132,12 @@ const PaymentTile = (props) => {
                                 {`${contributor.name}`}
                             </Typography>
                         </Grid>
-                        <Grid item xs={6} align='right'>
-                            {/* <Button 
-                                className='edit-button' 
-                                onClick={() => handleAllocationClicked({ value: true, allocation: a })}
-                            > */}
+                        <Grid className='edit-button-grid' item xs={6} align='right'>
                             <EditIcon 
                                 color='primary' 
                                 onClick={() => handleAllocationClicked({ value: true, allocation: a })}
                                 className='edit-button' 
                             />
-                            {/* </Button> */}
                         </Grid>
                         <Grid items xs={12}>
                             <Typography color='secondary' variant='caption'>

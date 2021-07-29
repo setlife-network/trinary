@@ -1,29 +1,40 @@
-.PaymentTile {
+@use "@material/animation";
 
+.PaymentTile {
     .disabled-tile {
         background-color: $white !important;
     }
-    .MuiAccordionSummary-root.Mui-disabled{
+    .MuiAccordionSummary-root.Mui-disabled {
         opacity: 1 !important;
     }
 }
 
 @media screen and (min-width: $sm) {
     .PaymentTile {
-        .edit-button{
+        @keyframes fade-in{
+            from{
+                transform: translate(-80px);
+                opacity: 0;
+            }
+        }
+        .edit-button {
             display: none;
         }
-        .payments-grid{
-            transition: all 0.5s;
+        .edit-button-grid {
+            height: 1rem;
+        }
+        .payments-grid {
+            transition: all 175ms;
             &:hover{
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+                border-radius: 0.3rem;
+                transition: all 175ms;
                 .edit-button{
                     display: inline-flex;
-                    transition: all 0.5s;
                     cursor: pointer;
                 }
-                padding: 0.5rem;
-                box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-                border-radius: 0.5rem;
+                box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 1px, rgba(0, 0, 0, 0.12) 0px 1px 1px, rgba(0, 0, 0, 0.12) 0px 1px 10px, rgba(0, 0, 0, 0.17) 0px 1px 10px, rgba(0, 0, 0, 0.09) 0px 1px 1px;
             }
         }
     }
