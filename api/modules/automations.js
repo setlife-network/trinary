@@ -41,21 +41,18 @@ const automations = module.exports = (() => {
         console.log(organizations.length)
         console.log('repos')
         console.log(repos.length)
-        organizations.map(async o => {
-            const organizationRepos = []
-            repos.map(r => {
-                console.log(r)
-                if (r.owner.login == o.name) {
-                    organizationRepos.push({
-                        id: r.id,
-                        name: r.name,
-                        githubUrl: r.html_url,
-                    })
-                }
-            })
-            o.repos = organizationRepos
+        const organizationRepos = []
+        repos.map(r => {
+            console.log(r)
+            if (r.owner.login == params.organizationName) {
+                organizationRepos.push({
+                    id: r.id,
+                    name: r.name,
+                    githubUrl: r.html_url,
+                })
+            }
         })
-        return organizations
+        return organizationRepos
     }
 
     return {

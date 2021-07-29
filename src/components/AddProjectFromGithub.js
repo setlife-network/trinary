@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import {useLazyQuery, useQuery} from '@apollo/client'
 import {
     Avatar,
     Box,
@@ -30,11 +30,11 @@ const AddProjectFromGithub = (props) => {
         loading: loadingOrganizations
     } = useQuery(GET_CONTRIBUTOR_ORGANIZATIONS_FROM_GITHUB)
 
-    const {
+    const [getRepos, {
         error: errorOrganizationRepos,
         data: dataOrganizationRepos,
         loading: loadingOrganizationRepos
-    } = useQuery(GET_CONTRIBUTOR_REPOS_FROM_GITHUB)
+    }] = useLazyQuery(GET_CONTRIBUTOR_REPOS_FROM_GITHUB)
 
     const [selectedGithubOrganization, setSelectedGithubOrganization] = useState(0)
     const [selectedGithubRepo, setSelectedGithubRepo] = useState(0)
@@ -55,7 +55,7 @@ const AddProjectFromGithub = (props) => {
     }
 
     const handleGithubRepoChange = ({ organizations, value }) => {
-        setProjectGithub(organizations[selectedGithubOrganization].repos[value].githubUrl)
+        setProjectGithub(dataOrganizationRepos[selectedGithubRepo].githubUrl)
         setSelectedGithubRepo(value)
     }
 
@@ -80,7 +80,7 @@ const AddProjectFromGithub = (props) => {
         return repos.map((r, i) => {
             return (
                 <MenuItem value={i}>
-                    {`${r.name}`}
+                    {`${r.name ? r.name : 'Select'}`}
                 </MenuItem>
             )
         })
@@ -93,10 +93,10 @@ const AddProjectFromGithub = (props) => {
     if (errorOrganizationRepos) return `An error ocurred ${errorOrganizationRepos}`
 
     const { getGithubOrganizations } = dataOrganizations
-    const { getGithubRepos } = dataOrganizationRepos
+    //const { getGithubRepos } = dataOrganizationRepos
 
     const organizations = [...getGithubOrganizations]
-    const repos = [...getGithubRepos]
+    //const repos = [...getGithubRepos]
 
     return (
         <Grid
@@ -121,9 +121,13 @@ const AddProjectFromGithub = (props) => {
                     <Select
                         fullWidth
                         value={selectedGithubOrganization}
-                        onChange={(event) => handleGithubOrganizationChange({
-                            organizations: repos,
-                            value: event.target.value
+                        onLoad={() => getRepos({
+                            variables: {
+                                organizationName: organizations[selectedGithubOrganization].name
+                            }
+                        })}
+                        onChange={() => getRepos({
+                            variables: { organizationName: organizations[selectedGithubOrganization].name }
                         })}
                     >
                         {renderGithubOrganizations({ organizations: organizations })}
@@ -139,12 +143,12 @@ const AddProjectFromGithub = (props) => {
                         fullWidth
                         value={selectedGithubRepo}
                         onChange={(event) => handleGithubRepoChange({
-                            organizations: repos,
+                            organizations: organizations,
                             value: event.target.value
                         })}
                     >
                         {renderGithubRepos({
-                            repos: repos[selectedGithubOrganization].repos
+                            repos: organizations
                         })}
                     </Select>
                 </FormControl>
