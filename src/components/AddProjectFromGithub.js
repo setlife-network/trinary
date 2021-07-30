@@ -41,6 +41,14 @@ const AddProjectFromGithub = (props) => {
 
     useEffect(() => {
         setSelectedGithubRepo(0)
+
+        if (dataOrganizations) {
+            getRepos({
+                variables: {
+                    organizationName: organizations[selectedGithubOrganization].name
+                }
+            })
+        }
     }, [selectedGithubOrganization])
 
     const handleGithubOrganizationChange = ({ organizations, value }) => {
@@ -93,10 +101,12 @@ const AddProjectFromGithub = (props) => {
     if (errorOrganizationRepos) return `An error ocurred ${errorOrganizationRepos}`
 
     const { getGithubOrganizations } = dataOrganizations
-    //const { getGithubRepos } = dataOrganizationRepos
+    const { getGithubRepos } = dataOrganizationRepos && dataOrganizationRepos.getGithubRepos
+        ? dataOrganizationRepos
+        : []
 
     const organizations = [...getGithubOrganizations]
-    //const repos = [...getGithubRepos]
+    const repos = [...getGithubRepos]
 
     return (
         <Grid
@@ -121,11 +131,6 @@ const AddProjectFromGithub = (props) => {
                     <Select
                         fullWidth
                         value={selectedGithubOrganization}
-                        onLoad={() => getRepos({
-                            variables: {
-                                organizationName: organizations[selectedGithubOrganization].name
-                            }
-                        })}
                         onChange={() => getRepos({
                             variables: { organizationName: organizations[selectedGithubOrganization].name }
                         })}
@@ -148,7 +153,7 @@ const AddProjectFromGithub = (props) => {
                         })}
                     >
                         {renderGithubRepos({
-                            repos: organizations
+                            repos: repos
                         })}
                     </Select>
                 </FormControl>
