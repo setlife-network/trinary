@@ -47,6 +47,17 @@ const clientManagement = module.exports = (() => {
         }
     }
 
+    const deleteClientUuid = async (params) => {
+        const { stripeCustomerObject } = params
+        const client = await findClientWithExternalId(stripeCustomerObject)
+
+        if (client) {
+            client.external_uuid = null
+            await client.save()
+        }
+        return client
+    }
+
     const findClientWithEmail = async (params) => {
         return db.models.Client.findOne({
             where: {
@@ -114,6 +125,7 @@ const clientManagement = module.exports = (() => {
     return {
         createClient,
         createClientFromStripeCustomer,
+        deleteClientUuid,
         findClientWithEmail,
         findClientWithExternalId,
         findClientWithId,

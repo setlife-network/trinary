@@ -152,7 +152,6 @@ app.post('/api/webhooks/clients', async (req, res, next) => {
     const webhookPayload = req.body
     const stripeCustomerObject = webhookPayload.data.object
     const webhookType = webhookPayload.type
-
     if (webhookType === 'customer.created') {
         try {
             await apiModules.clientManagement.createClientFromStripeCustomer({
@@ -169,6 +168,16 @@ app.post('/api/webhooks/clients', async (req, res, next) => {
         } catch (err) {
             console.log(`An error ocurred: ${err}`)
         }
+    }
+})
+
+app.post('/api/webhooks/customer/delete', async (req, res) => {
+    const stripeCustomerObject = req.body.data.object
+    try {
+        await apiModules.clientManagement.deleteClientUuid( { stripeCustomerObject } )
+        res.sendStatus(200)
+    } catch (err) {
+        console.log(`An error ocurred: ${err}`)
     }
 })
 
