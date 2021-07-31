@@ -58,7 +58,7 @@ const AddProjectFromGithub = (props) => {
     const [selectedGithubRepo, setSelectedGithubRepo] = useState(null)
 
     useEffect(() => {
-        if (dataOrganizations) {
+        if (dataOrganizations && selectedGithubOrganization) {
             getRepos({
                 variables: {
                     organizationName: selectedGithubOrganization.name
@@ -118,7 +118,7 @@ const AddProjectFromGithub = (props) => {
     if (errorOrganizationRepos) return `An error ocurred ${errorOrganizationRepos}`
 
     const githubOrganizations = dataOrganizations.getGithubOrganizations
-    const githubRepos = dataOrganizationRepos && dataOrganizationRepos.length
+    const githubRepos = dataOrganizationRepos
         ? dataOrganizationRepos.getGithubRepos
         : []
 
