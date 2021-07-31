@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {useLazyQuery, useQuery} from '@apollo/client'
+import { useLazyQuery, useQuery } from '@apollo/client'
 import {
     Avatar,
     Box,
@@ -28,28 +28,50 @@ const AddProjectFromGithub = (props) => {
         error: errorOrganizations,
         data: dataOrganizations,
         loading: loadingOrganizations
-    } = useQuery(GET_CONTRIBUTOR_ORGANIZATIONS_FROM_GITHUB)
+    } = useQuery(GET_CONTRIBUTOR_ORGANIZATIONS_FROM_GITHUB, {
+        onCompleted: dataOrganizations => {
+            const githubOrganizations = dataOrganizations.getGithubOrganizations
+            setSelectedGithubOrganization(
+                githubOrganizations.length
+                    ? githubOrganizations[0]
+                    : null
+            )
+        }
+    })
 
     const [getRepos, {
         error: errorOrganizationRepos,
         data: dataOrganizationRepos,
         loading: loadingOrganizationRepos
-    }] = useLazyQuery(GET_CONTRIBUTOR_REPOS_FROM_GITHUB)
+    }] = useLazyQuery(GET_CONTRIBUTOR_REPOS_FROM_GITHUB, {
+        onCompleted: dataOrganizationRepos => {
+            const {
+                getGithubRepos
+            } = dataOrganizationRepos
+            if (getGithubRepos.length) {
+                setSelectedGithubRepo(dataOrganizationRepos.getGithubRepos[0])
+            }
+        }
+    })
 
-    const [selectedGithubOrganization, setSelectedGithubOrganization] = useState(0)
-    const [selectedGithubRepo, setSelectedGithubRepo] = useState(0)
+    const [selectedGithubOrganization, setSelectedGithubOrganization] = useState(null)
+    const [selectedGithubRepo, setSelectedGithubRepo] = useState(null)
 
     useEffect(() => {
-        setSelectedGithubRepo(0)
-
         if (dataOrganizations) {
             getRepos({
                 variables: {
-                    organizationName: organizations[selectedGithubOrganization].name
+                    organizationName: selectedGithubOrganization.name
                 }
             })
         }
     }, [selectedGithubOrganization])
+
+    useEffect(() => {
+        if (selectedGithubRepo) {
+            setProjectGithub(selectedGithubRepo.githubUrl)
+        }
+    }, [selectedGithubRepo])
 
     const handleGithubOrganizationChange = ({ organizations, value }) => {
         setSelectedGithubOrganization(value)
@@ -60,11 +82,6 @@ const AddProjectFromGithub = (props) => {
             setProjectGithub(null)
             setLinkedRepo(false)
         }
-    }
-
-    const handleGithubRepoChange = ({ organizations, value }) => {
-        setProjectGithub(dataOrganizationRepos[selectedGithubRepo].githubUrl)
-        setSelectedGithubRepo(value)
     }
 
     const renderGithubOrganizations = ({ organizations }) => {
@@ -100,13 +117,10 @@ const AddProjectFromGithub = (props) => {
     if (loadingOrganizationRepos) return <LoadingProgress/>
     if (errorOrganizationRepos) return `An error ocurred ${errorOrganizationRepos}`
 
-    const { getGithubOrganizations } = dataOrganizations
-    const { getGithubRepos } = dataOrganizationRepos && dataOrganizationRepos.getGithubRepos
-        ? dataOrganizationRepos
+    const githubOrganizations = dataOrganizations.getGithubOrganizations
+    const githubRepos = dataOrganizationRepos && dataOrganizationRepos.length
+        ? dataOrganizationRepos.getGithubRepos
         : []
-
-    const organizations = [...getGithubOrganizations]
-    const repos = [...getGithubRepos]
 
     return (
         <Grid
@@ -130,12 +144,12 @@ const AddProjectFromGithub = (props) => {
                     </InputLabel>
                     <Select
                         fullWidth
-                        value={selectedGithubOrganization}
-                        onChange={() => getRepos({
-                            variables: { organizationName: organizations[selectedGithubOrganization].name }
-                        })}
+                        value={githubOrganizations.indexOf(selectedGithubOrganization)}
+                        onChange={(event) => (
+                            setSelectedGithubOrganization(githubOrganizations[event.target.value])
+                        )}
                     >
-                        {renderGithubOrganizations({ organizations: organizations })}
+                        {renderGithubOrganizations({ organizations: githubOrganizations })}
                     </Select>
                 </FormControl>
             </Grid>
@@ -146,14 +160,11 @@ const AddProjectFromGithub = (props) => {
                     </InputLabel>
                     <Select
                         fullWidth
-                        value={selectedGithubRepo}
-                        onChange={(event) => handleGithubRepoChange({
-                            organizations: organizations,
-                            value: event.target.value
-                        })}
+                        value={githubRepos.indexOf(selectedGithubRepo)}
+                        onChange={(event) => setSelectedGithubRepo(githubRepos[event.target.value])}
                     >
                         {renderGithubRepos({
-                            repos: repos
+                            repos: githubRepos
                         })}
                     </Select>
                 </FormControl>

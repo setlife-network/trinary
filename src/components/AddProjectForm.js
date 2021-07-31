@@ -71,11 +71,11 @@ const AddProjectForm = (props) => {
     const [createProjectError, setCreateProjectError] = useState(null)
     const [disableAdd, setDisableAdd] = useState(true)
     const [displayError, setDisplayError] = useState(false)
-    const [linkedRepo, setLinkedRepo] = useState(false)
+    const [linkedRepo, setLinkedRepo] = useState(false) //TODO: Check if it can be deleted
     const [projectBudget, setProjectBudget] = useState(0)
     const [projectDate, setProjectDate] = useState(null)
     const [projectEndDate, setProjectEndDate] = useState(null)
-    const [projectGithub, setProjectGithub] = useState(null)
+    const [projectGithub, setProjectGithub] = useState(null) //TODO: Change to projectGithubURL
     const [projectGithubManual, setProjectGithubManual] = useState(null)
     const [projectName, setProjectName] = useState('')
     const [projectToggl, setProjectToggl] = useState(null)
