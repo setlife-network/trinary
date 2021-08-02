@@ -59,12 +59,14 @@ const EditAllocationRate = (props) => {
                     </ButtonGroup>
                 </Grid>
             </Grid>
-            <DateInput
-                startDate={startDate}
-                endDate={endDate}
-                setStartDate={setStartDate}
-                setEndDate={setEndDate}
-            />
+            <Box mt={3}>
+                <DateInput
+                    startDate={startDate}
+                    endDate={endDate}
+                    setStartDate={setStartDate}
+                    setEndDate={setEndDate}
+                />
+            </Box>
             {selectedRateType == 'prorated_monthly'
                 ? (
                     <RateProratedMonthlyForm
