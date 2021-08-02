@@ -7,7 +7,6 @@ import {
     Typography
 } from '@material-ui/core'
 import { boxShadow, borders, spacing } from '@material-ui/system'
-import AccounTree from '@material-ui/icons/DeveloperBoard'
 import DeveloperBoard from '@material-ui/icons/DeveloperBoard'
 
 const ProjectTile = ({
