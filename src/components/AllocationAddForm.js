@@ -15,13 +15,11 @@ import {
     findKey
 } from 'lodash'
 import moment from 'moment'
-import DatePicker from 'react-datepicker'
 
 import AllocationAddSpecifics from './AllocationAddSpecifics'
 import AllocationClientSpecifics from './AllocationClientSpecifics'
 import AllocationProposeSpecifics from './AllocationProposeSpecifics'
 import LoadingProgress from './LoadingProgress'
-import RangeDatePickerInput from './RangeDatePickerInput'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 import DateInput from './DateInput'
