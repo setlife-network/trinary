@@ -1,9 +1,13 @@
 .DateInput {
-
+    .accordion-select-week{
+        display: none;
+    }
 }
 
 @media screen and (min-width: $sm) {
     .DateInput {
-        
+        .accordion-select-week{
+            display: block;
+        }
     }
 }
