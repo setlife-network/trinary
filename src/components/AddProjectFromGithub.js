@@ -19,9 +19,7 @@ import {
 
 const AddProjectFromGithub = (props) => {
     const {
-        clientId,
-        setLinkedRepo,
-        setProjectGithub
+        setProjectGithubURL
     } = props
 
     const {
@@ -69,20 +67,9 @@ const AddProjectFromGithub = (props) => {
 
     useEffect(() => {
         if (selectedGithubRepo) {
-            setProjectGithub(selectedGithubRepo.githubUrl)
+            setProjectGithubURL(selectedGithubRepo.githubUrl)
         }
     }, [selectedGithubRepo])
-
-    const handleGithubOrganizationChange = ({ organizations, value }) => {
-        setSelectedGithubOrganization(value)
-        if (organizations[value].repos[0]) {
-            setProjectGithub(organizations[value].repos[0].githubUrl)
-            setLinkedRepo(true)
-        } else {
-            setProjectGithub(null)
-            setLinkedRepo(false)
-        }
-    }
 
     const renderGithubOrganizations = ({ organizations }) => {
         return organizations.map((o, i) => {
