@@ -290,7 +290,7 @@ const ProjectEditDialog = (props) => {
                                     disabled={disableEdit}
                                     onClick={onEditProject}
                                 >
-                                    {`Edit Project`}
+                                    {`Save Project`}
                                 </Button>
                             </Box>
                         </Grid>
