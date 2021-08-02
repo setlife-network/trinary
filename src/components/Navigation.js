@@ -4,7 +4,8 @@ import { useReactiveVar } from '@apollo/client'
 import {
     AppBar,
     Box,
-    Grid
+    Grid,
+    Typography
 } from '@material-ui/core'
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
 import { split } from 'lodash'
@@ -48,11 +49,15 @@ const Navigation = (props) => {
                         </Box>
                     </Grid>
                     <Grid item xs={8} sm={6}>
-                        <h2 className='navigation-title'>
+                        <Typography 
+                            variant='h5' 
+                            className='navigation-title'
+                            noWrap
+                        >
                             {capitalizeWord({
                                 word: locationTitle.title || optionalLocationTitle
                             })}
-                        </h2>
+                        </Typography>
                     </Grid>
                 </Grid>
             </AppBar>
