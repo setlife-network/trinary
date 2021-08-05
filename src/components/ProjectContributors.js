@@ -96,7 +96,7 @@ const ProjectContributors = (props) => {
     if (errorGithubContributors) {
         return (
             <GithubAccessBlocked
-                message={`You must be a Github collaborator to access this metrics`}
+                message={`You must be a Github collaborator to access this metrics`} //Expected message
             />
         )
     }
