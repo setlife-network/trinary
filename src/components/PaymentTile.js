@@ -122,37 +122,40 @@ const PaymentTile = (props) => {
             })
 
             return (
-                <Box mb={3} className='PaymentTile'>
+                <Box 
+                    mb={3} 
+                    className='PaymentTile' 
+                >
                     <Grid
                         container
                         className='payments-grid'
+                        onClick={() => handleAllocationClicked({ value: true, allocation: a })}
                     >
                         <Grid items xs={6}>
-                            <Typography color='secondary' variant='caption'>
+                            <Typography color='secondary' variant='caption' className='animation-effect-left'>
                                 {`${contributor.name}`}
                             </Typography>
                         </Grid>
                         <Grid className='edit-button-grid' item xs={6} align='right'>
                             <EditIcon 
                                 color='primary' 
-                                onClick={() => handleAllocationClicked({ value: true, allocation: a })}
                                 className='edit-button' 
                             />
                         </Grid>
                         <Grid items xs={12}>
-                            <Typography color='secondary' variant='caption'>
-                                {`${currencyInformation['symbol']}${rate.hourly_rate}/hr (
+                            <Typography color='secondary' variant='caption' className='animation-effect-left'>
+                                {`${currencyInformation['symbol']} ${rate.hourly_rate}/hr (
                                     ${rate.type == 'monthly_rate' ? 'monthly rate' : 'max budget'}
                                 )`}
                             </Typography>
                         </Grid>
                         <Grid item xs={6}>
-                            <Typography color='secondary' variant='caption'>
+                            <Typography color='secondary' variant='caption' className='animation-effect-left'>
                                 {`${paymentAmount}`}
                             </Typography>
                         </Grid>
                         <Grid item xs={6} align='right'>
-                            <Typography color='secondary' variant='caption'>
+                            <Typography color='secondary' variant='caption' className='animation-effect-right'>
                                 {`Ends ${moment.utc(end_date, 'x').format('MM/DD/YYYY')} `}
                             </Typography>
                         </Grid>
