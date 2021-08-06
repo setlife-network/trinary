@@ -51,8 +51,10 @@ const DateInput = (props) => {
         <Grid container className='DateInput'>
             <Accordion className='accordion-select-week'>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant='h6'>
-                        {'Quick Select'}
+                    <Typography 
+                        variant='subtitle1'
+                    >
+                        {'Date Quick Select'}
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
