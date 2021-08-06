@@ -30,6 +30,9 @@ const DateInput = (props) => {
         const [start, end] = dates
         setStartDate(start)
         setEndDate(end)
+        setSelectedWeek(0)
+        setSelectedMonth(0)
+        setSelectedYear(0)
     }
 
     const getWeekMonthYears = (weeks, months, years) => {
