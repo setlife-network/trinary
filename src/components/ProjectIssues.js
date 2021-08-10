@@ -34,16 +34,6 @@ const ProjectIssues = (props) => {
         }
     })
 
-    const {
-        data: dataProject,
-        loading: loadingProject,
-        error: errorProject,
-    } = useQuery(GET_PROJECT, {
-        variables: {
-            id: Number(projectId)
-        }
-    })
-
     const [
         getIssues,
         {
@@ -75,19 +65,14 @@ const ProjectIssues = (props) => {
         })
     }
 
-    const actualProject = dataProject.getProjectById
 
     if (loadingProjectIssues) return <LoadingProgress/>
     if (errorProjectIssues) {
         return (
-            <Grid>
-                <Link href={actualProject.github_url}>
-                    Repository
-                </Link>
-                <GithubAccessBlocked
-                    message={`You must be a Github collaborator to access this metrics.`}
-                />
-            </Grid>
+            <GithubAccessBlocked
+                message={`You must be a Github collaborator to access this metrics.`}
+                projectId={projectId}
+            />
         )
     }
 

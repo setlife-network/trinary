@@ -97,7 +97,8 @@ const ProjectContributors = (props) => {
     const isNotAContributor = () => {
         return (
             <GithubAccessBlocked
-                message={`You must be a Github collaborator to see the other collaborators of this repository`}
+                message={`You must be a Github collaborator to see the other collaborators of this repository.`}
+                projectId={projectId}
             />
         )
     }
