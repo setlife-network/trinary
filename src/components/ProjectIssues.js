@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import {
     Box,
     Button,
-    Grid
+    Grid,
+    Link
 } from '@material-ui/core'
 import moment from 'moment'
 import { orderBy } from 'lodash'
@@ -13,7 +14,7 @@ import IssueTile from './IssueTile'
 import LoadingProgress from './LoadingProgress'
 import ProjectIssuesMetrics from './ProjectIssuesMetrics'
 
-import { GET_PROJECT_ISSUES } from '../operations/queries/ProjectQueries'
+import { GET_PROJECT, GET_PROJECT_ISSUES } from '../operations/queries/ProjectQueries'
 import { SYNC_GITHUB_ISSUES } from '../operations/mutations/ProjectMutations'
 import { pageName } from '../reactivities/variables'
 
@@ -28,6 +29,16 @@ const ProjectIssues = (props) => {
         loading: loadingProjectIssues,
         error: errorProjectIssues
     } = useQuery(GET_PROJECT_ISSUES, {
+        variables: {
+            id: Number(projectId)
+        }
+    })
+
+    const {
+        data: dataProject,
+        loading: loadingProject,
+        error: errorProject,
+    } = useQuery(GET_PROJECT, {
         variables: {
             id: Number(projectId)
         }
@@ -64,12 +75,19 @@ const ProjectIssues = (props) => {
         })
     }
 
+    const actualProject = dataProject.getProjectById
+
     if (loadingProjectIssues) return <LoadingProgress/>
     if (errorProjectIssues) {
         return (
-            <GithubAccessBlocked
-                message={`You must be a Github collaborator to access this metrics`}
-            />
+            <Grid>
+                <Link href={actualProject.github_url}>
+                    Repository
+                </Link>
+                <GithubAccessBlocked
+                    message={`You must be a Github collaborator to access this metrics.`}
+                />
+            </Grid>
         )
     }
 
