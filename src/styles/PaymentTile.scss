@@ -1,9 +1,44 @@
-.PaymentTile {
+@use "@material/animation";
 
+.PaymentTile {
     .disabled-tile {
         background-color: $white !important;
     }
-    .MuiAccordionSummary-root.Mui-disabled{
+    .MuiAccordionSummary-root.Mui-disabled {
         opacity: 1 !important;
     }
+    .edit-button {
+        height: 1rem;
+        margin-top: 0.2rem;
+    }
+    .edit-button-grid {
+        height: 1rem;
+    }
+    .animation-effect-left{
+        margin-left: 0.2rem;
+    }
+    .animation-effect-right{
+        margin-right: 0.2rem;
+    }
 }
+
+@media screen and (min-width: $sm) {
+    .PaymentTile {
+        .edit-button {
+            display: none;
+        }
+        .payments-grid {
+            transition: all 175ms;
+            &:hover{
+                border-radius: 0.3rem;
+                transition: all 175ms;
+                cursor: pointer;
+                .edit-button{
+                    display: inline-flex;
+                }
+                box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 1px, rgba(0, 0, 0, 0.12) 0px 1px 1px, rgba(0, 0, 0, 0.12) 0px 1px 10px, rgba(0, 0, 0, 0.17) 0px 1px 10px, rgba(0, 0, 0, 0.09) 0px 1px 1px;
+            }
+        }
+    }
+}
+
