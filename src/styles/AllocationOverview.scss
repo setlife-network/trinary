@@ -1,0 +1,15 @@
+.AllocationOverview {
+    .edit-delete {
+        width: 100%;
+        margin-top: 1rem;
+    }
+}
+
+@media screen and (min-width: $sm) {
+    .AllocationOverview {
+        .edit-delete {
+            width: 70%;
+            margin-top: 0;
+        }
+    }
+}

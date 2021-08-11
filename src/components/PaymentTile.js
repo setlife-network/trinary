@@ -14,6 +14,7 @@ import {
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
+import EditIcon from '@material-ui/icons/Edit';
 
 import AllocationAddForm from './AllocationAddForm'
 import AllocationOverview from './AllocationOverview'
@@ -46,6 +47,7 @@ const PaymentTile = (props) => {
         error: errorPaymentAllocations,
         data: dataPaymentAllocations
     } = useQuery(GET_PAYMENT_ALLOCATIONS, {
+        fetchPolicy: 'cache-and-network',
         variables: { paymentId: Number(payment.id) }
     })
     const {
@@ -53,6 +55,7 @@ const PaymentTile = (props) => {
         error: errorTotalAllocated,
         data: dataTotalAllocated
     } = useQuery(GET_PAYMENT_TOTAL_ALLOCATED, {
+        fetchPolicy: 'cache-and-network',
         variables: { paymentId: Number(payment.id) }
     })
 
@@ -119,30 +122,40 @@ const PaymentTile = (props) => {
             })
 
             return (
-                <Box mb={3} className='PaymentTile'>
+                <Box 
+                    mb={3} 
+                    className='PaymentTile' 
+                >
                     <Grid
                         container
+                        className='payments-grid'
                         onClick={() => handleAllocationClicked({ value: true, allocation: a })}
                     >
-                        <Grid items xs={10} >
-                            <Typography color='secondary' variant='caption'>
+                        <Grid items xs={6}>
+                            <Typography color='secondary' variant='caption' className='animation-effect-left'>
                                 {`${contributor.name}`}
                             </Typography>
                         </Grid>
-                        <Grid item xs={2} align='right'>
-                            <Typography color='secondary' variant='caption'>
-                                {`${paymentAmount}`}
-                            </Typography>
+                        <Grid className='edit-button-grid' item xs={6} align='right'>
+                            <EditIcon 
+                                color='primary' 
+                                className='edit-button' 
+                            />
                         </Grid>
-                        <Grid items xs={7}>
-                            <Typography color='secondary' variant='caption'>
-                                {`${currencyInformation['symbol']}${rate.hourly_rate}/hr (
+                        <Grid items xs={12}>
+                            <Typography color='secondary' variant='caption' className='animation-effect-left'>
+                                {`${currencyInformation['symbol']} ${rate.hourly_rate}/hr (
                                     ${rate.type == 'monthly_rate' ? 'monthly rate' : 'max budget'}
                                 )`}
                             </Typography>
                         </Grid>
-                        <Grid item xs={5} align='right'>
-                            <Typography color='secondary' variant='caption'>
+                        <Grid item xs={6}>
+                            <Typography color='secondary' variant='caption' className='animation-effect-left'>
+                                {`${paymentAmount}`}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6} align='right'>
+                            <Typography color='secondary' variant='caption' className='animation-effect-right'>
                                 {`Ends ${moment.utc(end_date, 'x').format('MM/DD/YYYY')} `}
                             </Typography>
                         </Grid>
