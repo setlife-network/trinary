@@ -117,7 +117,7 @@ const ProjectSummary = (props) => {
                     align='left'
                 >
                     <Box>
-                        <Button onClick={handleEditOpen} color='primary' bgcolor='primary'>
+                        <Button onClick={handleEditOpen} bgcolor='primary'>
                             {'Edit'.toUpperCase()}
                         </Button>
                     </Box>

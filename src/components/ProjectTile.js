@@ -7,7 +7,7 @@ import {
     Typography
 } from '@material-ui/core'
 import { boxShadow, borders, spacing } from '@material-ui/system'
-import CodeIcon from '@material-ui/icons/Code'
+import DeveloperBoard from '@material-ui/icons/DeveloperBoard'
 
 const ProjectTile = ({
     project
@@ -53,24 +53,22 @@ const ProjectTile = ({
                             alignItems='center'
                             justify='space-around'
                         >
-                            <Grid item xs={fromProjects ? 6 : 10}>
+                            <Grid item xs={10}>
                                 <Typography variant='h6'>
                                     {project.name}
                                 </Typography>
+                                {
+                                    fromProjects &&
+                                    <Typography variant='caption'>
+                                        {project.client.name}
+                                    </Typography>
+                                }
                             </Grid>
-                            {
-                                fromProjects &&
-                                    <Grid item xs={4}>
-                                        <Typography variant='caption'>
-                                            {project.client.name}
-                                        </Typography>
-                                    </Grid>
-                            }
                             <Grid
                                 item
                                 xs={2}
                             >
-                                <CodeIcon
+                                <DeveloperBoard
                                     //TODO: Remake this logic withous is_active
                                     color={projectActive}
                                     fontSize='large'
