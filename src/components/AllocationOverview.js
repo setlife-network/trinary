@@ -132,9 +132,9 @@ const AllocationOverview = (props) => {
                     id: contributorAllocation.contributor.id
                 }
             })
-            setUpdatedAllocationEndDate(moment.utc(allocation.end_date, 'x')['_d'])
+            setUpdatedAllocationEndDate(moment.utc(allocation.end_date, 'x').toDate())
             setUpdatedAllocationPayment(contributorAllocation.payment)
-            setUpdatedAllocationStartDate(moment.utc(allocation.start_date, 'x')['_d'])
+            setUpdatedAllocationStartDate(moment.utc(allocation.start_date, 'x').toDate())
         }
     }, [contributorAllocation])
 
@@ -189,8 +189,8 @@ const AllocationOverview = (props) => {
                 variables: {
                     id: allocation.id,
                     amount: Number(rate.total_amount),
-                    start_date: moment(startDate).format('YYYY-MM-DD'),
-                    end_date: moment(endDate).format('YYYY-MM-DD'),
+                    start_date: moment.utc(startDate).format('YYYY-MM-DD'),
+                    end_date: moment.utc(endDate).format('YYYY-MM-DD'),
                     date_paid: null,
                     rate_id: Number(selectedRate.id),
                     payment_id: payment ? payment.id : null

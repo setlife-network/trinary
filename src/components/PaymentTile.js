@@ -145,7 +145,7 @@ const PaymentTile = (props) => {
                         </Grid>
                         <Grid item xs={5} align='right'>
                             <Typography color='secondary' variant='caption'>
-                                {`Ends ${moment.utc(end_date, 'x').format('MM/DD/YYYY')} `}
+                                {`Ends ${moment(end_date, 'x').format('MM/DD/YYYY')} `}
                             </Typography>
                         </Grid>
                     </Grid>
