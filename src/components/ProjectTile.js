@@ -54,9 +54,11 @@ const ProjectTile = ({
                             justify='space-around'
                         >
                             <Grid item xs={10}>
-                                <Typography variant='h6'>
-                                    {project.name}
-                                </Typography>
+                                <Box overflow='hidden'>
+                                    <Typography variant='h6'>
+                                        {project.name}
+                                    </Typography>
+                                </Box>
                                 {
                                     fromProjects &&
                                     <Typography variant='caption'>
