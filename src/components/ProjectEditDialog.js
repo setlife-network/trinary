@@ -176,7 +176,7 @@ const ProjectEditDialog = (props) => {
                         justify='space-between'
                         alignItems='center'
                     >
-                        <Grid item xs={12} lg={6}>
+                        <Grid item xs={12} lg={12}>
                             <Box my={2} px={1}>
                                 <TextField
                                     label='Project name'
@@ -202,6 +202,23 @@ const ProjectEditDialog = (props) => {
                                     defaultValue={project.expected_budget / 100}
                                     onChange={(event) => handleBudgetChange(event.target.value)}
                                 />
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Box my={2} px={1}>
+                                <FormControl fullWidth>
+                                    <InputLabel>
+                                        {`Expected budget timeframe`}
+                                    </InputLabel>
+                                    <Select
+                                        fullWidth
+                                        label={`Expected budget timeframe`}
+                                        value={budgetTimeframe}
+                                        onChange={(event) => (handleTimeframeChange(event.target.value))}
+                                    >
+                                        {renderTimeframeOptions({ timeframes: EXPECTED_BUDGET_TIMEFRAME_OPTIONS })}
+                                    </Select>
+                                </FormControl>
                             </Box>
                         </Grid>
                         <Grid item xs={12} lg={6}>
@@ -265,23 +282,6 @@ const ProjectEditDialog = (props) => {
                                 </MuiPickersUtilsProvider>
                             </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Box my={2} px={1}>
-                                <FormControl fullWidth>
-                                    <InputLabel>
-                                        {`Expected budget timeframe`}
-                                    </InputLabel>
-                                    <Select
-                                        fullWidth
-                                        label={`Expected budget timeframe`}
-                                        value={budgetTimeframe}
-                                        onChange={(event) => (handleTimeframeChange(event.target.value))}
-                                    >
-                                        {renderTimeframeOptions({ timeframes: EXPECTED_BUDGET_TIMEFRAME_OPTIONS })}
-                                    </Select>
-                                </FormControl>
-                            </Box>
-                        </Grid>
                         <Grid item xs={12} lg={7}>
                             <Box mt={5} pl={1}>
                                 <Button
@@ -290,7 +290,7 @@ const ProjectEditDialog = (props) => {
                                     disabled={disableEdit}
                                     onClick={onEditProject}
                                 >
-                                    {`Edit Project`}
+                                    {`Save Project`}
                                 </Button>
                             </Box>
                         </Grid>
