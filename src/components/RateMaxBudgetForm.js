@@ -12,6 +12,7 @@ import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import { CURRENCIES } from '../constants'
 import { selectCurrencyInformation } from '../scripts/selectors'
+import { validatePositiveNumbers } from '../scripts/validation'
 
 const RateMaxBudgetForm = (props) => {
 
@@ -85,10 +86,10 @@ const RateMaxBudgetForm = (props) => {
         )
     }
 
-    const changeCurrentRateInput = (value) => {
-        if (Number(value) >= 0 || null ) {
-            setCurrentRateInput(value)
-        }
+    const handleHourlyRateChange = (value) => {
+        setCurrentRateInput(
+            validatePositiveNumbers(value, currentRateInput)
+        )
     }
     
     return (
@@ -118,7 +119,7 @@ const RateMaxBudgetForm = (props) => {
                                 variant='filled'
                                 value={`${currentRateInput}`}
                                 fullWidth
-                                onChange={(event) => changeCurrentRateInput(event.target.value)}
+                                onChange={(event) => handleHourlyRateChange(event.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
