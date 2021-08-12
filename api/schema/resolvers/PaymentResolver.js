@@ -55,9 +55,14 @@ module.exports = {
                 }
             })
 
+            const supportedCurrency = [
+                'USD',
+                'EUR',
+                'MXN'
+            ]
             // Check if the client has an associated Stripe account
             // If it does, proceed to create the invoice on Stripe
-            if (client.external_uuid) {
+            if (client.external_uuid && supportedCurrency.includes(client.currency)) {
                 const stripeInvoice = await apiModules.paymentManagement.processStripeInvoiceWithPayment({
                     amount: createFields['amount'],
                     clientId: client.id,
