@@ -164,7 +164,7 @@ const ClientEditDialog = (props) => {
                                     disabled={disableEdit}
                                     onClick={onEdit}
                                 >
-                                    {`Edit client`}
+                                    {`Save client`}
                                 </Button>
                             </Box>
                         </Grid>
