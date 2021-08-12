@@ -18,7 +18,9 @@ const InactiveClientsList = (props) => {
         loading: loadingInactiveClient,
         error: errorInactiveClient,
         data: dataInactiveClient
-    } = useQuery(GET_INACTIVE_CLIENTS);
+    } = useQuery(GET_INACTIVE_CLIENTS, {
+        fetchPolicy: 'cache-and-network'
+    });
 
     const handleChange = (event) => {
         setState({ ...state, [event.target.name]: event.target.checked })
