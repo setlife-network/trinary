@@ -181,7 +181,7 @@ const PaymentEditDialog = (props) => {
                             onClick={handleEditPayment}
                             disabled={disableEdit}
                         >
-                            {`Edit payment`}
+                            {`Save payment`}
                         </Button>
                     </Box>
                 </FormControl>

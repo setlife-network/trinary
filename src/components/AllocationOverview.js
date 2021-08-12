@@ -287,7 +287,7 @@ const AllocationOverview = (props) => {
                                     startDate: updatedAllocationStartDate,
                                 })}
                             >
-                                {'Edit'}
+                                {'Save'}
                             </Button>
                         </Grid>
                         <Grid item xs={12} sm={3}>

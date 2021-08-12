@@ -46,6 +46,7 @@ const ProjectsListManager = ({
                         borderRadius='borderRadius'
                         px={0}
                         py={1}
+                        ml={1}
                     >
                         {
                             `${data.getActiveProjectsCount} active ${data.getActiveProjectsCount == 1
