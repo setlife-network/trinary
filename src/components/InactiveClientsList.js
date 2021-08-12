@@ -58,14 +58,14 @@ const InactiveClientsList = (props) => {
         <>
             <FormGroup>
                 <FormControlLabel
-                    control=
-                        {
-                            <Switch
-                                checked={state.inactiveClientsCheck}
-                                onChange={handleChange}
-                                name='inactiveClientsCheck'
-                            />
-                        }
+                    control={
+                        <Switch
+                            checked={state.inactiveClientsCheck}
+                            onChange={handleChange}
+                            name='inactiveClientsCheck'
+                            color='primary'
+                        />
+                    }
                     label='Show inactive clients'
                 />
             </FormGroup>
