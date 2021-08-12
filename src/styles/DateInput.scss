@@ -1,7 +1,4 @@
 .DateInput {
-    .accordion-select-week{
-        display: none;
-    }
     .MuiPaper-elevation1 {
         box-shadow: none;
         border: 1px solid #F1F1F1;
@@ -11,8 +8,5 @@
 
 @media screen and (min-width: $sm) {
     .DateInput {
-        .accordion-select-week{
-            display: block;
-        }
     }
 }
