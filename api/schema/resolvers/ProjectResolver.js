@@ -560,8 +560,6 @@ module.exports = {
                 : (await models.Contributor.findByPk(cookies.userSession, { raw: true }))['github_access_token']
             const project = await models.Project.findByPk(args.project_id)
             const repo = split(project.github_url, '/')
-            console.log(project)
-            console.log(repo)
             return dataSyncs.syncGithubRepoContributors({
                 auth_key: authContributorToken,
                 owner: repo[repo.length - 2],

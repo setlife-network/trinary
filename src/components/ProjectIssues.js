@@ -70,7 +70,7 @@ const ProjectIssues = (props) => {
     if (errorProjectIssues) {
         return (
             <GithubAccessBlocked
-                message={`You must be a Github collaborator to access this metrics.`}
+                message={`You must have access to this repository on GitHub to access these metrics.`}
                 projectId={projectId}
             />
         )

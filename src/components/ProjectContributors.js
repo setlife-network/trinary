@@ -97,7 +97,7 @@ const ProjectContributors = (props) => {
     const isNotAContributor = () => {
         return (
             <GithubAccessBlocked
-                message={`You must be a Github collaborator to see the other collaborators of this repository.`}
+                message={`You must have access to this repository on GitHub to see an up-to-date list of collaborators.`}
                 projectId={projectId}
             />
         )
@@ -213,7 +213,10 @@ const ProjectContributors = (props) => {
             <h1>
                 {`Add new contributors to the project`}
             </h1>
-            { errorGithubContributors ? isNotAContributor() : null }
+            {errorGithubContributors
+                ? isNotAContributor()
+                : null
+            }
             <Grid item xs={12}>
                 <Box>
                     <Grid container>

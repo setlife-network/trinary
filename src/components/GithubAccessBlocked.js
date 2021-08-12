@@ -33,7 +33,7 @@ const GithubAccessBlocked = (props) => {
                     </Typography>
                     <Typography align='center' variant='h6'>
                         <Link href={projectURL}>
-                            Github URL
+                            Open in Github
                         </Link>
                     </Typography>
                     <Typography align='center' variant='h6'>
