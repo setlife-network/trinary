@@ -6,6 +6,7 @@ import {
     Typography
 } from '@material-ui/core'
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
+import { overflow, textOverflow } from '@material-ui/system/display'
 import accounting from 'accounting-js'
 import moment from 'moment'
 
@@ -51,11 +52,13 @@ const AllocationTile = (props) => {
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <Typography variant='subtitle1' color='secondary'>
-                        <strong>
-                            {`${allocation.project.name}`}
-                        </strong>
-                    </Typography>
+                    <Box overflow='hidden'>
+                        <Typography variant='subtitle1' color='secondary'>
+                            <strong>
+                                {`${allocation.project.name}`}
+                            </strong>
+                        </Typography>
+                    </Box>
                     <Typography variant='caption' color='secondary'>
                         {`${allocation.project.client.name}`}
                     </Typography>
