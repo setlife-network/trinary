@@ -4,6 +4,9 @@
         border: 1px solid #F1F1F1;
         color: #828282;
     }
+    .MuiAccordionDetails-root {
+        padding: 0;
+    }
 }
 
 @media screen and (min-width: $sm) {
