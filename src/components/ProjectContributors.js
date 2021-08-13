@@ -3,7 +3,8 @@ import { useLazyQuery, useQuery, useMutation } from '@apollo/client'
 import {
     Box,
     Grid,
-    Typography
+    Typography,
+    Link
 } from '@material-ui/core/'
 import {
     differenceBy,
@@ -93,10 +94,11 @@ const ProjectContributors = (props) => {
     if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
         return <LoadingProgress/>
     }
-    if (errorGithubContributors) {
+    const isNotAContributor = () => {
         return (
             <GithubAccessBlocked
-                message={`You must be a Github collaborator to access this metrics`}
+                message={`You must have access to this repository on GitHub to see an up-to-date list of collaborators.`}
+                projectId={projectId}
             />
         )
     }
@@ -211,6 +213,10 @@ const ProjectContributors = (props) => {
             <h1>
                 {`Add new contributors to the project`}
             </h1>
+            {errorGithubContributors
+                ? isNotAContributor()
+                : null
+            }
             <Grid item xs={12}>
                 <Box>
                     <Grid container>
