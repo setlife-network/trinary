@@ -33,25 +33,17 @@ const automations = module.exports = (() => {
         const organizations = await getUserOrganizations({
             auth_key: params.auth_key
         })
-
-        let itsOrganization = false
-
-        if (organizations[0].name != params.organizationName) { // Check if its an org or user
-            itsOrganization = true
-        }
-
+        const isOrganization = 
+            organizations[0].name != params.organizationName
+                ? true
+                : false
         const repos = await github.fetchRepos({
             auth_key: params.auth_key,
             organizationName: params.organizationName,
-            itsOrganization
+            isOrganization
         })
-        console.log('organizations')
-        console.log(organizations.length)
-        console.log('repos')
-        console.log(repos.length)
         const organizationRepos = []
         repos.map(r => {
-            console.log(r)
             if (r.owner.login == params.organizationName) {
                 organizationRepos.push({
                     id: r.id,
