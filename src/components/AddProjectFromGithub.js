@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useLazyQuery, useQuery } from '@apollo/client'
 import {
     Avatar,
     Box,
@@ -13,44 +13,63 @@ import {
 
 import LoadingProgress from './LoadingProgress'
 import {
-    GET_CONTRIBUTOR_ORGANIZATIONS_REPOS_FROM_GITHUB
+    GET_CONTRIBUTOR_ORGANIZATIONS_FROM_GITHUB,
+    GET_CONTRIBUTOR_REPOS_FROM_GITHUB
 } from '../operations/queries/ContributorQueries'
 
 const AddProjectFromGithub = (props) => {
     const {
-        clientId,
-        setLinkedRepo,
-        setProjectGithub
+        setProjectGithubURL
     } = props
 
     const {
-        error: errorOrganizationProjects,
-        data: dataOrganizationProjects,
-        loading: loadingOrganizationProjects
-    } = useQuery(GET_CONTRIBUTOR_ORGANIZATIONS_REPOS_FROM_GITHUB)
+        error: errorOrganizations,
+        data: dataOrganizations,
+        loading: loadingOrganizations
+    } = useQuery(GET_CONTRIBUTOR_ORGANIZATIONS_FROM_GITHUB, {
+        onCompleted: dataOrganizations => {
+            const githubOrganizations = dataOrganizations.getGithubOrganizations
+            setSelectedGithubOrganization(
+                githubOrganizations.length
+                    ? githubOrganizations[0]
+                    : null
+            )
+        }
+    })
 
-    const [selectedGithubOrganization, setSelectedGithubOrganization] = useState(0)
-    const [selectedGithubRepo, setSelectedGithubRepo] = useState(0)
+    const [getRepos, {
+        error: errorOrganizationRepos,
+        data: dataOrganizationRepos,
+        loading: loadingOrganizationRepos
+    }] = useLazyQuery(GET_CONTRIBUTOR_REPOS_FROM_GITHUB, {
+        onCompleted: dataOrganizationRepos => {
+            const {
+                getGithubRepos
+            } = dataOrganizationRepos
+            if (getGithubRepos.length) {
+                setSelectedGithubRepo(dataOrganizationRepos.getGithubRepos[0])
+            }
+        }
+    })
+
+    const [selectedGithubOrganization, setSelectedGithubOrganization] = useState(null)
+    const [selectedGithubRepo, setSelectedGithubRepo] = useState(null)
 
     useEffect(() => {
-        setSelectedGithubRepo(0)
+        if (dataOrganizations && selectedGithubOrganization) {
+            getRepos({
+                variables: {
+                    organizationName: selectedGithubOrganization.name
+                }
+            })
+        }
     }, [selectedGithubOrganization])
 
-    const handleGithubOrganizationChange = ({ organizations, value }) => {
-        setSelectedGithubOrganization(value)
-        if (organizations[value].repos[0]) {
-            setProjectGithub(organizations[value].repos[0].githubUrl)
-            setLinkedRepo(true)
-        } else {
-            setProjectGithub(null)
-            setLinkedRepo(false)
+    useEffect(() => {
+        if (selectedGithubRepo) {
+            setProjectGithubURL(selectedGithubRepo.githubUrl)
         }
-    }
-
-    const handleGithubRepoChange = ({ organizations, value }) => {
-        setProjectGithub(organizations[selectedGithubOrganization].repos[value].githubUrl)
-        setSelectedGithubRepo(value)
-    }
+    }, [selectedGithubRepo])
 
     const renderGithubOrganizations = ({ organizations }) => {
         return organizations.map((o, i) => {
@@ -73,18 +92,22 @@ const AddProjectFromGithub = (props) => {
         return repos.map((r, i) => {
             return (
                 <MenuItem value={i}>
-                    {`${r.name}`}
+                    {`${r.name ? r.name : 'Select'}`}
                 </MenuItem>
             )
         })
     }
 
-    if (loadingOrganizationProjects) return <LoadingProgress/>
-    if (errorOrganizationProjects) return `An error ocurred ${errorOrganizationProjects}`
+    if (loadingOrganizations) return <LoadingProgress/>
+    if (errorOrganizations) return `An error ocurred ${errorOrganizations}`
 
-    const { getGithubOrganizations } = dataOrganizationProjects
+    if (loadingOrganizationRepos) return <LoadingProgress/>
+    if (errorOrganizationRepos) return `An error ocurred ${errorOrganizationRepos}`
 
-    const organizations = [{ repos: [] }, ...getGithubOrganizations]
+    const githubOrganizations = dataOrganizations.getGithubOrganizations
+    const githubRepos = dataOrganizationRepos
+        ? dataOrganizationRepos.getGithubRepos
+        : []
 
     return (
         <Grid
@@ -108,13 +131,12 @@ const AddProjectFromGithub = (props) => {
                     </InputLabel>
                     <Select
                         fullWidth
-                        value={selectedGithubOrganization}
-                        onChange={(event) => handleGithubOrganizationChange({
-                            organizations: organizations,
-                            value: event.target.value
-                        })}
+                        value={githubOrganizations.indexOf(selectedGithubOrganization)}
+                        onChange={(event) => (
+                            setSelectedGithubOrganization(githubOrganizations[event.target.value])
+                        )}
                     >
-                        {renderGithubOrganizations({ organizations: organizations })}
+                        {renderGithubOrganizations({ organizations: githubOrganizations })}
                     </Select>
                 </FormControl>
             </Grid>
@@ -125,14 +147,11 @@ const AddProjectFromGithub = (props) => {
                     </InputLabel>
                     <Select
                         fullWidth
-                        value={selectedGithubRepo}
-                        onChange={(event) => handleGithubRepoChange({
-                            organizations: organizations,
-                            value: event.target.value
-                        })}
+                        value={githubRepos.indexOf(selectedGithubRepo)}
+                        onChange={(event) => setSelectedGithubRepo(githubRepos[event.target.value])}
                     >
                         {renderGithubRepos({
-                            repos: organizations[selectedGithubOrganization].repos
+                            repos: githubRepos
                         })}
                     </Select>
                 </FormControl>
