@@ -33,10 +33,8 @@ const automations = module.exports = (() => {
         const organizations = await getUserOrganizations({
             auth_key: params.auth_key
         })
-        const isOrganization = 
-            organizations[0].name != params.organizationName
-                ? true
-                : false
+        const isOrganization = organizations[0].name != params.organizationName
+        
         const repos = await github.fetchRepos({
             auth_key: params.auth_key,
             organizationName: params.organizationName,
