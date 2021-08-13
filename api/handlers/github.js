@@ -58,8 +58,7 @@ const github = module.exports = (() => {
         const octokit = new Octokit({
             auth: params.auth_key
         })
-        const res = 
-        params.isOrganization
+        const res = params.isOrganization
             ? await octokit.repos.listForOrg({ 
                 org: params.organizationName,
                 per_page: 100,
