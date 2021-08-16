@@ -33,31 +33,24 @@ const automations = module.exports = (() => {
         const organizations = await getUserOrganizations({
             auth_key: params.auth_key
         })
+        const isOrganization = organizations[0].name != params.organizationName
+        
         const repos = await github.fetchRepos({
-            auth_key: params.auth_key
+            auth_key: params.auth_key,
+            organizationName: params.organizationName,
+            isOrganization
         })
-        console.log('organizations')
-        console.log(organizations.length)
-        console.log('repos')
-        console.log(repos.length)
-        organizations.map(async o => {
-            const organizationRepos = []
-            repos.map(r => {
-                console.log(r)
-                if (o.name == 'otech47') {
-                    console.log(r.owner.login)
-                }
-                if (r.owner.login == o.name) {
-                    organizationRepos.push({
-                        id: r.id,
-                        name: r.name,
-                        githubUrl: r.html_url,
-                    })
-                }
-            })
-            o.repos = organizationRepos
+        const organizationRepos = []
+        repos.map(r => {
+            if (r.owner.login == params.organizationName) {
+                organizationRepos.push({
+                    id: r.id,
+                    name: r.name,
+                    githubUrl: r.html_url,
+                })
+            }
         })
-        return organizations
+        return organizationRepos
     }
 
     return {

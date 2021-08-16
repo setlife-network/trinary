@@ -44,10 +44,16 @@ module.exports = gql`
         id: Int!
         avatar: String
         name: String
-        repos: [githubRepo]
+    }
+    
+    type ContributorRepos {
+        id: Int!
+        avatar: String
+        name: String
+        repos: [GithubRepo]
     }
 
-    type githubRepo {
+    type GithubRepo {
         id: Int
         name: String
         githubUrl: String
@@ -63,6 +69,7 @@ module.exports = gql`
         getContributorById(id: Int!): Contributor
         getContributors: [Contributor]
         getGithubOrganizations(contributorId: Int): [ContributorOrganizations]
+        getGithubRepos(organizationName: String!):  [GithubRepo]
     }
 
     type Mutation {
