@@ -10,11 +10,16 @@ const paymentManagement = module.exports = (() => {
             currency,
             date_paid
         } = params
+        
+        const actualCurrency = 
+            currency == 'USD' 
+                ? currency
+                : 'USD'
 
         const createdInvoice = await stripe.createInvoice({
             clientId,
             amount,
-            currency
+            actualCurrency
         })
 
         if (date_paid) {
