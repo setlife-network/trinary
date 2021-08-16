@@ -49,12 +49,69 @@ const DateInput = (props) => {
         }
         setEndDate(endingDate.toDate())
     }
+    
+    const renderWeeks = () => {
+        const weeks = [1, 2, 3, 4]
+        return weeks.map(w => (
+            <Grid item xs={2}>
+                <Button 
+                    color='primary'
+                    variant={`${selectedWeek == w 
+                        ? 'contained' 
+                        : 'outlined'
+                    }`}
+                    onClick={() => getWeekMonthYears(w)}
+                >
+                    {w}
+                </Button>
+            </Grid>
+        ))
+    }
+
+    const renderMonths = () => {
+        const months = [2, 4, 6, 8, 10]
+        return months.map(m => (
+            <Grid item xs={2}>
+                <Button 
+                    color='primary'
+                    variant={`${selectedMonth == m 
+                        ? 'contained' 
+                        : 'outlined'
+                    }`}
+                    onClick={() => getWeekMonthYears(0, m, 0)}
+                >
+                    {m}
+                </Button>
+            </Grid>
+        ))
+    }
+
+    const renderYears = () => {
+        const years = [1, 2, 3, 4, 5]
+        return years.map(y => (
+            <Grid item xs={2}>
+                <Button  
+                    color='primary'
+                    variant={`${selectedYear == y 
+                        ? 'contained' 
+                        : 'outlined'
+                    }`}
+                    onClick={() => getWeekMonthYears(0, 0, y)}
+                >
+                    {y}
+                </Button>
+            </Grid> 
+        ))
+    }
 
     return (
         <Grid container className='DateInput'>
             <Box
                 display={
-                    { xs: 'none', sm: 'block' }
+                    { 
+                        xs: 'none', 
+                        sm: 'block' 
+                    }
                 }
             >
                 <Accordion>
@@ -77,185 +134,20 @@ const DateInput = (props) => {
                                             Weeks
                                         </Typography>
                                     </Grid>
-                                    <Grid item xs={2}>
-                                        <Button 
-                                            color='primary'
-                                            variant={`${selectedWeek == 1 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(1)}
-                                        >
-                                            1
-                                        </Button>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Button 
-                                            color='primary'
-                                            variant={`${selectedWeek == 2 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(2)}
-                                        > 
-                                            2
-                                        </Button>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Button 
-                                            color='primary'
-                                            variant={`${selectedWeek == 3 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(3)}
-                                        >
-                                            3
-                                        </Button>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Button 
-                                            color='primary'
-                                            variant={`${selectedWeek == 4 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(4)}
-                                        >
-                                            4
-                                        </Button>
-                                    </Grid>
+                                    {renderWeeks()}
                                     <Grid item xs={2} />
                                     <Grid item xs={2}>
                                         <Typography variant='subtitle1'>
                                             Months
                                         </Typography>
                                     </Grid>
-                                    <Grid item xs={2}>
-                                        <Button 
-                                            color='primary'
-                                            variant={`${selectedMonth == 2 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(0, 2, 0)}
-                                        >
-                                            2
-                                        </Button>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Button 
-                                            color='primary'
-                                            variant={`${selectedMonth == 4 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(0, 4, 0)}
-                                        >
-                                            4
-                                        </Button>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Button 
-                                            color='primary'
-                                            variant={`${selectedMonth == 6 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(0, 6, 0)}
-                                        >
-                                            6
-                                        </Button>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Button  
-                                            color='primary'
-                                            variant={`${selectedMonth == 8 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(0, 8, 0)}
-                                        >
-                                            8
-                                        </Button>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Button  
-                                            color='primary'
-                                            variant={`${selectedMonth == 10 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(0, 10, 0)}
-                                        >
-                                            10
-                                        </Button>
-                                    </Grid>
+                                    {renderMonths()}
                                     <Grid item xs={2}>
                                         <Typography variant='subtitle1'>
                                             Years
                                         </Typography>
                                     </Grid>
-                                    <Grid item xs={2}>
-                                        <Button  
-                                            color='primary'
-                                            variant={`${selectedYear == 1 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(0, 0, 1)}
-                                        >
-                                            1
-                                        </Button>
-                                    </Grid> 
-                                    <Grid item xs={2}>
-                                        <Button  
-                                            color='primary'
-                                            variant={`${selectedYear == 2 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(0, 0, 2)}
-                                        >
-                                            2
-                                        </Button>
-                                    </Grid> 
-                                    <Grid item xs={2}>
-                                        <Button  
-                                            color='primary'
-                                            variant={`${selectedYear == 3 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(0, 0, 3)}
-                                        >
-                                            3
-                                        </Button>
-                                    </Grid> 
-                                    <Grid item xs={2}>
-                                        <Button  
-                                            color='primary'
-                                            variant={`${selectedYear == 4 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(0, 0, 4)}
-                                        >
-                                            4
-                                        </Button>
-                                    </Grid> 
-                                    <Grid item xs={2}>
-                                        <Button  
-                                            color='primary'
-                                            variant={`${selectedYear == 5 
-                                                ? 'contained' 
-                                                : 'outlined'
-                                            }`}
-                                            onClick={() => getWeekMonthYears(0, 0, 5)}
-                                        >
-                                            5
-                                        </Button>
-                                    </Grid> 
+                                    {renderYears()}
                                 </Grid>
                             </Box>
                         </Grid>
@@ -280,11 +172,11 @@ const DateInput = (props) => {
                         >
                             <RangeDatePickerInput
                                 startDate={startDate
-                                    ? moment.utc(startDate).format('MM/DD/YYYY')
+                                    ? startDate
                                     : 'Start date'
                                 }
                                 endDate={endDate
-                                    ? moment.utc(endDate).format('MM/DD/YYYY')
+                                    ? endDate
                                     : 'End date'
                                 }
                             />
