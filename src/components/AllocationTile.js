@@ -52,8 +52,8 @@ const AllocationTile = (props) => {
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <Box overflow='hidden'>
-                        <Typography variant='subtitle1' color='secondary'>
+                    <Box overflow='hidden' textOverflow='ellipsis'>
+                        <Typography variant='subtitle1' color='secondary' noWrap>
                             <strong>
                                 {`${allocation.project.name}`}
                             </strong>

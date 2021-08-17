@@ -6,7 +6,7 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
-import { boxShadow, borders, spacing } from '@material-ui/system'
+import { boxShadow, borders, spacing, display } from '@material-ui/system'
 import DeveloperBoard from '@material-ui/icons/DeveloperBoard'
 
 const ProjectTile = ({
@@ -46,6 +46,8 @@ const ProjectTile = ({
                         boxShadow={3}
                         borderRadius='borderRadius'
                         bgcolor='primary.light'
+                        overflow='hidden' 
+                        textOverflow='ellipsis'
                     >
                         <Grid
                             container
@@ -54,17 +56,15 @@ const ProjectTile = ({
                             justify='space-around'
                         >
                             <Grid item xs={10}>
-                                <Box overflow='hidden'>
-                                    <Typography variant='h6'>
-                                        {project.name}
-                                    </Typography>
-                                </Box>
+                                <Typography variant='h6' noWrap>
+                                    {project.name}
+                                </Typography>
                                 {
                                     fromProjects &&
                                     <Typography variant='caption'>
                                         {project.client.name}
                                     </Typography>
-                                }
+                                }   
                             </Grid>
                             <Grid
                                 item
