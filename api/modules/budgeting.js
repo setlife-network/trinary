@@ -10,7 +10,7 @@ const budgeting = module.exports = (() => {
                 external_uuid: params.id
             }
         })
-
+        
         if (existentPayments) {
             for (const payment of existentPayments) {
                 const client = db.models.Client.findOne({
@@ -35,7 +35,6 @@ const budgeting = module.exports = (() => {
         const client = await clientManagement.findClientWithExternalId({
             id: paymentInformation.customer_id
         })
-
         const {
             amount,
             external_uuid,
@@ -43,18 +42,21 @@ const budgeting = module.exports = (() => {
             date_paid,
             external_uuid_type
         } = paymentInformation
-
-        const checkExistentPayments = await checkExistentPaymentsWithExternalId({ id: external_uuid })
-
         if (client) {
-            return db.models.Payment.create({
-                amount,
-                external_uuid,
-                date_incurred: date_incurred.format('YYYY-MM-DD HH:mm:ss'),
-                date_paid: date_paid ? moment(date_paid['_d']) : null,
-                client_id: client.id,
-                external_uuid_type
-            })
+            try {
+                await checkExistentPaymentsWithExternalId({ id: external_uuid })
+                return db.models.Payment.create({
+                    amount,
+                    external_uuid,
+                    date_incurred: date_incurred ? moment(date_incurred['_d']) : null,
+                    date_paid: date_paid ? moment(date_paid['_d']) : null,
+                    client_id: client.id,
+                    external_uuid_type
+                })
+            } catch (err) {
+                console.log(`an error ocurred: ${err}`)
+            }
+            
         }
     }
 
@@ -89,7 +91,8 @@ const budgeting = module.exports = (() => {
 
     const updateDatePaidPayment = async ({ stripeInvoice }) => {
         const existingPayment = await getPaymentWithExternalId({ id: stripeInvoice.id })
-
+        await checkExistentPaymentsWithExternalId({ id: external_uuid })
+        
         if (existingPayment && existingPayment.date_paid == null) {
             const datePaid = moment(stripeInvoice.webhooks_delivered_at)
 
@@ -106,7 +109,7 @@ const budgeting = module.exports = (() => {
     const updatePaymentByStripeInvoiceId = async ({ stripeInvoice }) => {
         const datePaidOverride = stripeInvoice.metadata.date_paid || null
         const dateIncurredOverride = stripeInvoice.metadata.date_incurred || null
-        console.log('updating')
+        
         const paymentInformation = {
             amount: stripeInvoice.total,
             external_uuid: stripeInvoice.id,
@@ -121,6 +124,7 @@ const budgeting = module.exports = (() => {
                 external_uuid_type: paymentInformation.external_uuid_type
             }
         })
+
         if (paymentToUpdate) {
             if (datePaidOverride || dateIncurredOverride) {
                 updateDatePaidPayment({ paymentInformation: paymentInformation })
