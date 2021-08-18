@@ -32,7 +32,7 @@ import {
     verifyTogglURL
 } from '../scripts/selectors'
 import { UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
-import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS } from '../constants'
+import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS, MAX_INT } from '../constants'
 
 const ProjectEditDialog = (props) => {
 
@@ -69,7 +69,7 @@ const ProjectEditDialog = (props) => {
     }
     const handleBudgetChange = (input) => {
         const amount = Number(input.replace(/\D/g, ''))
-        setExpectedBudget(amount)
+        setExpectedBudget(amount / 100)
     }
     const handleDateChange = (date) => {
         setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
@@ -196,6 +196,7 @@ const ProjectEditDialog = (props) => {
                                     variant='outlined'
                                     currencySymbol={`${currencyInformation['symbol']}`}
                                     minimumValue='0'
+                                    maximumValue={`${MAX_INT}`}
                                     outputFormat='string'
                                     decimalCharacter={`${currencyInformation['decimal']}`}
                                     digitGroupSeparator={`${currencyInformation['thousand']}`}
