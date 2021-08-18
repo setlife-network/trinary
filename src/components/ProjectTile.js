@@ -59,8 +59,7 @@ const ProjectTile = ({
                                 <Typography variant='h6' noWrap>
                                     {project.name}
                                 </Typography>
-                                {
-                                    fromProjects &&
+                                {fromProjects &&
                                     <Typography variant='caption'>
                                         {project.client.name}
                                     </Typography>
@@ -71,7 +70,7 @@ const ProjectTile = ({
                                 xs={2}
                             >
                                 <DeveloperBoard
-                                    //TODO: Remake this logic withous is_active
+                                    //TODO: Remake this logic without is_active
                                     color={projectActive}
                                     fontSize='large'
                                 />
