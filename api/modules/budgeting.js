@@ -4,6 +4,33 @@ const budgeting = module.exports = (() => {
     const db = require('../models')
     const clientManagement = require('./clientManagement')
 
+    const checkExistentPaymentsWithExternalId = async (params) => {
+        const existentPayments = await db.models.Payment.findAll({
+            where: {
+                external_uuid: params.id
+            }
+        })
+
+        if (existentPayments) {
+            for (const payment of existentPayments) {
+                const client = db.models.Client.findOne({
+                    where: {
+                        id: payment.client_id
+                    }
+                })
+
+                if (client.currency != 'USD') {
+                    try {
+                        const deletedCustomer = clientManagement.deleteClientUuid({ id: client.external_uuid })
+                        console.log(`stripe customer disconnected ${deletedCustomer}`)
+                    } catch (err) {
+                        console.log(`An error ocurred: ${err}`)
+                    }
+                }
+            }
+        }
+    }
+
     const createPayment = async ({ paymentInformation }) => {
         const client = await clientManagement.findClientWithExternalId({
             id: paymentInformation.customer_id
@@ -16,6 +43,8 @@ const budgeting = module.exports = (() => {
             date_paid,
             external_uuid_type
         } = paymentInformation
+
+        const checkExistentPayments = await checkExistentPaymentsWithExternalId({ id: external_uuid })
 
         if (client) {
             return db.models.Payment.create({
@@ -77,7 +106,7 @@ const budgeting = module.exports = (() => {
     const updatePaymentByStripeInvoiceId = async ({ stripeInvoice }) => {
         const datePaidOverride = stripeInvoice.metadata.date_paid || null
         const dateIncurredOverride = stripeInvoice.metadata.date_incurred || null
-        
+        console.log('updating')
         const paymentInformation = {
             amount: stripeInvoice.total,
             external_uuid: stripeInvoice.id,
