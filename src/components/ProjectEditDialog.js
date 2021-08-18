@@ -69,7 +69,7 @@ const ProjectEditDialog = (props) => {
     }
     const handleBudgetChange = (input) => {
         const amount = Number(input.replace(/\D/g, ''))
-        setExpectedBudget(amount / 100)
+        setExpectedBudget(amount)
     }
     const handleDateChange = (date) => {
         setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
@@ -196,7 +196,7 @@ const ProjectEditDialog = (props) => {
                                     variant='outlined'
                                     currencySymbol={`${currencyInformation['symbol']}`}
                                     minimumValue='0'
-                                    maximumValue={`${MAX_INT}`}
+                                    maximumValue={`${MAX_INT / 100}`}
                                     outputFormat='string'
                                     decimalCharacter={`${currencyInformation['decimal']}`}
                                     digitGroupSeparator={`${currencyInformation['thousand']}`}

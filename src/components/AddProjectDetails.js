@@ -41,7 +41,7 @@ const AddProjectDetails = (props) => {
 
     const handleBudgetChange = (input) => {
         const amount = Number(input.replace(/\D/g, ''))
-        setProjectBudget(amount / 100)
+        setProjectBudget(amount)
     }
     const handleDateChange = (date) => {
         setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
@@ -137,7 +137,7 @@ const AddProjectDetails = (props) => {
                         variant='outlined'
                         currencySymbol={`${currencyInformation['symbol']}`}
                         minimumValue='0'
-                        maximumValue={`${MAX_INT}`}
+                        maximumValue={`${MAX_INT / 100}`}
                         outputFormat='string'
                         decimalCharacter={`${currencyInformation['decimal']}`}
                         digitGroupSeparator={`${currencyInformation['thousand']}`}
