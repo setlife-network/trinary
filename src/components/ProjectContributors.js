@@ -4,8 +4,10 @@ import {
     Box,
     Grid,
     Typography,
-    Link
+    Link,
+    TextField
 } from '@material-ui/core/'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 import {
     differenceBy,
     filter
@@ -33,6 +35,7 @@ const ProjectContributors = (props) => {
     const [githubContributors, setGithubContributors] = useState([])
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
     const [contributorClicked, setContributorClicked] = useState(null)
+    const [autoComplete, setAutoComplete] = useState()
     const handleAddAllocationClose = (value) => {
         setOpenAddAllocationDialog(false)
     }
@@ -151,6 +154,12 @@ const ProjectContributors = (props) => {
         })
     }
 
+    const searchContributosToAdd = []
+
+    contributorsToAdd.map(c => {
+        searchContributosToAdd.push(c.name)
+    })
+
     return (
         <Grid container className='ProjectContributors'>
             <h1>
@@ -217,6 +226,15 @@ const ProjectContributors = (props) => {
                 ? isNotAContributor()
                 : null
             }
+            <Grid item xs={12}>
+                <Autocomplete
+                    options={searchContributosToAdd}
+                    renderInput={(params) => <TextField {...params} label='Search contributor' variant='outlined' />}
+                    autoComplete
+                    clearOnEscape
+                    onChange={(event, value) => setAutoComplete(value)}
+                />
+            </Grid>
             <Grid item xs={12}>
                 <Box>
                     <Grid container>
