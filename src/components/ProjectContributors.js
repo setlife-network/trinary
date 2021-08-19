@@ -240,6 +240,7 @@ const ProjectContributors = (props) => {
                     autoComplete
                     clearOnEscape
                     onChange={(event, value) => handleAutocomplete(value)}
+                    popupIcon={null}
                 />
             </Grid>
             <Grid item xs={12}>
