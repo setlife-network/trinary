@@ -160,6 +160,13 @@ const ProjectContributors = (props) => {
         searchContributosToAdd.push(c.name)
     })
 
+    const handleAutocomplete = (value) => {
+        const test = contributorsToAdd.filter(function (contributors) {
+            return contributors.name == value
+        });
+        setAutoComplete(test)
+    }
+
     return (
         <Grid container className='ProjectContributors'>
             <h1>
@@ -232,7 +239,7 @@ const ProjectContributors = (props) => {
                     renderInput={(params) => <TextField {...params} label='Search contributor' variant='outlined' />}
                     autoComplete
                     clearOnEscape
-                    onChange={(event, value) => setAutoComplete(value)}
+                    onChange={(event, value) => handleAutocomplete(value)}
                 />
             </Grid>
             <Grid item xs={12}>
