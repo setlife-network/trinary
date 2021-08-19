@@ -13,7 +13,7 @@ const budgeting = module.exports = (() => {
         
         if (existentPayments) {
             for (const payment of existentPayments) {
-                const client = db.models.Client.findOne({
+                const client = await db.models.Client.findOne({
                     where: {
                         id: payment.client_id
                     }
@@ -21,7 +21,7 @@ const budgeting = module.exports = (() => {
 
                 if (client.currency != 'USD') {
                     try {
-                        const deletedCustomer = clientManagement.deleteClientUuid({ id: client.external_uuid })
+                        const deletedCustomer = await clientManagement.deleteClientUuid({ id: client.external_uuid })
                         console.log(`stripe customer disconnected ${deletedCustomer}`)
                     } catch (err) {
                         console.log(`An error ocurred: ${err}`)
@@ -44,7 +44,6 @@ const budgeting = module.exports = (() => {
         } = paymentInformation
         if (client) {
             try {
-                await checkExistentPaymentsWithExternalId({ id: external_uuid })
                 return db.models.Payment.create({
                     amount,
                     external_uuid,
@@ -91,7 +90,6 @@ const budgeting = module.exports = (() => {
 
     const updateDatePaidPayment = async ({ stripeInvoice }) => {
         const existingPayment = await getPaymentWithExternalId({ id: stripeInvoice.id })
-        await checkExistentPaymentsWithExternalId({ id: external_uuid })
         
         if (existingPayment && existingPayment.date_paid == null) {
             const datePaid = moment(stripeInvoice.webhooks_delivered_at)
@@ -109,7 +107,7 @@ const budgeting = module.exports = (() => {
     const updatePaymentByStripeInvoiceId = async ({ stripeInvoice }) => {
         const datePaidOverride = stripeInvoice.metadata.date_paid || null
         const dateIncurredOverride = stripeInvoice.metadata.date_incurred || null
-        
+
         const paymentInformation = {
             amount: stripeInvoice.total,
             external_uuid: stripeInvoice.id,
@@ -124,6 +122,18 @@ const budgeting = module.exports = (() => {
                 external_uuid_type: paymentInformation.external_uuid_type
             }
         })
+        const client = await clientManagement.findClientWithExternalId({
+            id: stripeInvoice.customer
+        })
+
+        try {
+            await checkExistentPaymentsWithExternalId({ id: stripeInvoice.id })
+
+            client.currency = 'USD' //Stripe invoices will always have USD as currency
+            await client.save()
+        } catch (err) {
+            console.log(`error while changing client currency: ${err}`)
+        }
 
         if (paymentToUpdate) {
             if (datePaidOverride || dateIncurredOverride) {
