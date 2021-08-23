@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { Grid } from '@material-ui/core'
@@ -22,13 +22,7 @@ const InactiveClientsList = (props) => {
         fetchPolicy: 'cache-and-network'
     });
 
-    const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked })
-    }
-
-    const [state, setState] = React.useState({
-        inactiveClientsCheck: false,
-    });
+    const [showInactiveClients, setShowInactiveCliets] = useState(false)
 
     const {
         loading: loadingInactiveClientsCount,
@@ -62,9 +56,9 @@ const InactiveClientsList = (props) => {
                 <FormControlLabel
                     control={
                         <Switch
-                            checked={state.inactiveClientsCheck}
-                            onChange={handleChange}
-                            name='inactiveClientsCheck'
+                            checked={showInactiveClients}
+                            onChange={(event) => setShowInactiveCliets(event.target.checked)}
+                            name='showInactiveClients'
                             color='primary'
                         />
                     }
@@ -78,7 +72,7 @@ const InactiveClientsList = (props) => {
                 alignItems='flex-end'
             >
                 {
-                    state.inactiveClientsCheck == true
+                    showInactiveClients == true
                         ? (
                             <Grid item xs={12} sm={6} md={4}>
                                 <Box
@@ -101,7 +95,7 @@ const InactiveClientsList = (props) => {
                 }
                 <Grid container>
                     {
-                        state.inactiveClientsCheck
+                        showInactiveClients
                             ? clients.length != 0
                                 ? renderClientTiles(clients)
                                 : null
