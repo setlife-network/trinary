@@ -78,7 +78,7 @@ const AllocationTile = (props) => {
                             {`Start:`}
                             <br/>
                             <strong>
-                                {`${moment.utc(allocation.start_date, 'x').format('MM/DD/YYYY')}`}
+                                {`${moment(allocation.start_date, 'x').format('MM/DD/YYYY')}`}
                             </strong>
                         </Typography>
                     </Box>

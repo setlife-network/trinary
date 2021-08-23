@@ -14,6 +14,7 @@ import {
     formatAmount,
     selectCurrencyInformation
 } from '../scripts/selectors'
+import { validatePositiveNumbers } from '../scripts/validation'
 
 const RateProratedMonthlyForm = (props) => {
 
@@ -96,6 +97,18 @@ const RateProratedMonthlyForm = (props) => {
         )
     }
 
+    const handleHoursChange = (value, monthlyOrRate) => {
+        if (monthlyOrRate) {
+            setMonthlyhoursInput(
+                validatePositiveNumbers(value, monthlyHoursInput)
+            )
+        } else {
+            setCurrentRateInput(
+                validatePositiveNumbers(value, currentRateInput)
+            )
+        }
+    }
+
     return (
         <Grid container className='RateProratedMonthlyForm'>
             <Grid item xs={6} md={5}>
@@ -124,7 +137,7 @@ const RateProratedMonthlyForm = (props) => {
                                 defaultValue='0'
                                 value={`${monthlyHoursInput}`}
                                 fullWidth
-                                onChange={(event) => setMonthlyhoursInput(event.target.value)}
+                                onChange={(event) => handleHoursChange(event.target.value, true)}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -133,7 +146,7 @@ const RateProratedMonthlyForm = (props) => {
                                 variant='filled'
                                 value={`${currentRateInput}`}
                                 fullWidth
-                                onChange={(event) => setCurrentRateInput(event.target.value)}
+                                onChange={(event) => handleHoursChange(event.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
