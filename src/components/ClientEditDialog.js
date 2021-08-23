@@ -33,7 +33,6 @@ const ClientEditDialog = (props) => {
     const [clientCurrency, setClientCurrency] = useState(client.currency)
     const [clientIsActive, setClientIsActive] = useState(client.is_active)
     const [disableEdit, setDisableEdit] = useState(true)
-    const [state, setState] = useState(client.is_active)
 
     const onEdit = async () => {
         const clientInfoToEdit = {
@@ -80,11 +79,6 @@ const ClientEditDialog = (props) => {
             setDisableEdit(false)
         }
     })
-
-    const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked })
-        setClientIsActive(event.target.checked)
-    }
 
     return (
         <Dialog className='ClientEditDialog' onClose={onClose} open={open}>
@@ -143,7 +137,7 @@ const ClientEditDialog = (props) => {
                                     <Grid item>
                                         <Switch
                                             checked={clientIsActive}
-                                            onChange={handleChange}
+                                            onChange={(event) => setClientIsActive(event.target.checked)}
                                             name='checkedA'
                                             color='primary'
                                         />
