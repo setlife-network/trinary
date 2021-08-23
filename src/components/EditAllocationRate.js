@@ -4,15 +4,12 @@ import {
     Box,
     Button,
     ButtonGroup,
-    Grid,
-    Typography
+    Grid
 } from '@material-ui/core/'
 import moment from 'moment'
-import DatePicker from 'react-datepicker'
 import { findKey } from 'lodash'
 
 import LoadingProgress from './LoadingProgress'
-import RangeDatePickerInput from './RangeDatePickerInput'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import {
@@ -21,6 +18,7 @@ import {
 } from '../operations/queries/ContributorQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { UPDATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
+import DateInput from './DateInput'
 
 const EditAllocationRate = (props) => {
 
@@ -34,16 +32,10 @@ const EditAllocationRate = (props) => {
         setNewAllocationRate,
         setSelectedCurrency,
         setStartDate,
-        startDate
+        startDate,
     } = props
 
     const [selectedRateType, setSelectedRateType] = useState(rate.type)
-
-    const getRangedTimeEntries = (dates) => {
-        const [start, end] = dates
-        setStartDate(start)
-        setEndDate(end)
-    }
 
     return (
         <Box className='EditAllocationRate'>
@@ -66,37 +58,15 @@ const EditAllocationRate = (props) => {
                         </Button>
                     </ButtonGroup>
                 </Grid>
-                <Grid item xs={12} xl={8} className='RangeDatePicker'>
-                    <DatePicker
-                        selected={startDate}
-                        startDate={startDate}
-                        endDate={endDate}
-                        shouldCloseOnSelect={startDate && !endDate}
-                        selectsRange
-                        onChange={(dates) => getRangedTimeEntries(dates)}
-                        customInput={
-                            <Box
-                                px={2}
-                                mt={3}
-                                borderRadius='borderRadius'
-                                bgcolor='primary.light'
-                                className='date-picker'
-                            >
-                                <RangeDatePickerInput
-                                    startDate={startDate
-                                        ? startDate
-                                        : 'Start date'
-                                    }
-                                    endDate={endDate
-                                        ? endDate
-                                        : 'End date'
-                                    }
-                                />
-                            </Box>
-                        }
-                    />
-                </Grid>
             </Grid>
+            <Box mt={3}>
+                <DateInput
+                    startDate={startDate}
+                    endDate={endDate}
+                    setStartDate={setStartDate}
+                    setEndDate={setEndDate}
+                />
+            </Box>
             {selectedRateType == 'prorated_monthly'
                 ? (
                     <RateProratedMonthlyForm

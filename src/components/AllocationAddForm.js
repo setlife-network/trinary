@@ -15,15 +15,14 @@ import {
     findKey
 } from 'lodash'
 import moment from 'moment'
-import DatePicker from 'react-datepicker'
 
 import AllocationAddSpecifics from './AllocationAddSpecifics'
 import AllocationClientSpecifics from './AllocationClientSpecifics'
 import AllocationProposeSpecifics from './AllocationProposeSpecifics'
 import LoadingProgress from './LoadingProgress'
-import RangeDatePickerInput from './RangeDatePickerInput'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
+import DateInput from './DateInput'
 
 import {
     GET_CONTRIBUTORS,
@@ -447,26 +446,11 @@ const AllocationAddForm = (props) => {
                                 </ButtonGroup>
                             </Grid>
                             <Grid item xs={12} className='RangeDatePicker'>
-                                <DatePicker
-                                    selected={startDate}
+                                <DateInput
                                     startDate={startDate}
                                     endDate={endDate}
-                                    shouldCloseOnSelect={startDate && !endDate}
-                                    selectsRange
-                                    onChange={(dates) => getRangedTimeEntries(dates)}
-                                    customInput={
-                                        <Box
-                                            px={2}
-                                            borderRadius='borderRadius'
-                                            bgcolor='primary.light'
-                                            className='date-picker'
-                                        >
-                                            <RangeDatePickerInput
-                                                endDate={endDate}
-                                                startDate={startDate}
-                                            />
-                                        </Box>
-                                    }
+                                    setStartDate={setStartDate}
+                                    setEndDate={setEndDate}
                                 />
                             </Grid>
                         </>
