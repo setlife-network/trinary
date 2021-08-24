@@ -49,11 +49,15 @@ const AddProjectFromGithub = (props) => {
             if (getGithubRepos.length) {
                 setSelectedGithubRepo(dataOrganizationRepos.getGithubRepos[0])
             }
+            if (getGithubRepos.length > 99) {
+                setMoreRepoState(true)
+            }
         }
     })
 
     const [selectedGithubOrganization, setSelectedGithubOrganization] = useState(null)
     const [selectedGithubRepo, setSelectedGithubRepo] = useState(null)
+    const [MoreRepoState, setMoreRepoState] = useState(false)
 
     useEffect(() => {
         if (dataOrganizations && selectedGithubOrganization) {
@@ -93,6 +97,7 @@ const AddProjectFromGithub = (props) => {
             return (
                 <MenuItem value={i}>
                     {`${r.name ? r.name : 'Select'}`}
+                    { (repos.length - 1) == i ? ' more' : null }
                 </MenuItem>
             )
         })
