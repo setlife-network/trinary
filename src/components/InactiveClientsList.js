@@ -22,7 +22,7 @@ const InactiveClientsList = (props) => {
         fetchPolicy: 'cache-and-network'
     });
 
-    const [showInactiveClients, setShowInactiveCliets] = useState(false)
+    const [showInactiveClients, setShowInactiveClients] = useState(false)
 
     const {
         loading: loadingInactiveClientsCount,
@@ -57,7 +57,7 @@ const InactiveClientsList = (props) => {
                     control={
                         <Switch
                             checked={showInactiveClients}
-                            onChange={(event) => setShowInactiveCliets(event.target.checked)}
+                            onChange={(event) => setShowInactiveClients(event.target.checked)}
                             name='showInactiveClients'
                             color='primary'
                         />
