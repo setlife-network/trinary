@@ -80,15 +80,6 @@ const ClientEditDialog = (props) => {
         }
     })
 
-    const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked })
-        setClientIsActive(event.target.checked)
-    }
-
-    const [state, setState] = React.useState({
-        clientActiveSwitch: client.is_active,
-    });
-
     return (
         <Dialog className='ClientEditDialog' onClose={onClose} open={open}>
             <Box mx={5} my={3}>
@@ -145,8 +136,8 @@ const ClientEditDialog = (props) => {
                                     <Grid item>Inactive</Grid>
                                     <Grid item>
                                         <Switch
-                                            checked={state.clientActiveSwitch}
-                                            onChange={handleChange}
+                                            checked={clientIsActive}
+                                            onChange={(event) => setClientIsActive(event.target.checked)}
                                             name='checkedA'
                                             color='primary'
                                         />
