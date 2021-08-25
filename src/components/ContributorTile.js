@@ -148,7 +148,7 @@ const ContributorTile = (props) => {
                                         {`Start date:`}
                                     </strong>
                                     <br/>
-                                    {`${moment.utc(a.start_date, 'x').format('MM/DD/YYYY')}`}
+                                    {`${moment(a.start_date, 'x').format('MM/DD/YYYY')}`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>
@@ -160,7 +160,7 @@ const ContributorTile = (props) => {
                                         {`End date:`}
                                     </strong>
                                     <br/>
-                                    {`${moment.utc(a.end_date, 'x').format('MM/DD/YYYY')}`}
+                                    {`${moment(a.end_date, 'x').format('MM/DD/YYYY')}`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>

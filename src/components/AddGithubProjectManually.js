@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
     Box,
     Grid,
@@ -9,9 +9,6 @@ import {
 const AddGithubProjectManually = (props) => {
 
     const {
-        linkedRepo,
-        projectGithub,
-        setProjectGithub,
         setProjectGithubManual
     } = props
 
@@ -32,7 +29,6 @@ const AddGithubProjectManually = (props) => {
                         variant='outlined'
                         fullWidth
                         required
-                        disabled={linkedRepo}
                         onChange={(event) => setProjectGithubManual(event.target.value)}
                     />
                 </Box>
