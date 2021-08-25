@@ -5,9 +5,13 @@ import {
     Grid,
     Typography,
     Link,
-    TextField
+    TextField,
+    InputBase,
+    Paper,
+    IconButton,
+    Divider
 } from '@material-ui/core/'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import SearchIcon from '@material-ui/icons/Search'
 import {
     differenceBy,
     filter
@@ -35,7 +39,6 @@ const ProjectContributors = (props) => {
     const [githubContributors, setGithubContributors] = useState([])
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
     const [contributorClicked, setContributorClicked] = useState(null)
-    const [autoComplete, setAutoComplete] = useState()
     const handleAddAllocationClose = (value) => {
         setOpenAddAllocationDialog(false)
     }
@@ -97,6 +100,7 @@ const ProjectContributors = (props) => {
     if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
         return <LoadingProgress/>
     }
+
     const isNotAContributor = () => {
         return (
             <GithubAccessBlocked
@@ -105,23 +109,29 @@ const ProjectContributors = (props) => {
             />
         )
     }
+    
     if (errorProjectContributors || errorContributors) return `Error!`
 
     const project = dataProjectContributors.getProjectById
+
     pageName(project.name)
+
     const { allocations } = project
 
     const activeAllocations = getActiveAndUpcomingAllocations({
         allocations: allocations,
         activeOnly: true
     })
+
     const activeContributorsAllocated = getAllocatedContributors({
         allocations: activeAllocations
     })
+
     const upcomingAllocations = getActiveAndUpcomingAllocations({
         allocations: allocations,
         upcomingOnly: true
     })
+
     const upcomingContributorsAllocatedOnly = differenceBy(
         getAllocatedContributors({ allocations: upcomingAllocations }),
         activeContributorsAllocated,
@@ -131,8 +141,15 @@ const ProjectContributors = (props) => {
     if (differenceBy(dataContributors.getContributors, contributors, 'id').length != 0) {
         setContributors(contributors.concat(...dataContributors.getContributors))
     }
-
+    
     const contributorsToAdd = differenceBy(contributors, [...activeContributorsAllocated, ...upcomingContributorsAllocatedOnly], 'id')
+
+    const handleSearch = (value) => {
+        const test = contributors.filter(c => {
+            return c.name.includes(value)
+        });
+        console.log(test)
+    }
 
     const renderContributors = (props) => {
         const {
@@ -154,19 +171,6 @@ const ProjectContributors = (props) => {
         })
     }
 
-    const searchContributosToAdd = []
-
-    contributorsToAdd.map(c => {
-        searchContributosToAdd.push(c.name)
-    })
-
-    const handleAutocomplete = (value) => {
-        const test = contributorsToAdd.filter(function (contributors) {
-            return contributors.name == value
-        });
-        setAutoComplete(test)
-    }
-
     return (
         <Grid container className='ProjectContributors'>
             <h1>
@@ -180,6 +184,7 @@ const ProjectContributors = (props) => {
                     borderRadius='borderRadius'
                     px={5}
                     py={1}
+                    mb={[2, 5]}
                 >
                     {
                         `${activeContributorsAllocated.length} active ${activeContributorsAllocated.length == 1
@@ -188,6 +193,31 @@ const ProjectContributors = (props) => {
                         }`
                     }
                 </Box>
+            </Grid>
+            <Grid xs={12}/>
+            <Grid item xs={12} sm={5}>
+                {/* <Autocomplete
+                    options={searchContributosToAdd}
+                    renderInput={(params) => <TextField {...params} label='Search contributor...' variant='outlined' />}
+                    autoComplete
+                    clearOnEscape
+                    onChange={(event, value) => handleAutocomplete(value)}
+                    popupIcon={null}
+                /> */}
+                {/* <TextField 
+                    placeholder='Search contributors...' 
+                    variant='outlined' 
+                    type='search' 
+                /> */}
+                <Paper>
+                    <InputBase 
+                        placeholder='Search contributors...' 
+                        onChange={(event) => { handleSearch(event.target.value) }}
+                    />
+                    <IconButton>
+                        <SearchIcon />
+                    </IconButton>
+                </Paper>
             </Grid>
             <Grid item xs={12}>
                 <Box my={[2, 5]}>
@@ -233,16 +263,6 @@ const ProjectContributors = (props) => {
                 ? isNotAContributor()
                 : null
             }
-            <Grid item xs={12}>
-                <Autocomplete
-                    options={searchContributosToAdd}
-                    renderInput={(params) => <TextField {...params} label='Search contributor' variant='outlined' />}
-                    autoComplete
-                    clearOnEscape
-                    onChange={(event, value) => handleAutocomplete(value)}
-                    popupIcon={null}
-                />
-            </Grid>
             <Grid item xs={12}>
                 <Box>
                     <Grid container>
