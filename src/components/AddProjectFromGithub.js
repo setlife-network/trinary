@@ -45,13 +45,15 @@ const AddProjectFromGithub = (props) => {
     }] = useLazyQuery(GET_CONTRIBUTOR_REPOS_FROM_GITHUB, {
         onCompleted: dataOrganizationRepos => {
             const {
-                getGithubRepos
+                getGithubRepos: { length }
             } = dataOrganizationRepos
-            if (getGithubRepos.length) {
+            if (length) {
                 setSelectedGithubRepo(dataOrganizationRepos.getGithubRepos[0])
             }
-            if (getGithubRepos.length > 99) {
+            if (length > 99) {
                 setMoreRepoState(true)
+            } else {
+                setMoreRepoState(false)
             }
         }
     })
@@ -73,6 +75,8 @@ const AddProjectFromGithub = (props) => {
     useEffect(() => {
         if (selectedGithubRepo) {
             setProjectGithubURL(selectedGithubRepo.githubUrl)
+        } else {
+            // TODO: create a query and pass the page number to github api
         }
     }, [selectedGithubRepo])
 
@@ -103,12 +107,10 @@ const AddProjectFromGithub = (props) => {
         })
     }
 
-    const renderMoreButton = ( itemValue ) => {
+    const renderMoreItem = ( itemValue ) => {
         return (
             <MenuItem value={itemValue + 1}>
-                <Link href='#' variant='body2'>
-                    ...more
-                </Link>
+                ...more
             </MenuItem>
         )
     }
@@ -168,7 +170,7 @@ const AddProjectFromGithub = (props) => {
                         {renderGithubRepos({
                             repos: githubRepos
                         })}
-                        { MoreRepoState ? renderMoreButton(githubRepos.length) : null }
+                        { MoreRepoState ? renderMoreItem(githubRepos.length) : null }
                     </Select>
                 </FormControl>
             </Grid>
