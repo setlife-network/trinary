@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { Grid } from '@material-ui/core'
@@ -18,15 +18,11 @@ const InactiveClientsList = (props) => {
         loading: loadingInactiveClient,
         error: errorInactiveClient,
         data: dataInactiveClient
-    } = useQuery(GET_INACTIVE_CLIENTS);
-
-    const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked })
-    }
-
-    const [state, setState] = React.useState({
-        inactiveClientsCheck: false,
+    } = useQuery(GET_INACTIVE_CLIENTS, {
+        fetchPolicy: 'cache-and-network'
     });
+
+    const [showInactiveClients, setShowInactiveClients] = useState(false)
 
     const {
         loading: loadingInactiveClientsCount,
@@ -58,14 +54,14 @@ const InactiveClientsList = (props) => {
         <>
             <FormGroup>
                 <FormControlLabel
-                    control=
-                        {
-                            <Switch
-                                checked={state.inactiveClientsCheck}
-                                onChange={handleChange}
-                                name='inactiveClientsCheck'
-                            />
-                        }
+                    control={
+                        <Switch
+                            checked={showInactiveClients}
+                            onChange={(event) => setShowInactiveClients(event.target.checked)}
+                            name='showInactiveClients'
+                            color='primary'
+                        />
+                    }
                     label='Show inactive clients'
                 />
             </FormGroup>
@@ -76,7 +72,7 @@ const InactiveClientsList = (props) => {
                 alignItems='flex-end'
             >
                 {
-                    state.inactiveClientsCheck == true
+                    showInactiveClients == true
                         ? (
                             <Grid item xs={12} sm={6} md={4}>
                                 <Box
@@ -99,7 +95,7 @@ const InactiveClientsList = (props) => {
                 }
                 <Grid container>
                     {
-                        state.inactiveClientsCheck
+                        showInactiveClients
                             ? clients.length != 0
                                 ? renderClientTiles(clients)
                                 : null
