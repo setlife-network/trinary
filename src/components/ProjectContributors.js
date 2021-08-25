@@ -146,7 +146,7 @@ const ProjectContributors = (props) => {
 
     const handleSearch = (value) => {
         const test = contributors.filter(c => {
-            return c.name.includes(value)
+            return c.name.toLowerCase().includes(value.toLowerCase())
         });
         console.log(test)
     }
