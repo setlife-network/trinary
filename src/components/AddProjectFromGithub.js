@@ -6,6 +6,7 @@ import {
     FormControl,
     Grid,
     InputLabel,
+    Link,
     MenuItem,
     Select,
     Typography
@@ -97,10 +98,19 @@ const AddProjectFromGithub = (props) => {
             return (
                 <MenuItem value={i}>
                     {`${r.name ? r.name : 'Select'}`}
-                    { (repos.length - 1) == i ? ' more' : null }
                 </MenuItem>
             )
         })
+    }
+
+    const renderMoreButton = ( itemValue ) => {
+        return (
+            <MenuItem value={itemValue + 1}>
+                <Link href='#' variant='body2'>
+                    ...more
+                </Link>
+            </MenuItem>
+        )
     }
 
     if (loadingOrganizations) return <LoadingProgress/>
@@ -158,6 +168,7 @@ const AddProjectFromGithub = (props) => {
                         {renderGithubRepos({
                             repos: githubRepos
                         })}
+                        { MoreRepoState ? renderMoreButton(githubRepos.length) : null }
                     </Select>
                 </FormControl>
             </Grid>
