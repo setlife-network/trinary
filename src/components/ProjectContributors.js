@@ -39,6 +39,8 @@ const ProjectContributors = (props) => {
     const [githubContributors, setGithubContributors] = useState([])
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
     const [contributorClicked, setContributorClicked] = useState(null)
+    const [searchFilter, setSearchFilter] = useState('')
+
     const handleAddAllocationClose = (value) => {
         setOpenAddAllocationDialog(false)
     }
@@ -81,7 +83,7 @@ const ProjectContributors = (props) => {
             variables: { project_id: Number(projectId) }
         })
     }, [])
-
+ 
     useEffect(() => {
         try {
             if (githubContributors.length) {
@@ -91,11 +93,6 @@ const ProjectContributors = (props) => {
             console.log(`error: ${error}`)
         }
     }, [githubContributors])
-
-    const addAllocation = (props) => {
-        setOpenAddAllocationDialog(true)
-        setContributorClicked(props.contributor)
-    }
 
     if (loadingProjectContributors || loadingContributors || loadingGithubContributors) {
         return <LoadingProgress/>
@@ -141,14 +138,55 @@ const ProjectContributors = (props) => {
     if (differenceBy(dataContributors.getContributors, contributors, 'id').length != 0) {
         setContributors(contributors.concat(...dataContributors.getContributors))
     }
-    
-    const contributorsToAdd = differenceBy(contributors, [...activeContributorsAllocated, ...upcomingContributorsAllocatedOnly], 'id')
 
-    const handleSearch = (value) => {
-        const test = contributors.filter(c => {
-            return c.name.toLowerCase().includes(value.toLowerCase())
-        });
-        console.log(test)
+    // const getFilteredContributors = () => {
+    //     if (searchFilter == '') {
+    //         return contributors
+    //     }
+    //     return contributors.filter(c => {
+    //         return c.name.toLowerCase().includes(searchFilter.toLowerCase())
+    //     });
+    // }
+    // const filteredContributors = getFilteredContributors()
+
+    const getActiveContributors = () => {
+        if (searchFilter == '') {
+            return activeContributorsAllocated
+        } else {
+            return activeContributorsAllocated.filter(a => {
+                return a.name.toLowerCase().includes(searchFilter.toLowerCase())
+            })
+        }
+    }
+    const activeContributors = getActiveContributors()
+
+    const getUpcomingContributors = () => {
+        if (searchFilter == '') {
+            return upcomingContributorsAllocatedOnly
+        } else {
+            return upcomingContributorsAllocatedOnly.filter(u => {
+                return u.name.toLowerCase().includes(searchFilter.toLowerCase())
+            })
+        }
+    }
+    const upcomingContributors = getUpcomingContributors()
+
+    const getContributorsToAdd = () => {
+        const addContributors = differenceBy(contributors, [...activeContributorsAllocated, ...upcomingContributorsAllocatedOnly], 'id')
+        if (searchFilter == '') {
+            return addContributors
+        } else {
+            return addContributors.filter(a => {
+                return a.name.toLowerCase().includes(searchFilter.toLowerCase())
+            })
+        }
+    }
+    const contributorsToAdd = getContributorsToAdd()
+    console.log(contributorsToAdd)
+
+    const addAllocation = (props) => {
+        setOpenAddAllocationDialog(true)
+        setContributorClicked(props.contributor)
     }
 
     const renderContributors = (props) => {
@@ -196,23 +234,10 @@ const ProjectContributors = (props) => {
             </Grid>
             <Grid xs={12}/>
             <Grid item xs={12} sm={5}>
-                {/* <Autocomplete
-                    options={searchContributosToAdd}
-                    renderInput={(params) => <TextField {...params} label='Search contributor...' variant='outlined' />}
-                    autoComplete
-                    clearOnEscape
-                    onChange={(event, value) => handleAutocomplete(value)}
-                    popupIcon={null}
-                /> */}
-                {/* <TextField 
-                    placeholder='Search contributors...' 
-                    variant='outlined' 
-                    type='search' 
-                /> */}
                 <Paper>
                     <InputBase 
                         placeholder='Search contributors...' 
-                        onChange={(event) => { handleSearch(event.target.value) }}
+                        onChange={(event) => { setSearchFilter(event.target.value) }}
                     />
                     <IconButton>
                         <SearchIcon />
@@ -226,10 +251,10 @@ const ProjectContributors = (props) => {
                     </Typography>
                     <Grid container>
                         {
-                            activeContributorsAllocated.length != 0
+                            activeContributors.length != 0
                                 ? renderContributors({
                                     active: true,
-                                    contributors: activeContributorsAllocated,
+                                    contributors: activeContributors,
                                     project: project
                                 })
                                 : <ContributorsEmptyState active/>
@@ -243,10 +268,10 @@ const ProjectContributors = (props) => {
                     </Typography>
                     <Grid container>
                         {
-                            upcomingContributorsAllocatedOnly.length != 0
+                            upcomingContributors.length != 0
                                 ? renderContributors({
                                     active: true,
-                                    contributors: upcomingContributorsAllocatedOnly,
+                                    contributors: upcomingContributors,
                                     project: project
                                 })
                                 : <ContributorsEmptyState active/>
