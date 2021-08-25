@@ -6,7 +6,7 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
-import { boxShadow, borders, spacing } from '@material-ui/system'
+import { boxShadow, borders, spacing, display } from '@material-ui/system'
 import DeveloperBoard from '@material-ui/icons/DeveloperBoard'
 
 const ProjectTile = ({
@@ -46,6 +46,8 @@ const ProjectTile = ({
                         boxShadow={3}
                         borderRadius='borderRadius'
                         bgcolor='primary.light'
+                        overflow='hidden' 
+                        textOverflow='ellipsis'
                     >
                         <Grid
                             container
@@ -54,22 +56,21 @@ const ProjectTile = ({
                             justify='space-around'
                         >
                             <Grid item xs={10}>
-                                <Typography variant='h6'>
+                                <Typography variant='h6' noWrap>
                                     {project.name}
                                 </Typography>
-                                {
-                                    fromProjects &&
+                                {fromProjects &&
                                     <Typography variant='caption'>
                                         {project.client.name}
                                     </Typography>
-                                }
+                                }   
                             </Grid>
                             <Grid
                                 item
                                 xs={2}
                             >
                                 <DeveloperBoard
-                                    //TODO: Remake this logic withous is_active
+                                    //TODO: Remake this logic without is_active
                                     color={projectActive}
                                     fontSize='large'
                                 />
