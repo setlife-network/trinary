@@ -6,7 +6,6 @@ import {
     Typography,
     TextField
 } from '@material-ui/core/'
-import SearchIcon from '@material-ui/icons/Search'
 import {
     differenceBy
 } from 'lodash'
@@ -133,8 +132,12 @@ const ProjectContributors = (props) => {
         setContributors(contributors.concat(...dataContributors.getContributors))
     }
 
-    const stringMatch = (string) => {
+    const stringMatchName = (string) => {
         return string.name.toLowerCase().includes(searchFilter.toLowerCase())
+    }
+
+    const stringMatchGithub = (string) => {
+        return string.github_handle.toLowerCase().includes('https://github.com/'.concat(searchFilter).toLowerCase())
     }
 
     const getActiveContributors = () => {
@@ -142,7 +145,7 @@ const ProjectContributors = (props) => {
             return activeContributorsAllocated
         } else {
             return activeContributorsAllocated.filter(a => {
-                return stringMatch(a)
+                return stringMatchName(a) || stringMatchGithub(a)
             })
         }
     }
@@ -153,7 +156,7 @@ const ProjectContributors = (props) => {
             return upcomingContributorsAllocatedOnly
         } else {
             return upcomingContributorsAllocatedOnly.filter(u => {
-                return stringMatch(u)
+                return stringMatchName(u) || stringMatchGithub(u)
             })
         }
     }
@@ -165,7 +168,7 @@ const ProjectContributors = (props) => {
             return addContributors
         } else {
             return addContributors.filter(a => {
-                return stringMatch(a)
+                return stringMatchName(a) || stringMatchGithub(a)
             })
         }
     }
@@ -228,8 +231,7 @@ const ProjectContributors = (props) => {
                     color='primary'
                     variant='outlined'
                     type='search'
-                >
-                </TextField>
+                />
             </Grid>
             <Grid item xs={12}>
                 <Box my={[2, 5]}>
