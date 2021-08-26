@@ -4,17 +4,11 @@ import {
     Box,
     Grid,
     Typography,
-    Link,
-    TextField,
-    InputBase,
-    Paper,
-    IconButton,
-    Divider
+    TextField
 } from '@material-ui/core/'
 import SearchIcon from '@material-ui/icons/Search'
 import {
-    differenceBy,
-    filter
+    differenceBy
 } from 'lodash'
 
 import AllocationAddForm from './AllocationAddForm'
@@ -139,22 +133,16 @@ const ProjectContributors = (props) => {
         setContributors(contributors.concat(...dataContributors.getContributors))
     }
 
-    // const getFilteredContributors = () => {
-    //     if (searchFilter == '') {
-    //         return contributors
-    //     }
-    //     return contributors.filter(c => {
-    //         return c.name.toLowerCase().includes(searchFilter.toLowerCase())
-    //     });
-    // }
-    // const filteredContributors = getFilteredContributors()
+    const stringMatch = (value) => {
+        return value.name.toLowerCase().includes(searchFilter.toLowerCase())
+    }
 
     const getActiveContributors = () => {
         if (searchFilter == '') {
             return activeContributorsAllocated
         } else {
             return activeContributorsAllocated.filter(a => {
-                return a.name.toLowerCase().includes(searchFilter.toLowerCase())
+                return stringMatch(a)
             })
         }
     }
@@ -165,7 +153,7 @@ const ProjectContributors = (props) => {
             return upcomingContributorsAllocatedOnly
         } else {
             return upcomingContributorsAllocatedOnly.filter(u => {
-                return u.name.toLowerCase().includes(searchFilter.toLowerCase())
+                return stringMatch(u)
             })
         }
     }
@@ -177,12 +165,11 @@ const ProjectContributors = (props) => {
             return addContributors
         } else {
             return addContributors.filter(a => {
-                return a.name.toLowerCase().includes(searchFilter.toLowerCase())
+                return stringMatch(a)
             })
         }
     }
     const contributorsToAdd = getContributorsToAdd()
-    console.log(contributorsToAdd)
 
     const addAllocation = (props) => {
         setOpenAddAllocationDialog(true)
@@ -234,15 +221,14 @@ const ProjectContributors = (props) => {
             </Grid>
             <Grid xs={12}/>
             <Grid item xs={12} sm={5}>
-                <Paper>
-                    <InputBase 
-                        placeholder='Search contributors...' 
-                        onChange={(event) => { setSearchFilter(event.target.value) }}
-                    />
-                    <IconButton>
-                        <SearchIcon />
-                    </IconButton>
-                </Paper>
+                <TextField
+                    placeholder='Search contributors...' 
+                    onChange={(event) => { setSearchFilter(event.target.value) }}
+                    fullWidth
+                    color='primary'
+                    variant='outlined'
+                >
+                </TextField>
             </Grid>
             <Grid item xs={12}>
                 <Box my={[2, 5]}>
