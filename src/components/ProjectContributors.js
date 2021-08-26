@@ -133,8 +133,8 @@ const ProjectContributors = (props) => {
         setContributors(contributors.concat(...dataContributors.getContributors))
     }
 
-    const stringMatch = (value) => {
-        return value.name.toLowerCase().includes(searchFilter.toLowerCase())
+    const stringMatch = (string) => {
+        return string.name.toLowerCase().includes(searchFilter.toLowerCase())
     }
 
     const getActiveContributors = () => {
@@ -227,6 +227,7 @@ const ProjectContributors = (props) => {
                     fullWidth
                     color='primary'
                     variant='outlined'
+                    type='search'
                 >
                 </TextField>
             </Grid>
