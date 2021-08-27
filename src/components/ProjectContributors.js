@@ -24,6 +24,64 @@ import {
     getActiveAndUpcomingAllocations
 } from '../scripts/selectors'
 
+const stringMatchName = (string, searchFilter) => {
+    return string.name.toLowerCase().includes(searchFilter.toLowerCase())
+}
+
+const stringMatchGithub = (string, searchFilter) => {
+    return string.github_handle.toLowerCase().includes('https://github.com/'.concat(searchFilter).toLowerCase())
+}
+
+const ActiveContributors = ({
+    allocations,
+    allContributors,
+    searchFilter
+}) => {
+    const activeAllocations = getActiveAndUpcomingAllocations({
+        allocations: allocations,
+        activeOnly: true
+    })
+    const activeContributors = getAllocatedContributors({
+        allocations: activeAllocations
+    })
+
+    const renderActiveContributors = () => {
+        console.log('renderActiveContributors')
+        const contributors = searchFilter == ''
+            ? activeContributors
+            : activeContributors.filter(a => {
+                return stringMatchName(a, searchFilter) || stringMatchGithub(a, searchFilter)
+            })
+
+        return contributors.map(c => {
+            return (
+                <Grid item xs={12} md={6}>
+                    <ContributorTile
+                        active
+                        contributor={c}
+                        onAddButton={addAllocation}
+                        project={project}
+                    />
+                </Grid>
+            )
+        })
+    }
+
+    return (
+        <Box my={[2, 5]}>
+            <Typography align='left' variant='h5'>
+                {`Active contributors`}
+            </Typography>
+            <Grid container>
+                {activeContributors.length != 0
+                    ? renderActiveContributors()
+                    : <ContributorsEmptyState active/>
+                }
+            </Grid>
+        </Box>
+    )
+}
+
 const ProjectContributors = (props) => {
 
     const { projectId } = props
@@ -72,12 +130,14 @@ const ProjectContributors = (props) => {
     })
 
     useEffect(() => {
+        console.log('useEffect 1')
         getGithubContributors({
             variables: { project_id: Number(projectId) }
         })
     }, [])
  
     useEffect(() => {
+        console.log('useEffect 2')
         try {
             if (githubContributors.length) {
                 setContributors(contributors.concat(...githubContributors))
@@ -108,50 +168,46 @@ const ProjectContributors = (props) => {
 
     const { allocations } = project
 
+    if (differenceBy(dataContributors.getContributors, contributors, 'id').length != 0) {
+        setContributors(contributors.concat(...dataContributors.getContributors))
+    }
+
+    const addAllocation = (props) => {
+        setOpenAddAllocationDialog(true)
+        setContributorClicked(props.contributor)
+    }
+
     const activeAllocations = getActiveAndUpcomingAllocations({
         allocations: allocations,
         activeOnly: true
     })
-
-    const activeContributorsAllocated = getAllocatedContributors({
-        allocations: activeAllocations
-    })
-
     const upcomingAllocations = getActiveAndUpcomingAllocations({
         allocations: allocations,
         upcomingOnly: true
     })
 
-    const upcomingContributorsAllocatedOnly = differenceBy(
-        getAllocatedContributors({ allocations: upcomingAllocations }),
-        activeContributorsAllocated,
-        'id'
-    )
-
-    if (differenceBy(dataContributors.getContributors, contributors, 'id').length != 0) {
-        setContributors(contributors.concat(...dataContributors.getContributors))
-    }
-
-    const stringMatchName = (string) => {
-        return string.name.toLowerCase().includes(searchFilter.toLowerCase())
-    }
-
-    const stringMatchGithub = (string) => {
-        return string.github_handle.toLowerCase().includes('https://github.com/'.concat(searchFilter).toLowerCase())
-    }
-
     const getActiveContributors = () => {
+        const activeContributorsAllocated = getAllocatedContributors({
+            allocations: activeAllocations
+        })
+
         if (searchFilter == '') {
             return activeContributorsAllocated
         } else {
             return activeContributorsAllocated.filter(a => {
-                return stringMatchName(a) || stringMatchGithub(a)
+                return stringMatchName(a, searchFilter) || stringMatchGithub(a, searchFilter)
             })
         }
     }
     const activeContributors = getActiveContributors()
 
     const getUpcomingContributors = () => {
+        const upcomingContributorsAllocatedOnly = differenceBy(
+            getAllocatedContributors({ allocations: upcomingAllocations }),
+            activeContributors,
+            'id'
+        )
+
         if (searchFilter == '') {
             return upcomingContributorsAllocatedOnly
         } else {
@@ -163,33 +219,30 @@ const ProjectContributors = (props) => {
     const upcomingContributors = getUpcomingContributors()
 
     const getContributorsToAdd = () => {
-        const addContributors = differenceBy(contributors, [...activeContributorsAllocated, ...upcomingContributorsAllocatedOnly], 'id')
+        const contributorsToAdd = differenceBy(
+            contributors,
+            [...activeContributors, ...upcomingContributors],
+            'id'
+        )
+
         if (searchFilter == '') {
-            return addContributors
+            return contributorsToAdd
         } else {
-            return addContributors.filter(a => {
-                return stringMatchName(a) || stringMatchGithub(a)
+            return contributorsToAdd.filter(a => {
+                return stringMatchName(a, searchFilter) || stringMatchGithub(a)
             })
         }
     }
     const contributorsToAdd = getContributorsToAdd()
 
-    const addAllocation = (props) => {
-        setOpenAddAllocationDialog(true)
-        setContributorClicked(props.contributor)
-    }
 
-    const renderContributors = (props) => {
-        const {
-            active,
-            contributors,
-            project
-        } = props
-        return contributors.map(c => {
+    const renderUpcomingContributors = () => {
+        console.log('renderUpcomingContributors')
+        return upcomingContributors.map(c => {
             return (
                 <Grid item xs={12} md={6}>
                     <ContributorTile
-                        active={active}
+                        active
                         contributor={c}
                         onAddButton={addAllocation}
                         project={project}
@@ -198,6 +251,26 @@ const ProjectContributors = (props) => {
             )
         })
     }
+
+    const renderContributorsToAdd = () => {
+        console.log('renderContributorsToAdd')
+        return contributorsToAdd.map(c => {
+            return (
+                <Grid item xs={12} md={6}>
+                    <ContributorTile
+                        active={false}
+                        contributor={c}
+                        onAddButton={addAllocation}
+                        project={project}
+                    />
+                </Grid>
+            )
+        })
+    }
+
+    console.log('render')
+    console.log('searchFilter')
+    console.log(searchFilter)
 
     return (
         <Grid container className='ProjectContributors'>
@@ -214,19 +287,21 @@ const ProjectContributors = (props) => {
                     py={1}
                     mb={[2, 5]}
                 >
-                    {
-                        `${activeContributorsAllocated.length} active ${activeContributorsAllocated.length == 1
-                            ? 'contributor'
-                            : 'contributors'
-                        }`
-                    }
+                    {`${activeContributors.length} active ${activeContributors.length == 1
+                        ? 'contributor'
+                        : 'contributors'
+                    }`}
                 </Box>
             </Grid>
             <Grid xs={12}/>
             <Grid item xs={12} sm={5}>
                 <TextField
                     placeholder='Search contributors...' 
-                    onChange={(event) => { setSearchFilter(event.target.value) }}
+                    onChange={(event) => {
+                        console.log(event.target.value)
+                        // setSearchFilter(event.target.value)
+                    }}
+                    // value={searchFilter}
                     fullWidth
                     color='primary'
                     variant='outlined'
@@ -234,37 +309,20 @@ const ProjectContributors = (props) => {
                 />
             </Grid>
             <Grid item xs={12}>
-                <Box my={[2, 5]}>
-                    <Typography align='left' variant='h5'>
-                        {`Active contributors`}
-                    </Typography>
-                    <Grid container>
-                        {
-                            activeContributors.length != 0
-                                ? renderContributors({
-                                    active: true,
-                                    contributors: activeContributors,
-                                    project: project
-                                })
-                                : <ContributorsEmptyState active/>
-
-                        }
-                    </Grid>
-                </Box>
+                <ActiveContributors
+                    allocations={allocations}
+                    allContributors={contributors}
+                    searchFilter={searchFilter}
+                />
+                
                 <Box my={[2, 5]}>
                     <Typography align='left' variant='h5'>
                         {`Upcoming contributors`}
                     </Typography>
                     <Grid container>
-                        {
-                            upcomingContributors.length != 0
-                                ? renderContributors({
-                                    active: true,
-                                    contributors: upcomingContributors,
-                                    project: project
-                                })
-                                : <ContributorsEmptyState active/>
-
+                        {upcomingContributors.length != 0
+                            ? renderUpcomingContributors()
+                            : <ContributorsEmptyState active/>
                         }
                     </Grid>
                 </Box>
@@ -280,22 +338,16 @@ const ProjectContributors = (props) => {
             <Grid item xs={12}>
                 <Box>
                     <Grid container>
-                        {
-                            contributorsToAdd.length != 0
-                                ? renderContributors({
-                                    active: false,
-                                    contributors: contributorsToAdd,
-                                    project: project
-                                })
-                                : <ContributorsEmptyState/>
+                        {contributorsToAdd.length != 0
+                            ? renderContributorsToAdd()
+                            : <ContributorsEmptyState/>
                         }
                     </Grid>
                 </Box>
                 <Box my={[2, 5]} py={5}/>
             </Grid>
             <Grid item xs={12}>
-                {
-                    contributorClicked &&
+                {contributorClicked &&
                     <AllocationAddForm
                         project={project}
                         open={openAddAllocationDialog}
