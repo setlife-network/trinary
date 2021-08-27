@@ -50,7 +50,7 @@ const AddProjectFromGithub = (props) => {
             if (length) {
                 setSelectedGithubRepo(dataOrganizationRepos.getGithubRepos[0])
             }
-            if (length > 99) {
+            if (length > 4) {
                 setMoreRepoState(true)
             } else {
                 setMoreRepoState(false)
@@ -68,7 +68,7 @@ const AddProjectFromGithub = (props) => {
             getRepos({
                 variables: {
                     organizationName: selectedGithubOrganization.name,
-                    githubPageNumber: actualGithubPage
+                    githubPageNumber: actualGithubPage - 1
                 }
             })
         }
@@ -76,9 +76,16 @@ const AddProjectFromGithub = (props) => {
 
     useEffect(() => {
         if (selectedGithubRepo) {
+            setActualGithubPage(1)
             setProjectGithubURL(selectedGithubRepo.githubUrl)
-        } else {
-            // TODO: create a query and pass the page number to github api
+        } else if (selectedGithubRepo == undefined && MoreRepoState) {
+            setActualGithubPage( actualGithubPage + 1)
+            getRepos({
+                variables: {
+                    organizationName: selectedGithubOrganization.name,
+                    githubPageNumber: actualGithubPage + 1
+                }
+            })
         }
     }, [selectedGithubRepo])
 
@@ -112,7 +119,7 @@ const AddProjectFromGithub = (props) => {
     const renderMoreItem = ( itemValue ) => {
         return (
             <MenuItem value={itemValue + 1}>
-                ...more
+                {`...more`}
             </MenuItem>
         )
     }

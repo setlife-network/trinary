@@ -61,14 +61,14 @@ const github = module.exports = (() => {
         const res = params.isOrganization
             ? await octokit.repos.listForOrg({ 
                 org: params.organizationName,
-                per_page: 100,
+                per_page: 5,
                 sort: 'updated',
                 direction: 'desc',
                 page: params.githubPageNumber
             })
             : await octokit.repos.listForUser({
                 username: params.organizationName,
-                per_page: 100,
+                per_page: 5,
                 sort: 'updated',
                 direction: 'desc',
                 page: params.githubPageNumber
