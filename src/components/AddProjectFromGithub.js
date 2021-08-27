@@ -61,12 +61,14 @@ const AddProjectFromGithub = (props) => {
     const [selectedGithubOrganization, setSelectedGithubOrganization] = useState(null)
     const [selectedGithubRepo, setSelectedGithubRepo] = useState(null)
     const [MoreRepoState, setMoreRepoState] = useState(false)
+    const [actualGithubPage, setActualGithubPage] = useState(1)
 
     useEffect(() => {
         if (dataOrganizations && selectedGithubOrganization) {
             getRepos({
                 variables: {
-                    organizationName: selectedGithubOrganization.name
+                    organizationName: selectedGithubOrganization.name,
+                    githubPageNumber: actualGithubPage
                 }
             })
         }
