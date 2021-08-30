@@ -51,16 +51,16 @@ const AddProjectFromGithub = (props) => {
                 setSelectedGithubRepo(dataOrganizationRepos.getGithubRepos[0])
             }
             if (length > 4) {
-                setMoreRepoState(true)
+                setHasMoreRepos(true)
             } else {
-                setMoreRepoState(false)
+                setHasMoreRepos(false)
             }
         }
     })
 
     const [selectedGithubOrganization, setSelectedGithubOrganization] = useState(null)
     const [selectedGithubRepo, setSelectedGithubRepo] = useState(null)
-    const [MoreRepoState, setMoreRepoState] = useState(false)
+    const [hasMoreRepos, setHasMoreRepos] = useState(false)
     const [actualGithubPage, setActualGithubPage] = useState(1)
 
     useEffect(() => {
@@ -78,7 +78,7 @@ const AddProjectFromGithub = (props) => {
         if (selectedGithubRepo) {
             setActualGithubPage(1)
             setProjectGithubURL(selectedGithubRepo.githubUrl)
-        } else if (selectedGithubRepo == undefined && MoreRepoState) {
+        } else if (selectedGithubRepo == undefined && hasMoreRepos) {
             setActualGithubPage( actualGithubPage + 1)
             getRepos({
                 variables: {
@@ -179,7 +179,7 @@ const AddProjectFromGithub = (props) => {
                         {renderGithubRepos({
                             repos: githubRepos
                         })}
-                        { MoreRepoState ? renderMoreItem(githubRepos.length) : null }
+                        { hasMoreRepos ? renderMoreItem(githubRepos.length) : null }
                     </Select>
                 </FormControl>
             </Grid>
