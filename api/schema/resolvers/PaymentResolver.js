@@ -1,6 +1,7 @@
 const { UserInputError } = require('apollo-server');
 const moment = require('moment')
 const { fn, col, Op } = require('sequelize')
+const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules');
@@ -55,14 +56,9 @@ module.exports = {
                 }
             })
 
-            const supportedCurrency = [
-                'USD',
-                'EUR',
-                'MXN'
-            ]
             // Check if the client has an associated Stripe account and if the currency is supported
             // If it does, proceed to create the invoice on Stripe
-            if (client.external_uuid && supportedCurrency.includes(client.currency)) {
+            if (client.external_uuid && STRIPE_SUPPORTED_CURRENCIES.includes(client.currency)) {
                 const stripeInvoice = await apiModules.paymentManagement.processStripeInvoiceWithPayment({
                     amount: createFields['amount'],
                     clientId: client.id,

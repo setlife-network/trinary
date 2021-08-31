@@ -1,5 +1,5 @@
 const db = require('../models')
-
+const { DEFAULT_STRIPE_CURRENCY } = require('../config/constants')
 const paymentManagement = module.exports = (() => {
 
     const processStripeInvoiceWithPayment = async (params) => {
@@ -12,9 +12,9 @@ const paymentManagement = module.exports = (() => {
         } = params
         
         const actualCurrency = 
-            currency == 'USD' 
+            currency == DEFAULT_STRIPE_CURRENCY
                 ? currency
-                : 'USD'
+                : DEFAULT_STRIPE_CURRENCY
 
         const createdInvoice = await stripe.createInvoice({
             clientId,
