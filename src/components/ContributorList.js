@@ -9,6 +9,9 @@ import ContributorsEmptyState from './ContributorsEmptyState'
 import AllocationAddForm from './AllocationAddForm'
 import ContributorTile from './ContributorTile'
 import { differenceBy } from 'lodash'
+import ActiveContributors from './ActiveContributors'
+import UpcomingContributors from './UpcomingContributors'
+import Contributors from './Contributors'
 
 const ContributorList = (props) => {
 
@@ -137,12 +140,14 @@ const ContributorList = (props) => {
                     </Typography>
                     <Grid container>
                         {
+
                             activeContributors.length != 0
-                                ? renderContributors({
-                                    active: true,
-                                    contributors: activeContributors,
-                                    project: project
-                                })
+                                ? <ActiveContributors
+                                    active
+                                    contributors={activeContributors}
+                                    project={project}
+                                    addAllocation={addAllocation}
+                                />
                                 : <ContributorsEmptyState active/>
 
                         }
@@ -155,11 +160,12 @@ const ContributorList = (props) => {
                     <Grid container>
                         {
                             upcomingContributors.length != 0
-                                ? renderContributors({
-                                    active: true,
-                                    contributors: upcomingContributors,
-                                    project: project
-                                })
+                                ? <UpcomingContributors 
+                                    active
+                                    contributors={upcomingContributors}
+                                    project={project}
+                                    addAllocation={addAllocation}
+                                />
                                 : <ContributorsEmptyState active/>
 
                         }
@@ -179,11 +185,11 @@ const ContributorList = (props) => {
                     <Grid container>
                         {
                             contributorsToAdd.length != 0
-                                ? renderContributors({
-                                    active: false,
-                                    contributors: contributorsToAdd,
-                                    project: project
-                                })
+                                ? <Contributors
+                                    contributors={contributorsToAdd}
+                                    project={project}
+                                    addAllocation={addAllocation}
+                                />
                                 : <ContributorsEmptyState/>
                         }
                     </Grid>
