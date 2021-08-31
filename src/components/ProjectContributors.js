@@ -25,64 +25,6 @@ import {
     getActiveAndUpcomingAllocations
 } from '../scripts/selectors'
 
-const stringMatchName = (string, searchFilter) => {
-    return string.name.toLowerCase().includes(searchFilter.toLowerCase())
-}
-
-const stringMatchGithub = (string, searchFilter) => {
-    return string.github_handle.toLowerCase().includes('https://github.com/'.concat(searchFilter).toLowerCase())
-}
-
-const ActiveContributors = ({
-    allocations,
-    allContributors,
-    searchFilter
-}) => {
-    const activeAllocations = getActiveAndUpcomingAllocations({
-        allocations: allocations,
-        activeOnly: true
-    })
-    const activeContributors = getAllocatedContributors({
-        allocations: activeAllocations
-    })
-
-    const renderActiveContributors = () => {
-        console.log('renderActiveContributors')
-        const contributors = searchFilter == ''
-            ? activeContributors
-            : activeContributors.filter(a => {
-                return stringMatchName(a, searchFilter) || stringMatchGithub(a, searchFilter)
-            })
-
-        return contributors.map(c => {
-            return (
-                <Grid item xs={12} md={6}>
-                    <ContributorTile
-                        active
-                        contributor={c}
-                        onAddButton={addAllocation}
-                        project={project}
-                    />
-                </Grid>
-            )
-        })
-    }
-
-    return (
-        <Box my={[2, 5]}>
-            <Typography align='left' variant='h5'>
-                {`Active contributors`}
-            </Typography>
-            <Grid container>
-                {activeContributors.length != 0
-                    ? renderActiveContributors()
-                    : <ContributorsEmptyState active/>
-                }
-            </Grid>
-        </Box>
-    )
-}
-
 const ProjectContributors = (props) => {
 
     const { projectId } = props
@@ -165,16 +107,16 @@ const ProjectContributors = (props) => {
     if (differenceBy(dataContributors.getContributors, contributors, 'id').length != 0) {
         setContributors(contributors.concat(...dataContributors.getContributors))
     }
-
-    const addAllocation = (props) => {
-        setOpenAddAllocationDialog(true)
-        setContributorClicked(props.contributor)
-    }
-
+    
     const activeAllocations = getActiveAndUpcomingAllocations({
         allocations: allocations,
         activeOnly: true
     })
+    
+    const activeContributorsAllocated = getAllocatedContributors({
+        allocations: activeAllocations
+    })
+
     const upcomingAllocations = getActiveAndUpcomingAllocations({
         allocations: allocations,
         upcomingOnly: true
