@@ -43,12 +43,16 @@ const AddProjectFromGithub = (props) => {
         data: dataOrganizationRepos,
         loading: loadingOrganizationRepos
     }] = useLazyQuery(GET_CONTRIBUTOR_REPOS_FROM_GITHUB, {
-        onCompleted: dataOrganizationRepos => {
+        onCompleted: payload => {
             const {
                 getGithubRepos: { length }
-            } = dataOrganizationRepos
+            } = payload
             if (length) {
-                setSelectedGithubRepo(dataOrganizationRepos.getGithubRepos[0])
+                setSelectedGithubRepo(payload.getGithubRepos[0])
+                setRepoOptions([
+                    ...repoOptions,
+                    ...payload.getGithubRepos
+                ])
             }
             if (length > 4) {
                 setMoreRepoState(true)
@@ -58,19 +62,19 @@ const AddProjectFromGithub = (props) => {
         }
     })
 
+    console.log('dataOrganizationRepos')
+    console.log(dataOrganizationRepos?.length)
+    console.log(dataOrganizationRepos)
+
     const [selectedGithubOrganization, setSelectedGithubOrganization] = useState(null)
     const [selectedGithubRepo, setSelectedGithubRepo] = useState(null)
     const [MoreRepoState, setMoreRepoState] = useState(false)
-    const [actualGithubPage, setActualGithubPage] = useState(1)
+    const [actualGithubPage, setActualGithubPage] = useState(null)
+    const [repoOptions, setRepoOptions] = useState([])
 
     useEffect(() => {
         if (dataOrganizations && selectedGithubOrganization) {
-            getRepos({
-                variables: {
-                    organizationName: selectedGithubOrganization.name,
-                    githubPageNumber: actualGithubPage - 1
-                }
-            })
+            setActualGithubPage(1)
         }
     }, [selectedGithubOrganization])
 
@@ -79,15 +83,20 @@ const AddProjectFromGithub = (props) => {
             setActualGithubPage(1)
             setProjectGithubURL(selectedGithubRepo.githubUrl)
         } else if (selectedGithubRepo == undefined && MoreRepoState) {
-            setActualGithubPage( actualGithubPage + 1)
+            setActualGithubPage(actualGithubPage + 1)
+        }
+    }, [selectedGithubRepo])
+
+    useEffect(() => {
+        if (selectedGithubOrganization) {
             getRepos({
                 variables: {
                     organizationName: selectedGithubOrganization.name,
-                    githubPageNumber: actualGithubPage + 1
+                    githubPageNumber: actualGithubPage
                 }
             })
         }
-    }, [selectedGithubRepo])
+    }, [actualGithubPage])
 
     const renderGithubOrganizations = ({ organizations }) => {
         return organizations.map((o, i) => {
@@ -131,9 +140,6 @@ const AddProjectFromGithub = (props) => {
     if (errorOrganizationRepos) return `An error ocurred ${errorOrganizationRepos}`
 
     const githubOrganizations = dataOrganizations.getGithubOrganizations
-    const githubRepos = dataOrganizationRepos
-        ? dataOrganizationRepos.getGithubRepos
-        : []
 
     return (
         <Grid
@@ -173,13 +179,13 @@ const AddProjectFromGithub = (props) => {
                     </InputLabel>
                     <Select
                         fullWidth
-                        value={githubRepos.indexOf(selectedGithubRepo)}
-                        onChange={(event) => setSelectedGithubRepo(githubRepos[event.target.value])}
+                        value={repoOptions.indexOf(selectedGithubRepo)}
+                        onChange={(event) => setSelectedGithubRepo(repoOptions[event.target.value])}
                     >
                         {renderGithubRepos({
-                            repos: githubRepos
+                            repos: repoOptions
                         })}
-                        { MoreRepoState ? renderMoreItem(githubRepos.length) : null }
+                        { MoreRepoState ? renderMoreItem(repoOptions.length) : null }
                     </Select>
                 </FormControl>
             </Grid>
