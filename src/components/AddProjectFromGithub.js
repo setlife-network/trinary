@@ -6,7 +6,6 @@ import {
     FormControl,
     Grid,
     InputLabel,
-    Link,
     MenuItem,
     Select,
     Typography
@@ -43,14 +42,22 @@ const AddProjectFromGithub = (props) => {
         data: dataOrganizationRepos,
         loading: loadingOrganizationRepos
     }] = useLazyQuery(GET_CONTRIBUTOR_REPOS_FROM_GITHUB, {
-        onCompleted: dataOrganizationRepos => {
+        onCompleted: payload => {
             const {
                 getGithubRepos: { length }
-            } = dataOrganizationRepos
+            } = payload
             if (length) {
                 setSelectedGithubRepo(dataOrganizationRepos.getGithubRepos[0])
+                payload.getGithubRepos.forEach((repo) => {
+                    if (!repoOptions.includes(repo)) {
+                        setRepoOptions([
+                            ...repoOptions,
+                            ...payload.getGithubRepos
+                        ])
+                    }
+                })
             }
-            if (length > 4) {
+            if (length >= 5) {
                 setHasMoreRepos(true)
             } else {
                 setHasMoreRepos(false)
@@ -62,13 +69,16 @@ const AddProjectFromGithub = (props) => {
     const [selectedGithubRepo, setSelectedGithubRepo] = useState(null)
     const [hasMoreRepos, setHasMoreRepos] = useState(false)
     const [actualGithubPage, setActualGithubPage] = useState(1)
+    const [repoOptions, setRepoOptions] = useState([])
 
     useEffect(() => {
         if (dataOrganizations && selectedGithubOrganization) {
+            updateActualGithubPage(1)
+            setRepoOptions([])
             getRepos({
                 variables: {
                     organizationName: selectedGithubOrganization.name,
-                    githubPageNumber: actualGithubPage - 1
+                    githubPageNumber: actualGithubPage
                 }
             })
         }
@@ -76,18 +86,26 @@ const AddProjectFromGithub = (props) => {
 
     useEffect(() => {
         if (selectedGithubRepo) {
-            setActualGithubPage(1)
             setProjectGithubURL(selectedGithubRepo.githubUrl)
         } else if (selectedGithubRepo == undefined && hasMoreRepos) {
-            setActualGithubPage( actualGithubPage + 1)
+            updateActualGithubPage(actualGithubPage + 1)
+        }
+    }, [selectedGithubRepo])
+
+    useEffect(() => {
+        if (selectedGithubOrganization) {
             getRepos({
                 variables: {
                     organizationName: selectedGithubOrganization.name,
-                    githubPageNumber: actualGithubPage + 1
+                    githubPageNumber: actualGithubPage
                 }
             })
         }
-    }, [selectedGithubRepo])
+    }, [actualGithubPage])
+
+    const updateActualGithubPage = async ( pageNumber ) => {
+        await setActualGithubPage(pageNumber)
+    }
 
     const renderGithubOrganizations = ({ organizations }) => {
         return organizations.map((o, i) => {
@@ -131,9 +149,6 @@ const AddProjectFromGithub = (props) => {
     if (errorOrganizationRepos) return `An error ocurred ${errorOrganizationRepos}`
 
     const githubOrganizations = dataOrganizations.getGithubOrganizations
-    const githubRepos = dataOrganizationRepos
-        ? dataOrganizationRepos.getGithubRepos
-        : []
 
     return (
         <Grid
@@ -173,13 +188,13 @@ const AddProjectFromGithub = (props) => {
                     </InputLabel>
                     <Select
                         fullWidth
-                        value={githubRepos.indexOf(selectedGithubRepo)}
-                        onChange={(event) => setSelectedGithubRepo(githubRepos[event.target.value])}
+                        value={repoOptions.indexOf(selectedGithubRepo)}
+                        onChange={(event) => setSelectedGithubRepo(repoOptions[event.target.value])}
                     >
                         {renderGithubRepos({
-                            repos: githubRepos
+                            repos: repoOptions
                         })}
-                        { hasMoreRepos ? renderMoreItem(githubRepos.length) : null }
+                        { hasMoreRepos ? renderMoreItem(repoOptions.length) : null }
                     </Select>
                 </FormControl>
             </Grid>
