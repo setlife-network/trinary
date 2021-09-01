@@ -72,16 +72,8 @@ const stripeHandler = module.exports = (() => {
     const updateCustomerWithClientId = async (params) => {
         const { clientId } = params
 
-        console.log('clientId')
-        console.log(clientId)
-        console.log(apiModules)
-        console.log(apiModules.clientManagement)
-
         const client = await clientManagement.findClientWithId(clientId)
         const stripe_uuid = client.external_uuid
-
-        console.log('client')
-        console.log(client)
 
         if (stripe_uuid) {
             return stripeClient.customers.update(
