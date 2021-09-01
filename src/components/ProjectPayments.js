@@ -31,6 +31,7 @@ const ProjectPayments = (props) => {
     const history = useHistory()
 
     const { loading, error, data } = useQuery(GET_PROJECT_PAYMENTS, {
+        fetchPolicy: 'cache-and-network',
         variables: {
             id: Number(projectId)
         }
@@ -40,8 +41,9 @@ const ProjectPayments = (props) => {
         error: errorProjectAllocations,
         loading: loadingProjectAllocations,
     } = useQuery(GET_PROJECT_CONTRIBUTOR_ALLOCATIONS, {
+        fetchPolicy: 'cache-and-network',
         variables: {
-            id: Number(projectId)
+            id: Number(projectId),
         }
     })
 

@@ -6,6 +6,8 @@
     .navigation-title {
         margin: 12px;
         color: $dark-blue;
+        font-weight: bold;
+        font-size: 1rem;
     }
 }
 
@@ -13,6 +15,10 @@
     .Navigation {
         .icon-image {
             max-height: 25px;
+            margin-top: 0.4rem;
+        }
+        .navigation-title {
+            font-size: 1.5rem
         }
     }
 }

@@ -132,9 +132,9 @@ const AllocationOverview = (props) => {
                     id: contributorAllocation.contributor.id
                 }
             })
-            setUpdatedAllocationEndDate(moment.utc(allocation.end_date, 'x')['_d'])
+            setUpdatedAllocationEndDate(moment.utc(allocation.end_date, 'x').toDate())
             setUpdatedAllocationPayment(contributorAllocation.payment)
-            setUpdatedAllocationStartDate(moment.utc(allocation.start_date, 'x')['_d'])
+            setUpdatedAllocationStartDate(moment.utc(allocation.start_date, 'x').toDate())
         }
     }, [contributorAllocation])
 
@@ -189,8 +189,8 @@ const AllocationOverview = (props) => {
                 variables: {
                     id: allocation.id,
                     amount: Number(rate.total_amount),
-                    start_date: moment(startDate).format('YYYY-MM-DD'),
-                    end_date: moment(endDate).format('YYYY-MM-DD'),
+                    start_date: moment.utc(startDate).format('YYYY-MM-DD'),
+                    end_date: moment.utc(endDate).format('YYYY-MM-DD'),
                     date_paid: null,
                     rate_id: Number(selectedRate.id),
                     payment_id: payment ? payment.id : null
@@ -213,18 +213,25 @@ const AllocationOverview = (props) => {
     if (errorAllocation || errorClientPayments) return `Error`
 
     const { getAllocationById: allocation } = dataAllocation
-    const payments = [null]
-    if (clientPayments) {
-        payments.unshift(...clientPayments.payments)
+    
+    const payments = dataClientPayments
+        ? [
+            ...dataClientPayments.getClientById.payments
+        ].sort((a, b) => b.date_incurred - a.date_incurred)
+        : [null]
+
+    if (payments.length) {
+        payments.push(null)
     }
 
     if (!contributorAllocation) {
         setContributorAllocation(allocation)
     }
-    
+
     const editButtonDisabled = (
         updatedAllocationRate.total_amount == allocationInfo.amount &&
-        updatedAllocationRate.hourly_rate == allocationInfo.rate.hourly_rate
+        updatedAllocationRate.hourly_rate == allocationInfo.rate.hourly_rate &&
+        updatedAllocationPayment?.id == allocationInfo.payment?.id
     )
 
     return (
@@ -259,11 +266,16 @@ const AllocationOverview = (props) => {
                     startDate={updatedAllocationStartDate}
                 />
                 <Box mt={1}>
-                    <Grid container>
-                        <Grid item xs={3}>
+                    <Grid 
+                        container 
+                        justify='space-between'
+                        style={{ textAlign: 'center' }}
+                    >
+                        <Grid item xs={12} sm={3}>
                             <Button
                                 variant='contained'
                                 color='primary'
+                                className='edit-delete'
                                 disabled={editButtonDisabled}
                                 onClick={() => handleUpdateAllocation({
                                     allocation: contributorAllocation,
@@ -275,12 +287,13 @@ const AllocationOverview = (props) => {
                                     startDate: updatedAllocationStartDate,
                                 })}
                             >
-                                {'Edit'}
+                                {'Save'}
                             </Button>
                         </Grid>
-                        <Grid item>
+                        <Grid item xs={12} sm={3}>
                             <Button
                                 color='primary'
+                                className='edit-delete'
                                 onClick={() => setOpenDeleteAllocation(true)}
                             >
                                 <DeleteOutlinedIcon color='primary'/>

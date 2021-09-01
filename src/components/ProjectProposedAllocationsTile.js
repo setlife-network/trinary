@@ -32,7 +32,7 @@ const ProjectProposedAllocationsTile = (props) => {
         loading: loadingTotalProposed
     } = useQuery(GET_PROJECT_TOTAL_PROPOSED, {
         variables: {
-            id: project.id
+            id: project.id,
         }
     })
 

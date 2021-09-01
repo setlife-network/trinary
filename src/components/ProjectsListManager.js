@@ -20,7 +20,8 @@ const ProjectsListManager = ({
     }
     const { loading, error, data } = useQuery(GET_ACTIVE_PROJECTS_COUNT, {
         variables: {
-            clientId: clientId ? Number(clientId) : null
+            clientId: clientId ? Number(clientId) : null,
+            fetchPolicy: 'cache-and-network'
         }
     })
     const pathname = window.location.pathname
@@ -45,6 +46,7 @@ const ProjectsListManager = ({
                         borderRadius='borderRadius'
                         px={0}
                         py={1}
+                        ml={1}
                     >
                         {
                             `${data.getActiveProjectsCount} active ${data.getActiveProjectsCount == 1

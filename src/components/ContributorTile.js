@@ -20,7 +20,8 @@ import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
 import {
     formatAmount,
     selectActiveAndUpcomingAllocations,
-    selectCurrencyInformation
+    selectCurrencyInformation,
+    getExpectedHours
 } from '../scripts/selectors'
 
 const ContributorTile = (props) => {
@@ -84,6 +85,10 @@ const ContributorTile = (props) => {
                 currencyInformation: currencyInformation
             })
             const isActiveAllocation = moment.utc(a.start_date, 'x').isBefore(moment())
+            const expectedHoursMaxBudget = getExpectedHours({
+                amount: Number((a.amount / 100).toFixed(2)),
+                hourlyRate: a.rate.hourly_rate
+            })
 
             return (
                 <Grid
@@ -130,7 +135,7 @@ const ContributorTile = (props) => {
                                     <br/>
                                     {`${a.rate.total_expected_hours
                                         ? `${a.rate.total_expected_hours} h.`
-                                        : `Doesn't apply`
+                                        : `${expectedHoursMaxBudget} h.`
                                     }`}
                                 </Typography>
                             </Grid>
@@ -143,7 +148,7 @@ const ContributorTile = (props) => {
                                         {`Start date:`}
                                     </strong>
                                     <br/>
-                                    {`${moment.utc(a.start_date, 'x').format('MM/DD/YYYY')}`}
+                                    {`${moment(a.start_date, 'x').format('MM/DD/YYYY')}`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>
@@ -155,7 +160,7 @@ const ContributorTile = (props) => {
                                         {`End date:`}
                                     </strong>
                                     <br/>
-                                    {`${moment.utc(a.end_date, 'x').format('MM/DD/YYYY')}`}
+                                    {`${moment(a.end_date, 'x').format('MM/DD/YYYY')}`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>

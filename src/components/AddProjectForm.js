@@ -71,17 +71,16 @@ const AddProjectForm = (props) => {
     const [createProjectError, setCreateProjectError] = useState(null)
     const [disableAdd, setDisableAdd] = useState(true)
     const [displayError, setDisplayError] = useState(false)
-    const [linkedRepo, setLinkedRepo] = useState(false)
     const [projectBudget, setProjectBudget] = useState(0)
     const [projectDate, setProjectDate] = useState(null)
     const [projectEndDate, setProjectEndDate] = useState(null)
-    const [projectGithub, setProjectGithub] = useState(null)
+    const [projectGithubURL, setProjectGithubURL] = useState(null)
     const [projectGithubManual, setProjectGithubManual] = useState(null)
     const [projectName, setProjectName] = useState('')
     const [projectToggl, setProjectToggl] = useState(null)
 
     useEffect(() => {
-        if (!projectName || !projectGithub || !projectDate || !projectBudget || budgetTimeframe == null) {
+        if (!projectName || !projectGithubURL || !projectDate || !projectBudget || budgetTimeframe == null) {
             setDisableAdd(true)
         } else {
             setDisableAdd(false)
@@ -90,18 +89,18 @@ const AddProjectForm = (props) => {
 
     useEffect(() => {
         //if there's not a linked github repo from the selector use the one inserted manually if exists
-        if (projectGithubManual && !projectGithub) {
-            setProjectGithub(projectGithubManual)
+        if (projectGithubManual && !projectGithubURL) {
+            setProjectGithubURL(projectGithubManual)
         }
-    }, [projectGithub, projectGithubManual])
+    }, [projectGithubURL, projectGithubManual])
 
     useEffect(() => {
-        const githubLinkInformation = split(projectGithub, '/')
+        const githubLinkInformation = split(projectGithubURL, '/')
         setProjectName(githubLinkInformation[githubLinkInformation.length - 1])
-    }, [projectGithub])
+    }, [projectGithubURL])
 
     const createProject = async () => {
-        if (!verifyGithubURL(projectGithub)) {
+        if (!verifyGithubURL(projectGithubURL)) {
             setCreateProjectError('The Github URL is invalid')
             setDisplayError(true)
             return
@@ -116,7 +115,7 @@ const AddProjectForm = (props) => {
         const newProjectVariables = {
             client_id: Number(clientId),
             name: projectName,
-            github_url: projectGithub,
+            github_url: projectGithubURL,
             date: projectDate,
             end_date: projectEndDate,
             expected_budget: Number(projectBudget),
@@ -173,18 +172,13 @@ const AddProjectForm = (props) => {
             <Grid item xs={12}>
                 <Box item mb={3}>
                     <AddProjectFromGithub
-                        clientId={clientId}
-                        setLinkedRepo={setLinkedRepo}
-                        setProjectGithub={setProjectGithub}
+                        setProjectGithubURL={setProjectGithubURL}
                     />
                 </Box>
             </Grid>
             <Grid item xs={12}>
                 <Box item mb={3}>
                     <AddGithubProjectManually
-                        linkedRepo={linkedRepo}
-                        projectGithub={projectGithub}
-                        setProjectGithub={setProjectGithub}
                         setProjectGithubManual={setProjectGithubManual}
                     />
                 </Box>
