@@ -4,8 +4,7 @@ import {
 } from '@material-ui/core'
 import ContributorTile from './ContributorTile'
 
-const Contributors = (props) => {
-
+const Contributors = React.memo((props) => {
     const {
         contributors,
         active,
@@ -27,6 +26,6 @@ const Contributors = (props) => {
             )
         })
     )
-}
+})
 
 export default Contributors

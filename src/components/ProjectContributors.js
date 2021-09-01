@@ -66,14 +66,12 @@ const ProjectContributors = (props) => {
     })
 
     useEffect(() => {
-        console.log('useEffect 1')
         getGithubContributors({
             variables: { project_id: Number(projectId) }
         })
     }, [])
  
     useEffect(() => {
-        console.log('useEffect 2')
         try {
             if (githubContributors.length) {
                 setContributors(contributors.concat(...githubContributors))
