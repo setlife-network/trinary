@@ -136,8 +136,8 @@ const AddProjectFromGithub = (props) => {
 
     const renderMoreItem = ( itemValue ) => {
         return (
-            <MenuItem value={itemValue + 1}>
-                {`...more`}
+            <MenuItem value={itemValue + 1}  >
+                <Typography color='primary'>...more</Typography>
             </MenuItem>
         )
     }
