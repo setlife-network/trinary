@@ -12,7 +12,7 @@ const budgeting = module.exports = (() => {
         if (client) {
             const dateIncurredOverride = stripeInvoice.metadata?.date_incurred
                 ? moment(stripeInvoice.metadata.date_incurred, 'YYYY-MM-DD')
-                : moment(stripeInvoice.created)
+                : moment(stripeInvoice.created, 'X')
             const datePaidOverride = stripeInvoice.metadata?.date_paid
                 ? moment(stripeInvoice.metadata.date_paid, 'YYYY-MM-DD')
                 : null
@@ -82,17 +82,37 @@ const budgeting = module.exports = (() => {
     const updatePaymentFromStripeInvoice = async ({ stripeInvoice }) => {
         const existingPayment = await getPaymentWithExternalId({ id: stripeInvoice.id })
 
-        if (existingPayment && existingPayment.date_paid == null) {
-            const datePaid = moment(stripeInvoice.webhooks_delivered_at)
+        if (existingPayment) {
+            const updatedAttributes = {}
+            const datePaidOverride = stripeInvoice.metadata?.date_paid || null
+            const dateIncurredOverride = stripeInvoice.metadata?.date_incurred || null
+
+            // Updates the date paid if the override metadata is detected
+            // but if not and the invoice has been paid, set date_paid to the
+            // webhook delivery timestamp if and only if date_paid has not yet
+            // been set
+            if (datePaidOverride) {
+                updatedAttributes.date_paid = datePaidOverride
+            } else if (
+                stripeInvoice.paid == true &&
+                existingPayment.date_paid == null
+            ) {
+                updatedAttributes.date_paid = moment(stripeInvoice.webhooks_delivered_at, 'X').format('YYYY-MM-DD')
+            }
+
+            if (dateIncurredOverride) {
+                updatedAttributes.date_incurred = dateIncurredOverride
+            }
 
             await db.models.Payment.update({
-                date_paid: datePaid.format('YYYY-MM-DD')
+                ...updatedAttributes
             }, {
                 where: {
                     id: existingPayment.id
                 }
             })
         }
+        if (existingPayment?.date_incurred)
     }
     
     return {
