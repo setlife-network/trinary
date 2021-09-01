@@ -57,7 +57,7 @@ const AddProjectFromGithub = (props) => {
                     }
                 })
             }
-            if (length >= 5) {
+            if (length >= 99) {
                 setHasMoreRepos(true)
             } else {
                 setHasMoreRepos(false)
