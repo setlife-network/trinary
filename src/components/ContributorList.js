@@ -8,9 +8,6 @@ import {
 import ContributorsEmptyState from './ContributorsEmptyState'
 import AllocationAddForm from './AllocationAddForm'
 import { differenceBy } from 'lodash'
-// import ActiveContributors from './ActiveContributors'
-// import UpcomingContributors from './UpcomingContributors'
-// import Contributors from './Contributors'
 
 const ContributorList = (props) => {
 

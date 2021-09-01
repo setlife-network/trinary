@@ -15,7 +15,7 @@ const Contributors = React.memo((props) => {
     return (
         contributors.map(c => {
             return (
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={6} key={c.id}>
                     <ContributorTile 
                         active={active}
                         contributor={c}
