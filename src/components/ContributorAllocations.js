@@ -6,6 +6,7 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
+import SortIcon from '@material-ui/icons/Sort'
 import { isEmpty } from 'lodash'
 
 import AllocationAddForm from './AllocationAddForm'
@@ -91,6 +92,14 @@ const ContributorAllocations = (props) => {
                         </Box>
                     </Button>
                 </Grid>
+                <Grid item xs='auto'>
+                    <Button>
+                        <SortIcon/>
+                    </Button>
+                </Grid>
+                <Grid item xs={12}>
+                    {`Allocated`}
+                </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={5}>
                         {!isEmpty(contributorAllocations.allocations)
@@ -103,6 +112,9 @@ const ContributorAllocations = (props) => {
                             )
                         }
                     </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    {`Proposed`}
                 </Grid>
             </Grid>
             <AllocationAddForm
