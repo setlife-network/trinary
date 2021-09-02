@@ -6,6 +6,7 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
+import FilterListIcon from '@material-ui/icons/FilterList';
 import { isEmpty } from 'lodash'
 
 import AllocationAddForm from './AllocationAddForm'
@@ -55,12 +56,15 @@ const ContributorAllocations = (props) => {
     const renderAllocations = ({ allocations }) => {
         return allocations.map(a => {
             return (
-                <Grid item xs={12} sm={6} lg={4}>
+                <Grid item xs={12} sm={6} lg={4} key={a.id}>
                     <AllocationTile allocation={a}/>
                 </Grid>
             )
         })
     }
+    
+    console.log(dataContributorAllocations)
+    console.log(dataContributor)
 
     if (loadingContributorAllocations || loadingContributor) return <LoadingProgress/>
     if (errorContributorAllocations || errorContributor) return 'Error!'
@@ -91,6 +95,14 @@ const ContributorAllocations = (props) => {
                         </Box>
                     </Button>
                 </Grid>
+                {/* <Grid item xs='auto'>
+                    <Button>
+                        <FilterListIcon></FilterListIcon>
+                    </Button>
+                </Grid> */}
+                <Grid item xs={12}>
+                    {`Allocated`}
+                </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={5}>
                         {!isEmpty(contributorAllocations.allocations)
@@ -103,6 +115,9 @@ const ContributorAllocations = (props) => {
                             )
                         }
                     </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    {`Proposed`}
                 </Grid>
             </Grid>
             <AllocationAddForm

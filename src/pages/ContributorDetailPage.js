@@ -1,14 +1,12 @@
 import React from 'react'
 import {
     Box,
-    Grid,
-    Typography
+    Grid
 } from '@material-ui/core'
 
 import ContributorAllocations from '../components/ContributorAllocations'
 import ContributorInfoTile from '../components/ContributorInfoTile'
 import ContributorProjectsCollab from '../components/ContributorProjectsCollab'
-import Header from '../components/Header'
 
 class ContributorDetailPage extends React.Component {
 
