@@ -18,7 +18,7 @@ const ClientPayments = (props) => {
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`
 
-    const payments = orderBy(data.getClientPaymentsByClientId, ['date_paid'], ['desc'])
+    const payments = orderBy(data.getClientPaymentsByClientId, ['date_paid', 'date_incurred'], ['desc', 'desc'])
 
     return (
         payments.length != 0

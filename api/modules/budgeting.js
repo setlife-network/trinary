@@ -4,27 +4,27 @@ const budgeting = module.exports = (() => {
     const db = require('../models')
     const clientManagement = require('./clientManagement')
 
-    const createPayment = async ({ paymentInformation }) => {
+    const createPaymentFromStripeInvoice = async ({ stripeInvoice }) => {
         const client = await clientManagement.findClientWithExternalId({
-            id: paymentInformation.customer_id
+            id: stripeInvoice.customer
         })
 
-        const {
-            amount,
-            external_uuid,
-            date_incurred,
-            date_paid,
-            external_uuid_type
-        } = paymentInformation
-
         if (client) {
+            const dateIncurredOverride = stripeInvoice.metadata?.date_incurred
+                ? moment(stripeInvoice.metadata.date_incurred, 'YYYY-MM-DD')
+                : moment(stripeInvoice.created, 'X')
+
+            const datePaidOverride = stripeInvoice.metadata?.date_paid
+                ? moment(stripeInvoice.metadata.date_paid, 'YYYY-MM-DD')
+                : null
+
             return db.models.Payment.create({
-                amount,
-                external_uuid,
-                date_incurred: date_incurred.format('YYYY-MM-DD HH:mm:ss'),
-                date_paid: date_paid ? moment(date_paid['_d']) : null,
+                amount: stripeInvoice.total,
+                date_incurred: dateIncurredOverride,
+                date_paid: datePaidOverride,
                 client_id: client.id,
-                external_uuid_type
+                external_uuid: stripeInvoice.id,
+                external_uuid_type: 'STRIPE'
             })
         }
     }
@@ -58,14 +58,55 @@ const budgeting = module.exports = (() => {
         })
     }
 
-    const updateDatePaidPayment = async ({ stripeInvoice }) => {
+    const processPaymentFromStripeInvoice = async ({ stripeInvoice }) => {
+        const paymentToUpdate = await db.models.Payment.findOne({
+            where: {
+                external_uuid: stripeInvoice.id,
+                external_uuid_type: 'STRIPE'
+            }
+        })
+        if (paymentToUpdate) {
+            const datePaidOverride = stripeInvoice.metadata.date_paid || null
+            const dateIncurredOverride = stripeInvoice.metadata.date_incurred || null
+
+            if (datePaidOverride || dateIncurredOverride) {
+                updatePaymentFromStripeInvoice({ stripeInvoice })
+            }
+        } else {
+            //the payment is not in the db, proceed to store it
+            createPaymentFromStripeInvoice({
+                stripeInvoice
+            })
+        }
+    }
+
+    const updatePaymentFromStripeInvoice = async ({ stripeInvoice }) => {
         const existingPayment = await getPaymentWithExternalId({ id: stripeInvoice.id })
 
-        if (existingPayment && existingPayment.date_paid == null) {
-            const datePaid = moment(stripeInvoice.webhooks_delivered_at)
+        if (existingPayment) {
+            const updatedAttributes = {}
+            const datePaidOverride = stripeInvoice.metadata?.date_paid || null
+            const dateIncurredOverride = stripeInvoice.metadata?.date_incurred || null
+
+            // Updates the date paid if the override metadata is detected
+            // but if not and the invoice has been paid, set date_paid to the
+            // webhook delivery timestamp if and only if date_paid has not yet
+            // been set
+            if (datePaidOverride) {
+                updatedAttributes.date_paid = datePaidOverride
+            } else if (
+                stripeInvoice.paid == true &&
+                existingPayment.date_paid == null
+            ) {
+                updatedAttributes.date_paid = moment(stripeInvoice.webhooks_delivered_at, 'X').format('YYYY-MM-DD')
+            }
+
+            if (dateIncurredOverride) {
+                updatedAttributes.date_incurred = dateIncurredOverride
+            }
 
             await db.models.Payment.update({
-                date_paid: datePaid.format('YYYY-MM-DD')
+                ...updatedAttributes
             }, {
                 where: {
                     id: existingPayment.id
@@ -73,41 +114,13 @@ const budgeting = module.exports = (() => {
             })
         }
     }
-
-    const updatePaymentByStripeInvoiceId = async ({ stripeInvoice }) => {
-        const datePaidOverride = stripeInvoice.metadata.date_paid || null
-        const dateIncurredOverride = stripeInvoice.metadata.date_incurred || null
-        
-        const paymentInformation = {
-            amount: stripeInvoice.total,
-            external_uuid: stripeInvoice.id,
-            date_incurred: dateIncurredOverride || stripeInvoice.created,
-            date_paid: datePaidOverride,
-            customer_id: stripeInvoice.customer,
-            external_uuid_type: 'STRIPE',
-        }
-        const paymentToUpdate = await db.models.Payment.findOne({
-            where: {
-                external_uuid: paymentInformation.external_uuid,
-                external_uuid_type: paymentInformation.external_uuid_type
-            }
-        })
-        if (paymentToUpdate) {
-            if (datePaidOverride || dateIncurredOverride) {
-                updateDatePaidPayment({ paymentInformation: paymentInformation })
-            }
-        } else {
-            //the payment is not in the db, proceed to store it
-            createPayment({ paymentInformation: paymentInformation })
-        }
-    }
     
     return {
-        createPayment,
+        createPaymentFromStripeInvoice,
         deletePaymentByStripeInvoiceId,
         getPaymentWithId,
         getPaymentWithExternalId,
-        updateDatePaidPayment,
-        updatePaymentByStripeInvoiceId,
+        processPaymentFromStripeInvoice,
+        updatePaymentFromStripeInvoice,
     }
 })()
