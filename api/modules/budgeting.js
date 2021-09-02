@@ -1,25 +1,22 @@
 const moment = require('moment')
+const { DEFAULT_STRIPE_CURRENCY } = require('../config/constants')
 
 const budgeting = module.exports = (() => {
     const db = require('../models')
     const clientManagement = require('./clientManagement')
 
     const checkExistentPaymentsWithExternalId = async (params) => {
-        const existentPayments = await db.models.Payment.findAll({
+        const existingPayments = await db.models.Payment.findAll({
             where: {
                 external_uuid: params.id
             }
         })
         
-        if (existentPayments) {
-            for (const payment of existentPayments) {
-                const client = await db.models.Client.findOne({
-                    where: {
-                        id: payment.client_id
-                    }
-                })
+        if (existingPayments) {
+            existingPayments.forEach(async payment => {
+                const client = await clientManagement.findClientWithId(payment.client_id)
 
-                if (client.currency != 'USD') {
+                if (client.currency != DEFAULT_STRIPE_CURRENCY) {
                     try {
                         const deletedCustomer = await clientManagement.deleteClientUuid({ id: client.external_uuid })
                         console.log(`stripe customer disconnected ${deletedCustomer}`)
@@ -27,7 +24,7 @@ const budgeting = module.exports = (() => {
                         console.log(`An error ocurred: ${err}`)
                     }
                 }
-            }
+            })
         }
     }
 
@@ -47,8 +44,8 @@ const budgeting = module.exports = (() => {
                 return db.models.Payment.create({
                     amount,
                     external_uuid,
-                    date_incurred: date_incurred ? moment(date_incurred['_d']) : null,
-                    date_paid: date_paid ? moment(date_paid['_d']) : null,
+                    date_incurred: moment().format(),
+                    date_paid: moment().format(),
                     client_id: client.id,
                     external_uuid_type
                 })
@@ -128,8 +125,7 @@ const budgeting = module.exports = (() => {
 
         try {
             await checkExistentPaymentsWithExternalId({ id: stripeInvoice.id })
-
-            client.currency = 'USD' //Stripe invoices will always have USD as currency
+            client.currency = DEFAULT_STRIPE_CURRENCY //Stripe invoices will always have USD as currency
             await client.save()
         } catch (err) {
             console.log(`error while changing client currency: ${err}`)
