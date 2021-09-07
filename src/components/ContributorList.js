@@ -33,7 +33,7 @@ const ContributorList = (props) => {
     }
 
     const matchGithub = (github) => {
-        return github.github_handle.toLowerCase().includes('https://github.com/'.concat(search).toLowerCase())
+        return github.github_handle.toLowerCase().includes('https://github.com/' + (search).toLowerCase())
     }
 
     const activeContributors = useMemo(
