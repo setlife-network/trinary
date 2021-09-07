@@ -110,9 +110,13 @@ const ContributorList = (props) => {
                         {`Active contributors`}
                     </Typography>
                     <Grid container>
-                        {
-                            activeContributors.length != 0
-                                ? <Suspense fallback={<div>Loading...</div>}>
+                        {activeContributors.length != 0
+                            ? (
+                                <Suspense 
+                                    fallback={
+                                        <div>Loading...</div>
+                                    }
+                                >
                                     <ActiveContributors
                                         active
                                         contributors={activeContributors}
@@ -120,7 +124,7 @@ const ContributorList = (props) => {
                                         addAllocation={addAllocation}
                                     />
                                 </Suspense>
-                                : <ContributorsEmptyState active/>
+                            ) : <ContributorsEmptyState active/>
                         }
                     </Grid>
                 </Box>
@@ -129,9 +133,13 @@ const ContributorList = (props) => {
                         {`Upcoming contributors`}
                     </Typography>
                     <Grid container>
-                        {
-                            upcomingContributors.length != 0
-                                ? <Suspense fallback={<div>Loading...</div>}>
+                        {upcomingContributors.length != 0
+                            ? ( 
+                                <Suspense 
+                                    fallback={
+                                        <div>Loading...</div>
+                                    }
+                                >
                                     <UpcomingContributors 
                                         active
                                         contributors={upcomingContributors}
@@ -139,8 +147,7 @@ const ContributorList = (props) => {
                                         addAllocation={addAllocation}
                                     />
                                 </Suspense>
-                                : <ContributorsEmptyState active/>
-
+                            ) : <ContributorsEmptyState active/>
                         }
                     </Grid>
                 </Box>
@@ -150,33 +157,37 @@ const ContributorList = (props) => {
                 {`Add new contributors to the project`}
             </h1>
             {errorGithubContributors
-                ? <GithubAccessBlocked
-                    message={`You must have access to this repository on GitHub to see an up-to-date list of collaborators.`}
-                    projectId={projectId}
-                />
-                : null
+                ? ( 
+                    <GithubAccessBlocked
+                        message={`You must have access to this repository on GitHub to see an up-to-date list of collaborators.`}
+                        projectId={projectId}
+                    />
+                ) : null
             }
             <Grid item xs={12}>
                 <Box>
                     <Grid container>
-                        {
-                            contributorsToAdd.length != 0
-                                ? <Suspense fallback={<div>Loading...</div>}>
+                        {contributorsToAdd.length != 0
+                            ? (
+                                <Suspense 
+                                    fallback={
+                                        <div>Loading...</div>
+                                    }
+                                >
                                     <Contributors
                                         contributors={contributorsToAdd}
                                         project={project}
                                         addAllocation={addAllocation}
                                     />
                                 </Suspense>
-                                : <ContributorsEmptyState/>
+                            ) : <ContributorsEmptyState/>
                         }
                     </Grid>
                 </Box>
                 <Box my={[2, 5]} py={5}/>
             </Grid>
             <Grid item xs={12}>
-                {
-                    contributorClicked &&
+                {contributorClicked &&
                     <AllocationAddForm
                         project={project}
                         open={openAddAllocationDialog}
