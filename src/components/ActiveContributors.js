@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
     Grid
 } from '@material-ui/core'
@@ -12,8 +12,8 @@ const ActiveContributors = React.memo((props) => {
         addAllocation
     } = props
 
-    return (
-        contributors.map(c => {
+    const renderActiveContributors = () => {
+        return contributors.map(c => {
             return (
                 <Grid item xs={12} md={6} key={c.id}>
                     <ContributorTile 
@@ -25,6 +25,14 @@ const ActiveContributors = React.memo((props) => {
                 </Grid>
             )
         })
+    }
+
+    return (
+        <Grid container className='ActiveContributors'>
+            {
+                renderActiveContributors()
+            }
+        </Grid>
     )
 })
 

@@ -12,8 +12,8 @@ const Contributors = React.memo((props) => {
         addAllocation
     } = props
 
-    return (
-        contributors.map(c => {
+    const renderContributorsToAdd = () => {
+        return contributors.map(c => {
             return (
                 <Grid item xs={12} md={6} key={c.id}>
                     <ContributorTile 
@@ -25,6 +25,14 @@ const Contributors = React.memo((props) => {
                 </Grid>
             )
         })
+    }
+
+    return (
+        <Grid container className='Contributors'>
+            {
+                renderContributorsToAdd()
+            }
+        </Grid>
     )
 })
 
