@@ -15,7 +15,6 @@ import ContributorList from './ContributorList'
 import LoadingProgress from './LoadingProgress'
 import ContributorTile from './ContributorTile'
 import ContributorsEmptyState from './ContributorsEmptyState'
-import GithubAccessBlocked from './GithubAccessBlocked'
 import { GET_PROJECT_CONTRIBUTORS } from '../operations/queries/ProjectQueries'
 import { GET_CONTRIBUTORS } from '../operations/queries/ContributorQueries'
 import { SYNC_PROJECT_GITHUB_CONTRIBUTORS } from '../operations/mutations/ProjectMutations'
@@ -85,15 +84,6 @@ const ProjectContributors = (props) => {
         return <LoadingProgress/>
     }
 
-    const isNotAContributor = () => {
-        return (
-            <GithubAccessBlocked
-                message={`You must have access to this repository on GitHub to see an up-to-date list of collaborators.`}
-                projectId={projectId}
-            />
-        )
-    }
-    
     if (errorProjectContributors || errorContributors) return `Error!`
 
     const project = dataProjectContributors.getProjectById
@@ -137,7 +127,7 @@ const ProjectContributors = (props) => {
             activeContributorsAllocated={activeContributorsAllocated}
             upcomingContributorsAllocatedOnly={upcomingContributorsAllocatedOnly}
             errorGithubContributors={errorGithubContributors}
-            isNotAContributor={isNotAContributor}
+            projectId={projectId}
         />
     )
 }

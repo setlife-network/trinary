@@ -8,6 +8,7 @@ import {
 import ContributorsEmptyState from './ContributorsEmptyState'
 import AllocationAddForm from './AllocationAddForm'
 import { differenceBy } from 'lodash'
+import GithubAccessBlocked from './GithubAccessBlocked'
 
 const ContributorList = (props) => {
 
@@ -17,7 +18,7 @@ const ContributorList = (props) => {
         activeContributorsAllocated,
         upcomingContributorsAllocatedOnly,
         errorGithubContributors,
-        isNotAContributor
+        projectId
     } = props
 
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
@@ -149,7 +150,10 @@ const ContributorList = (props) => {
                 {`Add new contributors to the project`}
             </h1>
             {errorGithubContributors
-                ? isNotAContributor()
+                ? <GithubAccessBlocked
+                    message={`You must have access to this repository on GitHub to see an up-to-date list of collaborators.`}
+                    projectId={projectId}
+                />
                 : null
             }
             <Grid item xs={12}>
