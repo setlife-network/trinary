@@ -57,10 +57,8 @@ export const getAllocatedContributors = ({ allocations }) => {
         if (!result.includes(a.contributor)) {
             result.push(a.contributor)
         }
-
         return result
     }, [])
-
     return contributorsAllocated
 }
 export const getActiveAndUpcomingAllocations = ({ activeOnly, allocations, upcomingOnly }) => {
