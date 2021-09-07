@@ -1,10 +1,10 @@
 const { UserInputError } = require('apollo-server');
 const moment = require('moment')
 const { fn, col, Op } = require('sequelize')
-const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
-const apiModules = require('../../modules');
+const apiModules = require('../../modules')
+const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants')
 
 module.exports = {
 
