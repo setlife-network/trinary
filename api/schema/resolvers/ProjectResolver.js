@@ -631,8 +631,9 @@ module.exports = {
                 //get updated project
                 project = await models.Project.findByPk(args.project_id)
             }
-            //search for the date of the last sync to fetch since taht date
+            //search for the date of the last sync to fetch since that date
             const lastEntrySynced = await models.TimeEntry.findOne({
+                where: { project_id: args.project_id },
                 order: [['created_at', 'DESC']]
             })
             const dataSync = await apiModules.dataSyncs.syncTogglProject({
