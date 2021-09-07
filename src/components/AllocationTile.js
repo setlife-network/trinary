@@ -40,11 +40,11 @@ const AllocationTile = (props) => {
     const history = useHistory()
 
     const redirectToProject = () => {
-        history.push('/projects/'.concat(allocation.project.id).concat('/overview'))
+        history.push('/projects/' + allocation.project.id + '/overview')
     }
 
     const redirectToClient = () => {
-        history.push('/clients/'.concat(allocation.project.client.id))
+        history.push('/clients/' + allocation.project.client.id)
     }
 
     return (
@@ -59,28 +59,28 @@ const AllocationTile = (props) => {
                     <AccountBalanceWalletIcon color='primary'/>
                 </Grid>
                 <Grid item xs={8} md={5}>
-                    <Typography variant={'h6'} >
+                    <Typography variant={'h6'}>
                         {`${paymentAmount}`}
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <Typography 
-                        variant='subtitle1' 
+                    <Typography
+                        variant='subtitle1'
                         color='secondary'
-                        noWrap 
+                        noWrap
                         className='redirect'
-                        onClick={redirectToProject} 
+                        onClick={redirectToProject}
                     >
                         <strong>
                             {`${allocation.project.name}`}
                         </strong>
                     </Typography>
-                    <Typography 
-                        variant='caption' 
-                        color='secondary' 
+                    <Typography
+                        variant='caption'
+                        color='secondary'
                         noWrap
                         className='redirect'
-                        onClick={redirectToClient} 
+                        onClick={redirectToClient}
                     >
                         <span>
                             {`${allocation.project.client.name}`}
