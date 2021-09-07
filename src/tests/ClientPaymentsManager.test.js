@@ -19,26 +19,26 @@ const mockGetClientTotalPaid = {
             getClientById: {
                 id: '40',
                 currency: 'USD',
-                totalPaid(fromDate, toDate) 
+                totalPaid: '485000'
             },
         },
     },
 };
 
-// it('render clients by id', async () => {
-//     let wrapper;
-//     await act(async () => {
-//         wrapper = mount(
-//             <MockedProvider addTypename={false} mocks={mockGetClientTotalPaid}>
-//                 <ClientPaymentsManager />
-//             </MockedProvider>
-//         );
-//     });
+it('render clients by id', async () => {
+    let wrapper;
+    await act(async () => {
+        wrapper = mount(
+            <MockedProvider addTypename={false} mocks={mockGetClientTotalPaid}>
+                <ClientPaymentsManager />
+            </MockedProvider>
+        );
+    });
 
-//     await act(() => wait(0));
-//     wrapper.update();
-//     expect(wrapper).toBeThruthy();
-//     expect(wrapper.find('.test')).toHaveText(
+    await act(() => wait(0));
+    wrapper.update();
+    expect(wrapper).toBeThruthy();
+    expect(wrapper.find('.test')).toHaveText(
 
-//     );
-// })
+    );
+})
