@@ -110,7 +110,9 @@ const ContributorAllocations = (props) => {
                     </Button>
                 </Grid>
                 <Grid item xs={12}>
-                    {`Allocated`}
+                    <Typography variant='h6' color='secondary'>
+                        {`Allocated`}
+                    </Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={5}>
@@ -126,7 +128,9 @@ const ContributorAllocations = (props) => {
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                    {`Proposed`}
+                    <Typography variant='h6' color='secondary'>
+                        {`Proposed`}
+                    </Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={5}>
@@ -134,7 +138,7 @@ const ContributorAllocations = (props) => {
                             ? renderAllocations({ allocations: proposedAllocations })
                             : (
                                 <EmptyState
-                                    description='This contributor has no allocations at the moment'
+                                    description='This contributor has no proposed allocations'
                                     iconClassName='fas fa-money-check'
                                 />
                             )
