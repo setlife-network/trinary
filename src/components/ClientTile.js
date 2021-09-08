@@ -48,6 +48,7 @@ const ClientTile = ({
                                 <Grid
                                     item
                                     xs={10}
+                                    data-testid='client-name'
                                 >
                                     <Typography variant='h6'>
                                         {client.name}
