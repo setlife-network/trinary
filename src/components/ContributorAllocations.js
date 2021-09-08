@@ -4,7 +4,9 @@ import {
     Box,
     Button,
     Grid,
-    Typography
+    Typography,
+    Menu,
+    MenuItem
 } from '@material-ui/core'
 import SortIcon from '@material-ui/icons/Sort'
 import { isEmpty } from 'lodash'
@@ -26,7 +28,8 @@ const ContributorAllocations = (props) => {
     } = props
 
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
-
+    const [anchorEl, setanchorEl] = useState(null)
+    
     const {
         data: dataContributorAllocations,
         loading: loadingContributorAllocations,
@@ -63,8 +66,6 @@ const ContributorAllocations = (props) => {
         })
     }
 
-    console.log(dataContributorAllocations)
-
     if (loadingContributorAllocations || loadingContributor) return <LoadingProgress/>
     if (errorContributorAllocations || errorContributor) return 'Error!'
 
@@ -80,6 +81,30 @@ const ContributorAllocations = (props) => {
             proposedAllocations.push(d)
         }
     })
+
+    const handleSortButton = (event) => {
+        setanchorEl(event.currentTarget)
+    }
+
+    const handleClose = () => {
+        setanchorEl(null);
+    }
+
+    const sortByNewestStartDate = () => {
+        const test1 = allocatedAllocations.sort((a, b) => b.start_date - a.start_date)
+        proposedAllocations.sort((a, b) => b.start_date - a.start_date)
+        console.log(test1)
+        handleClose()
+    }
+
+    const sortByOldestStartDate = () => {
+        const test2 = allocatedAllocations.sort((a, b) => a.start_date - b.start_date)
+        proposedAllocations.sort((a, b) => a.start_date - b.start_date)
+        console.log(test2)
+        handleClose()
+    }
+
+    console.log('renderizado')
 
     return (
         <Box my={[2, 5]} mx={3} className='ContributorAllocations'>
@@ -105,9 +130,20 @@ const ContributorAllocations = (props) => {
                     </Button>
                 </Grid>
                 <Grid item xs='auto'>
-                    <Button>
+                    <Button aria-controls='simple-menu' aria-haspopup='true' onClick={handleSortButton}>
                         <SortIcon/>
                     </Button>
+                    <Menu
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                    >
+                        <MenuItem onClick={sortByNewestStartDate}>Start Date (newest first)</MenuItem>
+                        <MenuItem onClick={sortByOldestStartDate}>Start Date (older first)</MenuItem>
+                        <MenuItem onClick={handleClose}>Project</MenuItem>
+                        <MenuItem onClick={handleClose}>Client</MenuItem>
+                    </Menu>
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant='h6' color='secondary'>
