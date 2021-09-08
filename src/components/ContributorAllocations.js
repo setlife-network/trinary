@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import {
     Box,
@@ -63,11 +63,23 @@ const ContributorAllocations = (props) => {
         })
     }
 
+    console.log(dataContributorAllocations)
+
     if (loadingContributorAllocations || loadingContributor) return <LoadingProgress/>
     if (errorContributorAllocations || errorContributor) return 'Error!'
 
     const { getContributorById: contributorAllocations } = dataContributorAllocations
     const { getContributorById: contributor } = dataContributor
+    
+    const allocatedAllocations = []
+    const proposedAllocations = []
+    contributorAllocations.allocations.map(d => {
+        if (d.payment) {
+            allocatedAllocations.push(d)
+        } else {
+            proposedAllocations.push(d)
+        }
+    })
 
     return (
         <Box my={[2, 5]} mx={3} className='ContributorAllocations'>
@@ -102,8 +114,8 @@ const ContributorAllocations = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={5}>
-                        {!isEmpty(contributorAllocations.allocations)
-                            ? renderAllocations({ allocations: contributorAllocations.allocations })
+                        {!isEmpty(allocatedAllocations)
+                            ? renderAllocations({ allocations: allocatedAllocations })
                             : (
                                 <EmptyState
                                     description='This contributor has no allocations at the moment'
@@ -115,6 +127,19 @@ const ContributorAllocations = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     {`Proposed`}
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid container spacing={5}>
+                        {!isEmpty(proposedAllocations)
+                            ? renderAllocations({ allocations: proposedAllocations })
+                            : (
+                                <EmptyState
+                                    description='This contributor has no allocations at the moment'
+                                    iconClassName='fas fa-money-check'
+                                />
+                            )
+                        }
+                    </Grid>
                 </Grid>
             </Grid>
             <AllocationAddForm
