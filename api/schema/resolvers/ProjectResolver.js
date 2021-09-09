@@ -318,10 +318,10 @@ module.exports = {
                         [Op.between]: [
                             args.fromDate
                                 ? args.fromDate
-                                : moment.utc(1),
+                                : moment.utc(1).format('YYYY-MM-DD'),
                             args.toDate
                                 ? args.toDate
-                                : moment.utc()
+                                : moment.utc().format('YYYY-MM-DD')
                         ]
                     },
                     contributor_id: args.contributor_id
@@ -346,10 +346,10 @@ module.exports = {
                             [Op.between]: [
                                 args.fromDate
                                     ? args.fromDate
-                                    : moment.utc(1),
+                                    : moment.utc(1).format('YYYY-MM-DD'),
                                 args.toDate
                                     ? args.toDate
-                                    : moment.utc()
+                                    : moment.utc().format('YYYY-MM-DD')
                             ]
                         },
                     },
@@ -371,10 +371,10 @@ module.exports = {
                         [Op.between]: [
                             args.fromDate
                                 ? args.fromDate
-                                : moment.utc(1),
+                                : moment.utc(1).format('YYYY-MM-DD'),
                             args.toDate
                                 ? args.toDate
-                                : moment.utc()
+                                : moment.utc().format('YYYY-MM-DD')
                         ]
                     }
                 }
@@ -391,10 +391,11 @@ module.exports = {
                     [Op.between]:
                         [args.fromDate
                             ? args.fromDate
-                            : moment.utc(1),
+                            : moment.utc(1).format('YYYY-MM-DD'),
                         args.toDate
                             ? args.toDate
-                            : moment.utc()]
+                            : moment.utc().format('YYYY-MM-DD')
+                        ]
                 }
             }
             if (args.contributor_id) {
