@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import {
     Box,
@@ -9,7 +9,7 @@ import {
     MenuItem
 } from '@material-ui/core'
 import SortIcon from '@material-ui/icons/Sort'
-import { isEmpty, filter, sortBy, orderBy } from 'lodash'
+import { isEmpty, filter, orderBy } from 'lodash'
 
 import AllocationAddForm from './AllocationAddForm'
 import AllocationTile from './AllocationTile'
@@ -20,7 +20,6 @@ import {
     GET_CONTRIBUTOR_INFO
 } from '../operations/queries/ContributorQueries'
 import { white } from '../styles/colors.scss'
-import { getAllocatedContributors } from '../scripts/selectors'
 
 const ContributorAllocations = (props) => {
 
@@ -105,22 +104,22 @@ const ContributorAllocations = (props) => {
     }
     
     const sortByProjectName = () => {
-        setSortAllocated(orderBy(allocatedAllocations, item => item.project.name, ['asc']))
-        setSortProposed(orderBy(proposedAllocations, item => item.project.name, ['asc']))
+        setSortAllocated(orderBy(allocatedAllocations, item => item.project.name.toLowerCase(), ['asc']))
+        setSortProposed(orderBy(proposedAllocations, item => item.project.name.toLowerCase(), ['asc']))
         handleClose()
 
     }
 
     const sortByClientName = () => {
-        setSortAllocated(orderBy(allocatedAllocations, item => item.project.client.name, ['asc']))
-        setSortProposed(orderBy(proposedAllocations, item => item.project.client.name, ['asc']))
+        setSortAllocated(orderBy(allocatedAllocations, item => item.project.client.name.toLowerCase(), ['asc']))
+        setSortProposed(orderBy(proposedAllocations, item => item.project.client.name.toLowerCase(), ['asc']))
         handleClose()
 
     }
 
     const sortByPayment = () => {
-        setSortAllocated(orderBy(allocatedAllocations, item => item.payment.amount, ['desc']))
-        setSortProposed(orderBy(proposedAllocations, item => item.payment.amount, ['desc']))
+        setSortAllocated(orderBy(allocatedAllocations, ['amount'], ['desc']))
+        setSortProposed(orderBy(proposedAllocations, ['amount'], ['desc']))
         handleClose()
     }
 
