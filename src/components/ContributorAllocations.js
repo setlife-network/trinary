@@ -124,9 +124,6 @@ const ContributorAllocations = (props) => {
         handleClose()
     }
 
-    console.log(sortAllocated)
-    console.log(sortProposed)
-
     return (
         <Box my={[2, 5]} mx={3} className='ContributorAllocations'>
             <Grid container spacing={4}>
