@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import {
     Box,
     Card,
     Grid,
-    Typography
+    Typography,
+    Tooltip
 } from '@material-ui/core'
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
 import { overflow, textOverflow } from '@material-ui/system/display'
@@ -35,6 +37,16 @@ const AllocationTile = (props) => {
     const futureAllocation = moment.utc(allocation.start_date, 'x').isAfter(moment(), 'days')
     const weeksOfdDifference = moment.utc(allocation.end_date, 'x').diff(moment(), 'weeks')
 
+    const history = useHistory()
+
+    const redirectToProject = () => {
+        history.push('/projects/' + allocation.project.id + '/overview')
+    }
+
+    const redirectToClient = () => {
+        history.push('/clients/' + allocation.project.client.id)
+    }
+
     return (
         <Box
             p={2}
@@ -52,15 +64,27 @@ const AllocationTile = (props) => {
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <Box overflow='hidden' textOverflow='ellipsis'>
-                        <Typography variant='subtitle1' color='secondary' noWrap>
-                            <strong>
-                                {`${allocation.project.name}`}
-                            </strong>
-                        </Typography>
-                    </Box>
-                    <Typography variant='caption' color='secondary'>
-                        {`${allocation.project.client.name}`}
+                    <Typography
+                        variant='subtitle1'
+                        color='secondary'
+                        noWrap
+                        className='redirect'
+                        onClick={redirectToProject}
+                    >
+                        <strong>
+                            {`${allocation.project.name}`}
+                        </strong>
+                    </Typography>
+                    <Typography
+                        variant='caption'
+                        color='secondary'
+                        noWrap
+                        className='redirect'
+                        onClick={redirectToClient}
+                    >
+                        <span>
+                            {`${allocation.project.client.name}`}
+                        </span>
                     </Typography>
                 </Grid>
                 <Box my={[2, 5]}/>
