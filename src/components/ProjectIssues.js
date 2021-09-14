@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import {
     Box,
     Button,
-    Grid
+    Grid,
+    Link
 } from '@material-ui/core'
 import moment from 'moment'
 import { orderBy } from 'lodash'
@@ -13,7 +14,7 @@ import IssueTile from './IssueTile'
 import LoadingProgress from './LoadingProgress'
 import ProjectIssuesMetrics from './ProjectIssuesMetrics'
 
-import { GET_PROJECT_ISSUES } from '../operations/queries/ProjectQueries'
+import { GET_PROJECT, GET_PROJECT_ISSUES } from '../operations/queries/ProjectQueries'
 import { SYNC_GITHUB_ISSUES } from '../operations/mutations/ProjectMutations'
 import { pageName } from '../reactivities/variables'
 
@@ -64,11 +65,13 @@ const ProjectIssues = (props) => {
         })
     }
 
+
     if (loadingProjectIssues) return <LoadingProgress/>
     if (errorProjectIssues) {
         return (
             <GithubAccessBlocked
-                message={`You must be a Github collaborator to access this metrics`}
+                message={`You must have access to this repository on GitHub to access these metrics.`}
+                projectId={projectId}
             />
         )
     }

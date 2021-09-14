@@ -1,0 +1,14 @@
+.DateInput {
+    .MuiPaper-elevation1 {
+        box-shadow: none;
+        border: 1px solid $light_grey;
+    }
+    .MuiAccordionDetails-root {
+        padding: 0;
+    }
+}
+
+@media screen and (min-width: $sm) {
+    .DateInput {
+    }
+}

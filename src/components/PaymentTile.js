@@ -156,7 +156,7 @@ const PaymentTile = (props) => {
                         </Grid>
                         <Grid item xs={6} align='right'>
                             <Typography color='secondary' variant='caption' className='animation-effect-right'>
-                                {`Ends ${moment.utc(end_date, 'x').format('MM/DD/YYYY')} `}
+                                {`Ends ${moment(end_date, 'x').format('MM/DD/YYYY')} `}
                             </Typography>
                         </Grid>
                     </Grid>
