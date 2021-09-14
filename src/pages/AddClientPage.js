@@ -1,10 +1,6 @@
 import React from 'react'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
 import ClientAddForm from '../components/ClientAddForm'
@@ -20,11 +16,11 @@ class AddClientPage extends React.Component {
             >
                 <Grid item xs={10}>
                     <Typography align='left'>
-                        <strong data-testid='create-client'>
+                        <strong>
                             Enter info below to create a client
                         </strong>
                     </Typography>
-                    <Typography align='left' data-testid='add-projects'>
+                    <Typography align='left'>
                         You can add projects within the newly created client page
                     </Typography>
                     <Box mt={5}>

@@ -61,7 +61,7 @@ const ProjectOverview = (props) => {
         >
             <Grid item xs={12}>
                 <Box pb={3}>
-                    <Typography variant='h4' align='center' data-testid='overview-title'>
+                    <Typography variant='h4' align='center'>
                         <strong>
                             {'Overview'}
                         </strong>

@@ -10,9 +10,9 @@ beforeEach(() => {
     getByTestId = component.getByTestId
 })
 
-// afterEach(() => {
-//     cleanup()
-// })
+afterEach(() => {
+    cleanup()
+})
 
 test('Log in button', () => {
     const buttonEl = getByTestId('button-h3');
