@@ -29,12 +29,16 @@ const automations = module.exports = (() => {
 
     const getTogglPropertiesFromURL = async (params) => {
         // Url example https://track.toggl.com/3070292/projects/156669532
-        URL = params.toggl_url
+        URL = params
         const splitedUrl = URL.split(/\//)
-        const workspaceId = splitedUrl[2]
-        const projectId = splitedUrl[4]
+        try {
+            const workspaceId = splitedUrl[3]
+            const togglId = splitedUrl[5]
 
-        return { workspaceId, projectId }
+            return { workspaceId, togglId }
+        } catch (err) {
+            console.log('an error ocurred while spliting the toggl url: ', err)
+        }
     }
 
     const getUserOrganizations = async (params) => {

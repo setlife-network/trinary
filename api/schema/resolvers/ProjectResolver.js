@@ -610,22 +610,26 @@ module.exports = {
         syncTogglProject: async (root, args, { models }) => {
             let project = await models.Project.findByPk(args.project_id)
             const toggl_url = project.toggl_url
-            const togglPropertiesFromUrl = await apiModules.automations.getTogglPropertiesFromURL(toggl_url)
+            const togglPropertiesFromUrl =
+                toggl_url
+                    ? await apiModules.automations.getTogglPropertiesFromURL(toggl_url)
+                    : null
             if (!TOGGL.API_KEY) {
                 return new ApolloError('You need to setup a Toggl API KEY on the .env file', 2001)
             }
-            if (!args.toggl_id && !project.toggl_id) {
+            if (!args.toggl_id && !project.toggl_id || !togglPropertiesFromUrl.togglId) {
                 return new ApolloError('You need to provide a toggl project id', 2001)
-            } else if (args.toggl_id) {
+            } else if (args.toggl_id || togglPropertiesFromUrl.togglId) {
                 //check if project exists
+                const togglId = args.toggl_id ? args.toggl_id : togglPropertiesFromUrl.togglId
                 try {
-                    await toggl.fetchProjectData({ projectId: args.toggl_id })
+                    await toggl.fetchProjectData({ projectId: togglId })
                 } catch (err) {
                     return new ApolloError(`That toggl_id project doesen't exists`, 2002)
                 }
                 //update toggl_id
                 await models.Project.update({
-                    toggl_id: args.toggl_id
+                    toggl_id: togglId
                 }, {
                     where: {
                         id: args.project_id
@@ -657,6 +661,11 @@ module.exports = {
             validateDatesFormat({
                 date: updateFields['date']
             })
+            if (updateFields.toggl_url){
+                const togglValuesFromUrl = await apiModules.automations.getTogglPropertiesFromURL(updateFields.toggl_url)
+                const togglId = togglValuesFromUrl.togglId
+                updateFields['toggl_id'] = togglId
+            }
             await models.Project.update({
                 ...updateFields
             }, {
