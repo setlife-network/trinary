@@ -64,12 +64,14 @@ const github = module.exports = (() => {
                 per_page: 100,
                 sort: 'updated',
                 direction: 'desc',
+                page: params.githubPageNumber
             })
             : await octokit.repos.listForUser({
                 username: params.organizationName,
                 per_page: 100,
                 sort: 'updated',
                 direction: 'desc',
+                page: params.githubPageNumber
             })
         if (res.status == 200) {
             return res.data
