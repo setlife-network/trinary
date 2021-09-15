@@ -31,6 +31,7 @@ const ContributorAllocations = (props) => {
     const [anchorEl, setanchorEl] = useState(null)
     const [sortAllocated, setSortAllocated] = useState()
     const [sortProposed, setSortProposed] = useState()
+    const [selectedSort, setSelectedSort] = useState()
     
     const {
         data: dataContributorAllocations,
@@ -88,24 +89,22 @@ const ContributorAllocations = (props) => {
     const sortByNewestStartDate = () => {
         setSortAllocated(orderBy(allocatedAllocations, ['start_date'], ['desc']))
         setSortProposed(orderBy(proposedAllocations, ['start_date'], ['desc']))
+        setSelectedSort('Start Date (Newest first)')
         handleClose()
     }
 
     const sortByOldestStartDate = () => {
         setSortAllocated(orderBy(allocatedAllocations, ['start_date'], ['asc']))
         setSortProposed(orderBy(proposedAllocations, ['start_date'], ['asc']))
+        setSelectedSort('Start Date (Oldest first)')
+
         handleClose()
     }
 
-    const sortByEndDate = () => {
-        setSortAllocated(orderBy(allocatedAllocations, ['end_date'], ['asc']))
-        setSortProposed(orderBy(proposedAllocations, ['end_date'], ['asc']))
-        handleClose()
-    }
-    
     const sortByProjectName = () => {
         setSortAllocated(orderBy(allocatedAllocations, item => item.project.name.toLowerCase(), ['asc']))
         setSortProposed(orderBy(proposedAllocations, item => item.project.name.toLowerCase(), ['asc']))
+        setSelectedSort('Project Name')
         handleClose()
 
     }
@@ -113,6 +112,7 @@ const ContributorAllocations = (props) => {
     const sortByClientName = () => {
         setSortAllocated(orderBy(allocatedAllocations, item => item.project.client.name.toLowerCase(), ['asc']))
         setSortProposed(orderBy(proposedAllocations, item => item.project.client.name.toLowerCase(), ['asc']))
+        setSelectedSort('Client Name')
         handleClose()
 
     }
@@ -120,6 +120,14 @@ const ContributorAllocations = (props) => {
     const sortByPayment = () => {
         setSortAllocated(orderBy(allocatedAllocations, ['amount'], ['desc']))
         setSortProposed(orderBy(proposedAllocations, ['amount'], ['desc']))
+        setSelectedSort('Payment')
+        handleClose()
+    }
+
+    const clearSort = () => {
+        setSortAllocated(allocatedAllocations)
+        setSortProposed(proposedAllocations)
+        setSelectedSort(null)
         handleClose()
     }
 
@@ -158,12 +166,21 @@ const ContributorAllocations = (props) => {
                     >
                         <MenuItem onClick={sortByNewestStartDate}>Start Date (newest first)</MenuItem>
                         <MenuItem onClick={sortByOldestStartDate}>Start Date (older first)</MenuItem>
-                        <MenuItem onClick={sortByEndDate}>End Date</MenuItem>
                         <MenuItem onClick={sortByProjectName}>Project</MenuItem>
                         <MenuItem onClick={sortByClientName}>Client</MenuItem>
                         <MenuItem onClick={sortByPayment}>Payment</MenuItem>
+                        <MenuItem onClick={clearSort}>Clear Sort</MenuItem>
                     </Menu>
                 </Grid>
+                {selectedSort
+                    ? (
+                        <Grid item xs='12'>
+                            <Typography variant='subtitle1' color='primary'>
+                                {'Sorting by ' + selectedSort}
+                            </Typography>
+                        </Grid>
+                    ) : null
+                }
                 <Grid item xs={12}>
                     <Typography variant='h6' color='secondary'>
                         {`Allocated`}
