@@ -38,6 +38,7 @@ const automations = module.exports = (() => {
         const repos = await github.fetchRepos({
             auth_key: params.auth_key,
             organizationName: params.organizationName,
+            githubPageNumber: params.githubPageNumber,
             isOrganization
         })
         const organizationRepos = []
