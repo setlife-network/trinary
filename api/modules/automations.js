@@ -29,8 +29,8 @@ const automations = module.exports = (() => {
 
     const getTogglPropertiesFromURL = async (params) => {
         // Url example https://track.toggl.com/3070292/projects/156669532
-        URL = params
-        const splitedUrl = URL.split(/\//)
+        const togglURL = params
+        const splitedUrl = togglURL.split(/\//)
         try {
             const workspaceId = splitedUrl[3]
             const togglId = splitedUrl[5]

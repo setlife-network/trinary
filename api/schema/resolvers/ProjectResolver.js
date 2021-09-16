@@ -609,19 +609,19 @@ module.exports = {
         },
         syncTogglProject: async (root, args, { models }) => {
             let project = await models.Project.findByPk(args.project_id)
-            const toggl_url = project.toggl_url
+            const toggl_url = args.toggl_url
             const togglPropertiesFromUrl =
                 toggl_url
                     ? await apiModules.automations.getTogglPropertiesFromURL(toggl_url)
                     : null
+            const togglId = project.toggl_id ? project.toggl_id : togglPropertiesFromUrl.togglId
             if (!TOGGL.API_KEY) {
                 return new ApolloError('You need to setup a Toggl API KEY on the .env file', 2001)
             }
-            if (!args.toggl_id && !project.toggl_id || !togglPropertiesFromUrl.togglId) {
+            if (!togglId) {
                 return new ApolloError('You need to provide a toggl project id', 2001)
-            } else if (args.toggl_id || togglPropertiesFromUrl.togglId) {
+            } else if (togglId) {
                 //check if project exists
-                const togglId = args.toggl_id ? args.toggl_id : togglPropertiesFromUrl.togglId
                 try {
                     await toggl.fetchProjectData({ projectId: togglId })
                 } catch (err) {
