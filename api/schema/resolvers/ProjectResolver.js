@@ -609,52 +609,55 @@ module.exports = {
         },
         syncTogglProject: async (root, args, { models }) => {
             let project = await models.Project.findByPk(args.project_id)
-            const toggl_url = args.toggl_url
-            const togglPropertiesFromUrl =
-                toggl_url
-                    ? await apiModules.automations.getTogglPropertiesFromURL(toggl_url)
-                    : null
-            const togglId = project.toggl_id ? project.toggl_id : togglPropertiesFromUrl.togglId
-            if (!TOGGL.API_KEY) {
-                return new ApolloError('You need to setup a Toggl API KEY on the .env file', 2001)
-            }
-            if (!togglId) {
-                return new ApolloError('You need to provide a toggl project id', 2001)
-            } else if (togglId) {
-                //check if project exists
-                try {
-                    await toggl.fetchProjectData({ projectId: togglId })
-                } catch (err) {
-                    return new ApolloError(`That toggl_id project doesen't exists`, 2002)
+            if (args.toggl_url) {
+                const toggl_url = args.toggl_url
+                const togglPropertiesFromUrl =
+                    toggl_url
+                        ? await apiModules.automations.getTogglPropertiesFromURL(toggl_url)
+                        : null
+                const togglId = project.toggl_id ? project.toggl_id : togglPropertiesFromUrl.togglId
+                if (!TOGGL.API_KEY) {
+                    return new ApolloError('You need to setup a Toggl API KEY on the .env file', 2001)
                 }
-                //update toggl_id
-                await models.Project.update({
-                    toggl_id: togglId
-                }, {
-                    where: {
-                        id: args.project_id
+                if (!togglId) {
+                    return new ApolloError('You need to provide a toggl project id', 2001)
+                } else if (togglId) {
+                    //check if project exists
+                    try {
+                        await toggl.fetchProjectData({projectId: togglId})
+                    } catch (err) {
+                        return new ApolloError(`That toggl_id project doesen't exists`, 2002)
                     }
-                });
-                //get updated project
-                project = await models.Project.findByPk(args.project_id)
-            }
-            //search for the date of the last sync to fetch since that date
-            const lastEntrySynced = await models.TimeEntry.findOne({
-                where: { project_id: args.project_id },
-                order: [['created_at', 'DESC']]
-            })
-            const dataSync = await apiModules.dataSyncs.syncTogglProject({
-                toggl_project_id: project.toggl_id,
-                workspaceId: togglPropertiesFromUrl.workspaceId,
-                project_id: project.id,
-                since: lastEntrySynced
-                    ? lastEntrySynced.created_at
-                    : moment().subtract(1, 'y').format('YYYY-MM-DD')
-            })
-            if (dataSync) {
-                return project
-            } else {
-                return new ApolloError('Something wrong happened', 2003)
+                    //update toggl_id
+                    await models.Project.update({
+                        toggl_id: togglId
+                    }, {
+                        where: {
+                            id: args.project_id
+                        }
+                    });
+                    //get updated project
+                    project = await models.Project.findByPk(args.project_id)
+                }
+                //search for the date of the last sync to fetch since that date
+                const lastEntrySynced = await models.TimeEntry.findOne({
+                    where: {project_id: args.project_id},
+                    order: [['created_at', 'DESC']]
+                })
+                const dataSync = await apiModules.dataSyncs.syncTogglProject({
+                    toggl_project_id: project.toggl_id,
+                    workspaceId: togglPropertiesFromUrl.workspaceId,
+                    project_id: project.id,
+                    since: lastEntrySynced
+                        ? lastEntrySynced.created_at
+                        : moment().subtract(1, 'y').format('YYYY-MM-DD'),
+                    until: moment().format()
+                })
+                if (dataSync) {
+                    return project
+                } else {
+                    return new ApolloError('Something wrong happened', 2003)
+                }
             }
         },
         updateProjectById: async (root, { id, updateFields }, { models }) => {

@@ -51,9 +51,9 @@ const ProjectEditDialog = (props) => {
     const [
         syncTogglProject,
         {
-            data: dataEntries,
-            loading: loadingEntries,
-            error: errorEntries,
+            data: dataTogglSync,
+            loading: loadingTogglSync,
+            error: errorTogglSync,
         }] = useMutation(SYNC_TOGGL_PROJECT)
 
     const [updateProject, { data, loading, error }] = useMutation(UPDATE_PROJECT, { errorPolicy: 'all' })
@@ -121,14 +121,16 @@ const ProjectEditDialog = (props) => {
             setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}  already exists`)
             setDisplayError(true)
         } else {
+            const sync = await syncTogglProject({
+                variables: {
+                    project_id: project.id,
+                    toggl_url: togglURL
+                }
+            })
+            if (loadingTogglSync) return <LoadingProgress/>
             onClose()
         }
-        const sync = await syncTogglProject({
-            variables: {
-                project_id: project.id,
-                toggl_url: togglURL
-            }
-        })
+
     }
 
     useEffect(() => {
