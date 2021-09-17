@@ -16,6 +16,6 @@ RUN npm install
 # copy project files
 COPY . .
 
-EXPOSE 80 443
+EXPOSE 8080
 STOPSIGNAL SIGTERM
 CMD [ "node", "server.js" ]
