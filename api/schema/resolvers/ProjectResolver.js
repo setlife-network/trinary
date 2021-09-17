@@ -641,7 +641,7 @@ module.exports = {
                 }
                 //search for the date of the last sync to fetch since that date
                 const lastEntrySynced = await models.TimeEntry.findOne({
-                    where: {project_id: args.project_id},
+                    where: { project_id: args.project_id },
                     order: [['created_at', 'DESC']]
                 })
                 const dataSync = await apiModules.dataSyncs.syncTogglProject({
@@ -664,7 +664,7 @@ module.exports = {
             validateDatesFormat({
                 date: updateFields['date']
             })
-            if (updateFields.toggl_url){
+            if (updateFields.toggl_url) {
                 const togglValuesFromUrl = await apiModules.automations.getTogglPropertiesFromURL(updateFields.toggl_url)
                 const togglId = togglValuesFromUrl.togglId
                 updateFields['toggl_id'] = togglId
