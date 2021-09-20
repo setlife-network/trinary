@@ -151,6 +151,7 @@ const AddProjectForm = (props) => {
                         toggl_url: newProjectVariables.toggl_url
                     }
                 })
+                console.log('pass')
             }
             history.push(`/projects/${newProject.data.createProject.id}`)
         }

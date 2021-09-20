@@ -121,13 +121,12 @@ const ProjectEditDialog = (props) => {
             setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}  already exists`)
             setDisplayError(true)
         } else {
-            const sync = await syncTogglProject({
+            await syncTogglProject({
                 variables: {
                     project_id: project.id,
                     toggl_url: togglURL
                 }
             })
-            if (loadingTogglSync) return <LoadingProgress/>
             onClose()
         }
 

@@ -615,7 +615,7 @@ module.exports = {
                     toggl_url
                         ? await apiModules.automations.getTogglPropertiesFromURL(toggl_url)
                         : null
-                const togglId = project.toggl_id ? project.toggl_id : togglPropertiesFromUrl.togglId
+                const togglId = togglPropertiesFromUrl.togglId
                 if (!TOGGL.API_KEY) {
                     return new ApolloError('You need to setup a Toggl API KEY on the .env file', 2001)
                 }
@@ -626,7 +626,7 @@ module.exports = {
                     try {
                         await toggl.fetchProjectData({projectId: togglId})
                     } catch (err) {
-                        return new ApolloError(`That toggl_id project doesen't exists`, 2002)
+                        return new ApolloError(`The toggl_id ${togglId} project does not exists`, 2002)
                     }
                     //update toggl_id
                     await models.Project.update({
