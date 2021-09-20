@@ -151,7 +151,7 @@ const AddProjectForm = (props) => {
                         toggl_url: newProjectVariables.toggl_url
                     }
                 })
-                console.log('pass')
+                if (loadingTogglSync) return <LoadingProgress/>
             }
             history.push(`/projects/${newProject.data.createProject.id}`)
         }

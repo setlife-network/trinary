@@ -127,6 +127,7 @@ const ProjectEditDialog = (props) => {
                     toggl_url: togglURL
                 }
             })
+            if (loadingTogglSync) return <LoadingProgress/>
             onClose()
         }
 
