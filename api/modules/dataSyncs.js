@@ -190,12 +190,17 @@ const dataSyncs = module.exports = (() => {
                 pId: params.toggl_project_id,
                 wId: params.workspaceId,
                 since: params.since,
-                until: params.until
+                until: params.until,
+                page: params.page
             })
             const addedTimeEntries = await timeLogging.addTimeEntries({
                 timeEntries,
                 project_id: params.project_id
             })
+            if (timeEntries.length >= 50) {
+                params.page += 1
+                await syncTogglProject(params)
+            }
         } catch (error) {
             console.log('error: ' + error)
             return

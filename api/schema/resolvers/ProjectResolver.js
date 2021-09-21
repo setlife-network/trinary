@@ -651,7 +651,8 @@ module.exports = {
                     since: lastEntrySynced
                         ? lastEntrySynced.created_at
                         : moment().subtract(1, 'y').format('YYYY-MM-DD'),
-                    until: moment().format()
+                    until: moment().format(),
+                    page: 1
                 })
                 if (dataSync) {
                     return project

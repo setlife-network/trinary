@@ -26,14 +26,16 @@ module.exports = (() => {
                 contributor = await matchContributor(timeEntry)
                 if (contributor) {
                     try {
-                        await db.models.TimeEntry.create({
-                            seconds: timeEntry.dur / 1000,
-                            toggl_id: timeEntry.id,
-                            start_time: timeEntry.start,
-                            description: timeEntry.description || null,
-                            contributor_id: contributor.id,
-                            project_id: params.project_id,
-                        })
+                        if (!(await matchTimeEntry(timeEntry))) {
+                            await db.models.TimeEntry.create({
+                                seconds: timeEntry.dur / 1000,
+                                toggl_id: timeEntry.id,
+                                start_time: timeEntry.start,
+                                description: timeEntry.description || null,
+                                contributor_id: contributor.id,
+                                project_id: params.project_id,
+                            })
+                        }
                     } catch (err) {
                         console.log('error while creating time entry ', err)
                     }

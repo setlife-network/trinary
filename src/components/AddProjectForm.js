@@ -51,7 +51,7 @@ const AddProjectForm = (props) => {
         addProject,
         {
             data,
-            loading,
+            loading: loadingAddProject,
             error
         }] = useMutation(ADD_PROJECT, {
         errorPolicy: 'all'
@@ -133,7 +133,7 @@ const AddProjectForm = (props) => {
             newProjectVariables.toggl_url = projectToggl
         }
         const newProject = await addProject({ variables: newProjectVariables })
-        if (loading) return <LoadingProgress/>
+        if (loadingAddProject) return <LoadingProgress/>
         if (newProject.errors) {
             setCreateProjectError(`${Object.keys(newProject.errors[0].extensions.exception.fields)[0]} already exists`)
             setDisplayError(true)

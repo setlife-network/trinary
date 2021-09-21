@@ -56,7 +56,7 @@ const ProjectEditDialog = (props) => {
             error: errorTogglSync,
         }] = useMutation(SYNC_TOGGL_PROJECT)
 
-    const [updateProject, { data, loading, error }] = useMutation(UPDATE_PROJECT, { errorPolicy: 'all' })
+    const [updateProject, { data, loading: loadingUpdateProject, error }] = useMutation(UPDATE_PROJECT, { errorPolicy: 'all' })
 
     const [budgetTimeframe, setBudgetTimeframe] = useState(null)
     const [disableEdit, setDisableEdit] = useState(true)
@@ -116,7 +116,7 @@ const ProjectEditDialog = (props) => {
             toggl_url: togglURL
         }
         const projectEdited = await updateProject({ variables: projectInfoToEdit })
-        if (loading) return <LoadingProgress/>
+        if (loadingUpdateProject) return <LoadingProgress/>
         else if (projectEdited.errors) {
             setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}  already exists`)
             setDisplayError(true)
