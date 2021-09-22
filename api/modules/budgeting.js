@@ -5,21 +5,16 @@ const budgeting = module.exports = (() => {
     const db = require('../models')
     const clientManagement = require('./clientManagement')
 
-    const checkExistingPaymentsWithExternalId = async (params) => {
-        const existingPayments = await db.models.Payment.findAll({
-            where: {
-                external_uuid: params.id
-            }
-        })
+    const checkForMismatchedClientPayments = async (params) => {
+        const existingPayments = await getPaymentsWithClientId({ client_id: params.client.id })
         
         if (existingPayments) {
             existingPayments.forEach(async payment => {
-                const client = await clientManagement.findClientWithId(payment.client_id)
 
-                if (client.currency != DEFAULT_STRIPE_CURRENCY) {
+                if (params.client.currency !== params.stripeInvoiceCurrency) {
                     try {
-                        const deletedCustomer = await clientManagement.deleteClientUuid({ id: client.external_uuid })
-                        console.log(`stripe customer disconnected ${deletedCustomer}`)
+                        const disconnectedCustomer = await clientManagement.deleteClientUuid({ id: params.client.external_uuid })
+                        console.log(`stripe customer disconnected ${disconnectedCustomer.email}`)
                     } catch (err) {
                         console.log(`An error ocurred: ${err}`)
                     }
@@ -67,6 +62,14 @@ const budgeting = module.exports = (() => {
         return deletedPayment
     }
 
+    const getPaymentsWithClientId = (params) => {
+        return db.models.Payment.findAll({
+            where: {
+                client_id: params.client_id
+            }
+        })
+    }
+
     const getPaymentWithExternalId = (params) => {
         return db.models.Payment.findOne({
             where: {
@@ -94,8 +97,8 @@ const budgeting = module.exports = (() => {
         })
 
         try {
-            await checkExistingPaymentsWithExternalId({ id: stripeInvoice.id })
-            client.currency = DEFAULT_STRIPE_CURRENCY //Stripe invoices will always have USD as currency
+            const paymentsDoNotMatch = await checkForMismatchedClientPayments({ client: client, stripeInvoiceCurrency: stripeInvoice.currency })
+            client.currency = stripeInvoice.currency.toUpperCase()
             await client.save()
         } catch (err) {
             console.log(`error while changing client currency: ${err}`)
