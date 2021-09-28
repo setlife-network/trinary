@@ -86,49 +86,172 @@ const ContributorAllocations = (props) => {
         setanchorEl(null);
     }
 
-    const sortByNewestStartDate = () => {
-        setSortAllocated(orderBy(allocatedAllocations, ['start_date'], ['desc']))
-        setSortProposed(orderBy(proposedAllocations, ['start_date'], ['desc']))
-        setSelectedSort('Start Date (Newest first)')
-        handleClose()
+    // const sortByNewestStartDate = () => {
+    //     setSortAllocated(orderBy(allocatedAllocations, ['start_date'], ['desc']))
+    //     setSortProposed(orderBy(proposedAllocations, ['start_date'], ['desc']))
+    //     setSelectedSort('Start Date (Newest first)')
+    //     handleClose()
+    // }
+
+    // const sortByOldestStartDate = () => {
+    //     setSortAllocated(orderBy(allocatedAllocations, ['start_date'], ['asc']))
+    //     setSortProposed(orderBy(proposedAllocations, ['start_date'], ['asc']))
+    //     setSelectedSort('Start Date (Oldest first)')
+
+    //     handleClose()
+    // }
+
+    // const sortByProjectName = () => {
+    //     setSortAllocated(orderBy(allocatedAllocations, item => item.project.name.toLowerCase(), ['asc']))
+    //     setSortProposed(orderBy(proposedAllocations, item => item.project.name.toLowerCase(), ['asc']))
+    //     setSelectedSort('Project Name')
+    //     handleClose()
+
+    // }
+
+    // const sortByClientName = () => {
+    //     setSortAllocated(orderBy(allocatedAllocations, item => item.project.client.name.toLowerCase(), ['asc']))
+    //     setSortProposed(orderBy(proposedAllocations, item => item.project.client.name.toLowerCase(), ['asc']))
+    //     setSelectedSort('Client Name')
+    //     handleClose()
+
+    // }
+
+    // const sortByPayment = () => {
+    //     setSortAllocated(orderBy(allocatedAllocations, ['amount'], ['desc']))
+    //     setSortProposed(orderBy(proposedAllocations, ['amount'], ['desc']))
+    //     setSelectedSort('Payment')
+    //     handleClose()
+    // }
+
+    // const clearSort = () => {
+    //     setSortAllocated(allocatedAllocations)
+    //     setSortProposed(proposedAllocations)
+    //     setSelectedSort(null)
+    //     handleClose()
+    // }
+
+    console.log('render')
+
+    const sortAllocations = ({ typeName, allocated, proposed }) => {
+        if (typeName == 'Project') {
+            setSortAllocated(orderBy(allocated.allocations, item => item.project.name.toLowerCase(), allocated.sortingOrder))
+            setSortProposed(orderBy(proposed.allocations, item => item.project.name.toLowerCase(), proposed.sortingOrder))
+        } else if (typeName == 'Client') {
+            setSortAllocated(orderBy(allocated.allocations, item => item.project.client.name.toLowerCase(), allocated.sortingOrder))
+            setSortProposed(orderBy(proposed.allocations, item => item.project.client.name.toLowerCase(), proposed.sortingOrder))
+        } else {
+            setSortAllocated(orderBy(allocated.allocations, allocated.sortingType, allocated.sortingOrder))
+            setSortProposed(orderBy(proposed.allocations, proposed.sortingType, proposed.sortingOrder))
+        }
+        setSelectedSort(typeName)
     }
 
-    const sortByOldestStartDate = () => {
-        setSortAllocated(orderBy(allocatedAllocations, ['start_date'], ['asc']))
-        setSortProposed(orderBy(proposedAllocations, ['start_date'], ['asc']))
-        setSelectedSort('Start Date (Oldest first)')
+    const sortingOptions = [
+        {
+            name: 'Start Date (Newest first)',
+            sorting: sortAllocations({
+                typeName: 'Start Date (Newest first)',
+                allocated: {
+                    allocations: allocatedAllocations,
+                    sortingType: ['start_date'],
+                    sortingOrder: ['desc']
+                },
+                proposed: {
+                    allocations: proposedAllocations,
+                    sortingType: ['start_date'],
+                    sortingOrder: ['desc']
+                }
+            })
+        },
+        {
+            name: 'Start Date (Older first)',
+            sorting: sortAllocations({
+                typeName: 'Start Date (Older first)',
+                allocated: {
+                    allocations: allocatedAllocations,
+                    sortingType: ['start_date'],
+                    sortingOrder: ['asc']
+                },
+                proposed: {
+                    allocations: proposedAllocations,
+                    sortingType: ['start_date'],
+                    sortingOrder: ['asc']
+                }
+            })
+        },
+        {
+            name: 'Project',
+            sorting: sortAllocations({
+                typeName: 'Project',
+                allocated: {
+                    allocations: allocatedAllocations,
+                    sortingType: '',
+                    sortingOrder: ['asc']
+                },
+                proposed: {
+                    allocations: proposedAllocations,
+                    sortingType: '',
+                    sortingOrder: ['asc']
+                }
+            })
+        },
+        {
+            name: 'Client',
+            sorting: sortAllocations({
+                typeName: 'Client',
+                allocated: {
+                    allocations: allocatedAllocations,
+                    sortingType: '',
+                    sortingOrder: ['asc']
+                },
+                proposed: {
+                    allocations: proposedAllocations,
+                    sortingType: '',
+                    sortingOrder: ['asc']
+                }
+            })
+        },
+        {
+            name: 'Payment',
+            sorting: sortAllocations({
+                typeName: 'Payment',
+                allocated: {
+                    allocations: allocatedAllocations,
+                    sortingType: ['amount'],
+                    sortingOrder: ['desc']
+                },
+                proposed: {
+                    allocations: proposedAllocations,
+                    sortingType: ['amount'],
+                    sortingOrder: ['desc']
+                }
+            })
+        },
+        {
+            name: 'Clear Sort',
+            sorting: sortAllocations({
+                typeName: 'Clear Sort',
+                allocated: {
+                    allocations: allocatedAllocations,
+                    sortingType: null,
+                    sortingOrder: null
+                },
+                proposed: {
+                    allocations: proposedAllocations,
+                    sortingType: null,
+                    sortingOrder: null
+                }
+            })
+        }
+    ]
 
-        handleClose()
-    }
-
-    const sortByProjectName = () => {
-        setSortAllocated(orderBy(allocatedAllocations, item => item.project.name.toLowerCase(), ['asc']))
-        setSortProposed(orderBy(proposedAllocations, item => item.project.name.toLowerCase(), ['asc']))
-        setSelectedSort('Project Name')
-        handleClose()
-
-    }
-
-    const sortByClientName = () => {
-        setSortAllocated(orderBy(allocatedAllocations, item => item.project.client.name.toLowerCase(), ['asc']))
-        setSortProposed(orderBy(proposedAllocations, item => item.project.client.name.toLowerCase(), ['asc']))
-        setSelectedSort('Client Name')
-        handleClose()
-
-    }
-
-    const sortByPayment = () => {
-        setSortAllocated(orderBy(allocatedAllocations, ['amount'], ['desc']))
-        setSortProposed(orderBy(proposedAllocations, ['amount'], ['desc']))
-        setSelectedSort('Payment')
-        handleClose()
-    }
-
-    const clearSort = () => {
-        setSortAllocated(allocatedAllocations)
-        setSortProposed(proposedAllocations)
-        setSelectedSort(null)
-        handleClose()
+    const renderSortOptions = () => {
+        return sortingOptions.map(so => {
+            return (
+                <MenuItem onClick={so.sorting}>{so.name}</MenuItem>
+            )
+        })
     }
 
     return (
@@ -164,12 +287,13 @@ const ContributorAllocations = (props) => {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={sortByNewestStartDate}>Start Date (newest first)</MenuItem>
+                        {/* <MenuItem onClick={sortByNewestStartDate}>Start Date (newest first)</MenuItem>
                         <MenuItem onClick={sortByOldestStartDate}>Start Date (older first)</MenuItem>
                         <MenuItem onClick={sortByProjectName}>Project</MenuItem>
                         <MenuItem onClick={sortByClientName}>Client</MenuItem>
                         <MenuItem onClick={sortByPayment}>Payment</MenuItem>
-                        <MenuItem onClick={clearSort}>Clear Sort</MenuItem>
+                        <MenuItem onClick={clearSort}>Clear Sort</MenuItem> */}
+                        {renderSortOptions()}
                     </Menu>
                 </Grid>
                 {selectedSort
@@ -210,10 +334,9 @@ const ContributorAllocations = (props) => {
                 <Grid item xs={12}>
                     <Grid container spacing={5}>
                         {!isEmpty(proposedAllocations)
-                            ? (
-                                isEmpty(sortProposed)
-                                    ? renderAllocations({ allocations: proposedAllocations })
-                                    : renderAllocations({ allocations: sortProposed })
+                            ? (isEmpty(sortProposed)
+                                ? renderAllocations({ allocations: proposedAllocations })
+                                : renderAllocations({ allocations: sortProposed })
                             ) : (
                                 <EmptyState
                                     description='This contributor has no proposed allocations'
