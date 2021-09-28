@@ -15,7 +15,6 @@ const client = {
 const history = []
 
 let getByTestId
-let getByText
 
 beforeEach(() => {
     const component = render(
