@@ -3,12 +3,11 @@ const db = require('../models')
 module.exports = (() => {
 
     const matchTimeEntry = async (timeEntry) => {
-        const match = await db.models.TimeEntry.findOne({
+        return db.models.TimeEntry.findOne({
             where: {
                 toggl_id: timeEntry.id
             }
         })
-        return match
     }
 
     const matchContributor = (timeEntry) => {
@@ -21,7 +20,7 @@ module.exports = (() => {
 
     const addTimeEntries = (params) => {
         let contributor
-        return params.timeEntries.forEach(async timeEntry => {
+        return params.timeEntries.map(async timeEntry => {
             if (!(await matchTimeEntry(timeEntry))) {
                 contributor = await matchContributor(timeEntry)
                 if (contributor) {

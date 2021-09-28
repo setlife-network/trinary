@@ -30,19 +30,15 @@ const automations = module.exports = (() => {
     const getTogglPropertiesFromURL = async (params) => {
         // Url example https://track.toggl.com/3070292/projects/156669532
         const togglURL = params
-        const splitedUrl = togglURL.split(/\//)
 
         try {
+            const splitedUrl = togglURL.split(/\//)
             let togglId = 0
             let workspaceId = 0
-            splitedUrl.forEach(function(element, index) {
-                if (index == 5) {
-                    togglId = element
-                } else if (index == 3) {
-                    workspaceId = element
-                }
+            splitedUrl.map((element, index) => {
+                togglId = splitedUrl[5] ? splitedUrl[5] : 0
+                workspaceId = splitedUrl[3] ? splitedUrl[3] : 0
             })
-
             return { workspaceId, togglId }
         } catch (err) {
             console.log('an error ocurred while spliting the toggl url: ', err)
