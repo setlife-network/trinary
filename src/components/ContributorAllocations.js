@@ -34,7 +34,6 @@ const ContributorAllocations = (props) => {
     const [selectedSort, setSelectedSort] = useState()
     const [allocatedAllocations, setAllocatedAllocations] = useState([])
     const [proposedAllocations, setProposedAllocations] = useState([])
-    const [contributorsAllocated, setContributorsAllocated] = useState([])
 
     const {
         data: dataContributorAllocations,
@@ -55,7 +54,7 @@ const ContributorAllocations = (props) => {
         }
     })
 
-    const sortAllocations = ({ typeName, allocated, proposed, sortingType }) => {
+    const sortAllocations = ({ typeName, allocated, proposed, sortingType, sortingOrder }) => {
         setSortAllocated(orderBy(allocated.allocations, sortingType, allocated.sortingOrder))
         setSortProposed(orderBy(proposed.allocations, sortingType, proposed.sortingOrder))
         setSelectedSort(typeName)
@@ -67,13 +66,12 @@ const ContributorAllocations = (props) => {
             sorting: () => sortAllocations({
                 typeName: 'Start Date (Newest first)',
                 sortingType: ['start_date'],
+                sortingOrder: ['desc'],
                 allocated: {
                     allocations: allocatedAllocations,
-                    sortingOrder: ['desc']
                 },
                 proposed: {
                     allocations: proposedAllocations,
-                    sortingOrder: ['desc']
                 }
             })
         },
@@ -82,13 +80,12 @@ const ContributorAllocations = (props) => {
             sorting: () => sortAllocations({
                 typeName: 'Start Date (Older first)',
                 sortingType: ['start_date'],
+                sortingOrder: ['asc'],
                 allocated: {
                     allocations: allocatedAllocations,
-                    sortingOrder: ['asc']
                 },
                 proposed: {
                     allocations: proposedAllocations,
-                    sortingOrder: ['asc']
                 }
             })
         },
@@ -97,13 +94,12 @@ const ContributorAllocations = (props) => {
             sorting: () => sortAllocations({
                 typeName: 'Project',
                 sortingType: item => item.project.name.toLowerCase(),
+                sortingOrder: ['asc'],
                 allocated: {
                     allocations: allocatedAllocations,
-                    sortingOrder: ['asc']
                 },
                 proposed: {
                     allocations: proposedAllocations,
-                    sortingOrder: ['asc']
                 }
             })
         },
@@ -112,13 +108,12 @@ const ContributorAllocations = (props) => {
             sorting: () => sortAllocations({
                 typeName: 'Client',
                 sortingType: item => item.project.client.name.toLowerCase(),
+                sortingOrder: ['asc'],
                 allocated: {
                     allocations: allocatedAllocations,
-                    sortingOrder: ['asc']
                 },
                 proposed: {
                     allocations: proposedAllocations,
-                    sortingOrder: ['asc']
                 }
             })
         },
@@ -127,13 +122,12 @@ const ContributorAllocations = (props) => {
             sorting: () => sortAllocations({
                 typeName: 'Payment',
                 sortingType: ['amount'],
+                sortingOrder: ['desc'],
                 allocated: {
                     allocations: allocatedAllocations,
-                    sortingOrder: ['desc']
                 },
                 proposed: {
                     allocations: proposedAllocations,
-                    sortingOrder: ['desc']
                 }
             })
         },
@@ -142,13 +136,12 @@ const ContributorAllocations = (props) => {
             sorting: () => sortAllocations({
                 typeName: 'Clear Sort',
                 sortingType: null,
+                sortingOrder: null,
                 allocated: {
                     allocations: allocatedAllocations,
-                    sortingOrder: null
                 },
                 proposed: {
                     allocations: proposedAllocations,
-                    sortingOrder: null
                 }
             })
         }
@@ -177,13 +170,6 @@ const ContributorAllocations = (props) => {
     const { getContributorById: contributorAllocations } = dataContributorAllocations
     const { getContributorById: contributor } = dataContributor
 
-    if (!contributorsAllocated.length) {
-        setContributorsAllocated([...contributorAllocations.allocations])
-    }
-
-    // const allocatedAllocations = filter(contributorAllocations.allocations, 'payment')
-    // const proposedAllocations = filter(contributorAllocations.allocations, { 'payment': null })
-
     if (!allocatedAllocations.length || !proposedAllocations.length) {
         setAllocatedAllocations([...filter(contributorAllocations.allocations, 'payment')])
         setProposedAllocations([...filter(contributorAllocations.allocations, { 'payment': null })])
@@ -197,50 +183,6 @@ const ContributorAllocations = (props) => {
         setanchorEl(null);
     }
 
-    // const sortByNewestStartDate = () => {
-    //     setSortAllocated(orderBy(allocatedAllocations, ['start_date'], ['desc']))
-    //     setSortProposed(orderBy(proposedAllocations, ['start_date'], ['desc']))
-    //     setSelectedSort('Start Date (Newest first)')
-    //     handleClose()
-    // }
-
-    // const sortByOldestStartDate = () => {
-    //     setSortAllocated(orderBy(allocatedAllocations, ['start_date'], ['asc']))
-    //     setSortProposed(orderBy(proposedAllocations, ['start_date'], ['asc']))
-    //     setSelectedSort('Start Date (Oldest first)')
-
-    //     handleClose()
-    // }
-
-    // const sortByProjectName = () => {
-    //     setSortAllocated(orderBy(allocatedAllocations, item => item.project.name.toLowerCase(), ['asc']))
-    //     setSortProposed(orderBy(proposedAllocations, item => item.project.name.toLowerCase(), ['asc']))
-    //     setSelectedSort('Project Name')
-    //     handleClose()
-
-    // }
-
-    // const sortByClientName = () => {
-    //     setSortAllocated(orderBy(allocatedAllocations, item => item.project.client.name.toLowerCase(), ['asc']))
-    //     setSortProposed(orderBy(proposedAllocations, item => item.project.client.name.toLowerCase(), ['asc']))
-    //     setSelectedSort('Client Name')
-    //     handleClose()
-
-    // }
-
-    // const sortByPayment = () => {
-    //     setSortAllocated(orderBy(allocatedAllocations, ['amount'], ['desc']))
-    //     setSortProposed(orderBy(proposedAllocations, ['amount'], ['desc']))
-    //     setSelectedSort('Payment')
-    //     handleClose()
-    // }
-
-    // const clearSort = () => {
-    //     setSortAllocated(allocatedAllocations)
-    //     setSortProposed(proposedAllocations)
-    //     setSelectedSort(null)
-    //     handleClose()
-    // }
     const renderSortOptions = () => {
         return sortingOptions.map(so => {
             return (
