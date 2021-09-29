@@ -30,20 +30,43 @@ const automations = module.exports = (() => {
     }
 
     const getOrganizationRepos = async (params) => {
-        const organizations = await getUserOrganizations({
-            auth_key: params.auth_key
-        })
-        const isOrganization = organizations[0].name != params.organizationName
         
+        const contributor = await db.models.Contributor.findOne({
+            where: {
+                github_id: params.accountId 
+            }
+        })
+
+        let organizations
+        let accountName
+        let isOrganization = false
+        if (contributor) {
+            const contributorSplit = contributor.github_handle.split(/\//)
+            accountName = contributorSplit[3]
+        } else {
+            organizations = await getUserOrganizations({
+                auth_key: params.auth_key
+            })
+        }
+
+        if (organizations) {
+            isOrganization = true
+            organizations.map((org, i) => {
+                if (org.id == params.accountId) {
+                    accountName = org.name
+                }
+            })
+        }
+        console.log(accountName, isOrganization)
         const repos = await github.fetchRepos({
             auth_key: params.auth_key,
-            organizationName: params.organizationName,
+            accountName,
             githubPageNumber: params.githubPageNumber,
             isOrganization
         })
         const organizationRepos = []
         repos.map(r => {
-            if (r.owner.login == params.organizationName) {
+            if (r.owner.login == accountName) {
                 organizationRepos.push({
                     id: r.id,
                     name: r.name,
