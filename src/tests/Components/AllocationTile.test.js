@@ -62,5 +62,5 @@ it('Start date', () => {
 })
 
 it('End date', () => {
-    expect(getByText(/End/i).textContent).toBe('End:07/310/2021')
+    expect(getByText(/End/i).textContent).toBe('End:07/31/2021')
 })
