@@ -15,12 +15,12 @@ class AddClientPage extends React.Component {
                 justify='center'
             >
                 <Grid item xs={10}>
-                    <Typography align='left'>
+                    <Typography align='left' data-testid='enter-info-text'>
                         <strong>
                             Enter info below to create a client
                         </strong>
                     </Typography>
-                    <Typography align='left'>
+                    <Typography align='left' data-testid='add-project'>
                         You can add projects within the newly created client page
                     </Typography>
                     <Box mt={5}>
