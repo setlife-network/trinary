@@ -220,7 +220,7 @@ const ContributorTile = (props) => {
                                 <Grid container>
                                     <Grid item xs={12}>
                                         <Typography>
-                                            <strong>
+                                            <strong data-testid='contributor-name'>
                                                 {contributor.name}
                                             </strong>
                                         </Typography>

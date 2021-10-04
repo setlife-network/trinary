@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import AllocationTile from '../components/AllocationTile'
+import AllocationTile from '../../components/AllocationTile'
 import { MockedProvider } from '@apollo/client/testing'
 
 const mocks = [];
