@@ -58,9 +58,9 @@ it('Client name', () => {
 })
 
 it('Start date', () => {
-    expect(getByText('Start:').textContent).toBe('Start:07/28/2021')
+    expect(getByText('Start:').textContent).toBe('Start:07/29/2021')
 })
 
 it('End date', () => {
-    expect(getByText(/End/i).textContent).toBe('End:07/30/2021')
+    expect(getByText(/End/i).textContent).toBe('End:07/310/2021')
 })
