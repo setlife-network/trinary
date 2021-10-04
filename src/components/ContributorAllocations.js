@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import {
     Box,
@@ -55,9 +55,14 @@ const ContributorAllocations = (props) => {
     })
 
     const sortAllocations = ({ typeName, allocated, proposed, sortingType, sortingOrder }) => {
-        setSortAllocated(orderBy(allocated.allocations, sortingType, allocated.sortingOrder))
-        setSortProposed(orderBy(proposed.allocations, sortingType, proposed.sortingOrder))
-        setSelectedSort(typeName)
+        if (typeName == 'Clear') {
+            setSelectedSort(null)
+        } else {
+            setSortAllocated(orderBy(allocated.allocations, sortingType, sortingOrder))
+            setSortProposed(orderBy(proposed.allocations, sortingType, sortingOrder))
+            setSelectedSort(typeName)
+        }
+        handleClose()
     }
 
     const sortingOptions = [
@@ -132,9 +137,9 @@ const ContributorAllocations = (props) => {
             })
         },
         {
-            name: 'Clear Sort',
+            name: 'Clear',
             sorting: () => sortAllocations({
-                typeName: 'Clear Sort',
+                typeName: 'Clear',
                 sortingType: null,
                 sortingOrder: null,
                 allocated: {
