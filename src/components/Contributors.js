@@ -2,6 +2,7 @@ import React from 'react'
 import {
     Grid
 } from '@material-ui/core'
+
 import ContributorTile from './ContributorTile'
 
 const Contributors = React.memo((props) => {
@@ -29,9 +30,7 @@ const Contributors = React.memo((props) => {
 
     return (
         <Grid container className='Contributors'>
-            {
-                renderContributorsToAdd()
-            }
+            {renderContributorsToAdd()}
         </Grid>
     )
 })
