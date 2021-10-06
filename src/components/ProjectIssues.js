@@ -93,7 +93,7 @@ const ProjectIssues = (props) => {
                     closedIssues={project.githubIssuesClosed}
                     openPullRequests={project.githubPullRequestsOpened}
                     closedPullRequests={project.githubPullRequestsClosed}
-                    mergedPullRequests={project.mergedPullRequests}
+                    mergedPullRequests={project.githubPullRequestsMerged}
                 />
             </Grid>
             <Grid item xs={6} sm={4} align='left'>
