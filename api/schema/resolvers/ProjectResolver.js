@@ -268,6 +268,7 @@ module.exports = {
                     && moment(pr.closed_at).isBefore(args.toDate
                         ? args.toDate
                         : moment())
+                    && !pr.merged_at
                 ) {
                     closedPullRequests.push(pr)
                 }
@@ -293,18 +294,43 @@ module.exports = {
             })
             const openPullRequests = []
             pullRequests.map(pr => {
-                if (
-                    moment(pr.created_at).isAfter(args.fromDate
-                        ? args.fromDate
-                        : moment(1))
-                    && moment(pr.created_at).isBefore(args.toDate
-                        ? args.toDate
-                        : moment())
-                ) {
+                if (!pr.closed_at) {
                     openPullRequests.push(pr)
                 }
             })
             return openPullRequests.length
+        },
+        githubPullRequestsMerged: async (project, args, { cookies, models }) => {
+            validateDatesFormat({
+                fromDate: args.fromDate,
+                toDate: args.toDate
+            })
+            const contributor = await models.Contributor.findByPk(
+                cookies.userSession
+                    ? cookies.userSession
+                    : args.contributorId
+            )
+            const repoInformation = split(project.github_url, '/');
+            const pullRequests = await apiModules.dataSyncs.syncPullRequests({
+                auth_key: contributor.github_access_token,
+                github_url: project.github_url,
+                repo: repoInformation[repoInformation.length - 1],
+                owner: repoInformation[repoInformation.length - 2]
+            })
+            const mergedPullRequest = []
+            pullRequests.map(pr => {
+                if (
+                    moment(pr.merged_at).isAfter(args.fromDate
+                        ? args.fromDate
+                        : moment(1))
+                    && moment(pr.merged_at).isBefore(args.toDate
+                        ? args.toDate
+                        : moment())
+                ) {
+                    mergedPullRequest.push(pr)
+                }
+            })
+            return mergedPullRequest.length
         },
         timeEntries: (project, args, { models }) => {
             validateDatesFormat({
