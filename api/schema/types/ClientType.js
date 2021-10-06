@@ -15,6 +15,7 @@ module.exports = gql`
             fromDate: String
             toDate: String
         ): String
+        currencyLocked: Boolean
     }
 
     input ClientCreateInput {

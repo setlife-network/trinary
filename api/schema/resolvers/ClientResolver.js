@@ -32,6 +32,15 @@ module.exports = {
                 }
             })
             return totalPaid.total
+        },
+        currencyLocked: async (client, args, { models }) => {
+            const existingPayments = await models.Payment.findAll({
+                where: {
+                    client_id: client.id,
+                    external_uuid_type: 'STRIPE'
+                }
+            })
+            return existingPayments ? true : false
         }
     },
     Query: {
