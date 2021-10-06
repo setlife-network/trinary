@@ -45,6 +45,11 @@ module.exports = gql`
             toDate: String,
             contributorId: Int
         ): Int
+        githubPullRequestsMerged(
+            fromDate: String,
+            toDate: String,
+            contributorId: Int
+        ): Int
         timeEntries(
             fromDate: String
             toDate: String
