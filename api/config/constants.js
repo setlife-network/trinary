@@ -29,5 +29,6 @@ module.exports = {
             project_permission_level: 'write'
         },
     ],
-    STRIPE_PRODUCT_PLACEHOLDER_ID: process.env.STRIPE_PRODUCT_PLACEHOLDER_ID || ''
+    STRIPE_PRODUCT_PLACEHOLDER_ID: process.env.STRIPE_PRODUCT_PLACEHOLDER_ID || '',
+    STRIPE_CURRENCIES: ['USD', 'MXN', 'EUR']
 }
