@@ -36,12 +36,15 @@ module.exports = {
             return totalPaid.total
         },
         currencyLocked: async (client, args, { models }) => {
-            const existingPayments = await models.Payment.findOne({
-                where: {
-                    client_id: client.id,
-                    external_uuid_type: 'STRIPE'
-                },
-            })
+            const clientData = await models.Client.findByPk(client.id)
+            const existingPayments = clientData.external_uuid
+                ? await models.Payment.findOne({
+                    where: {
+                        client_id: client.id,
+                        external_uuid_type: 'STRIPE'
+                    },
+                })
+                : false
             return (existingPayments && STRIPE_CURRENCIES.includes(client.currency)) || false
         }
     },
