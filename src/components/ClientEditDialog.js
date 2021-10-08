@@ -28,6 +28,7 @@ const ClientEditDialog = (props) => {
 
     const [updateClient, { data, loading, error }] = useMutation(UPDATE_CLIENT)
 
+    const [clientCurrencyLock, setClientCurrencyLock] = useState(false)
     const [clientName, setClientName] = useState(client.name)
     const [clientEmail, setClientEmail] = useState(client.email)
     const [clientCurrency, setClientCurrency] = useState(client.currency)
@@ -78,6 +79,10 @@ const ClientEditDialog = (props) => {
         } else {
             setDisableEdit(false)
         }
+
+        if (client.currencyLocked) {
+            setClientCurrencyLock(true)
+        }
     })
 
     return (
@@ -122,6 +127,7 @@ const ClientEditDialog = (props) => {
                                     defaultValue={client.currency}
                                     fullWidth
                                     onChange={(event) => setClientCurrency(event.target.value)}
+                                    disabled={clientCurrencyLock}
                                 >
                                     {renderCurrencies(CURRENCIES)}
                                 </Select>
