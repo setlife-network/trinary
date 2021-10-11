@@ -174,9 +174,7 @@ const dataSyncs = module.exports = (() => {
                 repo: repoInformation[repoInformation.length - 1]
             })
             fetchedPR.map(i => {
-                if (i) {
-                    pullRequests.push(i)
-                }
+                pullRequests.push(i)
             })
         } catch (error) {
             console.log('error: ' + error);
