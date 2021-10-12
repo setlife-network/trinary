@@ -19,10 +19,9 @@ module.exports = (() => {
     }
 
     const addTimeEntries = (params) => {
-        let contributor
         return params.timeEntries.map(async timeEntry => {
             if (!(await matchTimeEntry(timeEntry))) {
-                contributor = await matchContributor(timeEntry)
+                const contributor = await matchContributor(timeEntry)
                 if (contributor) {
                     try {
                         if (!(await matchTimeEntry(timeEntry))) {
