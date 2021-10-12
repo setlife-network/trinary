@@ -31,8 +31,10 @@ import {
     verifyGithubURL,
     verifyTogglURL
 } from '../scripts/selectors'
+
 import { SYNC_TOGGL_PROJECT, UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
-import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS } from '../constants'
+import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS, MAX_INT } from '../constants'
+
 
 const ProjectEditDialog = (props) => {
 
@@ -212,6 +214,7 @@ const ProjectEditDialog = (props) => {
                                     variant='outlined'
                                     currencySymbol={`${currencyInformation['symbol']}`}
                                     minimumValue='0'
+                                    maximumValue={`${MAX_INT / 100}`}
                                     outputFormat='string'
                                     decimalCharacter={`${currencyInformation['decimal']}`}
                                     digitGroupSeparator={`${currencyInformation['thousand']}`}
