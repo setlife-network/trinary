@@ -65,7 +65,7 @@ const automations = module.exports = (() => {
         })
         const organizationRepos = []
         repos.map(r => {
-            if (r.owner.login == accountName) {
+            if (r.owner.login == githubAccount.handle) {
                 organizationRepos.push({
                     id: r.id,
                     name: r.name,
