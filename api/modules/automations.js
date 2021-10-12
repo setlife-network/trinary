@@ -37,32 +37,31 @@ const automations = module.exports = (() => {
             }
         })
 
-        let organizations
-        let accountName
-        let isOrganization = false
+        const organizations = []
+        const githubAccount = {}
         if (contributor) {
-            const contributorSplit = contributor.github_handle.split(/\//)
-            accountName = contributorSplit[3]
+            githubAccount.handle = contributor.github_handle.split(/\//)[3]
         } else {
-            organizations = await getUserOrganizations({
-                auth_key: params.auth_key
-            })
+            organizations.push(
+                ...await getUserOrganizations({
+                    auth_key: params.auth_key
+                })
+            )
         }
 
-        if (organizations) {
-            isOrganization = true
-            organizations.map((org, i) => {
+        if (organizations.length) {
+            organizations.map((org) => {
                 if (org.id == params.accountId) {
-                    accountName = org.name
+                    githubAccount.handle = org.name
                 }
             })
         }
-        console.log(accountName, isOrganization)
         const repos = await github.fetchRepos({
             auth_key: params.auth_key,
-            accountName,
+            organizationName: params.organizationName,
+            accountName: githubAccount.handle,
             githubPageNumber: params.githubPageNumber,
-            isOrganization
+            isOrganization: organizations.length
         })
         const organizationRepos = []
         repos.map(r => {
