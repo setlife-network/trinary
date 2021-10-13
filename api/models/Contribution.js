@@ -22,6 +22,14 @@ module.exports = (sequelize) => {
                 model: 'Issues',
                 key: 'id'
             }
+        },
+        is_author: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        is_assigned: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {
