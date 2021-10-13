@@ -47,7 +47,7 @@ const db = {
         Project: require('./Project')(sequelize),
         Rate: require('./Rate')(sequelize),
         TimeEntry: require('./TimeEntry')(sequelize),
-        Contributions: require('./Contributions')(sequelize),
+        Contribution: require('./Contribution')(sequelize),
     }
 };
 
