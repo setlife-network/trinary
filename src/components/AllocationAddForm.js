@@ -210,6 +210,7 @@ const AllocationAddForm = (props) => {
     const [selectedProject, setSelectedProject] = useState(null)
     const [selectedPayment, setSelectedPayment] = useState(null)
     const [totalAllocatedFromPayment, setTotalAllocatedFromPayment] = useState(null)
+    const [hasProject, setHasProject] = useState(null)
 
     const [createAllocation, {
         dataNewAllocations,
@@ -410,6 +411,7 @@ const AllocationAddForm = (props) => {
                                         setNewAllocation={setNewAllocation}
                                         setPayment={setSelectedPayment}
                                         setProject={setSelectedProject}
+                                        setHasProject={setHasProject}
                                     />
                                 )
                         }
@@ -510,6 +512,16 @@ const AllocationAddForm = (props) => {
                         >
                             {'Add Allocation'}
                         </Button>
+                        {hasProject
+                            ? null
+                            : (
+                                <Box mt={2}>
+                                    <Typography variant='caption' className='warning'>
+                                        {'Please select a project to create an allocation'}
+                                    </Typography>
+                                </Box>
+                            )
+                        }
                     </>
                 }
             </Box>
