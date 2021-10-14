@@ -1,28 +1,35 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     Box,
     Grid,
     Typography,
     Link
 } from '@material-ui/core'
-import { useQuery } from '@apollo/client';
+import {useLazyQuery, useQuery} from '@apollo/client';
 import { GET_PROJECT } from '../operations/queries/ProjectQueries';
 
 const GithubAccessBlocked = (props) => {
 
     const githubURL = props.githubURL
-
-    const {
+    
+    const [project, setProject] = useState(null)
+    
+    const [getProject, {
         data: dataProject,
         loading: loadingProject,
         error: errorProject,
-    } = useQuery(GET_PROJECT, {
-        variables: {
-            id: Number(props.projectId)
+    }] = useLazyQuery(GET_PROJECT, {
+        onCompleted: dataProject => {
+            setProject(dataProject.getProjectById.github_url)
         }
     })
 
-    const projectURL = dataProject.getProjectById.github_url
+    useEffect(() => {
+        getProject({
+            variables: { id: Number(props.projectId) }
+        })
+    }, [dataProject])
+
 
     return (
         <Grid container className='GithubAccessBlocked'>
@@ -32,7 +39,7 @@ const GithubAccessBlocked = (props) => {
                         {props.message}
                     </Typography>
                     <Typography align='center' variant='h6'>
-                        <Link href={projectURL}>
+                        <Link href={project}>
                             Open in Github
                         </Link>
                     </Typography>
