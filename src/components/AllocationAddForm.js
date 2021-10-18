@@ -512,15 +512,12 @@ const AllocationAddForm = (props) => {
                         >
                             {'Add Allocation'}
                         </Button>
-                        {hasProject
-                            ? null
-                            : (
-                                <Box mt={2}>
-                                    <Typography variant='caption' className='warning'>
-                                        {'Please select a project to create an allocation'}
-                                    </Typography>
-                                </Box>
-                            )
+                        {!hasProject &&
+                            <Box mt={2}>
+                                <Typography variant='caption' className='warning'>
+                                    {'Please select a project to create an allocation'}
+                                </Typography>
+                            </Box>
                         }
                     </>
                 }

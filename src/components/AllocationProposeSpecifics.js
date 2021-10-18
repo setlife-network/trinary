@@ -65,6 +65,7 @@ const AllocationProposeSpecifics = (props) => {
     const [selectedProject, setSelectedProject] = useState(null)
 
     useEffect(() => {
+        setHasProject(false)
         if (selectedProject) {
             setProject(selectedProject)
             setClienCurrency(
