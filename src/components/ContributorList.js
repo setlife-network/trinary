@@ -4,13 +4,13 @@ import {
     Box,
     TextField,
     Typography,
-    IconButton
+    InputAdornment
 } from '@material-ui/core'
 import ContributorsEmptyState from './ContributorsEmptyState'
 import AllocationAddForm from './AllocationAddForm'
 import { differenceBy } from 'lodash'
 import GithubAccessBlocked from './GithubAccessBlocked'
-import { CancelRounded } from '@material-ui/icons'
+import { CancelRounded, Search } from '@material-ui/icons'
 
 const ContributorList = (props) => {
 
@@ -86,6 +86,12 @@ const ContributorList = (props) => {
                     color='primary'
                     variant='outlined'
                     InputProps={{
+                        startAdornment: !search && (
+                            <InputAdornment position='start'>
+                                <Search color='secondary'/>
+                            </InputAdornment>
+                        ),
+
                         endAdornment: search && (
                             <CancelRounded 
                                 className='cancel-icon'
