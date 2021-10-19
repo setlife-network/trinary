@@ -7,6 +7,12 @@ module.exports = (sequelize) => {
 
     Contributions.init({
         // Model attributes are defined here
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+            allowNull: false
+        },
         contributor_id: {
             type: DataTypes.INTEGER,
             allowNull: false,

@@ -1,6 +1,12 @@
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         return queryInterface.createTable('Contributions', {
+            id: {
+                type: Sequelize.DataTypes.INTEGER,
+                primaryKey: true,
+                autoIncrement: true,
+                allowNull: false
+            },
             contributor_id: {
                 type: Sequelize.DataTypes.INTEGER,
                 allowNull: false,
