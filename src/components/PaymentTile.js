@@ -121,8 +121,6 @@ const PaymentTile = (props) => {
                 currencyInformation: currencyInformation
             })
             
-            console.log(rate.type)
-
             return (
                 <Box 
                     mb={3} 
