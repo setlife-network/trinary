@@ -5,11 +5,13 @@ import {
     Box,
     Fab,
     Grid,
-    Typography
+    Typography,
+    Button
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import { filter, isEmpty, orderBy } from 'lodash'
+import { white } from '../styles/colors.scss'
 
 import LoadingProgress from './LoadingProgress'
 import PaymentsEmptyState from './PaymentsEmptyState'
@@ -24,11 +26,14 @@ import {
     formatAmount,
     selectCurrencyInformation
 } from '../scripts/selectors'
+import AllocationAddForm from './AllocationAddForm'
 
 const ProjectPayments = (props) => {
 
     const { projectId } = props
     const history = useHistory()
+
+    const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
 
     const { loading, error, data } = useQuery(GET_PROJECT_PAYMENTS, {
         fetchPolicy: 'cache-and-network',
@@ -62,6 +67,14 @@ const ProjectPayments = (props) => {
     })
     const proposedAllocations = filter(projectAllocations.allocations, ['payment', null])
 
+    const handleAddAllocationClose = (value) => {
+        setOpenAddAllocationDialog(false)
+    }
+
+    const handleProposeButton = () => {
+        setOpenAddAllocationDialog(true)
+    }
+    
     return (
 
         <Grid container justify='center' className='ProjectPayments'>
@@ -101,6 +114,23 @@ const ProjectPayments = (props) => {
                     project={getProjectById}
                     currencyInformation={currencyInformation}
                 />
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Box mb={1} ml={1}>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                onClick={() => handleProposeButton()}
+                            >
+                                <Box color={`${white}`}>
+                                    <Typography>
+                                        {`Propose`}
+                                    </Typography>
+                                </Box>
+                            </Button>
+                        </Box>
+                    </Grid>
+                </Grid>
                 {!isEmpty(allocatedPayments) &&
                     <PaymentsList
                         payments={payments}
@@ -126,6 +156,11 @@ const ProjectPayments = (props) => {
                     <PaymentsEmptyState/>
                 }
             </Grid>
+            <AllocationAddForm 
+                project={getProjectById}
+                open={openAddAllocationDialog}
+                onClose={handleAddAllocationClose}
+            />
         </Grid>
 
     )
