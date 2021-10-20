@@ -124,7 +124,7 @@ const ProjectPayments = (props) => {
                             >
                                 <Box color={`${white}`}>
                                     <Typography>
-                                        {`Propose`}
+                                        {`Add Allocation`}
                                     </Typography>
                                 </Box>
                             </Button>
