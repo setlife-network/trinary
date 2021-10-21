@@ -12,6 +12,19 @@ const { GITHUB, TOGGL } = require('../config/credentials')
 
 const dataSyncs = module.exports = (() => {
 
+    const importInvoicelyCsvToStripe = async () => {
+        const invoiceFile = INVOICELY_CSV_PATH
+        const csvFile =
+            await amazon.fetchFile({ file: invoiceFile })
+                .then(file => {
+                    return invoicelyCodebase.modelCSV(file)
+                })
+                .catch(err => {
+                    console.log('error', err);
+                    return err.message
+                })
+    }
+
     const findIssueByGithubUrl = async (url) => {
         return db.models.Issue.findOne({
             raw: true,
@@ -204,6 +217,7 @@ const dataSyncs = module.exports = (() => {
     }
 
     return {
+        importInvoicelyCsvToStripe,
         syncGithubRepoContributors,
         syncGithubIssues,
         syncInvoicelyCSV,
