@@ -4,6 +4,7 @@ const authentication = require('./authentication')
 const amazon = require('../handlers/amazon')
 const github = require('../handlers/github')
 const toggl = require('../handlers/toggl')
+const stripe = require('../handlers/stripe')
 const db = require('../models')
 const invoicelyCodebase = require('../scripts/invoicelyCodebase')
 const timeLogging = require('../scripts/timeLogging')
@@ -23,6 +24,18 @@ const dataSyncs = module.exports = (() => {
                     console.log('error', err);
                     return err.message
                 })
+        const customerObject = await stripe.listAllCustomers()
+        csvFile.map(async csvData => {
+            const customer = customerObject.data.find(customerData => customerData.object == csvData.Client)
+            const customerInformation = customer
+                ? customer
+                : await stripe.createCustomer({ name: csvData.Client, email: null })
+            await stripe.createInvoice({
+                amount: csvData.Total,
+                external_uuid: customerInformation.id,
+                currency: csvData.Currency
+            })
+        })
     }
 
     const findIssueByGithubUrl = async (url) => {

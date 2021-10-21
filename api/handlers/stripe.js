@@ -14,7 +14,7 @@ const stripeHandler = module.exports = (() => {
     const createCustomer = async (params) => {
         const { email, name } = params
 
-        stripeClient.customers.create({
+        return stripeClient.customers.create({
             email,
             name,
         })
@@ -43,9 +43,9 @@ const stripeHandler = module.exports = (() => {
             currency,
             external_uuid
         } = params
-        const client = await clientManagement.findClientWithId(clientId)
+        const clientExternalUuid = external_uuid ? external_uuid : await clientManagement.findClientWithId(clientId)
         const invoiceItemProps = {
-            customer: client.external_uuid,
+            customer: clientExternalUuid,
             currency: currency,
             price_data: {
                 currency: currency,
@@ -55,7 +55,7 @@ const stripeHandler = module.exports = (() => {
         }
         const invoiceProps = {
             collection_method: 'charge_automatically',
-            customer: client.external_uuid,
+            customer: clientExternalUuid,
             description: 'payment charged from trinary'
         }
         const invoiceItem = await stripeClient.invoiceItems.create(invoiceItemProps)
@@ -67,6 +67,12 @@ const stripeHandler = module.exports = (() => {
             invoice
         } = params
         return stripeClient.invoices.finalizeInvoice(invoice.id)
+    }
+
+    const listAllCustomers = async () => {
+        return stripeClient.customers.list({
+            limit: 100,
+        });
     }
 
     const updateCustomerWithClientId = async (params) => {
@@ -94,6 +100,7 @@ const stripeHandler = module.exports = (() => {
         checkCredentials,
         createInvoice,
         finalizeInvoice,
+        listAllCustomers,
         updateCustomerWithClientId
     }
 
