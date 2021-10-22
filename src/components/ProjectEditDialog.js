@@ -56,7 +56,8 @@ const ProjectEditDialog = (props) => {
             data: dataTogglSync,
             loading: loadingTogglSync,
             error: errorTogglSync,
-        }] = useMutation(SYNC_TOGGL_PROJECT)
+        }
+    ] = useMutation(SYNC_TOGGL_PROJECT)
 
     const [updateProject, { data, loading: loadingUpdateProject, error }] = useMutation(UPDATE_PROJECT, { errorPolicy: 'all' })
 
