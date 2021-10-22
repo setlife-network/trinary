@@ -168,15 +168,13 @@ const dataSyncs = module.exports = (() => {
         const pullRequests = []
         const repoInformation = split(params.github_url, '/')
         try {
-            const issues = await github.fetchRepoIssues({
+            const fetchedPRs = await github.fetchPullRequests({
                 auth_key: params.auth_key,
                 owner: repoInformation[repoInformation.length - 2],
                 repo: repoInformation[repoInformation.length - 1]
             })
-            issues.map(i => {
-                if (i.pull_request) {
-                    pullRequests.push(i)
-                }
+            fetchedPRs.map(i => {
+                pullRequests.push(i)
             })
         } catch (error) {
             console.log('error: ' + error);
