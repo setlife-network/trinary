@@ -29,8 +29,9 @@ const dataSyncs = module.exports = (() => {
         try {
             csvFile.map(async csvData => {
                 let customerInformation
-                const customer = customerObject.data.find(customerData => customerData.object == csvData.Client)
+                const customer = customerObject.data.find(customerData => customerData.name == csvData.Client)
                 customerInformation = customer
+                csvData.Total = csvData.Total.replace(/,/g, '')
                 if (customer) {
                     customerInformation = customer
                 } else if (!customersFromCsv.includes(csvData.Client)) {
@@ -38,7 +39,7 @@ const dataSyncs = module.exports = (() => {
                     customersFromCsv.push(csvData.Client)
                 }
                 await stripe.createInvoice({
-                    amount: csvData.Total,
+                    amount: parseInt(csvData.Total),
                     external_uuid: customerInformation.id,
                     currency: csvData.Currency
                 })

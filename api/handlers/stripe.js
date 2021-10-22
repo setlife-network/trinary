@@ -58,8 +58,13 @@ const stripeHandler = module.exports = (() => {
             customer: clientExternalUuid,
             description: 'payment charged from trinary'
         }
-        const invoiceItem = await stripeClient.invoiceItems.create(invoiceItemProps)
-        return stripeClient.invoices.create(invoiceProps)
+        try {
+            const invoiceItem = await stripeClient.invoiceItems.create(invoiceItemProps)
+            return stripeClient.invoices.create(invoiceProps)
+        } catch (err) {
+            console.log('An error ocurred: ', err)
+        }
+
     }
 
     const finalizeInvoice = async (params) => {
