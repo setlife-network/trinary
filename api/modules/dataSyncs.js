@@ -25,17 +25,29 @@ const dataSyncs = module.exports = (() => {
                     return err.message
                 })
         const customerObject = await stripe.listAllCustomers()
-        csvFile.map(async csvData => {
-            const customer = customerObject.data.find(customerData => customerData.object == csvData.Client)
-            const customerInformation = customer
-                ? customer
-                : await stripe.createCustomer({ name: csvData.Client, email: null })
-            await stripe.createInvoice({
-                amount: csvData.Total,
-                external_uuid: customerInformation.id,
-                currency: csvData.Currency
+        const customersFromCsv = []
+        try {
+            csvFile.map(async csvData => {
+                let customerInformation
+                const customer = customerObject.data.find(customerData => customerData.object == csvData.Client)
+                customerInformation = customer
+                if (customer) {
+                    customerInformation = customer
+                } else if (!customersFromCsv.includes(csvData.Client)) {
+                    customerInformation = await stripe.createCustomer({ name: csvData.Client, email: null })
+                    customersFromCsv.push(csvData.Client)
+                }
+                await stripe.createInvoice({
+                    amount: csvData.Total,
+                    external_uuid: customerInformation.id,
+                    currency: csvData.Currency
+                })
             })
-        })
+        } catch (err) {
+            console.log('an error ocurred: ', err)
+            return 'Something failed'
+        }
+        return 'Import completed'
     }
 
     const findIssueByGithubUrl = async (url) => {
