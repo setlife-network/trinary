@@ -168,12 +168,12 @@ const dataSyncs = module.exports = (() => {
         const pullRequests = []
         const repoInformation = split(params.github_url, '/')
         try {
-            const fetchedPR = await github.fetchPullRequests({
+            const fetchedPRs = await github.fetchPullRequests({
                 auth_key: params.auth_key,
                 owner: repoInformation[repoInformation.length - 2],
                 repo: repoInformation[repoInformation.length - 1]
             })
-            fetchedPR.map(i => {
+            fetchedPRs.map(i => {
                 pullRequests.push(i)
             })
         } catch (error) {
