@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useMemo, Suspense } from 'react'
+import React, { useState, useMemo, Suspense } from 'react'
 import {
     Grid,
     Box,
     TextField,
-    Typography
+    Typography,
+    InputAdornment
 } from '@material-ui/core'
 import ContributorsEmptyState from './ContributorsEmptyState'
 import AllocationAddForm from './AllocationAddForm'
 import { differenceBy } from 'lodash'
 import GithubAccessBlocked from './GithubAccessBlocked'
+import { CancelRounded, Search } from '@material-ui/icons'
 
 const ContributorList = (props) => {
 
@@ -69,20 +71,35 @@ const ContributorList = (props) => {
     }
 
     return (
-        <Grid container className='ProjectContributors'>
+        <Grid container className='ContributorList'>
             <h1>
                 {`${project.name} Contributors`}
             </h1>
             <Grid xs={12}/>
             <Grid item xs={12} sm={5}>
                 <TextField
+                    className='input'
                     placeholder='Search contributors...' 
                     onChange={(event) => { setSearch(event.target.value) }}
                     fullWidth
+                    value={search}
                     color='primary'
                     variant='outlined'
-                    type={'search'}
-                    id='search'
+                    InputProps={{
+                        startAdornment: !search && (
+                            <InputAdornment position='start'>
+                                <Search color='secondary'/>
+                            </InputAdornment>
+                        ),
+
+                        endAdornment: search && (
+                            <CancelRounded 
+                                className='cancel-icon'
+                                color='primary'
+                                onClick={() => setSearch('')}
+                            />
+                        )
+                    }}
                 />
             </Grid>
             <Grid xs={12}/>
