@@ -115,6 +115,17 @@ const github = module.exports = (() => {
         })
     }
 
+    const fetchPullRequests = (params) => {
+        const octokit = new Octokit({
+            auth: params.auth_key
+        })
+        return octokit.paginate(octokit.pulls.list, {
+            owner: params.owner,
+            repo: params.repo,
+            state: 'all'
+        })
+    }
+
     const fetchUserData = async (params) => {
         const octokit = await new Octokit({
             auth: params.auth_key,
@@ -165,6 +176,7 @@ const github = module.exports = (() => {
         fetchRepoContributors,
         fetchRepoInfo,
         fetchRepoIssues,
+        fetchPullRequests,
         fetchUserData,
         fetchUserPermission,
         fetchUserOrganizations
