@@ -207,15 +207,13 @@ const dataSyncs = module.exports = (() => {
         const pullRequests = []
         const repoInformation = split(params.github_url, '/')
         try {
-            const issues = await github.fetchRepoIssues({
+            const fetchedPRs = await github.fetchPullRequests({
                 auth_key: params.auth_key,
                 owner: repoInformation[repoInformation.length - 2],
                 repo: repoInformation[repoInformation.length - 1]
             })
-            issues.map(i => {
-                if (i.pull_request) {
-                    pullRequests.push(i)
-                }
+            fetchedPRs.map(i => {
+                pullRequests.push(i)
             })
         } catch (error) {
             console.log('error: ' + error);
@@ -227,14 +225,19 @@ const dataSyncs = module.exports = (() => {
         try {
             const timeEntries = await toggl.fetchWorkspaceTimeEntries({
                 pId: params.toggl_project_id,
-                wId: TOGGL.WORKSPACE_ID,
+                wId: params.workspaceId,
                 since: params.since,
-                until: params.until
+                until: params.until,
+                page: params.page
             })
             const addedTimeEntries = await timeLogging.addTimeEntries({
                 timeEntries,
                 project_id: params.project_id
             })
+            if (timeEntries.length >= 50) {
+                params.page += 1
+                await syncTogglProject(params)
+            }
         } catch (error) {
             console.log('error: ' + error)
             return

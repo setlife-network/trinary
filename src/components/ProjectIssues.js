@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import {
     Box,
     Button,
-    Grid,
-    Link
+    Grid
 } from '@material-ui/core'
 import moment from 'moment'
 import { orderBy } from 'lodash'
@@ -14,7 +13,7 @@ import IssueTile from './IssueTile'
 import LoadingProgress from './LoadingProgress'
 import ProjectIssuesMetrics from './ProjectIssuesMetrics'
 
-import { GET_PROJECT, GET_PROJECT_ISSUES } from '../operations/queries/ProjectQueries'
+import { GET_PROJECT_ISSUES } from '../operations/queries/ProjectQueries'
 import { SYNC_GITHUB_ISSUES } from '../operations/mutations/ProjectMutations'
 import { pageName } from '../reactivities/variables'
 
@@ -65,7 +64,6 @@ const ProjectIssues = (props) => {
         })
     }
 
-
     if (loadingProjectIssues) return <LoadingProgress/>
     if (errorProjectIssues) {
         return (
@@ -84,7 +82,6 @@ const ProjectIssues = (props) => {
         }
     })
     const sortedIssues = orderBy(last30DayIssues, ['date_closed'], ['desc'])
-    const openPullRequests = project.githubPullRequestsOpened - project.githubPullRequestsClosed
 
     return (
         <Grid container className='ProjectIssues'>
@@ -94,8 +91,9 @@ const ProjectIssues = (props) => {
                     githubURL={project.github_url}
                     openedIssues={project.githubIssuesOpened}
                     closedIssues={project.githubIssuesClosed}
-                    openPullRequests={openPullRequests}
+                    openPullRequests={project.githubPullRequestsOpened}
                     closedPullRequests={project.githubPullRequestsClosed}
+                    mergedPullRequests={project.githubPullRequestsMerged}
                 />
             </Grid>
             <Grid item xs={6} sm={4} align='left'>
