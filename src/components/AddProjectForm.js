@@ -53,7 +53,8 @@ const AddProjectForm = (props) => {
             data,
             loading: loadingAddProject,
             error
-        }] = useMutation(ADD_PROJECT, {
+        }
+    ] = useMutation(ADD_PROJECT, {
         errorPolicy: 'all'
     })
 
@@ -63,7 +64,8 @@ const AddProjectForm = (props) => {
             data: dataNewPermission,
             loading: loadingNewPermission,
             error: errorNewPermission
-        }] = useMutation(CREATE_PERMISSION, {
+        }
+    ] = useMutation(CREATE_PERMISSION, {
         errorPolicy: 'all'
     })
 
@@ -73,7 +75,8 @@ const AddProjectForm = (props) => {
             data: dataTogglSync,
             loading: loadingTogglSync,
             error: errorTogglSync,
-        }] = useMutation(SYNC_TOGGL_PROJECT)
+        }
+    ] = useMutation(SYNC_TOGGL_PROJECT)
 
     const [budgetTimeframe, setBudgetTimeframe] = useState(null)
     const [createProjectError, setCreateProjectError] = useState(null)
