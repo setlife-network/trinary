@@ -19,21 +19,28 @@ module.exports = (() => {
     }
 
     const addTimeEntries = (params) => {
-        return Promise.all(params.timeEntries.map(async t => {
-            if (!(await matchTimeEntry(t))) {
-                const contributor = await matchContributor(t)
+        return params.timeEntries.map(async timeEntry => {
+            if (!(await matchTimeEntry(timeEntry))) {
+                const contributor = await matchContributor(timeEntry)
                 if (contributor) {
-                    await db.models.TimeEntry.create({
-                        seconds: t.dur / 1000,
-                        toggl_id: t.id,
-                        start_time: t.start,
-                        description: t.description || null,
-                        contributor_id: contributor.id,
-                        project_id: params.project_id,
-                    })
+                    try {
+                        if (!(await matchTimeEntry(timeEntry))) {
+                            await db.models.TimeEntry.create({
+                                seconds: timeEntry.dur / 1000,
+                                toggl_id: timeEntry.id,
+                                start_time: timeEntry.start,
+                                description: timeEntry.description || null,
+                                contributor_id: contributor.id,
+                                project_id: params.project_id,
+                            })
+                        }
+                    } catch (err) {
+                        console.log('error while creating time entry ', err)
+                    }
+
                 }
             }
-        }))
+        })
     }
 
     return {

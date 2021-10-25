@@ -69,7 +69,8 @@ const toggl = module.exports = (() => {
             workspace_id: params.wId,
             project_ids: params.pId,
             since: params.since,
-            until: params.until
+            until: params.until,
+            page: params.page
         }
         return new Promise((resolve, reject) => {
             togglClient.detailedReport(options, (err, report) => {

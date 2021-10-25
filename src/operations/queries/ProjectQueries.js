@@ -156,6 +156,7 @@ export const GET_PROJECT_ISSUES = gql`
             )
             githubPullRequestsOpened
             githubPullRequestsClosed
+            githubPullRequestsMerged
         }
     }
 `
