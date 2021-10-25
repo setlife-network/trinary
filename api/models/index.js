@@ -55,29 +55,30 @@ const db = {
 const associations = ({ 
     Allocation, 
     Client, 
+    Contribution,
     Contributor, 
-    Issue, Payment, 
+    Issue, 
+    Payment, 
     Permission, 
     Project, 
     Rate, 
-    TimeEntry, 
-    Contribution
+    TimeEntry
 }) => {
     Client.hasMany(Payment, { foreignKey: 'client_id' });
+    Client.hasMany(Permission, { foreignKey: 'client_id' })
+    Client.hasMany(Project, { foreignKey: 'client_id' })
     Contributor.hasMany(Allocation, { foreignKey: 'contributor_id' })
+    Contributor.hasMany(Contribution, { foreignKey: 'contributor_id' })
     Contributor.hasMany(Permission, { foreignKey: 'contributor_id' })
+    Contributor.hasMany(TimeEntry, { foreignKey: 'contributor_id' })
+    Issue.hasMany(Contribution, { foreignKey: 'issue_id' })
+    Issue.belongsTo(Project, { foreignKey: 'project_id' })
     Payment.hasMany(Allocation, { foreignKey: 'payment_id' })
     Project.hasMany(Allocation, { foreignKey: 'project_id' })
-    Client.hasMany(Project, { foreignKey: 'client_id' })
-    Client.hasMany(Permission, { foreignKey: 'client_id' })
     Project.hasMany(Permission, { foreignKey: 'project_id' })
-    Issue.belongsTo(Project, { foreignKey: 'project_id' })
+    Project.hasMany(TimeEntry, { foreignKey: 'project_id' })
     Rate.hasMany(Allocation, { foreignKey: 'rate_id' })
     Rate.belongsTo(Contributor, { foreignKey: 'contributor_id' })
-    Contributor.hasMany(TimeEntry, { foreignKey: 'contributor_id' })
-    Project.hasMany(TimeEntry, { foreignKey: 'project_id' })
-    Contributor.hasMany(Contribution, { foreignKey: 'contributor_id' })
-    Issue.hasMany(Contribution, { foreignKey: 'issue_id' })
 }
 
 associations(db.models)
