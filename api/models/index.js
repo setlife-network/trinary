@@ -52,7 +52,17 @@ const db = {
 };
 
 //Associations
-const associations = ({ Allocation, Client, Contributor, Issue, Payment, Permission, Project, Rate, TimeEntry, Contribution }) => {
+const associations = ({ 
+    Allocation, 
+    Client, 
+    Contributor, 
+    Issue, Payment, 
+    Permission, 
+    Project, 
+    Rate, 
+    TimeEntry, 
+    Contribution
+}) => {
     Client.hasMany(Payment, { foreignKey: 'client_id' });
     Contributor.hasMany(Allocation, { foreignKey: 'contributor_id' })
     Contributor.hasMany(Permission, { foreignKey: 'contributor_id' })
