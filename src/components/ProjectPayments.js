@@ -9,16 +9,15 @@ import {
     Button
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import { filter, isEmpty, orderBy } from 'lodash'
-import { white } from '../styles/colors.scss'
 
+import AllocationAddForm from './AllocationAddForm'
 import LoadingProgress from './LoadingProgress'
 import PaymentsEmptyState from './PaymentsEmptyState'
-import PaymentTile from './PaymentTile'
 import PaymentsList from './PaymentsList'
 import ProjectPaymentsSummary from './ProjectPaymentsSummary'
 import ProjectProposedAllocationsTile from './ProjectProposedAllocationsTile'
+
 import { GET_PROJECT_CONTRIBUTOR_ALLOCATIONS, GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { pageName } from '../reactivities/variables'
 import {
@@ -26,7 +25,7 @@ import {
     formatAmount,
     selectCurrencyInformation
 } from '../scripts/selectors'
-import AllocationAddForm from './AllocationAddForm'
+import { white } from '../styles/colors.scss'
 
 const ProjectPayments = (props) => {
 
