@@ -13,7 +13,8 @@ const ProjectIssuesMetrics = (props) => {
         openedIssues,
         closedIssues,
         openPullRequests,
-        closedPullRequests
+        closedPullRequests,
+        mergedPullRequests
     } = props
 
     return (
@@ -52,6 +53,8 @@ const ProjectIssuesMetrics = (props) => {
                         <Typography>
                             <strong>
                                 {`${openPullRequests} open`}
+                                <br/>
+                                {`${mergedPullRequests} merged`}
                                 <br/>
                                 {`${closedPullRequests} closed`}
                             </strong>
