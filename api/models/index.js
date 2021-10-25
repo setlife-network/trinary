@@ -40,6 +40,7 @@ const db = {
     models: {
         Allocation: require('./Allocation')(sequelize),
         Client: require('./Client')(sequelize),
+        Contribution: require('./Contribution')(sequelize),
         Contributor: require('./Contributor')(sequelize),
         Issue: require('./Issue')(sequelize),
         Payment: require('./Payment')(sequelize),
@@ -47,7 +48,6 @@ const db = {
         Project: require('./Project')(sequelize),
         Rate: require('./Rate')(sequelize),
         TimeEntry: require('./TimeEntry')(sequelize),
-        Contribution: require('./Contribution')(sequelize),
     }
 };
 
