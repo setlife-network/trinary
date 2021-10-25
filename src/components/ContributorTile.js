@@ -148,7 +148,7 @@ const ContributorTile = (props) => {
                                         {`Start date:`}
                                     </strong>
                                     <br/>
-                                    {`${moment(a.start_date, 'x').format('MM/DD/YYYY')}`}
+                                    {`${moment(a.start_date, 'x').utc().format('MM/DD/YYYY')}`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>
@@ -160,7 +160,7 @@ const ContributorTile = (props) => {
                                         {`End date:`}
                                     </strong>
                                     <br/>
-                                    {`${moment(a.end_date, 'x').format('MM/DD/YYYY')}`}
+                                    {`${moment(a.end_date, 'x').utc().format('MM/DD/YYYY')}`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>
@@ -173,7 +173,7 @@ const ContributorTile = (props) => {
                                     </strong>
                                     <br/>
                                     {`${a.date_paid
-                                        ? moment.utc(a.date_paid, 'x').format('MM/DD/YYYY')
+                                        ? moment.utc(a.date_paid, 'x').utc().format('MM/DD/YYYY')
                                         : 'Proposed'
                                     }`}
                                 </Typography>
@@ -220,7 +220,7 @@ const ContributorTile = (props) => {
                                 <Grid container>
                                     <Grid item xs={12}>
                                         <Typography>
-                                            <strong>
+                                            <strong data-testid='contributor-name'>
                                                 {contributor.name}
                                             </strong>
                                         </Typography>

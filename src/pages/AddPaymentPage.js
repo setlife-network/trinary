@@ -4,8 +4,6 @@ import {
     Grid,
     Typography
 } from '@material-ui/core'
-
-import Header from '../components/Header'
 import AddPaymentForm from '../components/AddPaymentForm'
 
 class AddPaymentPage extends React.Component {
