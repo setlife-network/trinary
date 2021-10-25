@@ -38,7 +38,6 @@ const AllocationProposeSpecifics = (props) => {
         setNewAllocation,
         setPayment,
         setProject,
-        setHasProject
     } = props
 
     const {
@@ -65,7 +64,6 @@ const AllocationProposeSpecifics = (props) => {
     const [selectedProject, setSelectedProject] = useState(null)
 
     useEffect(() => {
-        setHasProject(false)
         if (selectedProject) {
             setProject(selectedProject)
             setClienCurrency(
@@ -82,7 +80,6 @@ const AllocationProposeSpecifics = (props) => {
                 payment_id: selectedPayment ? selectedPayment.id : null,
                 project_id: selectedProject.id
             })
-            setHasProject(true)
         }
     }, [selectedProject])
     useEffect(() => {
