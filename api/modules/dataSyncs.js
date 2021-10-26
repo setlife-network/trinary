@@ -24,24 +24,26 @@ const dataSyncs = module.exports = (() => {
                     console.log('error', err);
                     return err.message
                 })
-        const customerObject = await stripe.listAllCustomers()
+        const stripeCustomers = await stripe.listAllCustomers()
         const customersFromCsv = []
         try {
             csvFile.map(async csvData => {
                 let customerInformation
-                const customer = customerObject.data.find(customerData => customerData.name == csvData.Client)
-                customerInformation = customer
+                const customer = stripeCustomers.data.find(customerData => customerData.name == csvData.Client)
                 csvData.Total = csvData.Total.replace(/,/g, '')
+                const amount = parseInt(csvData.Total) * 100
                 if (customer) {
                     customerInformation = customer
                 } else if (!customersFromCsv.includes(csvData.Client)) {
-                    customerInformation = await stripe.createCustomer({ name: csvData.Client, email: null })
+                    console.log('entro ', csvData.Client)
                     customersFromCsv.push(csvData.Client)
+                    customerInformation = await stripe.createCustomer({ name: csvData.Client, email: null })
+
                 }
                 await stripe.createInvoice({
-                    amount: parseInt(csvData.Total),
+                    amount: amount,
                     external_uuid: customerInformation.id,
-                    currency: csvData.Currency
+                    actualCurrency: csvData.Currency
                 })
             })
         } catch (err) {
