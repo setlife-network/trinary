@@ -13,8 +13,8 @@ module.exports = gql`
     }
     type Query {
         getContributions: [Contribution]
-        getContributionsByContributorId(id: Int!): [Contribution]
-        getContributionsByIssuId(id: Int!): [Contribution]
+        getContributionsByContributorId(contributorId: Int!): [Contribution]
+        getContributionsByIssueId(issueId: Int!): [Contribution]
         getContributionByContributorIdAndIssueId(
             contributor_id: Int!
             issue_id: Int!
