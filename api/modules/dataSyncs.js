@@ -102,6 +102,12 @@ const dataSyncs = module.exports = (() => {
         return newIssues
     }
 
+    // const syncGithubContributions = async (params) => {
+    //     const newContributions = []
+    //     const repoInformation
+    //     console.log(params)
+    // }
+
     const syncInvoicelyCSV = async () => {
         const invoiceFile = INVOICELY_CSV_PATH
         return (
@@ -213,5 +219,6 @@ const dataSyncs = module.exports = (() => {
         syncProjectCollaboratorsPermission,
         syncPullRequests,
         syncTogglProject
+        // syncGithubContributions
     }
 })()

@@ -624,6 +624,9 @@ module.exports = {
                 github_url: project.github_url,
                 auth_key: contributor.github_access_token
             })
+            // const syncedContributions = await apiModules.dataSyncs.syncGithubContributions({
+                
+            // })
             await models.Project.update({
                 date_last_synced: moment.utc()
             }, {
