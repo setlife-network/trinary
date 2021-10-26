@@ -36,6 +36,14 @@ module.exports = (sequelize) => {
         is_assigned: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        date_created: {
+            type: DataTypes.DATE,
+            allowNull: false
+        },
+        date_updated: {
+            type: DataTypes.DATE,
+            allowNull: true
         }
     },
     {
