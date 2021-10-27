@@ -7,9 +7,9 @@ import {
     AccordionSummary,
     Box,
     Button,
-    Fab,
     Grid,
-    Typography
+    Typography,
+    Tooltip
 } from '@material-ui/core/'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -231,13 +231,21 @@ const PaymentTile = (props) => {
                         <Box align='left' mb={2} ml={2}>
                             <Grid container>
                                 <Grid item xs={6}>
-                                    <Button
-                                        color='primary'
-                                        onClick={() => handleEditPayment(true)}
-                                        disabled={payment.external_uuid_type}
+                                    <Tooltip 
+                                        title='This payment cannot be edited because it is linked to a Stripe Invoice' 
+                                        disableHoverListener={payment.external_uuid_type ? false : true}
+                                        placement='top'
                                     >
-                                        {'Edit Payment'.toUpperCase()}
-                                    </Button>
+                                        <span>
+                                            <Button
+                                                color='primary'
+                                                onClick={() => handleEditPayment(true)}
+                                                disabled={payment.external_uuid_type}
+                                            >
+                                                {'Edit Payment'.toUpperCase()}
+                                            </Button>
+                                        </span>
+                                    </Tooltip>
                                 </Grid>
                                 <Grid item xs={6} align='right'>
                                     <Button
