@@ -55,10 +55,12 @@ const AllocationTile = (props) => {
             className='AllocationTile'
         >
             <Grid container alignItems='center' onClick={() => setOpenAllocationOverview(true)}>
-                <Grid item xs={4} md={1}>
-                    <AccountBalanceWalletIcon color='primary'/>
+                <Grid item xs={4} md={2}>
+                    <Box pr={3}>
+                        <AccountBalanceWalletIcon color='primary'/>
+                    </Box>
                 </Grid>
-                <Grid item xs={8} md={5}>
+                <Grid item xs={8} md={4}>
                     <Typography variant={'h6'}>
                         {`${paymentAmount}`}
                     </Typography>
@@ -70,6 +72,7 @@ const AllocationTile = (props) => {
                         noWrap
                         className='redirect'
                         onClick={redirectToProject}
+                        data-testid='project-name'
                     >
                         <strong>
                             {`${allocation.project.name}`}
@@ -81,6 +84,7 @@ const AllocationTile = (props) => {
                         noWrap
                         className='redirect'
                         onClick={redirectToClient}
+                        data-testid='client-name'
                     >
                         <span>
                             {`${allocation.project.client.name}`}
