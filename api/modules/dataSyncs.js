@@ -102,11 +102,21 @@ const dataSyncs = module.exports = (() => {
         return newIssues
     }
 
-    // const syncGithubContributions = async (params) => {
-    //     const newContributions = []
-    //     const repoInformation
-    //     console.log(params)
-    // }
+    const syncGithubContributions = async (params) => {
+        const repoInformation = split(params.github_url, '/')
+        try {
+            const githubAssignees = await fetchAssignees({
+                auth_key: params.auth_key,
+                owner: repoInformation[repoInformation.length - 2],
+                repo: repoInformation[repoInformation.length - 1] 
+            })
+            githubAssignees.map(i => {
+                console.log(i)
+            })
+        } catch (error) {
+            console.log('error:' + error);
+        }
+    }
 
     const syncInvoicelyCSV = async () => {
         const invoiceFile = INVOICELY_CSV_PATH
@@ -218,7 +228,7 @@ const dataSyncs = module.exports = (() => {
         syncInvoicelyCSV,
         syncProjectCollaboratorsPermission,
         syncPullRequests,
-        syncTogglProject
-        // syncGithubContributions
+        syncTogglProject,
+        syncGithubContributions
     }
 })()
