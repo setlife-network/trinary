@@ -30,5 +30,10 @@ module.exports = {
         },
     ],
     STRIPE_PRODUCT_PLACEHOLDER_ID: process.env.STRIPE_PRODUCT_PLACEHOLDER_ID || '',
-    STRIPE_CURRENCIES: ['USD', 'MXN', 'EUR']
+    DEFAULT_STRIPE_CURRENCY: 'USD',
+    STRIPE_SUPPORTED_CURRENCIES: [
+        'USD',
+        'MXN',
+        'EUR'
+    ]
 }

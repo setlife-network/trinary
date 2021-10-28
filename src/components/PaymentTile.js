@@ -120,7 +120,7 @@ const PaymentTile = (props) => {
                 // amount: parseFloat((amount / 100).toFixed(2)).toString(),
                 currencyInformation: currencyInformation
             })
-
+            
             return (
                 <Box 
                     mb={3} 
@@ -145,7 +145,7 @@ const PaymentTile = (props) => {
                         <Grid items xs={12}>
                             <Typography color='secondary' variant='caption' className='animation-effect-left'>
                                 {`${currencyInformation['symbol']} ${rate.hourly_rate}/hr (
-                                    ${rate.type == 'monthly_rate' ? 'monthly rate' : 'max budget'}
+                                    ${rate.type == 'prorated_monthly' ? 'monthly rate' : 'max budget'}
                                 )`}
                             </Typography>
                         </Grid>
