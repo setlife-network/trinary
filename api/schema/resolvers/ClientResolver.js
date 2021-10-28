@@ -1,4 +1,4 @@
-const { STRIPE_CURRENCIES } = require('../../config/constants')
+const { STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants')
 
 const moment = require('moment')
 const { fn, col, Op } = require('sequelize')
@@ -45,7 +45,7 @@ module.exports = {
                     },
                 })
                 : false
-            return (existingPayments && STRIPE_CURRENCIES.includes(client.currency)) || false
+            return (existingPayments && STRIPE_SUPPORTED_CURRENCIES.includes(client.currency)) || false
         }
     },
     Query: {
