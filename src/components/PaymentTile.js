@@ -247,6 +247,17 @@ const PaymentTile = (props) => {
                                         <DeleteOutlinedIcon color='primary'/>
                                     </Button>
                                 </Grid>
+                                <Grid item xs={12} align='center'>
+                                    <Button
+                                        color='primary'
+                                        variant='outlined'
+                                        onClick={() => addAllocation({ payment })}
+                                    >
+                                        <Typography>
+                                            {`Allocate`}
+                                        </Typography>
+                                    </Button>
+                                </Grid>
                             </Grid>
                         </Box>
                     }
@@ -276,7 +287,7 @@ const PaymentTile = (props) => {
                     }
                 </Accordion>
             </Box>
-            {(paymentClicked && project) &&
+            {paymentClicked &&
                 <AllocationAddForm
                     client={client}
                     project={project ? project : null}
