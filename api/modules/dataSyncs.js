@@ -21,6 +21,25 @@ const dataSyncs = module.exports = (() => {
         })
     }
 
+    const findContributionsByGithubUrlAndUsername = async (issueUrl, userUrl) => {
+        return db.models.Contribution.findOne({
+            include: [
+                {
+                    model: db.models.Issue,
+                    where: {
+                        github_url: issueUrl
+                    },
+                },
+                {
+                    model: db.models.Contributor,
+                    where: {
+                        github_handle: userUrl
+                    },
+                }
+            ]
+        });
+    }
+
     const syncGithubRepoContributors = async (params) => {
         //this func will add in the contributors table all the contributors from a github project
         const newContributors = []
@@ -97,25 +116,26 @@ const dataSyncs = module.exports = (() => {
                         }
                     })
                 }
+                if (i.assignee) {
+                    const matchingContribution = await findContributionsByGithubUrlAndUsername(i.html_url, i.assignee.html_url)
+                    if (matchingContribution) {
+                        console.log(matchingContribution)
+                    } else {
+                        // if (!matchingContribution) {
+                        //     await db.models.Contribution.create({
+                        //         contributor_id: null,
+                        //         issue_id: null,
+                        //         is_author: 0,
+                        //         is_assigned: 1,
+                        //         date_created: i.created_at,
+                        //         date_updated: i.updated_at
+                        //     })
+                        // }
+                    }
+                }
             })
         )
         return newIssues
-    }
-
-    const syncGithubContributions = async (params) => {
-        const repoInformation = split(params.github_url, '/')
-        try {
-            const githubAssignees = await fetchAssignees({
-                auth_key: params.auth_key,
-                owner: repoInformation[repoInformation.length - 2],
-                repo: repoInformation[repoInformation.length - 1] 
-            })
-            githubAssignees.map(i => {
-                console.log(i)
-            })
-        } catch (error) {
-            console.log('error:' + error);
-        }
     }
 
     const syncInvoicelyCSV = async () => {
@@ -228,7 +248,6 @@ const dataSyncs = module.exports = (() => {
         syncInvoicelyCSV,
         syncProjectCollaboratorsPermission,
         syncPullRequests,
-        syncTogglProject,
-        syncGithubContributions
+        syncTogglProject
     }
 })()
