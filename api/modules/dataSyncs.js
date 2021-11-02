@@ -121,16 +121,14 @@ const dataSyncs = module.exports = (() => {
                     if (matchingContribution) {
                         console.log(matchingContribution)
                     } else {
-                        // if (!matchingContribution) {
-                        //     await db.models.Contribution.create({
-                        //         contributor_id: null,
-                        //         issue_id: null,
-                        //         is_author: 0,
-                        //         is_assigned: 1,
-                        //         date_created: i.created_at,
-                        //         date_updated: i.updated_at
-                        //     })
-                        // }
+                    //     await db.models.Contribution.create({
+                    //         contributor_id: null,
+                    //         issue_id: null,
+                    //         is_author: 0,
+                    //         is_assigned: 1,
+                    //         date_created: i.created_at,
+                    //         date_updated: i.updated_at
+                    //     })
                     }
                 }
             })
