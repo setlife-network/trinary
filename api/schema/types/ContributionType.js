@@ -28,5 +28,10 @@ module.exports = gql`
     }
     type Mutation {
         createContribution(createFields: CreateContributionInput): Contribution
+        deleteContributionById(id: Int!): Int
+        updateContributionById(
+            id: Int!,
+            updateFields: CreateContributionInput!
+        ): Contribution
     }
     `
