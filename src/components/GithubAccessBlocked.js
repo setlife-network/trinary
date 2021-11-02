@@ -12,7 +12,7 @@ const GithubAccessBlocked = (props) => {
 
     const githubURL = props.githubURL
     
-    const [project, setProject] = useState(null)
+    const [projectGithubUrl, setProjectGithubUrl] = useState(null)
     
     const [getProject, {
         data: dataProject,
@@ -20,7 +20,7 @@ const GithubAccessBlocked = (props) => {
         error: errorProject,
     }] = useLazyQuery(GET_PROJECT, {
         onCompleted: dataProject => {
-            setProject(dataProject.getProjectById.github_url)
+            setProjectGithubUrl(dataProject.getProjectById.github_url)
         }
     })
 
@@ -30,7 +30,6 @@ const GithubAccessBlocked = (props) => {
         })
     }, [dataProject])
 
-
     return (
         <Grid container className='GithubAccessBlocked'>
             <Grid item xs={12}>
@@ -39,7 +38,7 @@ const GithubAccessBlocked = (props) => {
                         {props.message}
                     </Typography>
                     <Typography align='center' variant='h6'>
-                        <Link href={project}>
+                        <Link href={projectGithubUrl}>
                             Open in Github
                         </Link>
                     </Typography>
