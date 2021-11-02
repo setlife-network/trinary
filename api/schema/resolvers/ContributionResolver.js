@@ -40,5 +40,18 @@ module.exports = {
                 ...createFields
             })
         },
+        deleteContributionById: (root, { id }, { models }) => {
+            return models.Contribution.destroy({ where: { id } })
+        },
+        updateContributionById: async (root, { id, updateFields }, { models }) => {
+            await models.Contribution.update({
+                ...updateFields
+            }, {
+                where: {
+                    id
+                }
+            })
+            return models.Contribution.findByPk(id)
+        }
     }
 }
