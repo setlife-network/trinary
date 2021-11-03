@@ -35,7 +35,6 @@ const dataSyncs = module.exports = (() => {
                 if (customer) {
                     customerInformation = customer
                 } else if (!customersFromCsv.includes(csvData.Client)) {
-                    console.log('entro ', csvData.Client)
                     customersFromCsv.push(csvData.Client)
                     customerInformation = await stripe.createCustomer({ name: csvData.Client, email: null })
 
