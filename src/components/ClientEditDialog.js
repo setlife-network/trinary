@@ -122,6 +122,7 @@ const ClientEditDialog = (props) => {
                                     defaultValue={client.currency}
                                     fullWidth
                                     onChange={(event) => setClientCurrency(event.target.value)}
+                                    disabled={client.currencyLocked}
                                 >
                                     {renderCurrencies(CURRENCIES)}
                                 </Select>
