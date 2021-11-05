@@ -2,21 +2,43 @@ const github = require('../handlers/github')
 const db = require('../models')
 
 const automations = module.exports = (() => {
-
+  
     const getOrganizationRepos = async (params) => {
-        const organizations = await getUserOrganizations({
-            auth_key: params.auth_key
+        const contributor = await db.models.Contributor.findOne({
+            where: {
+                github_id: params.accountId 
+            }
         })
-        const isOrganization = organizations[0].name != params.organizationName
 
+        const organizations = []
+        const githubAccount = {}
+        if (contributor) {
+            githubAccount.handle = contributor.github_handle.split(/\//)[3]
+        } else {
+            organizations.push(
+                ...await getUserOrganizations({
+                    auth_key: params.auth_key
+                })
+            )
+        }
+
+        if (organizations.length) {
+            organizations.map((org) => {
+                if (org.id == params.accountId) {
+                    githubAccount.handle = org.name
+                }
+            })
+        }
         const repos = await github.fetchRepos({
             auth_key: params.auth_key,
             organizationName: params.organizationName,
-            isOrganization
+            accountName: githubAccount.handle,
+            githubPageNumber: params.githubPageNumber,
+            isOrganization: organizations.length
         })
         const organizationRepos = []
         repos.map(r => {
-            if (r.owner.login == params.organizationName) {
+            if (r.owner.login == githubAccount.handle) {
                 organizationRepos.push({
                     id: r.id,
                     name: r.name,
