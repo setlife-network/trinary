@@ -25,6 +25,7 @@ export const GET_CLIENT_INFO = gql`
                 name
                 is_active
             }
+            currencyLocked
         }
     }
 `

@@ -8,7 +8,8 @@ import {
     Box,
     Button,
     Grid,
-    Typography
+    Typography,
+    Tooltip
 } from '@material-ui/core/'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -242,13 +243,21 @@ const PaymentTile = (props) => {
                                     </Button>
                                 </Grid>
                                 <Grid item xs={2} align='right'>
-                                    <Button
-                                        color='primary'
-                                        onClick={() => handleEditPayment(true)}
-                                        disabled={payment.external_uuid_type}
+                                    <Tooltip 
+                                        title='This payment cannot be edited because it is linked to a Stripe Invoice' 
+                                        disableHoverListener={payment.external_uuid_type ? false : true}
+                                        placement='top'
                                     >
-                                        <EditIconOutlined />
-                                    </Button>
+                                        <span>
+                                            <Button
+                                                color='primary'
+                                                onClick={() => handleEditPayment(true)}
+                                                disabled={payment.external_uuid_type}
+                                            >
+                                                <EditIconOutlined />
+                                            </Button>
+                                        </span>
+                                    </Tooltip>
                                 </Grid>
                                 <Grid item xs={2} align='right'>
                                     <Button
