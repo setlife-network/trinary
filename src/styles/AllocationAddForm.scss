@@ -2,6 +2,9 @@
     .react-datepicker-popper {
         z-index: 2
     }
+    .warning {
+        color: $red;
+    }
 }
 
 @media screen and (min-width: $sm) {

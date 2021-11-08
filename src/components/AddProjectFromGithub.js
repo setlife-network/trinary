@@ -77,7 +77,7 @@ const AddProjectFromGithub = (props) => {
             setRepoOptions([])
             getRepos({
                 variables: {
-                    organizationName: selectedGithubOrganization.name,
+                    accountId: selectedGithubOrganization.id,
                     githubPageNumber: actualGithubPage
                 }
             })
@@ -136,7 +136,7 @@ const AddProjectFromGithub = (props) => {
 
     const renderMoreItem = ( itemValue ) => {
         return (
-            <MenuItem value={itemValue + 1}  >
+            <MenuItem value={itemValue + 1}>
                 <Typography color='primary'>...more</Typography>
             </MenuItem>
         )
