@@ -1,10 +1,10 @@
 module.exports = {
     Contribution: {
-        contributor: (permission, args, { models }) => {
-            return models.Contributor.findByPk(permission.contributor_id)
+        contributor: (contribution, args, { models }) => {
+            return models.Contributor.findByPk(contribution.contributor_id)
         },
-        issue: (permission, args, { models }) => {
-            return models.Issue.findByPk(permission.issue_id)
+        issue: (contribution, args, { models }) => {
+            return models.Issue.findByPk(contribution.issue_id)
         }
     },
     Query: {
