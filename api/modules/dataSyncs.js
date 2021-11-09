@@ -21,6 +21,14 @@ const dataSyncs = module.exports = (() => {
         })
     }
 
+    const findContributor = async (userUrl) => {
+        return db.models.Contributor.findOne({
+            where: {
+                github_handle: userUrl
+            }
+        })
+    }
+
     const findContributionsByGithubUrlAndUsername = async (issueUrl, userUrl) => {
         return db.models.Contribution.findOne({
             include: [
@@ -118,17 +126,34 @@ const dataSyncs = module.exports = (() => {
                 }
                 if (i.assignee) {
                     const matchingContribution = await findContributionsByGithubUrlAndUsername(i.html_url, i.assignee.html_url)
-                    if (matchingContribution) {
-                        console.log(matchingContribution)
-                    } else {
-                    //     await db.models.Contribution.create({
-                    //         contributor_id: null,
-                    //         issue_id: null,
-                    //         is_author: 0,
-                    //         is_assigned: 1,
-                    //         date_created: i.created_at,
-                    //         date_updated: i.updated_at
-                    //     })
+                    if (!matchingContribution) {
+                        const matchingContributor = await findContributor(i.assignee.html_url)
+                        if (matchingContributor) {
+                            await db.models.Contribution.create({
+                                contributor_id: matchingContributor.id,
+                                issue_id: matchingIssue.id,
+                                is_author: 0,
+                                is_assigned: 1,
+                                date_created: i.created_at,
+                                date_updated: i.updated_at
+                            })
+                        }
+                    } 
+                }
+                if (i.user) {
+                    const matchingContribution = await findContributionsByGithubUrlAndUsername(i.html_url, i.user.html_url)
+                    if (!matchingContribution) {
+                        const matchingContributor = await findContributor(i.user.html_url)
+                        if (matchingContributor) {
+                            await db.models.Contribution.create({
+                                contributor_id: matchingContributor.id,
+                                issue_id: matchingIssue.id,
+                                is_author: 1,
+                                is_assigned: 0,
+                                date_created: i.created_at,
+                                date_updated: i.updated_at
+                            })
+                        }
                     }
                 }
             })
