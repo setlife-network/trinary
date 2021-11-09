@@ -37,13 +37,18 @@ const budgeting = module.exports = (() => {
                 ? moment(stripeInvoice.metadata.date_paid, 'YYYY-MM-DD')
                 : null
 
+            const createdAt = stripeInvoice.status_transitions?.finalized_at
+                ? moment(stripeInvoice.metadata.finalized_at).format()
+                : moment()
+
             return db.models.Payment.create({
                 amount: stripeInvoice.total,
                 date_incurred: dateIncurredOverride,
                 date_paid: datePaidOverride,
                 client_id: client.id,
                 external_uuid: stripeInvoice.id,
-                external_uuid_type: 'STRIPE'
+                external_uuid_type: 'STRIPE',
+                created_at: createdAt
             })
         }
     }
@@ -126,6 +131,7 @@ const budgeting = module.exports = (() => {
             const updatedAttributes = {}
             const datePaidOverride = stripeInvoice.metadata?.date_paid || null
             const dateIncurredOverride = stripeInvoice.metadata?.date_incurred || null
+            const finalizedAt = stripeInvoice.status_transitions?.finalized_at || null
 
             // Updates the date paid if the override metadata is detected
             // but if not and the invoice has been paid, set date_paid to the
@@ -142,6 +148,10 @@ const budgeting = module.exports = (() => {
 
             if (dateIncurredOverride) {
                 updatedAttributes.date_incurred = dateIncurredOverride
+            }
+
+            if (finalizedAt) {
+                updatedAttributes.created_at = moment(finalizedAt).format()
             }
 
             await db.models.Payment.update({
