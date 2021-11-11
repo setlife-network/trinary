@@ -32,7 +32,7 @@ const budgeting = module.exports = (() => {
             const dateIncurredOverride = stripeInvoice.metadata?.date_incurred
                 ? moment(stripeInvoice.metadata.date_incurred, 'YYYY-MM-DD')
                 : stripeInvoice.status_transitions?.finalized_at
-                    ? moment(stripeInvoice.status_transitions.finalized_at).format()
+                    ? moment.unix(stripeInvoice.status_transitions.finalized_at, 'x').utc()
                     : moment(stripeInvoice.created, 'X')
 
             const datePaidOverride = stripeInvoice.metadata?.date_paid
