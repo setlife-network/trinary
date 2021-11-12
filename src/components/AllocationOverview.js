@@ -231,9 +231,9 @@ const AllocationOverview = (props) => {
     const editButtonDisabled = (
         updatedAllocationRate.total_amount == allocationInfo.amount &&
         updatedAllocationRate.hourly_rate == allocationInfo.rate.hourly_rate &&
-        updatedAllocationPayment?.id == allocationInfo.payment?.id
+        updatedAllocationPayment?.id == allocationInfo.payment?.id &&
+        updatedAllocationEndDate == allocationInfo.end_date
     )
-
     return (
         <Dialog
             className='AllocationOverview'
