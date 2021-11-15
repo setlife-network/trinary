@@ -31,6 +31,14 @@ const theme = createMuiTheme({
             root: {
                 overflow: 'initial'
             },
+        },
+        MuiTypography: {
+            h4: {
+                fontSize: '1.75rem',
+                '@media (min-width:376px)': {
+                    fontSize: '2.125rem'
+                }
+            }
         }
     },
     palette: {
@@ -50,5 +58,6 @@ const theme = createMuiTheme({
         }
     }
 })
+
 
 export default theme

@@ -17,7 +17,9 @@ import LoadingProgress from './LoadingProgress'
 
 import { selectCurrencySymbol } from '../scripts/selectors'
 import { lightGrey } from '../styles/colors.scss'
+import {ClientInfoName} from '../styles/ClientInfoName.scss'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
+import { typography } from '@material-ui/system'
 
 const ClientInfo = ({
     clientId
