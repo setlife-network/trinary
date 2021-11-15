@@ -58,6 +58,9 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
                         name
                     }
                 }
+                payment {
+                    amount
+                }
             }
         }
     }
@@ -131,8 +134,12 @@ export const GET_CONTRIBUTOR_ORGANIZATIONS_FROM_GITHUB = gql`
 `
 
 export const GET_CONTRIBUTOR_REPOS_FROM_GITHUB = gql`
-    query GithubOrganizationRepos($organizationName: String!) {
-        getGithubRepos(organizationName: $organizationName) {
+    query GithubOrganizationRepos($githubPageNumber: Int!, $accountId: Int!) {
+        getGithubRepos(
+            githubPageNumber: $githubPageNumber, 
+            accountId: $accountId 
+        ) 
+        {
             id
             name
             githubUrl

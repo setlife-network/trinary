@@ -45,6 +45,11 @@ module.exports = gql`
             toDate: String,
             contributorId: Int
         ): Int
+        githubPullRequestsMerged(
+            fromDate: String,
+            toDate: String,
+            contributorId: Int
+        ): Int
         timeEntries(
             fromDate: String
             toDate: String
@@ -132,7 +137,7 @@ module.exports = gql`
         ): [Issue]
         syncTogglProject(
             project_id: Int!
-            toggl_id: String
+            toggl_url: String
         ): Project
         updateProjectById(
             id: Int!

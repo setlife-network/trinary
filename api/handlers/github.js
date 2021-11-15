@@ -60,16 +60,18 @@ const github = module.exports = (() => {
         })
         const res = params.isOrganization
             ? await octokit.repos.listForOrg({ 
-                org: params.organizationName,
+                org: params.accountName,
                 per_page: 100,
                 sort: 'updated',
                 direction: 'desc',
+                page: params.githubPageNumber
             })
             : await octokit.repos.listForUser({
-                username: params.organizationName,
+                username: params.accountName,
                 per_page: 100,
                 sort: 'updated',
                 direction: 'desc',
+                page: params.githubPageNumber
             })
         if (res.status == 200) {
             return res.data
@@ -107,6 +109,17 @@ const github = module.exports = (() => {
             auth: params.auth_key
         })
         return octokit.paginate(octokit.issues.listForRepo, {
+            owner: params.owner,
+            repo: params.repo,
+            state: 'all'
+        })
+    }
+
+    const fetchPullRequests = (params) => {
+        const octokit = new Octokit({
+            auth: params.auth_key
+        })
+        return octokit.paginate(octokit.pulls.list, {
             owner: params.owner,
             repo: params.repo,
             state: 'all'
@@ -163,6 +176,7 @@ const github = module.exports = (() => {
         fetchRepoContributors,
         fetchRepoInfo,
         fetchRepoIssues,
+        fetchPullRequests,
         fetchUserData,
         fetchUserPermission,
         fetchUserOrganizations

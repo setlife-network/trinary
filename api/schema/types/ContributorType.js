@@ -69,7 +69,10 @@ module.exports = gql`
         getContributorById(id: Int!): Contributor
         getContributors: [Contributor]
         getGithubOrganizations(contributorId: Int): [ContributorOrganizations]
-        getGithubRepos(organizationName: String!):  [GithubRepo]
+        getGithubRepos(
+            githubPageNumber: Int!
+            accountId: Int!
+        ):  [GithubRepo]
     }
 
     type Mutation {

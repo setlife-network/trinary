@@ -30,6 +30,7 @@ const ClientTile = ({
                         onClick={() => redirectClientPage({
                             id: client.id
                         })}
+                        data-testid='click-tile'
                     >
                         <Box
                             width={1}
@@ -49,7 +50,10 @@ const ClientTile = ({
                                     item
                                     xs={10}
                                 >
-                                    <Typography variant='h6'>
+                                    <Typography 
+                                        variant='h6' 
+                                        data-testid='client-name'
+                                    >
                                         {client.name}
                                     </Typography>
                                 </Grid>

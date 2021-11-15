@@ -1,3 +1,5 @@
+const { STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants')
+
 const moment = require('moment')
 const { fn, col, Op } = require('sequelize')
 
@@ -32,6 +34,18 @@ module.exports = {
                 }
             })
             return totalPaid.total
+        },
+        currencyLocked: async (client, args, { models }) => {
+            const clientData = await models.Client.findByPk(client.id)
+            const existingPayments = clientData.external_uuid
+                ? await models.Payment.findOne({
+                    where: {
+                        client_id: client.id,
+                        external_uuid_type: 'STRIPE'
+                    },
+                })
+                : false
+            return (existingPayments && STRIPE_SUPPORTED_CURRENCIES.includes(client.currency)) || false
         }
     },
     Query: {

@@ -30,7 +30,7 @@ const RateMaxBudgetForm = (props) => {
 
     const [currentRateInput, setCurrentRateInput] = useState(null)
     const [rateCurrency, setRateCurrency] = useState(clientCurrency)
-    const [totalAmount, setTotalAmount] = useState(currentTotal ? currentTotal / 100 : 0)
+    const [totalAmount, setTotalAmount] = useState(currentTotal ? currentTotal : 0)
     const [totalWeeks, setTotalWeeks] = useState(null)
     const [totalHours, setTotalHours] = useState(0)
 
@@ -91,7 +91,7 @@ const RateMaxBudgetForm = (props) => {
             validatePositiveNumbers(value, currentRateInput)
         )
     }
-    
+
     return (
         <Grid container className='RateMaxBudgetForm'>
             <Grid item xs={6} md={5}>

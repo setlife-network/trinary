@@ -98,7 +98,7 @@ module.exports = {
             })
             return contributorOrganizations
         },
-        getGithubRepos: async (root, { organizationName }, { cookies, models }) => {
+        getGithubRepos: async (root, { githubPageNumber, accountId }, { cookies, models }) => {
             const contributor = (
                 await models.Contributor.findByPk(
                     cookies.userSession
@@ -108,7 +108,8 @@ module.exports = {
             )
             const contributorOrganizations = await apiModules.automations.getOrganizationRepos({
                 auth_key: contributor.github_access_token,
-                organizationName: organizationName
+                accountId,
+                githubPageNumber
             })
             return contributorOrganizations
         }

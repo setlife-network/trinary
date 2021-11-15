@@ -17,23 +17,31 @@ The `server.js` file is responsible for initial set up of the backend and the `/
 1. Clone the repo
 
 ```
-git clone https://github.com/setlife-network/project-trinary
+git clone https://github.com/setlife-network/trinary
 ```
 
 2. Install packages
 
 ```
-cd project-trinary
+cd trinary
 npm install
 ```
 
-3. Run the UI server
+3. Copy the sample environment configuration file
+
+```
+cp .env.example .env
+```
+
+4. Obtain a `.env` file from a project maintainer or fill out your own values
+
+5. Run the UI server
 
 ```
 npm run ui
 ```
 
-4. Open a new Terminal tab and run the web server
+6. Open a new Terminal tab and run the web server
 
 ```
 npm run server
@@ -41,9 +49,9 @@ npm run server
 npm run dev-server
 ```
 
-5. UI should open in the browser at `localhost:6002`
+7. UI should open in the browser at `localhost:6002`
 
-6. An API Explorer is accessible in the browser at `localhost:6001/api/graph`
+8. An API Explorer is accessible in the browser at `localhost:6001/api/graph`
 
 If using VSCode, be sure to disable the Prettier: Format on Save feature to prevent unwanted changes to the code styles.
 

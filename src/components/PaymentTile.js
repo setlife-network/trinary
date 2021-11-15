@@ -7,14 +7,15 @@ import {
     AccordionSummary,
     Box,
     Button,
-    Fab,
     Grid,
-    Typography
+    Typography,
+    Tooltip
 } from '@material-ui/core/'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from '@material-ui/icons/Edit'
+import EditIconOutlined from '@material-ui/icons/EditOutlined'
 
 import AllocationAddForm from './AllocationAddForm'
 import AllocationOverview from './AllocationOverview'
@@ -28,7 +29,6 @@ import {
     formatAmount,
     selectCurrencyInformation
 } from '../scripts/selectors'
-import { red } from '../styles/colors.scss'
 
 const PaymentTile = (props) => {
 
@@ -120,7 +120,7 @@ const PaymentTile = (props) => {
                 // amount: parseFloat((amount / 100).toFixed(2)).toString(),
                 currencyInformation: currencyInformation
             })
-
+            
             return (
                 <Box 
                     mb={3} 
@@ -145,7 +145,7 @@ const PaymentTile = (props) => {
                         <Grid items xs={12}>
                             <Typography color='secondary' variant='caption' className='animation-effect-left'>
                                 {`${currencyInformation['symbol']} ${rate.hourly_rate}/hr (
-                                    ${rate.type == 'monthly_rate' ? 'monthly rate' : 'max budget'}
+                                    ${rate.type == 'prorated_monthly' ? 'monthly rate' : 'max budget'}
                                 )`}
                             </Typography>
                         </Grid>
@@ -188,27 +188,28 @@ const PaymentTile = (props) => {
                         }}
                     >
                         <Grid container alignItems='center'>
-                            <Grid item xs={8} align='left'>
+                            <Grid item xs={6} align='left'>
                                 <Typography variant='h6'>
                                     {`${paymentAmount}`}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={4} align='right'>
+                            <Grid item xs={5} align='right'>
+                                <Box mb={0.75}>
+                                    <Typography
+                                        variant='caption'
+                                        color='secondary'
+                                    >
+                                        {`${paymentHasBeenMade
+                                            ? formattedDatePaid
+                                            : formattedDateIncurred}`
+                                        }
+                                    </Typography>
+                                </Box>
+                            </Grid>
+                            <Grid item xs={1} align='right'>
                                 <MonetizationOnIcon
                                     color={`${paymentHasBeenMade ? 'primary' : 'secondary'}`}
                                 />
-                            </Grid>
-                            <Grid item xs={8}>
-                                <Typography
-                                    variant='caption'
-                                    align='left'
-                                    color='secondary'
-                                >
-                                    {`${paymentHasBeenMade
-                                        ? formattedDatePaid
-                                        : formattedDateIncurred}`
-                                    }
-                                </Typography>
                             </Grid>
                             {project &&
                                 <Grid item xs={12}>
@@ -230,16 +231,35 @@ const PaymentTile = (props) => {
                     {!project &&
                         <Box align='left' mb={2} ml={2}>
                             <Grid container>
-                                <Grid item xs={6}>
+                                <Grid item xs={8}>
                                     <Button
                                         color='primary'
-                                        onClick={() => handleEditPayment(true)}
-                                        disabled={payment.external_uuid_type}
+                                        variant='outlined'
+                                        onClick={() => addAllocation({ payment })}
                                     >
-                                        {'Edit Payment'.toUpperCase()}
+                                        <Typography>
+                                            {`Allocate`}
+                                        </Typography>
                                     </Button>
                                 </Grid>
-                                <Grid item xs={6} align='right'>
+                                <Grid item xs={2} align='right'>
+                                    <Tooltip 
+                                        title='This payment cannot be edited because it is linked to a Stripe Invoice' 
+                                        disableHoverListener={payment.external_uuid_type ? false : true}
+                                        placement='top'
+                                    >
+                                        <span>
+                                            <Button
+                                                color='primary'
+                                                onClick={() => handleEditPayment(true)}
+                                                disabled={payment.external_uuid_type}
+                                            >
+                                                <EditIconOutlined />
+                                            </Button>
+                                        </span>
+                                    </Tooltip>
+                                </Grid>
+                                <Grid item xs={2} align='right'>
                                     <Button
                                         color='primary'
                                         onClick={() => handleDeletePayment(true)}
@@ -276,7 +296,7 @@ const PaymentTile = (props) => {
                     }
                 </Accordion>
             </Box>
-            {(paymentClicked && project) &&
+            {paymentClicked &&
                 <AllocationAddForm
                     client={client}
                     project={project ? project : null}

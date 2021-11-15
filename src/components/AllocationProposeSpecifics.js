@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useQuery, useLazyQuery } from '@apollo/client'
 import {
     Box,
-    Button,
     Collapse,
     Grid,
     List,
     ListItem,
-    ListItemIcon,
     ListItemText,
     Typography
 } from '@material-ui/core/'
@@ -30,8 +28,7 @@ import LoadingProgress from './LoadingProgress'
 import { GET_ALL_PROJECTS, GET_PROJECT_CLIENT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import {
     formatAmount,
-    selectCurrencyInformation,
-    selectCurrencySymbol
+    selectCurrencyInformation
 } from '../scripts/selectors'
 
 const AllocationProposeSpecifics = (props) => {
@@ -40,7 +37,7 @@ const AllocationProposeSpecifics = (props) => {
         contributor,
         setNewAllocation,
         setPayment,
-        setProject
+        setProject,
     } = props
 
     const {
@@ -235,7 +232,7 @@ const AllocationProposeSpecifics = (props) => {
                                     <Typography variant='caption' color='secondary'>
                                         {`${selectedProject
                                             ? last(split(selectedProject.client.name, '/'))
-                                            : ''
+                                            : 'Select a project'
                                         }`}
                                     </Typography>
                                 </Grid>

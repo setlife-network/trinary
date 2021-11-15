@@ -1,0 +1,13 @@
+.AllocationTile {
+}
+
+@media screen and (min-width: $sm) {
+    .AllocationTile {
+        .redirect {
+            cursor: pointer;
+            :hover {
+                color: $setlife-blue;
+            }
+        }
+    }
+}
