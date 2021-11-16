@@ -5,10 +5,11 @@ import {
     AppBar,
     Box,
     Grid,
-    Typography
+    Typography,
+    Button
 } from '@material-ui/core'
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
-import { split } from 'lodash'
+import withWidth from '@material-ui/core/withWidth'
+import Settings from '@material-ui/icons/Settings'
 
 import { lightBlue } from '../styles/colors.scss'
 import { LOGO_URL, SMALL_LOGO_URL } from '../constants'
@@ -20,6 +21,9 @@ const Navigation = (props) => {
     const history = useHistory()
     const redirectToHome = () => {
         history.push('/')
+    }
+    const redirectToSettings = () => {
+        history.push('/settings')
     }
     const location = useLocation()
     const locationTitle = matchTitlePage({ location: location.pathname })
@@ -58,6 +62,12 @@ const Navigation = (props) => {
                                 word: locationTitle.title || optionalLocationTitle
                             })}
                         </Typography>
+                    </Grid>
+                    <Grid item xs={2} sm={3}>
+                        <Settings
+                            className='icon-image'
+                            onClick={() => redirectToSettings()}
+                        />
                     </Grid>
                 </Grid>
             </AppBar>
