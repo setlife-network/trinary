@@ -5,6 +5,7 @@ import {
     Box,
     Typography
 } from '@material-ui/core'
+import LogoutIcon from '@material-ui/icons/ExitToApp'
 
 import { white } from '../styles/colors.scss'
 
@@ -17,9 +18,20 @@ const Logout = () => {
                     color='primary'
                 >
                     <Box color={`${white}`}>
-                        <Typography>
-                            {'Logout'}
-                        </Typography>
+                        <Grid container>
+                            <Grid item auto>
+                                <Box mr={1} mt={1}>
+                                    <LogoutIcon />
+                                </Box>
+                            </Grid>
+                            <Grid item auto>
+                                <Typography>
+                                    <Box mr={1} mt={1}>
+                                        {'Logout'}
+                                    </Box>
+                                </Typography>
+                            </Grid>
+                        </Grid>
                     </Box>
                 </Button>
             </Grid>
