@@ -9,6 +9,10 @@
         font-weight: bold;
         font-size: 1rem;
     }
+    .icon-settings {
+        cursor:pointer;
+        color: $grey;
+    }
 }
 
 @media screen and (min-width: $sm) {

@@ -65,7 +65,7 @@ const Navigation = (props) => {
                     </Grid>
                     <Grid item xs={2} sm={3}>
                         <Settings
-                            className='icon-image'
+                            className='icon-settings'
                             onClick={() => redirectToSettings()}
                         />
                     </Grid>
