@@ -5,8 +5,7 @@ import {
     AppBar,
     Box,
     Grid,
-    Typography,
-    Button
+    Typography
 } from '@material-ui/core'
 import withWidth from '@material-ui/core/withWidth'
 import Settings from '@material-ui/icons/Settings'
