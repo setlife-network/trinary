@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import {
     Grid,
     Button,
@@ -10,12 +11,20 @@ import LogoutIcon from '@material-ui/icons/ExitToApp'
 import { white } from '../styles/colors.scss'
 
 const Logout = () => {
+
+    const history = useHistory()
+
+    const redirectToLogin = () => {
+        history.push('/login')
+    }
+
     return (
         <Grid container className='Logout'>
             <Grid xs={12} align='center'>
                 <Button
                     variant='contained'
                     color='primary'
+                    onClick={() => redirectToLogin()}
                 >
                     <Box color={`${white}`}>
                         <Grid container>
