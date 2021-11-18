@@ -232,7 +232,8 @@ const AllocationOverview = (props) => {
         updatedAllocationRate.total_amount == allocationInfo.amount &&
         updatedAllocationRate.hourly_rate == allocationInfo.rate.hourly_rate &&
         updatedAllocationPayment?.id == allocationInfo.payment?.id &&
-        updatedAllocationEndDate == allocationInfo.end_date
+        updatedAllocationEndDate == allocationInfo.end_date ||
+        updatedAllocationStartDate == allocationInfo.start_date
     )
     return (
         <Dialog
