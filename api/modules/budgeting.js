@@ -32,7 +32,7 @@ const budgeting = module.exports = (() => {
             const dateIncurredOverride = stripeInvoice.metadata?.date_incurred
                 ? moment(stripeInvoice.metadata.date_incurred, 'YYYY-MM-DD')
                 : stripeInvoice.status_transitions?.finalized_at
-                    ? moment.unix(stripeInvoice.status_transitions.finalized_at, 'x').utc()
+                    ? moment.unix(stripeInvoice.status_transitions.finalized_at, 'X')
                     : moment(stripeInvoice.created, 'X')
 
             const datePaidOverride = stripeInvoice.metadata?.date_paid
@@ -146,7 +146,7 @@ const budgeting = module.exports = (() => {
             if (dateIncurredOverride) {
                 updatedAttributes.date_incurred = dateIncurredOverride
             } else if (finalizedAt) {
-                updatedAttributes.date_incurrred = moment(finalizedAt).format()
+                updatedAttributes.date_incurred = moment(finalizedAt).format('YYYY-MM-DD')
             }
 
             await db.models.Payment.update({
