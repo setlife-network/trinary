@@ -15,29 +15,23 @@ const dataSyncs = module.exports = (() => {
 
     const importInvoicelyCsvToStripe = async () => {
         const invoiceFile = INVOICELY_CSV_PATH
-        const csvFile =
-            await amazon.fetchFile({ file: invoiceFile })
-                .then(file => {
-                    return invoicelyCodebase.modelCSV(file)
-                })
-                .catch(err => {
-                    console.log('error', err);
-                    return err.message
-                })
-        const stripeCustomers = await stripe.listAllCustomers()
-        const customersFromCsv = []
         try {
-            csvFile.map(async csvData => {
+            const csvFile = await amazon.fetchFile({ file: invoiceFile })
+            const modeledCsv = await invoicelyCodebase.modelCSV(csvFile)
+
+            const stripeCustomers = await stripe.listAllCustomers()
+            const customersFromCsv = []
+
+            modeledCsv.map(async csvData => {
                 let customerInformation
                 const customer = stripeCustomers.data.find(customerData => customerData.name == csvData.Client)
                 csvData.Total = csvData.Total.replace(/,/g, '')
-                const amount = parseInt(csvData.Total) * 100
+                const amount = Number((Number(csvData.Total) * 100).toFixed(0))
                 if (customer) {
                     customerInformation = customer
                 } else if (!customersFromCsv.includes(csvData.Client)) {
                     customersFromCsv.push(csvData.Client)
                     customerInformation = await stripe.createCustomer({ name: csvData.Client, email: null })
-
                 }
                 await stripe.createInvoice({
                     amount: amount,
