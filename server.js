@@ -73,8 +73,8 @@ app.get('/api/login', (req, res) => {
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.OAUTH_CLIENT_ID}&scope=repo`)
 })
 app.get('/api/logout', (req, res) => {
-    console.log('logout')
     req.session = null
+    res.end(req.session)
 })
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in the Github App
     github.fetchAccessToken({ code: req.query.code })
