@@ -24,8 +24,10 @@ const Logout = () => {
             method: 'GET'
         }
         fetch(`${API_ROOT}/logout`, config)
-            .then(data => {
-                console.log(data)
+            .then(response => {
+                console.log('response')
+                console.log(response)
+                return response
             })
     }
 
