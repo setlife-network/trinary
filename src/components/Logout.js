@@ -21,7 +21,10 @@ const Logout = () => {
 
     const test = (e) => {
         const config = {
-            method: 'GET'
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         }
         fetch(`${API_ROOT}/logout`, config)
             .then(response => {
