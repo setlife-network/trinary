@@ -9,6 +9,7 @@ import {
 import LogoutIcon from '@material-ui/icons/ExitToApp'
 
 import { white } from '../styles/colors.scss'
+import { API_ROOT } from '../constants'
 
 const Logout = () => {
 
@@ -18,13 +19,23 @@ const Logout = () => {
         history.push('/login')
     }
 
+    const test = (e) => {
+        const config = {
+            method: 'GET'
+        }
+        fetch(`${API_ROOT}/logout`, config)
+            .then(data => {
+                console.log(data)
+            })
+    }
+
     return (
         <Grid container className='Logout'>
             <Grid xs={12} align='center'>
                 <Button
                     variant='contained'
                     color='primary'
-                    onClick={() => redirectToLogin()}
+                    onClick={() => test()}
                 >
                     <Box color={`${white}`}>
                         <Grid container>
