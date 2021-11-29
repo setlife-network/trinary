@@ -26,6 +26,7 @@ module.exports = gql`
         getPaymentById(id: Int!): Payment
         getPayments: [Payment]
         getClientPaymentsByClientId(clientId: Int!): [Payment]
+        importInvoicelyCsvToStripe: String
     }
 
     type Mutation {
@@ -38,7 +39,7 @@ module.exports = gql`
         ): String
 
         deletePaymentById(id: Int!): String
-
+        
         updatePaymentById(
             id:Int!,
             updateFields: PaymentInput!,
