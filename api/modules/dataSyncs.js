@@ -1,7 +1,10 @@
 const { split } = require('lodash')
 
-const authentication = require('./authentication')
-const { findIssueByGithubUrl, findContributorByGithubHandle, findContributionByGithubUrlAndHandle } = require('./projectManagement')
+const { 
+    findIssueByGithubUrl, 
+    findContributorByGithubHandle, 
+    findContributionByGithubUrlAndHandle 
+} = require('./projectManagement')
 const amazon = require('../handlers/amazon')
 const github = require('../handlers/github')
 const toggl = require('../handlers/toggl')
@@ -10,9 +13,31 @@ const db = require('../models')
 const invoicelyCodebase = require('../scripts/invoicelyCodebase')
 const timeLogging = require('../scripts/timeLogging')
 const { INVOICELY_CSV_PATH } = require('../config/constants')
-const { GITHUB, TOGGL } = require('../config/credentials')
+const { GITHUB } = require('../config/credentials')
 
 const dataSyncs = module.exports = (() => {
+
+    const syncContributions = async (github_url, user_url, author, assignee) => {
+        console.log(github_url)
+        console.log(user_url)
+        const matchingContribution = await findContributionByGithubUrlAndHandle({
+            url: github_url, 
+            handle: user_url
+        })
+        if (!matchingContribution) {
+            const matchingContributor = await findContributorByGithubHandle(user)
+            if (matchingContributor) {
+                await db.models.Contribution.create({
+                    contributor_id: matchingContributor.id,
+                    issue_id: matchingIssue.id,
+                    is_author: author,
+                    is_assigned: assignee,
+                    date_created: i.created_at,
+                    date_updated: i.updated_at
+                })
+            }
+        }
+    }
 
     const importInvoicelyCsvToStripe = async () => {
         const invoiceFile = INVOICELY_CSV_PATH
@@ -45,15 +70,6 @@ const dataSyncs = module.exports = (() => {
             return 'Something failed'
         }
         return 'Import completed'
-    }
-
-    const findIssueByGithubUrl = async (url) => {
-        return db.models.Issue.findOne({
-            raw: true,
-            where: {
-                github_url: url
-            }
-        })
     }
 
     const syncGithubRepoContributors = async (params) => {
@@ -133,42 +149,10 @@ const dataSyncs = module.exports = (() => {
                     })
                 }
                 if (i.user) {
-                    const matchingContribution = await findContributionByGithubUrlAndHandle({
-                        url: i.html_url, 
-                        handle: i.user.html_url
-                    })
-                    if (!matchingContribution) {
-                        const matchingContributor = await findContributorByGithubHandle(i.user.html_url)
-                        if (matchingContributor) {
-                            await db.models.Contribution.create({
-                                contributor_id: matchingContributor.id,
-                                issue_id: matchingIssue.id,
-                                is_author: 1,
-                                is_assigned: 0,
-                                date_created: i.created_at,
-                                date_updated: i.updated_at
-                            })
-                        }
-                    }
+                    await syncContributions(i.html_url, i.user.html.url, 1, 0)
                 }
                 if (i.assignee) {
-                    const matchingContribution = await findContributionByGithubUrlAndHandle({
-                        url: i.html_url,
-                        handle: i.assignee.html_url
-                    })
-                    if (!matchingContribution) {
-                        const matchingContributor = await findContributorByGithubHandle(i.assignee.html_url)
-                        if (matchingContributor) {
-                            await db.models.Contribution.create({
-                                contributor_id: matchingContributor.id,
-                                issue_id: matchingIssue.id,
-                                is_author: 0,
-                                is_assigned: 1,
-                                date_created: i.created_at,
-                                date_updated: i.updated_at
-                            })
-                        }
-                    }
+                    await syncContributions(i.html_url, i.assignee.html_url, 0, 1)
                 }
             })
         )

@@ -13,6 +13,7 @@ module.exports = gql`
     }
     type Query {
         getContributions: [Contribution]
+        getContributionById(id: Int!): Contribution
         getContributionsByContributorId(contributorId: Int!): [Contribution]
         getContributionsByIssueId(issueId: Int!): [Contribution]
         getContributionByContributorIdAndIssueId(
@@ -27,7 +28,7 @@ module.exports = gql`
         is_assigned: Int!
     }
     type Mutation {
-        createContribution(createFields: CreateContributionInput): Contribution
+        createContribution(createFields: CreateContributionInput!): Contribution
         deleteContributionById(id: Int!): Int
         updateContributionById(
             id: Int!,

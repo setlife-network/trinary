@@ -14,7 +14,6 @@ const IssueTile = (props) => {
 
     const renderContributions = (contributions) => {
         return contributions.map(i => {
-            console.log(i)
             return (
                 <Grid item xs={12} mt={1} align='left'>
                     <Box>

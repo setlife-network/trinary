@@ -11,6 +11,9 @@ module.exports = {
         getContributions: (root, args, { models }) => {
             return models.Contribution.findAll()
         },
+        getContributionById: (root, { id }, { models }) => {
+            return models.Contribution.findByPk(id)
+        },
         getContributionsByContributorId: (root, { id }, { models }) => {
             return models.Contribution.findAll({
                 where: {
