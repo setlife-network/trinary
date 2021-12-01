@@ -4,6 +4,7 @@ const authentication = require('./authentication')
 const amazon = require('../handlers/amazon')
 const github = require('../handlers/github')
 const toggl = require('../handlers/toggl')
+const stripe = require('../handlers/stripe')
 const db = require('../models')
 const invoicelyCodebase = require('../scripts/invoicelyCodebase')
 const timeLogging = require('../scripts/timeLogging')
@@ -11,6 +12,39 @@ const { INVOICELY_CSV_PATH } = require('../config/constants')
 const { GITHUB, TOGGL } = require('../config/credentials')
 
 const dataSyncs = module.exports = (() => {
+
+    const importInvoicelyCsvToStripe = async () => {
+        const invoiceFile = INVOICELY_CSV_PATH
+        try {
+            const csvFile = await amazon.fetchFile({ file: invoiceFile })
+            const modeledCsv = await invoicelyCodebase.modelCSV(csvFile)
+
+            const stripeCustomers = await stripe.listAllCustomers()
+            const customersFromCsv = []
+
+            modeledCsv.map(async csvData => {
+                let customerInformation
+                const customer = stripeCustomers.data.find(customerData => customerData.name == csvData.Client)
+                csvData.Total = csvData.Total.replace(/,/g, '')
+                const amount = Number((Number(csvData.Total) * 100).toFixed(0))
+                if (customer) {
+                    customerInformation = customer
+                } else if (!customersFromCsv.includes(csvData.Client)) {
+                    customersFromCsv.push(csvData.Client)
+                    customerInformation = await stripe.createCustomer({ name: csvData.Client, email: null })
+                }
+                await stripe.createInvoice({
+                    amount: amount,
+                    external_uuid: customerInformation.id,
+                    actualCurrency: csvData.Currency
+                })
+            })
+        } catch (err) {
+            console.log('an error ocurred: ', err)
+            return 'Something failed'
+        }
+        return 'Import completed'
+    }
 
     const findIssueByGithubUrl = async (url) => {
         return db.models.Issue.findOne({
@@ -207,6 +241,7 @@ const dataSyncs = module.exports = (() => {
     }
 
     return {
+        importInvoicelyCsvToStripe,
         syncGithubRepoContributors,
         syncGithubIssues,
         syncInvoicelyCSV,
