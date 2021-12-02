@@ -2,9 +2,13 @@ $extra-small-icon: 30px;
 $large-icon: 150px;
 $medium-icon: 115px;
 $small-icon: 80px;
+$small-font: 1.6rem;
+$large-font: 2.125rem;
 
 :export {
     extra-small-icon: $extra-small-icon;
     small-icon: $small-icon;
     large-icon: $large-icon;
+    small-font: $small-font;
+    large-font: $large-font;
 }

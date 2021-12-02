@@ -1,6 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 
 import sizes from './sizes.scss'
+import flex from './flex.scss'
 import {
     setlifeBlue,
     lightBlue,
@@ -32,10 +33,15 @@ const theme = createMuiTheme({
                 overflow: 'initial'
             },
         },
+        MuiTooltip: {
+            tooltip: {
+                fontSize: '1em'
+            }
+        },
         MuiTypography: {
             h4: {
-                fontSize: '1.75rem',
-                '@media (min-width:376px)': {
+                fontSize: '1.60rem',
+                '@media (min-width: 600px)': {
                     fontSize: '2.125rem'
                 }
             }
