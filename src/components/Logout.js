@@ -13,24 +13,19 @@ import { API_ROOT } from '../constants'
 
 const Logout = () => {
 
-    const history = useHistory()
-
-    const redirectToLogin = () => {
-        history.push('/login')
-    }
-
-    const test = (e) => {
+    const test = () => {
         const config = {
             method: 'GET',
+            credentials: 'include',
             headers: {
+                Accept: 'application/json',
                 'Content-Type': 'application/json'
-            }
+            },
         }
         fetch(`${API_ROOT}/logout`, config)
             .then(response => {
-                console.log('response')
                 console.log(response)
-                return response
+                return window.location.reload()
             })
     }
 
