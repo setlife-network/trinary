@@ -13,7 +13,7 @@ import { API_ROOT } from '../constants'
 
 const Logout = () => {
 
-    const test = () => {
+    const logoutHandler = () => {
         const config = {
             method: 'GET',
             credentials: 'include',
@@ -35,7 +35,7 @@ const Logout = () => {
                 <Button
                     variant='contained'
                     color='primary'
-                    onClick={() => test()}
+                    onClick={() => logoutHandler()}
                 >
                     <Box color={`${white}`}>
                         <Grid container>
