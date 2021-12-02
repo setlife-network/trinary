@@ -1,7 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 
 import sizes from './sizes.scss'
-import flex from './flex.scss'
+import sm from './flex.scss'
 import {
     setlifeBlue,
     lightBlue,
