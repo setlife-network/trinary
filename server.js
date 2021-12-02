@@ -75,7 +75,7 @@ app.get('/api/login', (req, res) => {
 
 app.get('/api/logout', (req, res) => {
     req.session.userSession = null
-    res.send()
+    res.send().status(200)
 })
 
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in the Github App
