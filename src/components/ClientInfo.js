@@ -15,7 +15,7 @@ import EuroIcon from '@material-ui/icons/Euro'
 import ClientEditDialog from './ClientEditDialog'
 import LoadingProgress from './LoadingProgress'
 
-import { selectCurrencySymbol } from '../scripts/selectors'
+import { selectCurrencySymbol } from '../scripts/utilities'
 import { lightGrey } from '../styles/colors.scss'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 

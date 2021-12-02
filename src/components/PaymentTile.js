@@ -28,7 +28,7 @@ import {
 import {
     formatAmount,
     selectCurrencyInformation
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 
 const PaymentTile = (props) => {
 

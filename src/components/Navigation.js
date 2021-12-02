@@ -12,7 +12,7 @@ import { split } from 'lodash'
 
 import { lightBlue } from '../styles/colors.scss'
 import { LOGO_URL, SMALL_LOGO_URL } from '../constants'
-import { capitalizeWord, matchTitlePage } from '../scripts/selectors'
+import { capitalizeWord, matchTitlePage } from '../scripts/utilities'
 import { pageName } from '../reactivities/variables'
 
 const Navigation = (props) => {

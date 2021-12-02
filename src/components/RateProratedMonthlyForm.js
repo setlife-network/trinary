@@ -13,7 +13,7 @@ import { CURRENCIES } from '../constants'
 import {
     formatAmount,
     selectCurrencyInformation
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 import { validatePositiveNumbers } from '../scripts/validation'
 
 const RateProratedMonthlyForm = (props) => {

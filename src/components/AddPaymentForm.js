@@ -25,7 +25,7 @@ import { GET_CLIENT_PAYMENTS } from '../operations/queries/PaymentQueries'
 import { CREATE_PAYMENT } from '../operations/mutations/PaymentMutations'
 import {
     selectCurrencyInformation
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 
 const AddPaymentForm = (props) => {
 

@@ -13,7 +13,7 @@ import {
 
 import AllocationOverview from './AllocationOverview'
 import { GET_PROJECT_TOTAL_PROPOSED } from '../operations/queries/ProjectQueries'
-import { formatAmount } from '../scripts/selectors'
+import { formatAmount } from '../scripts/utilities'
 
 import moment from 'moment'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'

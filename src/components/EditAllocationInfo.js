@@ -19,7 +19,7 @@ import {
     isEqual
 } from 'lodash'
 
-import { formatAmount, selectCurrencyInformation } from '../scripts/selectors'
+import { formatAmount, selectCurrencyInformation } from '../scripts/utilities'
 
 const EditAllocationInfo = (props) => {
 

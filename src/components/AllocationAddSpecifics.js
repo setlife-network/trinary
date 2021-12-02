@@ -30,7 +30,7 @@ import {
     formatAmount,
     selectCurrencyInformation,
     selectCurrencySymbol
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 
 const AllocationAddSpecifics = (props) => {
 

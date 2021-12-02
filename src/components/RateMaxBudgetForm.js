@@ -11,7 +11,7 @@ import {
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import { CURRENCIES } from '../constants'
-import { selectCurrencyInformation } from '../scripts/selectors'
+import { selectCurrencyInformation } from '../scripts/utilities'
 import { validatePositiveNumbers } from '../scripts/validation'
 
 const RateMaxBudgetForm = (props) => {

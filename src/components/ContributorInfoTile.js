@@ -22,7 +22,7 @@ import { GET_CONTRIBUTOR_INFO } from '../operations/queries/ContributorQueries'
 import {
     formatAmount,
     selectCurrencyInformation
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 
 const ContributorInfoTile = (props) => {
 

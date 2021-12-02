@@ -32,7 +32,7 @@ import { GET_CLIENT_PROJECTS } from '../operations/queries/ClientQueries'
 import {
     formatAmount,
     selectCurrencyInformation
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 
 const AllocationClientSpecifics = (props) => {
 

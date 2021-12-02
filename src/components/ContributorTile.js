@@ -22,7 +22,7 @@ import {
     selectActiveAndUpcomingAllocations,
     selectCurrencyInformation,
     getExpectedHours
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 
 const ContributorTile = (props) => {
 

@@ -22,7 +22,7 @@ import { pageName } from '../reactivities/variables'
 import {
     getAllocatedContributors,
     getActiveAndUpcomingAllocations
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 
 const ProjectContributors = (props) => {
 

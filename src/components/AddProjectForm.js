@@ -23,7 +23,7 @@ import { sessionUser } from '../reactivities/variables'
 import {
     verifyGithubURL,
     verifyTogglURL
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS } from '../constants'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import { ADD_PROJECT, SYNC_TOGGL_PROJECT } from '../operations/mutations/ProjectMutations'

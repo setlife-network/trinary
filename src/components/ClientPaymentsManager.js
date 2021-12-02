@@ -11,7 +11,7 @@ import AddIcon from '@material-ui/icons/Add'
 import { gql, useQuery } from '@apollo/client'
 
 import LoadingProgress from './LoadingProgress'
-import { formatAmount, selectCurrencyInformation } from '../scripts/selectors'
+import { formatAmount, selectCurrencyInformation } from '../scripts/utilities'
 import { GET_CLIENT_TOTAL_PAID } from '../operations/queries/ClientQueries'
 
 const ClientPaymentsManager = ({

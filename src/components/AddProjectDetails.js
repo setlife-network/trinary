@@ -20,7 +20,7 @@ import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS, MAX_INT } from '../constants'
 import {
     selectCurrencyInformation
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 
 const AddProjectDetails = (props) => {
 

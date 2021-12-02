@@ -24,7 +24,7 @@ import LoadingProgress from './LoadingProgress'
 import { EDIT_PAYMENT } from '../operations/mutations/PaymentMutations'
 import {
     selectCurrencyInformation
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 
 const PaymentEditDialog = (props) => {
 
