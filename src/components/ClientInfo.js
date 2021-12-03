@@ -22,7 +22,6 @@ import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 const ClientInfo = ({
     clientId
 }) => {
-
     const [open, setOpen] = useState(false)
 
     const handleEditOpen = () => {
@@ -58,7 +57,7 @@ const ClientInfo = ({
                 </Typography>
                 <Grid container alignItems='flex-end' >
                     <Grid item>
-                        <Typography variant={'h6'}>
+                        <Typography variant={'h6'} >
                             {`${selectCurrencySymbol({ currency: client.currency })}`}
                             {client.currency}
                         </Typography>

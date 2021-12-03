@@ -31,6 +31,11 @@ const theme = createMuiTheme({
             root: {
                 overflow: 'initial'
             },
+        },
+        MuiTooltip: {
+            tooltip: {
+                fontSize: '1em'
+            }
         }
     },
     palette: {

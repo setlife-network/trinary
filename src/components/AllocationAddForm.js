@@ -204,7 +204,7 @@ const AllocationAddForm = (props) => {
     const [newAllocationRate, setNewAllocationRate] = useState({})
     const [newAllocation, setNewAllocation] = useState({})
     const [rateCurrency, setRateCurrency] = useState(null)
-    const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month').utc())
+    const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month'))
     const [endDate, setEndDate] = useState(moment().add(1, 'months').endOf('month'))
     const [selectedContributor, setSelectedContributor] = useState(null)
     const [selectedProject, setSelectedProject] = useState(null)
@@ -510,6 +510,13 @@ const AllocationAddForm = (props) => {
                         >
                             {'Add Allocation'}
                         </Button>
+                        {!selectedProject &&
+                            <Box mt={2}>
+                                <Typography variant='caption' className='warning'>
+                                    {'Please select a project to create an allocation'}
+                                </Typography>
+                            </Box>
+                        }
                     </>
                 }
             </Box>

@@ -70,8 +70,8 @@ module.exports = gql`
         getContributors: [Contributor]
         getGithubOrganizations(contributorId: Int): [ContributorOrganizations]
         getGithubRepos(
-            organizationName: String!
             githubPageNumber: Int!
+            accountId: Int!
         ):  [GithubRepo]
     }
 
