@@ -14,6 +14,7 @@ import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import AddPaymentPage from './pages/AddPaymentPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
+import SettingsPage from './pages/SettingsPage'
 
 import Authentication from './components/Authentication'
 import Navigation from './components/Navigation'
@@ -71,6 +72,10 @@ class App extends React.Component {
                     <PrivateRoute
                         path='/contributor/:contributorId'
                         component={ContributorDetailPage}
+                    />
+                    <PrivateRoute
+                        path='/settings'
+                        component={SettingsPage}
                     />
                 </ThemeProvider>
             </div>
