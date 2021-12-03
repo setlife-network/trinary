@@ -10,8 +10,13 @@
         font-size: 1rem;
     }
     .icon-settings {
-        cursor:pointer;
+        cursor: pointer;
         color: $grey;
+        opacity: 0.5;
+        transition: opacity .5s;
+    }
+    .icon-settings:hover {
+        opacity: 1;
     }
 }
 

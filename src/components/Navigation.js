@@ -53,8 +53,8 @@ const Navigation = (props) => {
                         </Box>
                     </Grid>
                     <Grid item xs={8} sm={6}>
-                        <Typography 
-                            variant='h5' 
+                        <Typography
+                            variant='h5'
                             className='navigation-title'
                             noWrap
                         >
