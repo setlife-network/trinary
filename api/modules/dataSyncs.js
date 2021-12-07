@@ -17,23 +17,21 @@ const { GITHUB } = require('../config/credentials')
 
 const dataSyncs = module.exports = (() => {
 
-    const syncContributions = async (github_url, user_url, author, assignee) => {
-        console.log(github_url)
-        console.log(user_url)
+    const syncContributions = async (github_url, user_url, author, assignee, matchingIssue, issue) => {
         const matchingContribution = await findContributionByGithubUrlAndHandle({
             url: github_url, 
             handle: user_url
         })
         if (!matchingContribution) {
-            const matchingContributor = await findContributorByGithubHandle(user)
+            const matchingContributor = await findContributorByGithubHandle(user_url)
             if (matchingContributor) {
                 await db.models.Contribution.create({
                     contributor_id: matchingContributor.id,
                     issue_id: matchingIssue.id,
                     is_author: author,
                     is_assigned: assignee,
-                    date_created: i.created_at,
-                    date_updated: i.updated_at
+                    date_created: issue.created_at,
+                    date_updated: issue.updated_at
                 })
             }
         }
@@ -149,10 +147,10 @@ const dataSyncs = module.exports = (() => {
                     })
                 }
                 if (i.user) {
-                    await syncContributions(i.html_url, i.user.html.url, 1, 0)
+                    await syncContributions(i.html_url, i.user.html_url, 1, 0, matchingIssue, i)
                 }
                 if (i.assignee) {
-                    await syncContributions(i.html_url, i.assignee.html_url, 0, 1)
+                    await syncContributions(i.html_url, i.assignee.html_url, 0, 1, matchingIssue, i)
                 }
             })
         )
