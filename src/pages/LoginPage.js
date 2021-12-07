@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import GitHubIcon from '@material-ui/icons/GitHub'
 import Button from '@material-ui/core/Button'
 
