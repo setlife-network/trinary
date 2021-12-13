@@ -1,9 +1,10 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 
-import {smallFont, 
-        largeFont} from './sizes.scss'
-
-import {sm} from './flex.scss'
+import {
+    smallFont,
+    largeFont
+} from './sizes.scss'
+import { sm } from './flex.scss'
 import {
     setlifeBlue,
     lightBlue,
@@ -13,6 +14,8 @@ import {
     black,
     white
 } from './colors.scss'
+
+const getMediaQuery = (breakpoint) => (`@media (min-width: ${breakpoint})`)
 
 const theme = createMuiTheme({
     typography: {
@@ -43,7 +46,7 @@ const theme = createMuiTheme({
         MuiTypography: {
             h4: {
                 fontSize: smallFont,
-                '@media (min-width: 600px)': {
+                [getMediaQuery(sm)]: {
                     fontSize: largeFont
                 }
             }
