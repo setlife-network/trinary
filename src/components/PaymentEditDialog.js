@@ -86,7 +86,7 @@ const PaymentEditDialog = (props) => {
     }
     const handlePaymentAmountChange = (input) => {
         setInvalidPaymentAmountInput(false)
-        const amount = typeof input == 'string' ? Number(input.replace(/\D/g, '')) : (input / 100)
+        const amount = typeof input == 'string' ? Number(input.replace(/\D/g, '')) : input
         setPaymentAmount(amount)
     }
 
@@ -96,7 +96,7 @@ const PaymentEditDialog = (props) => {
         } else if (
             dateIncurred == moment.utc(payment.date_incurred, 'x').format('YYYY-MM-DD') &&
             datePaid == moment.utc(payment.date_paid, 'x').format('YYYY-MM-DD') &&
-            paymentAmount == payment.amount / 100
+            paymentAmount == payment.amount
         ) {
             setDisableEdit(true)
         } else {
@@ -143,7 +143,7 @@ const PaymentEditDialog = (props) => {
                                         outputFormat='string'
                                         decimalCharacter={`${currencyInformation['decimal']}`}
                                         digitGroupSeparator={`${currencyInformation['thousand']}`}
-                                        defaultValue={paymentAmount}
+                                        defaultValue={paymentAmount / 100}
                                         onChange={(event) => handlePaymentAmountChange(event.target.value)}
                                     />
                                 </Grid>
