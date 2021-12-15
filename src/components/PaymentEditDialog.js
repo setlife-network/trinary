@@ -107,7 +107,11 @@ const PaymentEditDialog = (props) => {
     useEffect(() => {
         handlePaymentAmountChange(payment.amount)
         setDateIncurred(moment.utc(payment.date_incurred, 'x').format('YYYY-MM-DD'))
-        setDatePaid(moment.utc(payment.date_paid, 'x').format('YYYY-MM-DD'))
+        setDatePaid(
+            payment.date_paid
+                ? moment.utc(payment.date_paid, 'x').format('YYYY-MM-DD')
+                : null
+        )
     }, [onOpen])
 
     return (
