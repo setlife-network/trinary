@@ -544,6 +544,13 @@ module.exports = {
         getProjects: (root, args, { models }) => {
             return models.Project.findAll()
         },
+        getActiveProjects: (root, args, { models }) => {
+            return models.Project.findAll( {
+                where: {
+                    is_active: true
+                }
+            })
+        },
         getActiveProjectsCount: (root, args, { models }) => {
             const whereFields = {
                 is_active: true
@@ -552,6 +559,20 @@ module.exports = {
             return models.Project.count({
                 where: {
                     ...whereFields
+                }
+            })
+        },
+        getInactiveProjects: (root, args, { models }) => {
+            return models.Project.findAll( {
+                where: {
+                    is_active: false
+                }
+            })
+        },
+        getInactiveProjectsCount: (root, args, { models }) => {
+            return models.Project.count({
+                where: {
+                    is_active: false
                 }
             })
         }
