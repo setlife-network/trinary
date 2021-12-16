@@ -228,3 +228,51 @@ export const GET_PROJECT_TOTAL_PROPOSED = gql`
         }
     }
 `
+
+export const GET_ACTIVE_PROJECTS = gql`
+    query Projects {
+        getActiveProjects {
+            id
+            name
+            is_active
+            expected_budget
+            github_url
+            toggl_url
+            client_id
+            toggl_id
+            date
+            client {
+                id
+                name
+                currency
+            }
+        }
+    }
+`
+
+export const GET_INACTIVE_PROJECTS_COUNT = gql`
+    query Projects {
+        getInactiveProjectsCount
+    }
+`
+
+export const GET_INACTIVE_PROJECTS = gql`
+    query Projects {
+        getInactiveProjects {
+            id
+            name
+            is_active
+            expected_budget
+            github_url
+            toggl_url
+            client_id
+            toggl_id
+            date
+            client {
+                id
+                name
+                currency
+            }
+        }
+    }
+`
