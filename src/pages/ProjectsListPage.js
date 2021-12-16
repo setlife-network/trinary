@@ -4,6 +4,7 @@ import { Grid } from '@material-ui/core'
 import HomeProjects from '../components/HomeProjects'
 import ProjectsListManager from '../components/ProjectsListManager'
 import ProjectsList from '../components/ProjectsList'
+import InactiveProjectListManager from '../components/InactiveProjectListManager'
 
 class ProjectsListPage extends React.Component {
 
@@ -25,6 +26,7 @@ class ProjectsListPage extends React.Component {
                             history={history}
                         />
                     </Grid>
+                    <InactiveProjectListManager />
                 </Grid>
             </Grid>
         )
