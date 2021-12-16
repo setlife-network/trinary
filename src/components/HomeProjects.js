@@ -26,7 +26,6 @@ const HomeProjects = ({
                     ? (
                         <ProjectsList
                             history={history}
-                            projects={projects}
                         />
                     ) : (
                         <>
