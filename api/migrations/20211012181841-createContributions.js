@@ -19,7 +19,7 @@ module.exports = {
                 type: Sequelize.DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'Contributors',
+                    model: 'Issues',
                     key: 'id'
                 }
             },
@@ -31,14 +31,10 @@ module.exports = {
                 type: Sequelize.DataTypes.INTEGER,
                 allowNull: false
             },
-            created_at: {
+            date_contributed: {
                 type: Sequelize.DataTypes.DATE,
                 allowNull: false
             },
-            updated_at: {
-                type: Sequelize.DataTypes.DATE,
-                allowNull: false
-            }
         });
     },
 

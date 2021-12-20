@@ -37,13 +37,9 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        date_created: {
+        date_contributed: {
             type: DataTypes.DATE,
             allowNull: false
-        },
-        date_updated: {
-            type: DataTypes.DATE,
-            allowNull: true
         }
     },
     {

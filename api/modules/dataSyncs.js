@@ -17,21 +17,20 @@ const { GITHUB } = require('../config/credentials')
 
 const dataSyncs = module.exports = (() => {
 
-    const syncContributions = async (github_url, user_url, author, assignee, matchingIssue, issue) => {
+    const syncContributions = async (params) => {
         const matchingContribution = await findContributionByGithubUrlAndHandle({
-            url: github_url, 
-            handle: user_url
+            url: params.github_url, 
+            handle: params.handler_url
         })
         if (!matchingContribution) {
-            const matchingContributor = await findContributorByGithubHandle(user_url)
+            const matchingContributor = await findContributorByGithubHandle(handler_url)
             if (matchingContributor) {
                 await db.models.Contribution.create({
                     contributor_id: matchingContributor.id,
-                    issue_id: matchingIssue.id,
-                    is_author: author,
-                    is_assigned: assignee,
-                    date_created: issue.created_at,
-                    date_updated: issue.updated_at
+                    issue_id: params.matchingIssue.id,
+                    is_author: params.author,
+                    is_assigned: params.assignee,
+                    date_contributed: params.createdAt
                 })
             }
         }
@@ -147,10 +146,24 @@ const dataSyncs = module.exports = (() => {
                     })
                 }
                 if (i.user) {
-                    await syncContributions(i.html_url, i.user.html_url, 1, 0, matchingIssue, i)
+                    await syncContributions({
+                        github_url: i.html_url,
+                        handler_url: i.user.html_url,
+                        author: 1,
+                        assignee: 0,
+                        matchingIssue: matchingIssue,
+                        createdAt: i.created_at
+                    })
                 }
                 if (i.assignee) {
-                    await syncContributions(i.html_url, i.assignee.html_url, 0, 1, matchingIssue, i)
+                    await syncContributions({
+                        github_url: i.html_url,
+                        handler_url: i.assignee.html_url,
+                        author: 0,
+                        assignee: 1,
+                        matchingIssue: matchingIssue,
+                        createdAt: i.created_at
+                    })
                 }
             })
         )
