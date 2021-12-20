@@ -23,7 +23,7 @@ const dataSyncs = module.exports = (() => {
             handle: params.handler_url
         })
         if (!matchingContribution) {
-            const matchingContributor = await findContributorByGithubHandle(handler_url)
+            const matchingContributor = await findContributorByGithubHandle(params.handler_url)
             if (matchingContributor) {
                 await db.models.Contribution.create({
                     contributor_id: matchingContributor.id,
