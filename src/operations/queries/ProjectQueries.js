@@ -251,8 +251,8 @@ export const GET_ACTIVE_PROJECTS = gql`
 `
 
 export const GET_INACTIVE_PROJECTS_COUNT = gql`
-    query Projects {
-        getInactiveProjectsCount
+    query Clients($clientId: Int) {
+        getInactiveProjectsCount(clientId: $clientId)
     }
 `
 
