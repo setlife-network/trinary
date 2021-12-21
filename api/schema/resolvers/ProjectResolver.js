@@ -570,9 +570,13 @@ module.exports = {
             })
         },
         getInactiveProjectsCount: (root, args, { models }) => {
+            const whereFields = {
+                is_active: false
+            }
+            if (args.clientId) whereFields.client_id = args.clientId
             return models.Project.count({
                 where: {
-                    is_active: false
+                    ...whereFields
                 }
             })
         }
