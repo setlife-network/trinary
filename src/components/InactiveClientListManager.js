@@ -18,7 +18,7 @@ const InactiveClientListManager = (props) => {
         <Box
             mb={3}
             mx={1}
-            className='ClientListManager'
+            className='InactiveClientListManager'
         >
             {
                 data.getInactiveClientsCount != 0
