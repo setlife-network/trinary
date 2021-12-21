@@ -33,19 +33,23 @@ const InactiveProjectListManager = ({
             mb={3}
             className='InactiveProjectListManager'
         >
-            <FormGroup>
-                <FormControlLabel 
-                    control={
-                        <Switch 
-                            checked={showInactiveProjects}
-                            onChange={(event) => setShowInactiveProjects(event.target.checked)}
-                            name='showInactiveProjects'
-                            color='primary'
+            {data.getInactiveProjectsCount != 0
+                ? (
+                    <FormGroup>
+                        <FormControlLabel 
+                            control={
+                                <Switch 
+                                    checked={showInactiveProjects}
+                                    onChange={(event) => setShowInactiveProjects(event.target.checked)}
+                                    name='showInactiveProjects'
+                                    color='primary'
+                                />
+                            }
+                            label='Show inactive projects'
                         />
-                    }
-                    label='Show inactive projects'
-                />
-            </FormGroup>
+                    </FormGroup>
+                ) : null
+            }
             {showInactiveProjects == true
                 ? (
                     <Grid
@@ -75,7 +79,6 @@ const InactiveProjectListManager = ({
                 )
                 : null
             }
-            
         </Box>
 
     )
