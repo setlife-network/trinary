@@ -19,9 +19,9 @@ const ProjectsListManager = ({
     }
     const { loading, error, data } = useQuery(GET_ACTIVE_PROJECTS_COUNT, {
         variables: {
-            clientId: clientId ? Number(clientId) : null,
-            fetchPolicy: 'cache-and-network'
-        }
+            clientId: clientId ? Number(clientId) : null
+        },
+        fetchPolicy: 'cache-and-network'
     })
     const pathname = window.location.pathname
     if (loading) return <LoadingProgress/>
