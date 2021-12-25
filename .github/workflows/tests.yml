@@ -4,6 +4,7 @@
 name: Install Node & Run Unit Tests
 
 on:
+  workflow_dispatch:
   push:
     branches: [ develop ]
   pull_request:
