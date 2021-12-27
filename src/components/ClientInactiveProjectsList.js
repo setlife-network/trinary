@@ -5,7 +5,6 @@ import { orderBy } from 'lodash'
 
 import LoadingProgress from './LoadingProgress'
 import ProjectsList from './ProjectsList'
-import ProjectsEmptyState from './ProjectsEmptyState'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 
 const ClientInactiveProjectLists = ({
@@ -34,15 +33,11 @@ const ClientInactiveProjectLists = ({
 
     return (
         <Grid container>
-            {
-                projects.length != 0
-                    ? (
-                        <ProjectsList
-                            history={history}
-                            projects={projects}
-                        />
-                    )
-                    : null
+            { projects.length != 0 &&
+                <ProjectsList
+                    history={history}
+                    projects={projects}
+                />
             }
 
         </Grid>

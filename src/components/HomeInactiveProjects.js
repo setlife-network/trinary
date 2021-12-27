@@ -20,20 +20,19 @@ const HomeInactiveProjects = ({
 
     return (
         <>
-            {
-                projects.length != 0
-                    ? (
-                        <ProjectsList
-                            history={history}
-                            projects={projects}
-                        />
-                    ) : (
-                        <>
-                            {
-                                //TODO: Empty State
-                            }
-                        </>
-                    )
+            { projects.length != 0
+                ? (
+                    <ProjectsList
+                        history={history}
+                        projects={projects}
+                    />
+                ) : (
+                    <>
+                        {
+                            //TODO: Empty State
+                        }
+                    </>
+                )
             }
         </>
     )

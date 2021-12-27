@@ -33,51 +33,46 @@ const InactiveProjectListManager = ({
             mb={3}
             className='InactiveProjectListManager'
         >
-            {data.getInactiveProjectsCount != 0
-                ? (
-                    <FormGroup>
-                        <FormControlLabel 
-                            control={
-                                <Switch 
-                                    checked={showInactiveProjects}
-                                    onChange={(event) => setShowInactiveProjects(event.target.checked)}
-                                    name='showInactiveProjects'
-                                    color='primary'
-                                />
-                            }
-                            label='Show inactive projects'
-                        />
-                    </FormGroup>
-                ) : null
+            {data.getInactiveProjectsCount != 0 &&
+                <FormGroup>
+                    <FormControlLabel 
+                        control={
+                            <Switch 
+                                checked={showInactiveProjects}
+                                onChange={(event) => setShowInactiveProjects(event.target.checked)}
+                                name='showInactiveProjects'
+                                color='primary'
+                            />
+                        }
+                        label='Show inactive projects'
+                    />
+                </FormGroup>
             }
-            {showInactiveProjects == true
-                ? (
-                    <Grid
-                        container
-                        direction='row'
-                        justify='space-between'
-                        alignItems='flex-end'
-                    >
-                        <Grid item xs={8} sm={6} md={4}>
-                            <Box
-                                bgcolor='primary.black'
-                                color='primary.light'
-                                borderRadius='borderRadius'
-                                px={0}
-                                py={1}
-                                ml={1}
-                            >
-                                {
-                                    `${data.getInactiveProjectsCount} inactive ${data.getInactiveProjectsCount == 1
-                                        ? 'project'
-                                        : 'projects'
-                                    }`
-                                }
-                            </Box>
-                        </Grid>
+            {showInactiveProjects == true &&
+                <Grid
+                    container
+                    direction='row'
+                    justify='space-between'
+                    alignItems='flex-end'
+                >
+                    <Grid item xs={8} sm={6} md={4}>
+                        <Box
+                            bgcolor='primary.black'
+                            color='primary.light'
+                            borderRadius='borderRadius'
+                            px={0}
+                            py={1}
+                            ml={1}
+                        >
+                            {
+                                `${data.getInactiveProjectsCount} inactive ${data.getInactiveProjectsCount == 1
+                                    ? 'project'
+                                    : 'projects'
+                                }`
+                            }
+                        </Box>
                     </Grid>
-                )
-                : null
+                </Grid>
             }
         </Box>
 
