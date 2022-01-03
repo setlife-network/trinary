@@ -20,8 +20,8 @@ const InactiveProjects = ({
                 showInactiveProjects={showInactiveProjects}
                 setShowInactiveProjects={setShowInactiveProjects}
             />
-            {showInactiveProjects
-                ? (home
+            {showInactiveProjects && (
+                home
                     ? (
                         <Grid container>
                             <HomeInactiveProjects
@@ -36,8 +36,7 @@ const InactiveProjects = ({
                             />
                         </Grid>
                     )
-                ) : null
-            }
+            )}
         </>
     )
 }
