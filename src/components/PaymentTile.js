@@ -229,8 +229,14 @@ const PaymentTile = (props) => {
                         </Grid>
                     </AccordionSummary>
                     {!project &&
-                        <Box align='left' mb={2} ml={2}>
+                        <Box align='left' mb={2} mx={2}>
                             <Grid container>
+                                <Grid item xs={12}>
+                                    {renderPaymentAllocations({
+                                        allocations: allocations,
+                                        currencyInformation: currencyInformation
+                                    })}
+                                </Grid>
                                 <Grid item xs={8}>
                                     <Button
                                         color='primary'
