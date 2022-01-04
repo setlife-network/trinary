@@ -5,15 +5,15 @@ import {
     AppBar,
     Box,
     Grid,
-    Typography
+    Typography,
 } from '@material-ui/core'
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
-import { split } from 'lodash'
+import withWidth from '@material-ui/core/withWidth'
+import Settings from '@material-ui/icons/Settings'
 
 import { lightBlue } from '../styles/colors.scss'
 import { LOGO_URL, SMALL_LOGO_URL } from '../constants'
 import { capitalizeWord, matchTitlePage } from '../scripts/selectors'
-import { pageName } from '../reactivities/variables'
+import { pageName, authUser } from '../reactivities/variables'
 
 const Navigation = (props) => {
 
@@ -21,9 +21,13 @@ const Navigation = (props) => {
     const redirectToHome = () => {
         history.push('/')
     }
+    const redirectToSettings = () => {
+        history.push('/settings')
+    }
     const location = useLocation()
     const locationTitle = matchTitlePage({ location: location.pathname })
     const optionalLocationTitle = useReactiveVar(pageName)
+    const authorizedUser = useReactiveVar(authUser)
 
     return (
         <Box bgcolor={lightBlue} mb={[3, 5]}>
@@ -49,8 +53,8 @@ const Navigation = (props) => {
                         </Box>
                     </Grid>
                     <Grid item xs={8} sm={6}>
-                        <Typography 
-                            variant='h5' 
+                        <Typography
+                            variant='h5'
                             className='navigation-title'
                             noWrap
                         >
@@ -58,6 +62,16 @@ const Navigation = (props) => {
                                 word: locationTitle.title || optionalLocationTitle
                             })}
                         </Typography>
+                    </Grid>
+                    <Grid item xs={2} sm={3}>
+                        {authorizedUser
+                            ? (
+                                <Settings
+                                    className='icon-settings'
+                                    onClick={() => redirectToSettings()}
+                                />
+                            ) : null
+                        }
                     </Grid>
                 </Grid>
             </AppBar>

@@ -6,7 +6,8 @@ import {
     Fab,
     Grid,
     Typography,
-    Button
+    Button,
+    Divider
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import { filter, isEmpty, orderBy } from 'lodash'
@@ -139,13 +140,16 @@ const ProjectPayments = (props) => {
                 {!isEmpty(proposedAllocations) &&
                     (
                         <Grid container>
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12}>
                                 <Box mt={3} mb={5} pb={6}>
-                                    <ProjectProposedAllocationsTile
-                                        currencyInformation={currencyInformation}
-                                        proposedAllocations={proposedAllocations}
-                                        project={getProjectById}
-                                    />
+                                    <hr></hr>
+                                    <Box mt={3}>
+                                        <ProjectProposedAllocationsTile
+                                            currencyInformation={currencyInformation}
+                                            proposedAllocations={proposedAllocations}
+                                            project={getProjectById}
+                                        />
+                                    </Box>
                                 </Box>
                             </Grid>
                         </Grid>
