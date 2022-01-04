@@ -3,7 +3,8 @@ import { Route, Redirect } from 'react-router-dom'
 import {
     BottomNavigation,
     BottomNavigationAction,
-    Grid
+    Grid,
+    Box
 } from '@material-ui/core'
 import AssessmentIcon from '@material-ui/icons/Assessment'
 import PeopleIcon from '@material-ui/icons/People'
@@ -32,7 +33,12 @@ class ProjectDetailPage extends React.Component {
 
         return (
             <Grid container justify='center' className='ProjectDetailPage'>
-                <Grid item xs={10} md={6}>
+                <Grid 
+                    item 
+                    xs={10} 
+                    md={6} 
+                    className='GridProjectDetailPage'
+                >
                     <Route
                         exact
                         path={`${match.url}/`}
