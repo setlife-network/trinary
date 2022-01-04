@@ -17,8 +17,7 @@ module.exports = {
         SECRET: process.env.STRIPE_SECRET,
     },
     TOGGL: {
-        API_KEY: process.env.TOGGL_API_KEY,
-        WORKSPACE_ID: process.env.TOGGL_WORKSPACE_ID
+        API_KEY: process.env.TOGGL_API_KEY
     },
     // MYSQL Access Keys
     MYSQL: {
