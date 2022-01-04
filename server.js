@@ -83,15 +83,34 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         .then(async githubAccessToken => {
             const contributorInfo = await apiModules.authentication.getContributor({ githubAccessToken })
             contributorInfo.githubContributor['accessToken'] = githubAccessToken
-            return contributorInfo
+            return {
+                contributorInfo,
+                githubAccessToken
+            }
         })
-        .then(async (contributorInfo) => {
+        .then(async (contributor) => {
+            const {
+                contributorInfo,
+                githubAccessToken
+            } = contributor
             //if it's a new user store it in contributors table
             //if the user is already in th db but 1st time loggin in store the github access token
             if (!contributorInfo.contributor) {
                 contributorInfo.contributor = await apiModules.authentication.createContributor({ ...contributorInfo.githubContributor })
-            } else if (!contributorInfo.contributor['github_access_token']) {
-                contributorInfo.contributor = await apiModules.authentication.updateGithubAccessTokenContributor({ ...contributorInfo.githubContributor })
+            } else if (
+                !contributorInfo.contributor['github_access_token'] ||
+                contributorInfo.contributor['github_access_token'] != githubAccessToken
+            ) {
+                contributorInfo.contributor = await apiModules.authentication.updateGithubAccessTokenContributor({
+                    githubContributor: contributorInfo.githubContributor,
+                    githubAccessToken: githubAccessToken
+                })
+            }
+            if (contributorInfo.contributor.github_handle != contributorInfo.githubContributor.githubUrl) {
+                await apiModules.authentication.updateContributorGithubAccount({
+                    contributorId: contributorInfo.contributor.id,
+                    githubAccount: contributorInfo.githubContributor
+                })
             }
             //store contributor id in the cookie session
             req.session.userSession = contributorInfo.contributor.id
