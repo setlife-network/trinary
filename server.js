@@ -125,7 +125,7 @@ app.post('/api/webhooks/invoice/paid', async (req, res) => {
 
 app.post('/api/webhooks/invoice/updated', async (req, res) => {
     const invoiceObjectPayload = req.body.data.object
-    //1. see if payment is ready to allocate, if not do nothing
+    //1. see if payment is ready to allocate, if not, do nothing
     if (
         invoiceObjectPayload.metadata &&
         invoiceObjectPayload.metadata.ready_to_allocate

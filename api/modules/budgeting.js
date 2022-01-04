@@ -6,20 +6,21 @@ const budgeting = module.exports = (() => {
     const clientManagement = require('./clientManagement')
 
     const checkForMismatchedClientPayments = async (params) => {
-        const existingPayments = await getPaymentsWithClientId({ client_id: params.client.id })
-        
-        if (existingPayments) {
-            existingPayments.forEach(async payment => {
-
-                if (params.client.currency !== params.stripeInvoiceCurrency) {
-                    try {
-                        const disconnectedCustomer = await clientManagement.deleteClientUuid({ id: params.client.external_uuid })
-                        console.log(`stripe customer disconnected ${disconnectedCustomer.email}`)
-                    } catch (err) {
-                        console.log(`An error ocurred: ${err}`)
-                    }
-                }
-            })
+        const {
+            client,
+            stripeInvoiceCurrency
+        } = params
+        const existingPayments = await getPaymentsWithClientId({ client_id: client.id })
+        if (
+            existingPayments.length &&
+            client.currency.toUpperCase() != stripeInvoiceCurrency.toUpperCase()
+        ) {
+            try {
+                const disconnectedCustomer = await clientManagement.deleteClientUuid({ id: client.external_uuid })
+                console.log(`stripe customer disconnected ${disconnectedCustomer.email}`)
+            } catch (err) {
+                console.log(`An error ocurred: ${err}`)
+            }
         }
     }
 
@@ -100,16 +101,16 @@ const budgeting = module.exports = (() => {
 
         // Disable currency check in production until bug is fixed
 
-        // try {
-        //     const paymentsDoNotMatch = await checkForMismatchedClientPayments({
-        //         client,
-        //         stripeInvoiceCurrency: stripeInvoice.currency
-        //     })
-        //     client.currency = stripeInvoice.currency.toUpperCase()
-        //     await client.save()
-        // } catch (err) {
-        //     console.log(`error while changing client currency: ${err}`)
-        // }
+        try {
+            const paymentsDoNotMatch = await checkForMismatchedClientPayments({
+                client,
+                stripeInvoiceCurrency: stripeInvoice.currency
+            })
+            client.currency = stripeInvoice.currency.toUpperCase()
+            await client.save()
+        } catch (err) {
+            console.log(`error while changing client currency: ${err}`)
+        }
 
         if (paymentToUpdate) {
             const datePaidOverride = stripeInvoice.metadata.date_paid || null
@@ -163,7 +164,7 @@ const budgeting = module.exports = (() => {
             })
         }
     }
-    
+
     return {
         createPaymentFromStripeInvoice,
         deletePaymentByStripeInvoiceId,
