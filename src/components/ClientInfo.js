@@ -20,7 +20,6 @@ import { lightGrey } from '../styles/colors.scss'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import { styles } from '@material-ui/pickers/views/Calendar/Calendar'
 
-
 const ClientInfo = ({
     clientId
 }) => {
@@ -45,9 +44,9 @@ const ClientInfo = ({
     const client = data.getClientById
 
     return (
-        <Card>
+        <Card className='ClientInfo'>
             <Box px={5} p={3} align='left'>
-                <Typography variant='h4' color='primary'>
+                <Typography variant='h4' color='primary' noWrap>
                     <strong>
                         {client.name}
                     </strong>
