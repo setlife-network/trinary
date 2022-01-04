@@ -1,10 +1,20 @@
 .ClientInfo {
-
+    .MuiTypography-h4 {
+        font-size: 1rem;
+    }
+    .MuiTypography-h6 {
+        font-size: 1rem;
+    }
 }
 
 @media screen and (min-width: $sm) {
     .ClientInfo {
-        
+        .MuiTypography-h4 {
+            font-size: 1.6rem;
+        }
+        .MuiTypography-h6 {
+            font-size: 1.25rem;
+        }
     }
 }
 
