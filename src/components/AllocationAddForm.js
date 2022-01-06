@@ -42,7 +42,12 @@ import { GET_ALLOCATIONS } from '../operations/queries/AllocationQueries'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 
-import { red } from '../styles/colors.scss'
+import colors from '../styles/colors.module.scss'
+
+const {
+    red
+} = colors
+
 
 const AllocationAddForm = (props) => {
 

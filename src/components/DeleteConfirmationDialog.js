@@ -9,7 +9,9 @@ import {
     DialogTitle
 } from '@material-ui/core/'
 
-import { red } from '../styles/colors.scss'
+import colors from '../styles/colors.module.scss'
+
+const { red } = colors
 
 const DeleteConfirmationDialog = (props) => {
 
