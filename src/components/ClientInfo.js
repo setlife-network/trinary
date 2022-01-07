@@ -18,6 +18,8 @@ import LoadingProgress from './LoadingProgress'
 import { selectCurrencySymbol } from '../scripts/selectors'
 import { lightGrey } from '../styles/colors.scss'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
+import { styles } from '@material-ui/pickers/views/Calendar/Calendar'
+
 
 const ClientInfo = ({
     clientId

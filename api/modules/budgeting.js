@@ -98,13 +98,18 @@ const budgeting = module.exports = (() => {
             id: stripeInvoice.customer
         })
 
-        try {
-            const paymentsDoNotMatch = await checkForMismatchedClientPayments({ client: client, stripeInvoiceCurrency: stripeInvoice.currency })
-            client.currency = stripeInvoice.currency.toUpperCase()
-            await client.save()
-        } catch (err) {
-            console.log(`error while changing client currency: ${err}`)
-        }
+        // Disable currency check in production until bug is fixed
+
+        // try {
+        //     const paymentsDoNotMatch = await checkForMismatchedClientPayments({
+        //         client,
+        //         stripeInvoiceCurrency: stripeInvoice.currency
+        //     })
+        //     client.currency = stripeInvoice.currency.toUpperCase()
+        //     await client.save()
+        // } catch (err) {
+        //     console.log(`error while changing client currency: ${err}`)
+        // }
 
         if (paymentToUpdate) {
             const datePaidOverride = stripeInvoice.metadata.date_paid || null
