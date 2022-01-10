@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core'
 
 import { GET_PROJECT_PAYMENTS_SUMMARY } from '../operations/queries/ProjectQueries'
-import { formatAmount } from '../scripts/selectors'
+import { formatAmount } from '../scripts/utilities'
 
 const ProjectPaymentsSummary = (props) => {
 

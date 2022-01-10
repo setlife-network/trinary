@@ -29,7 +29,7 @@ import { GET_ALL_PROJECTS, GET_PROJECT_CLIENT_PAYMENTS } from '../operations/que
 import {
     formatAmount,
     selectCurrencyInformation
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 
 const AllocationProposeSpecifics = (props) => {
 

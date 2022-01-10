@@ -16,7 +16,7 @@ import AllocationOverview from './AllocationOverview'
 import {
     formatAmount,
     selectCurrencyInformation
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 import { grey, orange, red, setlifeBlue } from '../styles/colors.scss'
 
 const AllocationTile = (props) => {

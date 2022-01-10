@@ -25,7 +25,7 @@ import {
     calculateTotalPayments,
     formatAmount,
     selectCurrencyInformation
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 import { white } from '../styles/colors.scss'
 
 const ProjectPayments = (props) => {

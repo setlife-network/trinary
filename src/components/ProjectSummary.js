@@ -13,7 +13,7 @@ import {
     formatAmount,
     selectCurrencyInformation,
     selectCurrencySymbol
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 import ProjectEditDialog from './ProjectEditDialog'
 
 const ProjectSummary = (props) => {

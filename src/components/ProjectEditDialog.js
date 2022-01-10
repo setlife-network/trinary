@@ -30,11 +30,10 @@ import {
     selectCurrencyInformation,
     verifyGithubURL,
     verifyTogglURL
-} from '../scripts/selectors'
+} from '../scripts/utilities'
 
 import { SYNC_TOGGL_PROJECT, UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
 import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS, MAX_INT } from '../constants'
-
 
 const ProjectEditDialog = (props) => {
 
