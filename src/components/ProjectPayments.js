@@ -26,7 +26,9 @@ import {
     formatAmount,
     selectCurrencyInformation
 } from '../scripts/selectors'
-import { white } from '../styles/colors.scss'
+import colors from '../styles/colors.module.scss'
+
+const { white } = colors
 
 const ProjectPayments = (props) => {
 
@@ -74,7 +76,7 @@ const ProjectPayments = (props) => {
     const handleProposeButton = () => {
         setOpenAddAllocationDialog(true)
     }
-    
+
     return (
 
         <Grid container justify='center' className='ProjectPayments'>
@@ -159,7 +161,7 @@ const ProjectPayments = (props) => {
                     <PaymentsEmptyState/>
                 }
             </Grid>
-            <AllocationAddForm 
+            <AllocationAddForm
                 project={getProjectById}
                 open={openAddAllocationDialog}
                 onClose={handleAddAllocationClose}

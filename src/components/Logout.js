@@ -8,8 +8,10 @@ import {
 } from '@material-ui/core'
 import LogoutIcon from '@material-ui/icons/ExitToApp'
 
-import { white } from '../styles/colors.scss'
+import colors from '../styles/colors.module.scss'
 import { API_ROOT } from '../constants'
+
+const { white } = colors
 
 const Logout = () => {
 
