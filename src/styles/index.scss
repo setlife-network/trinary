@@ -13,9 +13,9 @@ code {
 }
 
 // Globals
-@import './colors.scss';
-@import './flex.scss';
-@import './sizes.scss';
+@import './colors.module.scss';
+@import './flex.module.scss';
+@import './sizes.module.scss';
 
 //Pages
 @import './App.scss';

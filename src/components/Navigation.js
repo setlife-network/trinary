@@ -10,10 +10,12 @@ import {
 import withWidth from '@material-ui/core/withWidth'
 import Settings from '@material-ui/icons/Settings'
 
-import { lightBlue } from '../styles/colors.scss'
+import colors from '../styles/colors.module.scss'
 import { LOGO_URL, SMALL_LOGO_URL } from '../constants'
 import { capitalizeWord, matchTitlePage } from '../scripts/selectors'
 import { pageName, authUser } from '../reactivities/variables'
+
+const { lightBlue } = colors
 
 const Navigation = (props) => {
 

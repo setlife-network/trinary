@@ -1,11 +1,17 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 
-import {
+import sizes from './sizes.module.scss'
+import flex from './flex.module.scss'
+import colors from './colors.module.scss'
+
+const { sm } = flex
+
+const {
     smallFont,
     largeFont
-} from './sizes.scss'
-import { sm } from './flex.scss'
-import {
+} = sizes
+
+const {
     setlifeBlue,
     lightBlue,
     darkBlue,
@@ -13,7 +19,7 @@ import {
     lightGrey,
     black,
     white
-} from './colors.scss'
+} = colors
 
 const getMediaQuery = (breakpoint) => (`@media (min-width: ${breakpoint})`)
 
