@@ -1,10 +1,14 @@
 import React from 'react'
+import moment from 'moment'
 import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import AllocationTile from '../../components/AllocationTile'
 import { MockedProvider } from '@apollo/client/testing'
 
 const mocks = [];
+
+const START_DATE = 1627516800000
+const END_DATE = 1627689600000
 
 const allocation = {
     active: true,
@@ -13,7 +17,7 @@ const allocation = {
         id: 303
     },
     date_paid: null,
-    end_date: '1627689600000',
+    end_date: `${END_DATE}`,
     id: 271,
     project: {
         client: {
@@ -31,7 +35,7 @@ const allocation = {
         total_expected_hours: 15,
         type: 'prorated_monthly'
     },
-    start_date: '1627516800000'
+    start_date: `${START_DATE}`
 }
 
 let getByTestId
@@ -58,9 +62,11 @@ it('Client name', () => {
 })
 
 it('Start date', () => {
-    expect(getByText('Start:').textContent).toBe('Start:07/29/2021')
+    const startDate = moment(START_DATE).format('MM/DD/YYYY')
+    expect(getByText('Start:').textContent).toBe(`Start:${startDate}`)
 })
 
 it('End date', () => {
-    expect(getByText(/End/i).textContent).toBe('End:07/31/2021')
+    const endDate = moment(END_DATE).format('MM/DD/YYYY')
+    expect(getByText(/End/i).textContent).toBe(`End:${endDate}`)
 })
