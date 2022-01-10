@@ -36,7 +36,7 @@ class ProjectDetailPage extends React.Component {
                     item 
                     xs={10} 
                     md={6} 
-                    className='GridProjectDetailPage'
+                    className='grid-project-detail'
                 >
                     <Route
                         exact
