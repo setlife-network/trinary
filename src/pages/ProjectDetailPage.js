@@ -3,8 +3,7 @@ import { Route, Redirect } from 'react-router-dom'
 import {
     BottomNavigation,
     BottomNavigationAction,
-    Grid,
-    Box
+    Grid
 } from '@material-ui/core'
 import AssessmentIcon from '@material-ui/icons/Assessment'
 import PeopleIcon from '@material-ui/icons/People'
