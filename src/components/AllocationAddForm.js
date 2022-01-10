@@ -44,10 +44,7 @@ import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 
 import colors from '../styles/colors.module.scss'
 
-const {
-    red
-} = colors
-
+const { red } = colors
 
 const AllocationAddForm = (props) => {
 
