@@ -188,6 +188,11 @@ const PaymentTile = (props) => {
                         }}
                     >
                         <Grid container alignItems='center'>
+                            <Grid item xs={12} align='center'>
+                                <Typography variant='h6'>
+                                    {`${allocations[0].project.name}`}
+                                </Typography>
+                            </Grid>
                             <Grid item xs={6} align='left'>
                                 <Typography variant='h6'>
                                     {`${paymentAmount}`}
