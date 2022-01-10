@@ -7,9 +7,11 @@ import {
 } from '@material-ui/core'
 import { Route, withRouter, Redirect } from 'react-router-dom'
 
-import { white } from '../styles/colors.scss'
+import colors from '../styles/colors.module.scss'
 import ProjectsListPage from './ProjectsListPage'
 import ClientsListPage from './ClientsListPage'
+
+const { white } = colors
 
 class HomePage extends React.Component {
 

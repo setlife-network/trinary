@@ -19,7 +19,9 @@ import {
     GET_CONTRIBUTOR_ALLOCATIONS,
     GET_CONTRIBUTOR_INFO
 } from '../operations/queries/ContributorQueries'
-import { white } from '../styles/colors.scss'
+import colors from '../styles/colors.module.scss'
+
+const { white } = colors
 
 const ContributorAllocations = (props) => {
 
