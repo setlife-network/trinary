@@ -14,7 +14,7 @@ module.exports = {
     down: async (queryInterface, Sequelize) => {
         return queryInterface.sequelize.transaction(t => {
             return Promise.all([
-                queryInterface.removeColumn('Clients', 'email', { transaction: t })
+                queryInterface.removeConstraint('Clients', 'unique_client_email', { transaction: t })
             ])
         })
     }
