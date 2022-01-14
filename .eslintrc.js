@@ -1,5 +1,5 @@
 module.exports = {
-    'parser': 'react-scripts/node_modules/babel-eslint',
+    'parser': 'babel-eslint',
     'extends': 'airbnb',
     'rules': {
         'array-callback-return': ['off'],
