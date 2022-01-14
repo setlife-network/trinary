@@ -24,11 +24,13 @@ import {
     verifyGithubURL,
     verifyTogglURL
 } from '../scripts/selectors'
-import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS } from '../constants'
+import {
+    EXPECTED_BUDGET_TIMEFRAME_OPTIONS,
+    INVALID_TOGGL_URL_ERROR_MESSAGE,
+} from '../constants'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 import { ADD_PROJECT, SYNC_TOGGL_PROJECT } from '../operations/mutations/ProjectMutations'
 import { CREATE_PERMISSION } from '../operations/mutations/PermissionMutations'
-import { INVALID_TOGGL_URL_ERROR_MESSAGE } from '../constants'
 
 const AddProjectForm = (props) => {
 
