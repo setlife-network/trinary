@@ -1,23 +1,22 @@
 import React from 'react'
-import { gql, useQuery } from '@apollo/client';
-import { Grid } from '@material-ui/core'
+import { useQuery } from '@apollo/client';
 import { orderBy } from 'lodash'
 
 import LoadingProgress from './LoadingProgress'
 import ProjectsList from './ProjectsList'
-import { GET_ALL_PROJECTS } from '../operations/queries/ProjectQueries'
+import { GET_ACTIVE_PROJECTS } from '../operations/queries/ProjectQueries'
 
 const HomeProjects = ({
     history
 }) => {
 
-    const { loading, error, data } = useQuery(GET_ALL_PROJECTS, {
+    const { loading, error, data } = useQuery(GET_ACTIVE_PROJECTS, {
         fetchPolicy: 'cache-and-network'
     });
 
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`;
-    const projects = orderBy(data.getProjects, ['is_active'], ['desc'])
+    const projects = orderBy(data.getActiveProjects, ['name'])
 
     return (
         <>
