@@ -101,15 +101,16 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
                 !contributorInfo.contributor['github_access_token'] ||
                 contributorInfo.contributor['github_access_token'] != githubAccessToken
             ) {
-                contributorInfo.contributor = await apiModules.authentication.updateGithubAccessTokenContributor({
-                    githubContributor: contributorInfo.githubContributor,
+                contributorInfo.contributor = await apiModules.authentication.updateContributorGithubAccessTokenByGithubId({
+                    githubId: contributorInfo.githubContributor.id,
                     githubAccessToken: githubAccessToken
                 })
             }
+            // Just in case the user has changed their GitHub handle
             if (contributorInfo.contributor.github_handle != contributorInfo.githubContributor.githubUrl) {
-                await apiModules.authentication.updateContributorGithubAccount({
+                await apiModules.authentication.updateContributorGithubHandle({
                     contributorId: contributorInfo.contributor.id,
-                    githubAccount: contributorInfo.githubContributor
+                    githubHandle: contributorInfo.githubContributor.githubUrl
                 })
             }
             //store contributor id in the cookie session
