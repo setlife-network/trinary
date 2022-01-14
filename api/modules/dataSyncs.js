@@ -1,6 +1,10 @@
 const { split } = require('lodash')
 
-const authentication = require('./authentication')
+const { 
+    findIssueByGithubUrl, 
+    findContributorByGithubHandle, 
+    findContributionByGithubUrlAndHandle 
+} = require('./projectManagement')
 const amazon = require('../handlers/amazon')
 const github = require('../handlers/github')
 const toggl = require('../handlers/toggl')
@@ -9,9 +13,28 @@ const db = require('../models')
 const invoicelyCodebase = require('../scripts/invoicelyCodebase')
 const timeLogging = require('../scripts/timeLogging')
 const { INVOICELY_CSV_PATH } = require('../config/constants')
-const { GITHUB, TOGGL } = require('../config/credentials')
+const { GITHUB } = require('../config/credentials')
 
 const dataSyncs = module.exports = (() => {
+
+    const syncContributions = async (params) => {
+        const matchingContribution = await findContributionByGithubUrlAndHandle({
+            url: params.github_url, 
+            handle: params.handler_url
+        })
+        if (!matchingContribution) {
+            const matchingContributor = await findContributorByGithubHandle(params.handler_url)
+            if (matchingContributor) {
+                await db.models.Contribution.create({
+                    contributor_id: matchingContributor.id,
+                    issue_id: params.matchingIssue.id,
+                    is_author: params.author,
+                    is_assigned: params.assignee,
+                    date_contributed: params.createdAt
+                })
+            }
+        }
+    }
 
     const importInvoicelyCsvToStripe = async () => {
         const invoiceFile = INVOICELY_CSV_PATH
@@ -44,15 +67,6 @@ const dataSyncs = module.exports = (() => {
             return 'Something failed'
         }
         return 'Import completed'
-    }
-
-    const findIssueByGithubUrl = async (url) => {
-        return db.models.Issue.findOne({
-            raw: true,
-            where: {
-                github_url: url
-            }
-        })
     }
 
     const syncGithubRepoContributors = async (params) => {
@@ -129,6 +143,26 @@ const dataSyncs = module.exports = (() => {
                         where: {
                             id: i.id
                         }
+                    })
+                }
+                if (i.user) {
+                    await syncContributions({
+                        github_url: i.html_url,
+                        handler_url: i.user.html_url,
+                        author: 1,
+                        assignee: 0,
+                        matchingIssue: matchingIssue,
+                        createdAt: i.created_at
+                    })
+                }
+                if (i.assignee) {
+                    await syncContributions({
+                        github_url: i.html_url,
+                        handler_url: i.assignee.html_url,
+                        author: 0,
+                        assignee: 1,
+                        matchingIssue: matchingIssue,
+                        createdAt: i.created_at
                     })
                 }
             })
