@@ -12,7 +12,7 @@ const budgeting = module.exports = (() => {
         } = params
         const existingPayments = await getPaymentsWithClientId({ client_id: client.id })
         if (
-            existingPayments.length &&
+            existingPayments.length > 0 &&
             client.currency.toUpperCase() != stripeInvoiceCurrency.toUpperCase()
         ) {
             try {
