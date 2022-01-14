@@ -99,7 +99,7 @@ const ProjectEditDialog = (props) => {
         }
         if (togglURL) {
             if (!verifyTogglURL(togglURL)) {
-                setEditProjectError('Toggl URL is invalid, please follow the following format https://track.toggl.com/###/projects/###')
+                setEditProjectError('Toggl URL is invalid, please use the following format https://track.toggl.com/###/projects/###')
                 setDisplayError(true)
                 return
             }
