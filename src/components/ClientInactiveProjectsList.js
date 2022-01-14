@@ -6,7 +6,7 @@ import LoadingProgress from './LoadingProgress'
 import ProjectsList from './ProjectsList'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
 
-const ClientInactiveProjectLists = ({
+const ClientInactiveProjectList = ({
     clientId,
     history
 }) => {
@@ -39,4 +39,4 @@ const ClientInactiveProjectLists = ({
     )
 }
 
-export default ClientInactiveProjectLists
+export default ClientInactiveProjectList

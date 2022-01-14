@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid'
 
 import InactiveProjectListManager from './InactiveProjectListManager';
 import HomeInactiveProjects from './HomeInactiveProjects';
-import ClientInactiveProjectLists from './ClientInactiveProjectsList';
+import ClientInactiveProjectList from './ClientInactiveProjectsList';
 
 const InactiveProjects = ({
     history,
@@ -30,7 +30,7 @@ const InactiveProjects = ({
                         </Grid>
                     ) : (
                         <Grid container>
-                            <ClientInactiveProjectLists
+                            <ClientInactiveProjectList
                                 clientId={clientId}
                                 history={history}
                             />
