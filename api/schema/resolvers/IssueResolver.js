@@ -3,7 +3,9 @@ module.exports = {
     Issue: {
         project: async (issue, args, { models }) => {
             return models.Project.findByPk(issue.project_id)
-
+        },
+        contributions: (issue, args, { models }) => {
+            return models.Contribution.findAll({ where: { issue_id: issue.id } })
         }
     },
     Query: {

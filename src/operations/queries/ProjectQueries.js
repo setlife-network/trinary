@@ -145,6 +145,15 @@ export const GET_PROJECT_ISSUES = gql`
                 name
                 date_opened
                 date_closed
+                contributions {
+                    id
+                    is_author
+                    is_assigned
+                    contributor {
+                        id
+                        github_handle
+                    }
+                }
             }
             githubIssuesOpened(
                 fromDate: $issuesFromDate,

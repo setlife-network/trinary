@@ -33,7 +33,11 @@ import {
 } from '../scripts/selectors'
 
 import { SYNC_TOGGL_PROJECT, UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
-import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS, MAX_INT } from '../constants'
+import {
+  EXPECTED_BUDGET_TIMEFRAME_OPTIONS,
+  INVALID_TOGGL_URL_ERROR_MESSAGE,
+  MAX_INT,
+} from '../constants'
 
 const ProjectEditDialog = (props) => {
 
@@ -99,7 +103,7 @@ const ProjectEditDialog = (props) => {
         }
         if (togglURL) {
             if (!verifyTogglURL(togglURL)) {
-                setEditProjectError('The Toggl URL is invalid')
+                setEditProjectError(INVALID_TOGGL_URL_ERROR_MESSAGE)
                 setDisplayError(true)
                 return
             }
