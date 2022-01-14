@@ -88,11 +88,11 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
                 githubAccessToken
             }
         })
-        .then(async (contributor) => {
+        .then(async (result) => {
             const {
                 contributorInfo,
                 githubAccessToken
-            } = contributor
+            } = result
             //if it's a new user store it in contributors table
             //if the user is already in th db but 1st time loggin in store the github access token
             if (!contributorInfo.contributor) {
