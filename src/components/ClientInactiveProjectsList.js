@@ -28,7 +28,7 @@ const ClientInactiveProjectLists = ({
 
     return (
         <Grid container>
-            { inactiveProjects.length != 0 &&
+            {inactiveProjects.length != 0 &&
                 <ProjectsList
                     history={history}
                     projects={inactiveProjects}
