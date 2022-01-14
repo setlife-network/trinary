@@ -118,8 +118,7 @@ const AddProjectForm = (props) => {
         }
         if (projectToggl) {
             if (!verifyTogglURL(projectToggl)) {
-                setCreateProjectError('The Toggl URL is invalid.')
-                setCreateProjectError('Please use the following format https://track.toggl.com/###/projects/###')
+                setCreateProjectError('Toggl URL is invalid, please use the following format https://track.toggl.com/###/projects/###')
                 setDisplayError(true)
                 return
             }
