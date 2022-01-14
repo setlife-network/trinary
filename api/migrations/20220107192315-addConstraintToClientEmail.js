@@ -6,7 +6,7 @@ module.exports = {
                     fields: ['email'],
                     type: 'unique',
                     name: 'unique_client_email'
-                })
+                }, { transaction: t })
             ])
         })
     },
