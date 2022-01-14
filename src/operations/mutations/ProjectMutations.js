@@ -57,6 +57,7 @@ export const UPDATE_PROJECT = gql`
         $github_url: String,
         $expected_budget_timeframe: String,
         $toggl_url: String
+        $is_active: Boolean
     ){
         updateProjectById(
             id: $project_id,
@@ -68,6 +69,7 @@ export const UPDATE_PROJECT = gql`
                 date: $date
                 end_date: $end_date
                 expected_budget: $expected_budget
+                is_active: $is_active
             }
         ){
             id,
@@ -79,6 +81,7 @@ export const UPDATE_PROJECT = gql`
             is_active,
             github_url,
             toggl_url
+            is_active
         }
     }
 `

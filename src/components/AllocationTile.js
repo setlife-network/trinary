@@ -17,7 +17,9 @@ import {
     formatAmount,
     selectCurrencyInformation
 } from '../scripts/selectors'
-import { grey, orange, red, setlifeBlue } from '../styles/colors.scss'
+import colors from '../styles/colors.module.scss'
+
+const { grey, orange, red, setlifeBlue } = colors
 
 const AllocationTile = (props) => {
 

@@ -5,7 +5,9 @@ import {
     Typography
 } from '@material-ui/core'
 
-import { lightGrey } from '../styles/colors.scss'
+import colors from '../styles/colors.module.scss'
+
+const { lightGrey } = colors
 
 const ContributorTimeTrackedTile = (props) => {
 

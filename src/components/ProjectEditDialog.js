@@ -7,13 +7,13 @@ import {
     Dialog,
     DialogTitle,
     FormControl,
-    FormHelperText,
     Grid,
     InputLabel,
     MenuItem,
     Select,
     Snackbar,
-    TextField
+    TextField,
+    Switch
 } from '@material-ui/core/'
 import { findIndex, split } from 'lodash'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
@@ -33,8 +33,11 @@ import {
 } from '../scripts/selectors'
 
 import { SYNC_TOGGL_PROJECT, UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
-import { EXPECTED_BUDGET_TIMEFRAME_OPTIONS, MAX_INT } from '../constants'
-
+import {
+  EXPECTED_BUDGET_TIMEFRAME_OPTIONS,
+  INVALID_TOGGL_URL_ERROR_MESSAGE,
+  MAX_INT,
+} from '../constants'
 
 const ProjectEditDialog = (props) => {
 
@@ -71,6 +74,7 @@ const ProjectEditDialog = (props) => {
     const [projectEndDate, setProjectEndDate] = useState(null)
     const [projectName, setProjectName] = useState(project.name)
     const [togglURL, setTogglURL] = useState(project.toggl_url)
+    const [projectIsActive, setProjectIsActive] = useState(project.is_active)
 
     const handleAlertClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -99,7 +103,7 @@ const ProjectEditDialog = (props) => {
         }
         if (togglURL) {
             if (!verifyTogglURL(togglURL)) {
-                setEditProjectError('Toggl URL is invalid, please use the following format https://track.toggl.com/###/projects/###')
+                setEditProjectError(INVALID_TOGGL_URL_ERROR_MESSAGE)
                 setDisplayError(true)
                 return
             }
@@ -116,7 +120,8 @@ const ProjectEditDialog = (props) => {
             ),
             github_url: githubURL,
             name: projectName,
-            toggl_url: togglURL
+            toggl_url: togglURL,
+            is_active: projectIsActive
         }
         const projectEdited = await updateProject({ variables: projectInfoToEdit })
         if (loadingUpdateProject) return <LoadingProgress/>
@@ -133,7 +138,6 @@ const ProjectEditDialog = (props) => {
             if (loadingTogglSync) return <LoadingProgress/>
             onClose()
         }
-
     }
 
     useEffect(() => {
@@ -147,7 +151,8 @@ const ProjectEditDialog = (props) => {
                 : null
             ) == project.expected_budget_timeframe) &&
             projectDate == currentDate &&
-            endDate == projectEndDate
+            endDate == projectEndDate &&
+            project.is_active == projectIsActive
         ) {
             setDisableEdit(true)
         } else if (!expectedBudget || !githubURL || !projectName) {
@@ -300,6 +305,22 @@ const ProjectEditDialog = (props) => {
                                         onChange={handleEndDateChange}
                                     />
                                 </MuiPickersUtilsProvider>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Box px={1} pt={3}>
+                                <Grid component='label' container alignItems='center' spacing={1}>
+                                    <Grid item>Inactive</Grid>
+                                    <Grid item>
+                                        <Switch
+                                            checked={projectIsActive}
+                                            onChange={(event) => setProjectIsActive(event.target.checked)}
+                                            name='checkActive'
+                                            color='primary'
+                                        />
+                                    </Grid>
+                                    <Grid item>Active</Grid>
+                                </Grid>
                             </Box>
                         </Grid>
                         <Grid item xs={12} lg={7}>
