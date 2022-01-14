@@ -3,9 +3,9 @@ const { DataTypes } = require('sequelize')
 
 module.exports = (sequelize) => {
     
-    class Contributions extends Sequelize.Model {}
+    class Contribution extends Sequelize.Model {}
 
-    Contributions.init({
+    Contribution.init({
         // Model attributes are defined here
         id: {
             type: DataTypes.INTEGER,
@@ -45,11 +45,11 @@ module.exports = (sequelize) => {
     {
         // Model options go here
         sequelize,
-        modelName: 'Contributions',
+        modelName: 'Contribution',
         createdAt: 'created_at',
         updatedAt: 'updated_at'
     })
 
-    return Contributions
+    return Contribution
     
 }
