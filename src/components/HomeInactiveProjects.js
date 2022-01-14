@@ -20,7 +20,7 @@ const HomeInactiveProjects = ({
 
     return (
         <>
-            { projects.length != 0
+            {projects.length != 0
                 ? (
                     <ProjectsList
                         history={history}
