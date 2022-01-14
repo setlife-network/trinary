@@ -42,13 +42,23 @@ const authentication = module.exports = (() => {
         }))
     }
 
-    const updateGithubAccessTokenContributor = async (githubContributor) => {
+    const updateContributorGithubAccessTokenByGithubId = async ({ githubId, githubAccessToken }) => {
         const contributor = await db.models.Contributor.findOne({
             where: {
-                github_id: githubContributor.id
+                github_id: githubId
             }
         })
-        contributor.github_access_token = githubContributor.accessToken
+        contributor.github_access_token = githubAccessToken
+        return contributor.save()
+    }
+
+    const updateContributorGithubHandle = async ({ contributorId, githubHandle }) => {
+        const contributor = await db.models.Contributor.findOne({
+            where: {
+                id: contributorId
+            }
+        })
+        contributor.github_handle = githubHandle
         return contributor.save()
     }
 
@@ -56,7 +66,8 @@ const authentication = module.exports = (() => {
         createContributor,
         getContributor,
         grantProjectPermissions,
-        updateGithubAccessTokenContributor
+        updateContributorGithubHandle,
+        updateContributorGithubAccessTokenByGithubId,
     }
 
 })()
