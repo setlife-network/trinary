@@ -53,6 +53,7 @@ const ClientTile = ({
                                     <Typography 
                                         variant='h6' 
                                         data-testid='client-name'
+                                        noWrap
                                     >
                                         {client.name}
                                     </Typography>

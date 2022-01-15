@@ -11,6 +11,7 @@ module.exports = gql`
         date_closed: String
         project_id: Int!
         project: Project!
+        contributions: [Contribution]
     }
 
     input IssueInput {

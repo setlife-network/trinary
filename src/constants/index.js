@@ -165,3 +165,4 @@ export const TIME_RANGES = [
         since: 1
     }
 ]
+export const INVALID_TOGGL_URL_ERROR_MESSAGE = 'Toggl URL is invalid, please use the following format https://track.toggl.com/###/projects/###'

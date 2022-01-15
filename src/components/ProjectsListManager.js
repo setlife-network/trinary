@@ -1,10 +1,9 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 
 import LoadingProgress from './LoadingProgress'
 import { GET_ACTIVE_PROJECTS_COUNT } from '../operations/queries/ProjectQueries'
@@ -20,9 +19,9 @@ const ProjectsListManager = ({
     }
     const { loading, error, data } = useQuery(GET_ACTIVE_PROJECTS_COUNT, {
         variables: {
-            clientId: clientId ? Number(clientId) : null,
-            fetchPolicy: 'cache-and-network'
-        }
+            clientId: clientId ? Number(clientId) : null
+        },
+        fetchPolicy: 'cache-and-network'
     })
     const pathname = window.location.pathname
     if (loading) return <LoadingProgress/>

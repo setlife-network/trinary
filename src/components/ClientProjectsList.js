@@ -13,15 +13,24 @@ const ClientProjectsList = ({
     history
 }) => {
 
-    const { loading, error, data, networkStatus } = useQuery(GET_CLIENT_INFO, {
-        fetchPolicy: 'cache-and-network',
-        variables: { id: Number(clientId) }
+    const { loading, error, data } = useQuery(GET_CLIENT_INFO, {
+        variables: { id: Number(clientId) },
+        fetchPolicy: 'cache-and-network'
     })
 
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`
 
-    const projects = orderBy(data.getClientById.projects, ['is_active'], ['desc'])
+    const getActiveProjects = () => {
+        const activeProjects = []
+        data.getClientById.projects.map(p => {
+            if (p.is_active) {
+                activeProjects.push(p)
+            }
+        })
+        return activeProjects
+    }
+    const projects = getActiveProjects()
 
     return (
         <Grid container>

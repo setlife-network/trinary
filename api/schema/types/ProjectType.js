@@ -121,7 +121,10 @@ module.exports = gql`
     type Query {
         getProjectById(id: Int!): Project
         getProjects: [Project]
+        getActiveProjects: [Project]
         getActiveProjectsCount(clientId: Int): Int!
+        getInactiveProjects: [Project]
+        getInactiveProjectsCount(clientId: Int): Int!
     }
 
     type Mutation {
