@@ -22,7 +22,6 @@ import { styles } from '@material-ui/pickers/views/Calendar/Calendar'
 
 const { lightGrey } = colors
 
-
 const ClientInfo = ({
     clientId
 }) => {

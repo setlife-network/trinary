@@ -165,7 +165,12 @@ module.exports = {
             })
         },
         issues: (project, args, { models }) => {
-            return models.Issue.findAll({ where: { project_id: project.id } })
+            return models.Issue.findAll({
+                where: { project_id: project.id },
+                limit: args.limit,
+                offset: args.offset,
+                order: [['date_opened', 'DESC']]
+            })
         },
         permissions: (project, args, { models }) => {
             return models.Permission.findAll({
@@ -650,7 +655,7 @@ module.exports = {
                 } else if (togglId) {
                     //check if project exists
                     try {
-                        await toggl.fetchProjectData({projectId: togglId})
+                        await toggl.fetchProjectData({ projectId: togglId })
                     } catch (err) {
                         return new ApolloError(`The toggl_id ${togglId} project does not exists`, 2002)
                     }

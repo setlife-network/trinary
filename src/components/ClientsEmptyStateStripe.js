@@ -20,7 +20,8 @@ const ClientsEmptyStateStripe = () => {
                 <Typography color='secondary' variant='h6'>
                     Creating or updating a Stripe customer will trigger a synchronized Client
 
-                    Any updates to the name and email of a Client will reflect in your<Link href='https://dashboard.stripe.com/dashboard'> Stripe dashboard</Link>
+                    Any updates to the name and email of a Client will reflect in your
+                    <Link href='https://dashboard.stripe.com/dashboard'> Stripe dashboard</Link>
                 </Typography>
                 <Box mt={5}>
                     <Icon className='fas fa-user-plus empty-icon' color='secondary'/>
