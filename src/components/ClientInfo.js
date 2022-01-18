@@ -44,7 +44,7 @@ const ClientInfo = ({
     if (error) return `Error! ${error.message}`
 
     const client = data.getClientById
-
+    console.log('client', client)
     return (
         <Card>
             <Box px={5} p={3} align='left'>
@@ -55,7 +55,7 @@ const ClientInfo = ({
                 </Typography>
                 <Typography variant='h6'>
                     <Box overflow='hidden' textOverflow='ellipsis'>
-                        {client.email}
+                        {client.email ? client.email : 'Email not provided'}
                     </Box>
                 </Typography>
                 <Grid container alignItems='flex-end' >

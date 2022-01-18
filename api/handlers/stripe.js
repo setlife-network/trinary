@@ -15,7 +15,7 @@ const stripeHandler = module.exports = (() => {
         const { email, name } = params
 
         return stripeClient.customers.create({
-            email,
+            email: email ? email : null,
             name,
         })
     }
