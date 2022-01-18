@@ -1,0 +1,14 @@
+$extra-small-icon: 30px;
+$large-icon: 150px;
+$medium-icon: 115px;
+$small-icon: 80px;
+$small-font: 1.6rem;
+$large-font: 2.125rem;
+
+:export {
+    extraSmallIcon: $extra-small-icon;
+    smallIcon: $small-icon;
+    largeIcon: $large-icon;
+    smallFont: $small-font;
+    largeFont: $large-font;
+}

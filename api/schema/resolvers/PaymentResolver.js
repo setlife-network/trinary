@@ -42,7 +42,10 @@ module.exports = {
         },
         getClientPaymentsByClientId: (root, { clientId }, { models }) => {
             return models.Payment.findAll({ where: { client_id: clientId } })
-        }
+        },
+        importInvoicelyCsvToStripe: async (root, args, { models }) => {
+            return apiModules.dataSyncs.importInvoicelyCsvToStripe()
+        },
     },
     Mutation: {
         createPayment: async (root, { createFields }, { models }) => {

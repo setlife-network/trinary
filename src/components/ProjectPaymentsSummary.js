@@ -73,7 +73,7 @@ const ProjectPaymentsSummary = (props) => {
                         {`${totalAllocatedAmount} allocated`}
                     </Typography>
                     <Typography>
-                        {`${totalProfitAmount} on profit`}
+                        {`${totalProfitAmount} not allocated`}
                     </Typography>
                     <Typography>
                         {`${totalAllocatedNonConfirmedAmount} on allocations not confirmed`}

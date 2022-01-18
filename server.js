@@ -72,20 +72,46 @@ app.use('/api/graph/v/:vid', express.json(), (req, res, next) => {
 app.get('/api/login', (req, res) => {
     res.redirect(`https://github.com/login/oauth/authorize?client_id=${GITHUB.OAUTH_CLIENT_ID}&scope=repo`)
 })
+
+app.get('/api/logout', (req, res) => {
+    req.session.userSession = null
+    res.send().status(200)
+})
+
 app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured in the Github App
     github.fetchAccessToken({ code: req.query.code })
         .then(async githubAccessToken => {
             const contributorInfo = await apiModules.authentication.getContributor({ githubAccessToken })
             contributorInfo.githubContributor['accessToken'] = githubAccessToken
-            return contributorInfo
+            return {
+                contributorInfo,
+                githubAccessToken
+            }
         })
-        .then(async (contributorInfo) => {
+        .then(async (result) => {
+            const {
+                contributorInfo,
+                githubAccessToken
+            } = result
             //if it's a new user store it in contributors table
             //if the user is already in th db but 1st time loggin in store the github access token
             if (!contributorInfo.contributor) {
                 contributorInfo.contributor = await apiModules.authentication.createContributor({ ...contributorInfo.githubContributor })
-            } else if (!contributorInfo.contributor['github_access_token']) {
-                contributorInfo.contributor = await apiModules.authentication.updateGithubAccessTokenContributor({ ...contributorInfo.githubContributor })
+            } else if (
+                !contributorInfo.contributor['github_access_token'] ||
+                contributorInfo.contributor['github_access_token'] != githubAccessToken
+            ) {
+                contributorInfo.contributor = await apiModules.authentication.updateContributorGithubAccessTokenByGithubId({
+                    githubId: contributorInfo.githubContributor.id,
+                    githubAccessToken: githubAccessToken
+                })
+            }
+            // Just in case the user has changed their GitHub handle
+            if (contributorInfo.contributor.github_handle != contributorInfo.githubContributor.githubUrl) {
+                await apiModules.authentication.updateContributorGithubHandle({
+                    contributorId: contributorInfo.contributor.id,
+                    githubHandle: contributorInfo.githubContributor.githubUrl
+                })
             }
             //store contributor id in the cookie session
             req.session.userSession = contributorInfo.contributor.id
@@ -119,7 +145,7 @@ app.post('/api/webhooks/invoice/paid', async (req, res) => {
 
 app.post('/api/webhooks/invoice/updated', async (req, res) => {
     const invoiceObjectPayload = req.body.data.object
-    //1. see if payment is ready to allocate, if not do nothing
+    //1. see if payment is ready to allocate, if not, do nothing
     if (
         invoiceObjectPayload.metadata &&
         invoiceObjectPayload.metadata.ready_to_allocate

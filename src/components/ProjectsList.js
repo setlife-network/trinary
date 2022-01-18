@@ -1,7 +1,5 @@
 import React from 'react'
-import { gql, useQuery } from '@apollo/client';
 import Grid from '@material-ui/core/Grid'
-import { orderBy } from 'lodash'
 
 import ProjectTile from './ProjectTile'
 

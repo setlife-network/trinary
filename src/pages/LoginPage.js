@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import GitHubIcon from '@material-ui/icons/GitHub'
 import Button from '@material-ui/core/Button'
 
 import { API_ROOT } from '../constants'
 import Grid from '@material-ui/core/Grid'
-import { setlifeBlue } from '../styles/colors.scss'
+import colors from '../styles/colors.module.scss'
+
+const { setlifeBlue } = colors
 
 const loggedInUser = [{
     id: null,

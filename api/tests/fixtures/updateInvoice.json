@@ -3,30 +3,42 @@
     "template_version": 0
   },
   "fixtures": [
-
     {
-        "name": "invoice_edit",
-        "path":"/v1/invoices/in_1IqhaYIXnygo2ixqVYPZ0ljj",
+        "name": "invoice_item_add",
+        "path": "/v1/invoiceitems",
         "method": "post",
         "params": {
-            "custom_fields": [
-                {
-                    "name": "ready_to_allocate",
-                    "value": "true"
-                }
-            ]
+            "customer": "cus_JwqUU4V2uMKq0y",
+            "price": "price_1JCvMqIXnygo2ixq91csntZq"
+        }
+    },
+    {
+        "name": "invoice_create",
+        "path": "/v1/invoices",
+        "method": "post",
+        "params": {
+            "customer": "cus_JwqUU4V2uMKq0y",
+            "collection_method": "send_invoice",
+            "days_until_due": 30
         }
     },
     {
         "name": "invoice_edit",
-        "path":"/v1/invoices/in_1IqhaYIXnygo2ixqVYPZ0ljj",
+        "path":"/v1/invoices/${invoice_create:id}",
+        "method": "post",
+        "params": {
+            "metadata": {
+                "ready_to_allocate": "true"
+            }
+        }
+    },
+    {
+        "name": "invoice_edit",
+        "path":"/v1/invoices/${invoice_create:id}",
         "method": "post",
         "params": {
             "custom_fields": [
                 {
-                    "name": "ready_to_allocate",
-                    "value": "true"
-                }, {
                     "name": "date_paid",
                     "value": "2020-04-25"
                 }

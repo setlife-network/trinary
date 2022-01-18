@@ -16,8 +16,11 @@ import ClientEditDialog from './ClientEditDialog'
 import LoadingProgress from './LoadingProgress'
 
 import { selectCurrencySymbol } from '../scripts/selectors'
-import { lightGrey } from '../styles/colors.scss'
+import colors from '../styles/colors.module.scss'
 import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
+import { styles } from '@material-ui/pickers/views/Calendar/Calendar'
+
+const { lightGrey } = colors
 
 const ClientInfo = ({
     clientId
