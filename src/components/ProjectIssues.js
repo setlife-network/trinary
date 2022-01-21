@@ -79,8 +79,6 @@ const ProjectIssues = (props) => {
                 offset: issues.length
             }
         })
-        console.log('moreIssues');
-        console.log(moreIssues);
         if (moreIssues.data.getIssuesByProjectId.length < ISSUES_LIMIT) {
             setMoreIssuesToLoad(false)
         }
