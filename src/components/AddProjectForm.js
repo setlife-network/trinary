@@ -181,7 +181,7 @@ const AddProjectForm = (props) => {
             className='AddProjectForm'
         >
             <Grid item>
-                <Box mr={2} mb={2}>
+                <Box mr={2}>
                     <Avatar>
                         {`1`}
                     </Avatar>
@@ -207,7 +207,7 @@ const AddProjectForm = (props) => {
                 </Box>
             </Grid>
             <Grid item>
-                <Box mr={3} mb={2}>
+                <Box mr={3}>
                     <Avatar>
                         {`2`}
                     </Avatar>
@@ -219,7 +219,7 @@ const AddProjectForm = (props) => {
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <Box item mt={5}>
+                <Box item>
                     <AddProjectDetails
                         budgetTimeframe={budgetTimeframe}
                         client={client}
