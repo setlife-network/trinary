@@ -44,7 +44,7 @@ const ClientInfo = ({
     if (error) return `Error! ${error.message}`
 
     const client = data.getClientById
-    console.log('client', client)
+
     return (
         <Card>
             <Box px={5} p={3} align='left'>
