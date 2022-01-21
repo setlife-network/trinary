@@ -18,9 +18,9 @@ const ClientsEmptyStateStripe = () => {
                     Stripe credentials are detected.
                 </Typography>
                 <Typography color='secondary' variant='h6'>
-                    Creating or updating a Stripe customer will trigger a synchronized Client
-
-                    Any updates to the name and email of a Client will reflect in your
+                    Creating or updating a Stripe customer will trigger a synchronized Trinary Client
+                    <br/>
+                    Any updates to the name and email of a synchronized Client will reflect in your
                     <Link href='https://dashboard.stripe.com/dashboard'> Stripe dashboard</Link>
                 </Typography>
                 <Box mt={5}>
