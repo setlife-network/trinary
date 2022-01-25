@@ -145,6 +145,15 @@ export const GET_PROJECT_ISSUES = gql`
                 name
                 date_opened
                 date_closed
+                contributions {
+                    id
+                    is_author
+                    is_assigned
+                    contributor {
+                        id
+                        github_handle
+                    }
+                }
             }
             githubIssuesOpened(
                 fromDate: $issuesFromDate,
@@ -225,6 +234,54 @@ export const GET_PROJECT_TOTAL_PROPOSED = gql`
             id
             totalAllocated
             totalAllocatedConfirmed: totalAllocated(confirmedOnly: true)
+        }
+    }
+`
+
+export const GET_ACTIVE_PROJECTS = gql`
+    query Projects {
+        getActiveProjects {
+            id
+            name
+            is_active
+            expected_budget
+            github_url
+            toggl_url
+            client_id
+            toggl_id
+            date
+            client {
+                id
+                name
+                currency
+            }
+        }
+    }
+`
+
+export const GET_INACTIVE_PROJECTS_COUNT = gql`
+    query Clients($clientId: Int) {
+        getInactiveProjectsCount(clientId: $clientId)
+    }
+`
+
+export const GET_INACTIVE_PROJECTS = gql`
+    query Projects {
+        getInactiveProjects {
+            id
+            name
+            is_active
+            expected_budget
+            github_url
+            toggl_url
+            client_id
+            toggl_id
+            date
+            client {
+                id
+                name
+                currency
+            }
         }
     }
 `

@@ -12,6 +12,28 @@ const IssueTile = (props) => {
     const { issue } = props
     const issueIsOpen = issue.date_closed ? false : true
 
+    const renderContributions = (contributions) => {
+        return contributions.map(i => {
+            return (
+                <Grid item xs={12} mt={1} align='left'>
+                    <Box>
+                        {i.is_author
+                            ? (
+                                <Typography color='secondary'>
+                                    {`Author: ${i.contributor.github_handle}`}
+                                </Typography>
+                            ) : (
+                                <Typography color='secondary'>
+                                    {`Assigned: ${i.contributor.github_handle}`}
+                                </Typography>
+                            )
+                        }
+                    </Box>
+                </Grid>
+            )
+        })
+    }
+
     return (
         <Box
             className='IssueTile'
@@ -60,6 +82,9 @@ const IssueTile = (props) => {
                             {`${moment(issue.date_opened, ['x']).format('MM/DD/YYYY')}`}
                         </Typography>
                     </Box>
+                </Grid>
+                <Grid container>
+                    {renderContributions(issue.contributions)}
                 </Grid>
 
                 <Grid item xs={12} align='left'/>

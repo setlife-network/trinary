@@ -40,6 +40,7 @@ const db = {
     models: {
         Allocation: require('./Allocation')(sequelize),
         Client: require('./Client')(sequelize),
+        Contribution: require('./Contribution')(sequelize),
         Contributor: require('./Contributor')(sequelize),
         Issue: require('./Issue')(sequelize),
         Payment: require('./Payment')(sequelize),
@@ -51,20 +52,33 @@ const db = {
 };
 
 //Associations
-const associations = ({ Allocation, Client, Contributor, Issue, Payment, Permission, Project, Rate, TimeEntry }) => {
+const associations = ({ 
+    Allocation, 
+    Client, 
+    Contribution,
+    Contributor, 
+    Issue, 
+    Payment, 
+    Permission, 
+    Project, 
+    Rate, 
+    TimeEntry
+}) => {
     Client.hasMany(Payment, { foreignKey: 'client_id' });
+    Client.hasMany(Permission, { foreignKey: 'client_id' })
+    Client.hasMany(Project, { foreignKey: 'client_id' })
+    Contribution.belongsTo(Contributor, { foreignKey: 'contributor_id' })
+    Contribution.belongsTo(Issue, { foreignKey: 'issue_id' })
     Contributor.hasMany(Allocation, { foreignKey: 'contributor_id' })
     Contributor.hasMany(Permission, { foreignKey: 'contributor_id' })
+    Contributor.hasMany(TimeEntry, { foreignKey: 'contributor_id' })
+    Issue.belongsTo(Project, { foreignKey: 'project_id' })
     Payment.hasMany(Allocation, { foreignKey: 'payment_id' })
     Project.hasMany(Allocation, { foreignKey: 'project_id' })
-    Client.hasMany(Project, { foreignKey: 'client_id' })
-    Client.hasMany(Permission, { foreignKey: 'client_id' })
     Project.hasMany(Permission, { foreignKey: 'project_id' })
-    Issue.belongsTo(Project, { foreignKey: 'project_id' })
+    Project.hasMany(TimeEntry, { foreignKey: 'project_id' })
     Rate.hasMany(Allocation, { foreignKey: 'rate_id' })
     Rate.belongsTo(Contributor, { foreignKey: 'contributor_id' })
-    Contributor.hasMany(TimeEntry, { foreignKey: 'contributor_id' })
-    Project.hasMany(TimeEntry, { foreignKey: 'project_id' })
 }
 
 associations(db.models)

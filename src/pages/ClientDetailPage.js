@@ -10,6 +10,7 @@ import ClientProjectsList from '../components/ClientProjectsList'
 import ProjectsListManager from '../components/ProjectsListManager'
 import ClientPaymentsManager from '../components/ClientPaymentsManager'
 import ClientPayments from '../components/ClientPayments'
+import InactiveProjects from '../components/InactiveProjects'
 
 class ClientDetailPage extends React.Component {
 
@@ -39,6 +40,10 @@ class ClientDetailPage extends React.Component {
                             history={this.props.history}
                         />
                         <ClientProjectsList
+                            clientId={clientId}
+                            history={this.props.history}
+                        />
+                        <InactiveProjects 
                             clientId={clientId}
                             history={this.props.history}
                         />

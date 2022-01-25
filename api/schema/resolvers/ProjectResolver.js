@@ -544,9 +544,34 @@ module.exports = {
         getProjects: (root, args, { models }) => {
             return models.Project.findAll()
         },
+        getActiveProjects: (root, args, { models }) => {
+            return models.Project.findAll({
+                where: {
+                    is_active: true
+                }
+            })
+        },
         getActiveProjectsCount: (root, args, { models }) => {
             const whereFields = {
                 is_active: true
+            }
+            if (args.clientId) whereFields.client_id = args.clientId
+            return models.Project.count({
+                where: {
+                    ...whereFields
+                }
+            })
+        },
+        getInactiveProjects: (root, args, { models }) => {
+            return models.Project.findAll({
+                where: {
+                    is_active: false
+                }
+            })
+        },
+        getInactiveProjectsCount: (root, args, { models }) => {
+            const whereFields = {
+                is_active: false
             }
             if (args.clientId) whereFields.client_id = args.clientId
             return models.Project.count({
@@ -650,7 +675,7 @@ module.exports = {
                 } else if (togglId) {
                     //check if project exists
                     try {
-                        await toggl.fetchProjectData({projectId: togglId})
+                        await toggl.fetchProjectData({ projectId: togglId })
                     } catch (err) {
                         return new ApolloError(`The toggl_id ${togglId} project does not exists`, 2002)
                     }

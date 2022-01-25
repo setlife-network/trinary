@@ -120,7 +120,7 @@ export const verifyGithubURL = (url) => {
 }
 export const verifyTogglURL = (url) => {
     const togglLinkInformation = split(url, '/')
-    if (togglLinkInformation.length < 6) {
+    if (togglLinkInformation.length < 6 || togglLinkInformation.length > 7) {
         return 0
     }
     return 1
