@@ -20,6 +20,9 @@
     .animation-effect-right{
         margin-right: 0.2rem;
     }
+    .project-name{
+        text-transform: capitalize;
+    }
 }
 
 @media screen and (min-width: $sm) {
