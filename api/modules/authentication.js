@@ -13,7 +13,8 @@ const authentication = module.exports = (() => {
             name: githubContributor.name ? githubContributor.name : githubContributorUsername,
             github_id: githubContributor.id,
             github_handle: githubContributor.githubUrl,
-            github_access_token: githubContributor.accessToken
+            github_access_token: githubContributor.accessToken,
+            avatar_url: githubContributor.avatar_url
         })
     }
 
