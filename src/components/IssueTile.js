@@ -20,7 +20,7 @@ const IssueTile = (props) => {
         return contributions.map(i => {
             return (
                 <Tooltip title={i.contributor.github_handle}>
-                    <Box>
+                    <Box mr={1}>
                         <Avatar alt='Avatar' src={i.contributor.avatar_url}/>
                     </Box>
                 </Tooltip>
