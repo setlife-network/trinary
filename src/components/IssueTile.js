@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import {
     Box,
     Grid,
-    Typography
+    Avatar,
+    Typography,
+    Tooltip
 } from '@material-ui/core'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import moment from 'moment'
@@ -12,24 +14,16 @@ const IssueTile = (props) => {
     const { issue } = props
     const issueIsOpen = issue.date_closed ? false : true
 
+    console.log(issue)
+
     const renderContributions = (contributions) => {
         return contributions.map(i => {
             return (
-                <Grid item xs={12} mt={1} align='left'>
+                <Tooltip title={i.contributor.github_handle}>
                     <Box>
-                        {i.is_author
-                            ? (
-                                <Typography color='secondary'>
-                                    {`Author: ${i.contributor.github_handle}`}
-                                </Typography>
-                            ) : (
-                                <Typography color='secondary'>
-                                    {`Assigned: ${i.contributor.github_handle}`}
-                                </Typography>
-                            )
-                        }
+                        <Avatar alt='Avatar' src={i.contributor.avatar_url}/>
                     </Box>
-                </Grid>
+                </Tooltip>
             )
         })
     }
@@ -83,10 +77,20 @@ const IssueTile = (props) => {
                         </Typography>
                     </Box>
                 </Grid>
-                <Grid container>
-                    {renderContributions(issue.contributions)}
+                <Grid item xs={12}>
+                    <Grid container spacing={1}>
+                        <Grid item>
+                            <Box mt={1}>
+                                <Typography color='secondary'>
+                                    {`Contributors:`}
+                                </Typography>
+                            </Box>
+                        </Grid>
+                        <Grid item>
+                            {renderContributions(issue.contributions)}
+                        </Grid>
+                    </Grid>
                 </Grid>
-
                 <Grid item xs={12} align='left'/>
                 <Grid item xs={6}>
                     <Box mt={2}>
