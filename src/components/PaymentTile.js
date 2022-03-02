@@ -101,6 +101,8 @@ const PaymentTile = (props) => {
     })
     const numberOfContributorsAllocated = allocations.length
 
+    const projectName = (allocations.length > 0) ? allocations[0].project.name : ''
+    
     const renderPaymentAllocations = (props) => {
 
         const {
@@ -176,7 +178,6 @@ const PaymentTile = (props) => {
                 <Accordion>
                     <AccordionSummary
                         expandIcon={
-                            project &&
                             <Grid item xs={1}>
                                 <ExpandMoreIcon />
                             </Grid>
@@ -211,26 +212,38 @@ const PaymentTile = (props) => {
                                     color={`${paymentHasBeenMade ? 'primary' : 'secondary'}`}
                                 />
                             </Grid>
-                            {project &&
-                                <Grid item xs={12}>
-                                    <Box
-                                        mt={2}
-                                        align='left'
-                                        color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
-                                    >
-                                        <Typography variant='subtitle2'>
-                                            {`${totalAllocated} allocated`}
-                                            <br/>
-                                            {`to ${numberOfContributorsAllocated} ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}`}
-                                        </Typography>
-                                    </Box>
-                                </Grid>
-                            }
+                            <Grid item xs={12}>
+                                <Box
+                                    mt={2}
+                                    align='left'
+                                    color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
+                                >
+                                    <Typography variant='subtitle2'>
+                                        {`${totalAllocated} allocated`}
+                                        <br/>
+                                        {`to ${numberOfContributorsAllocated} ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}`}
+                                    </Typography>
+                                </Box>
+                            </Grid>
                         </Grid>
                     </AccordionSummary>
                     {!project &&
-                        <Box align='left' mb={2} ml={2}>
+                        <Box align='left' mb={2} mx={2}>
                             <Grid container>
+                                <Grid item xs={12} align='center'>
+                                    <Typography 
+                                        variant='h6'
+                                        className='project-name'
+                                    >
+                                        {projectName}
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    {renderPaymentAllocations({
+                                        allocations: allocations,
+                                        currencyInformation: currencyInformation
+                                    })}
+                                </Grid>
                                 <Grid item xs={8}>
                                     <Button
                                         color='primary'
