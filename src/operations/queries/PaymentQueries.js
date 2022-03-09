@@ -39,6 +39,9 @@ export const GET_PAYMENT_ALLOCATIONS = gql`
                 amount
                 start_date
                 end_date
+                project {
+                    name
+                }
                 contributor {
                     id
                     name
