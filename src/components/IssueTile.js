@@ -14,8 +14,6 @@ const IssueTile = (props) => {
     const { issue } = props
     const issueIsOpen = issue.date_closed ? false : true
 
-    console.log(issue)
-
     const renderContributions = (contributions) => {
         return contributions.map(i => {
             return (
