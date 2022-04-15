@@ -30,11 +30,7 @@ module.exports = {
             is_assigned: {
                 type: Sequelize.DataTypes.INTEGER,
                 allowNull: false
-            },
-            date_contributed: {
-                type: Sequelize.DataTypes.DATE,
-                allowNull: false
-            },
+            }
         });
     },
 
