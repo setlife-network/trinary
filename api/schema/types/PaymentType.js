@@ -34,6 +34,10 @@ module.exports = gql`
             createFields: PaymentInput!
         ): Payment
 
+        generateBitcoinInvoiceFromPayment(
+            paymentId: Int!
+        ): Payment
+
         syncPayments(
             source: String!
         ): String

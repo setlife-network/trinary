@@ -6,6 +6,8 @@ const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules')
 const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants')
 
+const { checkInvoiceExpired, createBitcoinInvoice } = require('../../handlers/btcPayServer')
+
 module.exports = {
 
     Payment: {
@@ -58,7 +60,6 @@ module.exports = {
                     id: createFields['client_id']
                 }
             })
-
             // Check if the client has an associated Stripe account and if the currency is supported
             // If it does, proceed to create the invoice on Stripe
             if (client.external_uuid && STRIPE_SUPPORTED_CURRENCIES.includes(client.currency)) {
@@ -76,6 +77,28 @@ module.exports = {
         },
         deletePaymentById: (root, { id }, { models }) => {
             return models.Payment.destroy({ where: { id } })
+        },
+        generateBitcoinInvoiceFromPayment: async (root, { paymentId }, { models }) => {
+            
+            const Payment = await models.Payment.findByPk(paymentId)
+            const { amount, client_id, date_paid, external_uuid, external_uuid_type } = Payment.dataValues
+
+            const client = await models.Client.findByPk(client_id)
+            
+            const isClientCurrencyBtc = client.dataValues.currency === 'BTC' || client.dataValues.currency === 'SATS'
+            const invoiceHasExpired = external_uuid && await checkInvoiceExpired(external_uuid)
+            
+            if (isClientCurrencyBtc && external_uuid && date_paid && !invoiceHasExpired) throw 'An active invoice already exists'
+            
+            const newInvoice = await createBitcoinInvoice(amount)
+            return models.Payment.update({
+                external_uuid: newInvoice.id
+            }, 
+            { where: 
+                {
+                    id: paymentId
+                } 
+            })
         },
         syncPayments: async (root, { source }, { models }) => {
             if (source.toUpperCase() == 'INVOICELY') {
