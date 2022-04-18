@@ -4,9 +4,9 @@ const { fn, col, Op } = require('sequelize')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules')
-const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants')
+const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants');
 
-const { isBitcoinInvoiceExpired, getBitcoinCheckoutUrl, createBitcoinInvoice } = require('../../handlers/btcPayServer')
+const { isBitcoinInvoiceExpired, getBitcoinCheckoutUrl } = require('../../handlers/btcPayServer')
 
 module.exports = {
 
@@ -35,11 +35,14 @@ module.exports = {
             return allocations[0].total_amount
         },
         isBitcoinInvoiceExpired: async (payment) => {
-            if ( payment.external_uuid && payment.external_uuid_type === 'bitcoin') return isBitcoinInvoiceExpired(payment.external_uuid)
-            return false
+            if ( payment.external_uuid && payment.external_uuid_type === 'bitcoin') {
+                return apiModules.paymentManagement.isBitcoinInvoiceExpired(payment.external_uuid)
+            }
         },
         bitcoinCheckoutUrl: async (payment) => {
-            if ( payment.external_uuid && payment.external_uuid_type === 'bitcoin') return getBitcoinCheckoutUrl(payment.external_uuid)
+            if ( payment.external_uuid && payment.external_uuid_type === 'bitcoin') {
+                return apiModules.paymentManagement.getBitcoinCheckoutUrl(payment.external_uuid)
+            }
         }
     },
     Query: {
@@ -86,30 +89,16 @@ module.exports = {
             return models.Payment.destroy({ where: { id } })
         },
         generateBitcoinInvoiceFromPayment: async (root, { paymentId }, { models }) => {
-            
-            const Payment = await models.Payment.findByPk(paymentId)
-            const { amount, client_id, date_paid, external_uuid, external_uuid_type } = Payment.dataValues
-
-            const client = await models.Client.findByPk(client_id)
-            
-            const isClientCurrencyBtc = client.dataValues.currency === 'BTC' || client.dataValues.currency === 'SATS'
-            if (!isClientCurrencyBtc) throw 'Client\'s currency is not Bitcoin'
-
-            const isInvoiceExpired = external_uuid && external_uuid_type === 'bitcoin' && await checkInvoiceExpired(external_uuid)
-            if (external_uuid && date_paid && !isInvoiceExpired) throw 'An active invoice already exists'
-
-            const amountInSats = client.dataValues.currency === 'BTC' ? amount * 1000000 : amount / 100;
-            
-            const newInvoice = await createBitcoinInvoice(amountInSats)
-            return models.Payment.update({
-                external_uuid: newInvoice.id,
-                external_uuid_type: 'bitcoin'
-            }, 
-            { where: 
+            const newInvoice = await apiModules.paymentManagement.processBitcoinInvoiceCreation(paymentId)
+            return models.Payment.update(
                 {
-                    id: paymentId
-                } 
-            })
+                    external_uuid: newInvoice.id,
+                    external_uuid_type: `bitcoin`
+                }, 
+                { 
+                    where: { id: paymentId } 
+                }
+            )
         },
         syncPayments: async (root, { source }, { models }) => {
             if (source.toUpperCase() == 'INVOICELY') {

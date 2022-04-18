@@ -2,58 +2,68 @@ const axios = require('axios')
 const {
     BTCPAYSERVER
 } = require('../config/credentials')
+const { BTCPAYSERVER_API_ROOT } = require('../config/constants')
 
-const BTCPayServerAPIKey = BTCPAYSERVER.API_KEY;
-const BTCPayServerStoreId = BTCPAYSERVER.STORE_ID;
+const BTCPAYSERVER_API_KEY = BTCPAYSERVER.API_KEY;
+const BTCPAYSERVER_STORE_ID = BTCPAYSERVER.STORE_ID;
 
 let config = {
     headers: {
-        Authorization: 'token ' + BTCPayServerAPIKey
+        Authorization: 'token ' + BTCPAYSERVER_API_KEY
     }
 }
 
-const createBitcoinInvoice = (amount) => {
+const createBitcoinInvoice = async (amount) => {
     const body = {
-        'metadata': {
-            'orderId': 'string',
-            'orderUrl': 'string'
+        metadata: {
+            orderId: '',
+            orderUrl: '' 
         },
-        'checkout': {
-            'speedPolicy': 'HighSpeed',
-            'paymentMethods': [
+        checkout: {
+            speedPolicy: 'HighSpeed',
+            paymentMethods: [
                 'BTC', 'BTC-LightningNetwork'
             ],
-            'defaultPaymentMethod': 'BTC-LightningNetwork',
-            'expirationMinutes': 5,
-            'monitoringMinutes': 5,
-            'paymentTolerance': 100,
+            defaultPaymentMethod: 'BTC-LightningNetwork',
+            expirationMinutes: 24 * 60,
+            monitoringMinutes: 5,
+            paymentTolerance: 100,
         },
-        'amount': amount,
-        'currency': 'sats',
-        'additionalSearchTerms': [
+        amount: amount,
+        currency: 'sats',
+        additionalSearchTerms: [
             'string'
         ]
     }
-    return axios.post(`https://btcpayserver.setlife.tech/api/v1/stores/${BTCPayServerStoreId}/invoices`, body, config).then(res => res.data);
+    const response = await axios.post(
+        `${BTCPAYSERVER_API_ROOT}/stores/${BTCPAYSERVER_STORE_ID}/invoices`, 
+        body, 
+        config
+    )
+    
+    return response.data
 }
 
-const getAllInvoices = () => {
-    axios.get(`https://btcpayserver.setlife.tech/api/v1/stores/${BTCPayServerStoreId}/invoices`, config).then(res => res.data);
+const getAllInvoices = async () => {
+    const response = await axios.get(
+        `${BTCPAYSERVER_API_ROOT}/stores/${BTCPAYSERVER_STORE_ID}/invoices`, 
+        config
+    )
+
+    return response.data
 }
 
-const getInvoiceById = (invoiceId) => {
-    return axios.get(`https://btcpayserver.setlife.tech/api/v1/stores/${BTCPayServerStoreId}/invoices/${invoiceId}`, config).then(res => res.data);
+const getInvoiceById = async (invoiceId) => {
+    const response = await axios.get(
+        `${BTCPAYSERVER_API_ROOT}/stores/${BTCPAYSERVER_STORE_ID}/invoices/${invoiceId}`, 
+        config
+    )
+
+    return response.data
 }
 
-const isBitcoinInvoiceExpired = async (invoiceId) => {
-    const invoice = await getInvoiceById(invoiceId)
-    if (invoice.status === 'Expired') return true
-    return false
-}
-
-const getBitcoinCheckoutUrl = async (invoiceId) => {
-    const invoice = await getInvoiceById(invoiceId)
-    return invoice.checkoutLink
-}
-
-module.exports = { isBitcoinInvoiceExpired, createBitcoinInvoice, getAllInvoices, getBitcoinCheckoutUrl, getInvoiceById };
+module.exports = { 
+    createBitcoinInvoice, 
+    getAllInvoices, 
+    getInvoiceById 
+};

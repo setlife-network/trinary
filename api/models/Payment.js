@@ -31,9 +31,6 @@ module.exports = (sequelize) => {
         date_paid: {
             type: DataTypes.DATE
         },
-        external_uuid_type: {
-            type: DataTypes.STRING
-        },
         client_id: { //FK
             type: DataTypes.INTEGER,
             allowNull: false,
