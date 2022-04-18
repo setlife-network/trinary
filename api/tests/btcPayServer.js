@@ -49,5 +49,9 @@ const getInvoiceById = (invoiceId) => {
     return axios.get(`https://btcpayserver.setlife.tech/api/v1/stores/${BTCPayServerStoreId}/invoices/${invoiceId}`, config).then(res => res.data);
 }
 
-checkInvoiceExpired('SjjquWHw979CE5gQdVaEfW');
+const getCheckoutUrl = async (invoiceId) => {
+    const invoice = await getInvoiceById(invoiceId);
+    console.log(invoice.checkoutLink)
+}
+getCheckoutUrl('5BtRCbD7e1DkW5jHFUhgBn')
 module.exports = createBitcoinInvoice;

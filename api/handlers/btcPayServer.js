@@ -12,12 +12,6 @@ let config = {
     }
 }
 
-const checkInvoiceExpired = async (invoiceId) => {
-    const invoice = await getInvoiceById(invoiceId)
-    if (invoice.status === 'Expired') return true
-    return false
-}
-
 const createBitcoinInvoice = (amount) => {
     const body = {
         'metadata': {
@@ -51,4 +45,15 @@ const getInvoiceById = (invoiceId) => {
     return axios.get(`https://btcpayserver.setlife.tech/api/v1/stores/${BTCPayServerStoreId}/invoices/${invoiceId}`, config).then(res => res.data);
 }
 
-module.exports = { checkInvoiceExpired, createBitcoinInvoice, getAllInvoices, getInvoiceById };
+const isBitcoinInvoiceExpired = async (invoiceId) => {
+    const invoice = await getInvoiceById(invoiceId)
+    if (invoice.status === 'Expired') return true
+    return false
+}
+
+const getBitcoinCheckoutUrl = async (invoiceId) => {
+    const invoice = await getInvoiceById(invoiceId)
+    return invoice.checkoutLink
+}
+
+module.exports = { isBitcoinInvoiceExpired, createBitcoinInvoice, getAllInvoices, getBitcoinCheckoutUrl, getInvoiceById };
