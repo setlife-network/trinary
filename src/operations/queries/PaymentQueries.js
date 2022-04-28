@@ -19,6 +19,24 @@ export const GET_CLIENT_PAYMENTS = gql`
         }
     }
 `
+export const GET_PAYMENT_DETAILS = gql`
+    query getPaymentAndClientDetails($clientId: Int!, $paymentId: Int!)
+    {
+        getPaymentById(id: $paymentId)
+        {
+            id
+            amount
+            client_id
+            date_incurred
+            date_paid
+        }
+        getClientById(id: $clientId)
+        {
+            id
+            currency
+        }
+    }
+`
 
 export const GET_PAYMENT_TOTAL_ALLOCATED = gql`
     query PaymentTotalAllocated($paymentId: Int!){

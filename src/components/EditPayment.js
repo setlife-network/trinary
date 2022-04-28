@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery, useMutation, useLazyQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 import {
-    Box,
     Button,
     FormControl,
     Grid,
     Snackbar,
-    TextField,
-    Typography
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import {
@@ -20,49 +17,72 @@ import moment from 'moment'
 import MomentUtils from '@date-io/moment'
 
 import LoadingProgress from './LoadingProgress'
-import { GET_CLIENT_INFO } from '../operations/queries/ClientQueries'
-import { GET_CLIENT_PAYMENTS } from '../operations/queries/PaymentQueries'
-import { CREATE_PAYMENT } from '../operations/mutations/PaymentMutations'
+import { GET_PAYMENT_DETAILS } from '../operations/queries/PaymentQueries'
+import { EDIT_PAYMENT } from '../operations/mutations/PaymentMutations'
 import {
     selectCurrencyInformation
 } from '../scripts/selectors'
 
 const AddPaymentForm = (props) => {
 
-    const {
-        clientId
-    } = props
-
     const history = useHistory()
 
-    const [getClientPayments, { 
-        data, 
-        error, 
-        loading
-    }] = useLazyQuery(GET_CLIENT_PAYMENTS)
+    const {
+        clientId, paymentId
+    } = props
 
     const {
-        data: dataClient,
-        error: errorClient,
-        loading: loadingProject
-    } = useQuery(GET_CLIENT_INFO, {
-        variables: {
-            id: Number(clientId)
+        loading, 
+        error, 
+        data } = useQuery(GET_PAYMENT_DETAILS, 
+        { variables: 
+            { 
+                clientId: Number(clientId),
+                paymentId: Number(paymentId) 
+            } 
+        })
+
+    const [editPayment, {
+        dataPayment,
+        loadingPayment,
+        errorPayment
+    }] = useMutation(EDIT_PAYMENT)
+
+    const [createPaymentError, setCreatePaymentError] = useState('')
+    const [dateIncurred, setDateIncurred] = useState('')
+    const [datePaid, setDatePaid] = useState('')
+    const [disableAdd, setDisableAdd] = useState(false)
+    const [displayError, setDisplayError] = useState(false)
+    const [invalidPaymentAmountInput, setInvalidPaymentAmountInput] = useState(false)
+    const [paymentAmount, setPaymentAmount] = useState(null)
+    const [disableEdit, setDisableEdit] = useState(true)
+    const [editPaymentError, setEditPaymentError] = useState('')
+    
+    useEffect(() => {
+        if (!dateIncurred || !paymentAmount) {
+            setDisableEdit(true)
+        } else {
+            setDisableEdit(false)
+        }
+        if (dateIncurred && paymentAmount) {
+            setDisableAdd(false)
         }
     })
 
-    const [createPayment, {
-        dataNewPayment,
-        loadingNewPayment,
-        errorNewPayment
-    }] = useMutation(CREATE_PAYMENT, {
-        refetchQueries: [{
-            query: GET_CLIENT_PAYMENTS,
-            variables: {
-                clientId: Number(clientId)
-            }
-        }]
-    })
+    useEffect(() => {
+        if (!loading) {
+            setDateIncurred(formattedDateIncurred)
+            setDatePaid(formattedDatePaid)
+            setPaymentAmount(Number(getPaymentById.amount) / 100)
+        } 
+    }, [loading])
+
+    if (loading) return <LoadingProgress/>
+    if (error) return `Error! ${errorPayment}`
+
+    const { getPaymentById, getClientById } = data
+    const formattedDatePaid = moment.utc(parseInt(getPaymentById.date_paid, 10)).format('MM/DD/YYYY')
+    const formattedDateIncurred = moment.utc(parseInt(getPaymentById.date_incurred, 10)).format('MM/DD/YYYY')
 
     const handleAlertClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -70,22 +90,21 @@ const AddPaymentForm = (props) => {
         }
         setDisplayError(false)
     }
-    const handleCreatePayment = async () => {
+    const handleEditPayment = async () => {
         const variables = {
+            id: Number(paymentId),
             amount: paymentAmount,
             client_id: Number(clientId),
             date_incurred: dateIncurred,
             date_paid: datePaid
         }
-        const newPayment = await createPayment({ variables })
-        const clientPayments = await getClientPayments({ variables: { clientId: 1 } })
-        const newPaymentId = clientPayments.data.getClientPaymentsByClientId[clientPayments.data.getClientPaymentsByClientId.length - 1].id
+        const updatePayment = await editPayment({ variables })
         if (loadingNewPayment) return <LoadingProgress/>
         if (newPayment.errors) {
             setCreatePaymentError(`${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`)
             setDisplayError(true)
         } else {
-            history.push(`/clients/${clientId}/payments/${newPaymentId}/update`)
+            history.push(`/clients/${clientId}`)
         }
     }
     const handleDateIncurredChange = (date) => {
@@ -100,34 +119,16 @@ const AddPaymentForm = (props) => {
         setPaymentAmount(amount)
     }
 
-    const [createPaymentError, setCreatePaymentError] = useState('')
-    const [dateIncurred, setDateIncurred] = useState(null)
-    const [datePaid, setDatePaid] = useState(null)
-    const [disableAdd, setDisableAdd] = useState(true)
-    const [displayError, setDisplayError] = useState(false)
-    const [invalidPaymentAmountInput, setInvalidPaymentAmountInput] = useState(false)
-    const [paymentAmount, setPaymentAmount] = useState(null)
-
-    useEffect(() => {
-        if (dateIncurred && paymentAmount) {
-            setDisableAdd(false)
-        }
-    })
-
-    if (loadingProject) return <LoadingProgress/>
-    if (errorClient) return `Error! ${errorClient}`
-
-    const { getClientById: client } = dataClient
-
-    const currencyInformation = selectCurrencyInformation({
-        currency: client.currency
-    })
+    const currencyInformation = getPaymentById.client_id === getClientById.id ? selectCurrencyInformation({
+        currency: getClientById.currency
+    }) :
+        null
 
     return (
         <FormControl
             fullWidth
             align='left'
-        >
+        >   
             <Grid container spacing={5}>
                 <Grid item xs={12}>
                     <Grid container>
@@ -141,7 +142,8 @@ const AddPaymentForm = (props) => {
                                 outputFormat='string'
                                 decimalCharacter={`${currencyInformation['decimal']}`}
                                 digitGroupSeparator={`${currencyInformation['thousand']}`}
-                                onChange={(event) => handlePaymentAmountChange(event.target.value)}
+                                value={paymentAmount}
+                                onChange={handlePaymentAmountChange}
                             />
                         </Grid>
                     </Grid>
@@ -179,9 +181,9 @@ const AddPaymentForm = (props) => {
                         variant='contained'
                         color='primary'
                         disabled={disableAdd}
-                        onClick={handleCreatePayment}
+                        onClick={handleEditPayment}
                     >
-                        {`Add Payment`}
+                        {`Change Payment`}
                     </Button>
                 </Grid>
             </Grid>
