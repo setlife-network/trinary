@@ -90,7 +90,7 @@ module.exports = {
         },
         generateBitcoinInvoiceFromPayment: async (root, { paymentId }, { models }) => {
             const newInvoice = await apiModules.paymentManagement.processBitcoinInvoiceCreation(paymentId)
-            return models.Payment.update(
+            await models.Payment.update(
                 {
                     external_uuid: newInvoice.id,
                     external_uuid_type: `bitcoin`
@@ -99,6 +99,7 @@ module.exports = {
                     where: { id: paymentId } 
                 }
             )
+            return models.Payment.findByPk(paymentId)
         },
         syncPayments: async (root, { source }, { models }) => {
             if (source.toUpperCase() == 'INVOICELY') {
