@@ -22,15 +22,15 @@ const paymentManagement = module.exports = (() => {
         const client = await db.models.Client.findByPk(client_id)
         const isClientCurrencyBtc = client.dataValues.currency === `BTC` || client.dataValues.currency === `SATS`
 
-        if (!isClientCurrencyBtc) throw `Client's currency is not Bitcoin`
+        if (!isClientCurrencyBtc) throw new Error(`Client's currency is not Bitcoin`)
 
         const isInvoiceExpired = external_uuid && external_uuid_type === `bitcoin` && await isBitcoinInvoiceExpired(external_uuid)
-        if (external_uuid && date_paid && !isInvoiceExpired) throw `An active invoice already exists`
+        if (external_uuid && date_paid && !isInvoiceExpired) throw new Error(`An active invoice already exists`)
 
-        const convertedAmount = Number((amount / 100).toFixed(0))
+        const convertedAmount = Number(amount / 100)
 
         const amountInSats = client.dataValues.currency === `BTC` ? 
-            (convertedAmount * 100000000).toFixed(0) // 100M sats = 1 BTC
+            Number((convertedAmount * 100000000).toFixed(0)) // 100M sats = 1 BTC
             : convertedAmount
             
         return createBitcoinInvoice(amountInSats)
