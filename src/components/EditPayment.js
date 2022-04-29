@@ -81,8 +81,8 @@ const AddPaymentForm = (props) => {
     if (error) return `Error! ${errorPayment}`
 
     const { getPaymentById, getClientById } = data
-    const formattedDatePaid = moment.utc(parseInt(getPaymentById.date_paid, 10)).format('MM/DD/YYYY')
-    const formattedDateIncurred = moment.utc(parseInt(getPaymentById.date_incurred, 10)).format('MM/DD/YYYY')
+    const formattedDatePaid = moment.utc(parseInt(getPaymentById.date_paid, 10)).format('YYYY-MM-DD')
+    const formattedDateIncurred = moment.utc(parseInt(getPaymentById.date_incurred, 10)).format('YYYY-MM-DD')
 
     const handleAlertClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -93,15 +93,15 @@ const AddPaymentForm = (props) => {
     const handleEditPayment = async () => {
         const variables = {
             id: Number(paymentId),
-            amount: paymentAmount,
+            amount: Number(paymentAmount) * 100,
             client_id: Number(clientId),
             date_incurred: dateIncurred,
             date_paid: datePaid
         }
         const updatePayment = await editPayment({ variables })
-        if (loadingNewPayment) return <LoadingProgress/>
-        if (newPayment.errors) {
-            setCreatePaymentError(`${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`)
+        if (loadingPayment) return <LoadingProgress/>
+        if (updatePayment.errors) {
+            setCreatePaymentError(`${Object.keys(updatePayment.errors[0].extensions.exception.fields)[0]}`)
             setDisplayError(true)
         } else {
             history.push(`/clients/${clientId}`)
@@ -115,8 +115,11 @@ const AddPaymentForm = (props) => {
     }
     const handlePaymentAmountChange = (input) => {
         setInvalidPaymentAmountInput(false)
-        const amount = Number(input.replace(/\D/g, ''))
-        setPaymentAmount(amount)
+        setPaymentAmount(Number(input.target.value))
+    }
+
+    const cancelEditPayment = () => {
+        history.push(`/clients/${clientId}`)
     }
 
     const currencyInformation = getPaymentById.client_id === getClientById.id ? selectCurrencyInformation({
@@ -177,14 +180,36 @@ const AddPaymentForm = (props) => {
                     </MuiPickersUtilsProvider>
                 </Grid>
                 <Grid item xs={12}>
-                    <Button
+                    <Button 
                         variant='contained'
-                        color='primary'
+                        color='secondary'
                         disabled={disableAdd}
-                        onClick={handleEditPayment}
                     >
-                        {`Change Payment`}
+                        {`Generate Bitcoin Invoice`}
                     </Button>
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid container spacing={2}>
+                        <Grid item>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                disabled={disableAdd}
+                                onClick={handleEditPayment}
+                            >
+                                {`Update Payment`}
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button 
+                                variant='contained'
+                                color='inherit'
+                                onClick={cancelEditPayment}
+                            >
+                                {`Cancel`}
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
             <Snackbar

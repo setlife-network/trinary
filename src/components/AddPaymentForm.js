@@ -35,12 +35,6 @@ const AddPaymentForm = (props) => {
 
     const history = useHistory()
 
-    const [getClientPayments, { 
-        data, 
-        error, 
-        loading
-    }] = useLazyQuery(GET_CLIENT_PAYMENTS)
-
     const {
         data: dataClient,
         error: errorClient,
@@ -78,13 +72,12 @@ const AddPaymentForm = (props) => {
             date_paid: datePaid
         }
         const newPayment = await createPayment({ variables })
-        const clientPayments = await getClientPayments({ variables: { clientId: 1 } })
-        const newPaymentId = clientPayments.data.getClientPaymentsByClientId[clientPayments.data.getClientPaymentsByClientId.length - 1].id
         if (loadingNewPayment) return <LoadingProgress/>
-        if (newPayment.errors) {
+        if (errorNewPayment) {
             setCreatePaymentError(`${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`)
             setDisplayError(true)
         } else {
+            const newPaymentId = newPayment.data.createPayment.id             
             history.push(`/clients/${clientId}/payments/${newPaymentId}/update`)
         }
     }

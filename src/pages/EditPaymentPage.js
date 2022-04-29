@@ -16,7 +16,7 @@ class EditPaymentPage extends React.Component {
             <Grid
                 contaniner
                 align='center'
-                className='PaymentsEdit'
+                className='EditPaymentPage'
             >
                 <Grid item xs={10}>
                     <Typography align='left'>
