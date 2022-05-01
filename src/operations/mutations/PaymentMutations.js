@@ -1,5 +1,14 @@
 import { gql } from '@apollo/client';
 
+export const CREATE_BITCOIN_INVOICE = gql`
+    mutation GenerateBitcoinInvoice($paymentId: Int!){
+        generateBitcoinInvoiceFromPayment(paymentId: $paymentId){
+            external_uuid
+            bitcoinCheckoutUrl
+        }
+    }
+`
+
 export const CREATE_PAYMENT = gql`
     mutation CreatePayment($client_id: Int!, $amount: Int!, $date_incurred: String!, $date_paid: String) {
         createPayment(createFields: {

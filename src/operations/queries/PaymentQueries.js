@@ -29,6 +29,7 @@ export const GET_PAYMENT_DETAILS = gql`
             client_id
             date_incurred
             date_paid
+            bitcoinCheckoutUrl
         }
         getClientById(id: $clientId)
         {

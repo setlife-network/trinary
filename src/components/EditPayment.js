@@ -5,7 +5,9 @@ import {
     Button,
     FormControl,
     Grid,
+    Modal,
     Snackbar,
+    Box
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import {
@@ -18,12 +20,19 @@ import MomentUtils from '@date-io/moment'
 
 import LoadingProgress from './LoadingProgress'
 import { GET_PAYMENT_DETAILS } from '../operations/queries/PaymentQueries'
-import { EDIT_PAYMENT } from '../operations/mutations/PaymentMutations'
+import { EDIT_PAYMENT, CREATE_BITCOIN_INVOICE } from '../operations/mutations/PaymentMutations'
 import {
     selectCurrencyInformation
 } from '../scripts/selectors'
 
 const AddPaymentForm = (props) => {
+
+    const modalStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+    };
 
     const history = useHistory()
 
@@ -57,6 +66,8 @@ const AddPaymentForm = (props) => {
     const [paymentAmount, setPaymentAmount] = useState(null)
     const [disableEdit, setDisableEdit] = useState(true)
     const [editPaymentError, setEditPaymentError] = useState('')
+    const [openInvoice, setOpenInvoice] = useState(false)
+    const [bitcoinCheckoutUrl, setBitcoinCheckoutUrl] = useState();
     
     useEffect(() => {
         if (!dateIncurred || !paymentAmount) {
@@ -74,8 +85,14 @@ const AddPaymentForm = (props) => {
             setDateIncurred(formattedDateIncurred)
             setDatePaid(formattedDatePaid)
             setPaymentAmount(Number(getPaymentById.amount) / 100)
+            setBitcoinCheckoutUrl(getPaymentById.bitcoinCheckoutUrl)
         } 
     }, [loading])
+
+    const [generateBitcoinInvoice, { 
+        dataInvoice, 
+        loadingInvoice, 
+        errorInvoice }] = useMutation(CREATE_BITCOIN_INVOICE)
 
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${errorPayment}`
@@ -116,6 +133,21 @@ const AddPaymentForm = (props) => {
     const handlePaymentAmountChange = (input) => {
         setInvalidPaymentAmountInput(false)
         setPaymentAmount(Number(input.target.value))
+    }
+
+    const handleBitcoinInvoiceGeneration = async () => {
+        const bitcoinInvoice = await generateBitcoinInvoice({ variables: { paymentId: Number(paymentId) } })
+        if (!loadingInvoice && !errorInvoice) {
+            setBitcoinCheckoutUrl(bitcoinInvoice.data.generateBitcoinInvoiceFromPayment.bitcoinCheckoutUrl);
+        }
+    }
+
+    const handleViewBitcoinInvoice = () => {
+        setOpenInvoice(true)
+    }
+
+    const handleCloseInvoice = () => {
+        setOpenInvoice(false);
     }
 
     const cancelEditPayment = () => {
@@ -179,15 +211,35 @@ const AddPaymentForm = (props) => {
                         />
                     </MuiPickersUtilsProvider>
                 </Grid>
-                <Grid item xs={12}>
-                    <Button 
-                        variant='contained'
-                        color='secondary'
-                        disabled={disableAdd}
-                    >
-                        {`Generate Bitcoin Invoice`}
-                    </Button>
+                <Grid item container xs={12} spacing={1}>
+                    <Grid item>
+                        <Button 
+                            variant='contained'
+                            color='secondary'
+                            onClick={handleBitcoinInvoiceGeneration}
+                        >
+                            {`Generate Bitcoin Invoice`}
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Button 
+                            variant='contained'
+                            color='secondary'
+                            onClick={handleViewBitcoinInvoice}
+                        >
+                            {`View Bitcoin Invoice`}
+                        </Button>
+                    </Grid>
                 </Grid>
+                <Modal
+                    open={openInvoice}
+                    onClose={handleCloseInvoice}
+                >
+                    <Box sx={modalStyle}>
+                        <iframe title='invoice' height='660px' src={`${bitcoinCheckoutUrl}`}>
+                        </iframe>
+                    </Box>
+                </Modal>
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
                         <Grid item>
