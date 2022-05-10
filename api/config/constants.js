@@ -35,5 +35,6 @@ module.exports = {
         'USD',
         'MXN',
         'EUR'
-    ]
+    ],
+    BTCPAYSERVER_API_ROOT: 'https://btcpayserver.setlife.tech/api/v1'
 }
