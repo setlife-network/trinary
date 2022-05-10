@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, cleanup, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import ClientTile from '../../components/ClientTile'
+import ClientTile from '../../../components/ClientTile'
 import { MockedProvider } from '@apollo/client/testing'
 import { useHistory } from 'react-router'
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import LoginPage from '../../pages/LoginPage'
+import LoginPage from '../../../pages/LoginPage'
 
 let getByTestId
 
@@ -15,7 +15,7 @@ afterEach(() => {
 })
 
 test('Log in button', () => {
-    const buttonEl = getByTestId('button-h3');
+    const buttonEl = getByTestId('login-button-text');
 
     expect(buttonEl.textContent).toBe('Log in with your Github Account')
 }) 
