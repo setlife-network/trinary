@@ -6,8 +6,6 @@ const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules')
 const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants');
 
-const { isBitcoinInvoiceExpired, getBitcoinCheckoutUrl } = require('../../handlers/btcPayServer')
-
 module.exports = {
 
     Payment: {
