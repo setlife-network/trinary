@@ -87,10 +87,18 @@ const ProjectEditDialog = (props) => {
         setExpectedBudget(amount)
     }
     const handleDateChange = (date) => {
-        setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
+        if (date) {
+            setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
+        } else {
+            setProjectDate(null)
+        }
     }
     const handleEndDateChange = (date) => {
-        setProjectEndDate(moment(date['_d']).format('YYYY-MM-DD'))
+        if (date) {
+            setProjectEndDate(moment(date['_d']).format('YYYY-MM-DD'))
+        } else {
+            setProjectDate(null)
+        }
     }
     const handleTimeframeChange = (timeframe) => {
         setBudgetTimeframe(timeframe)
