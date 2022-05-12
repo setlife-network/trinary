@@ -161,7 +161,6 @@ const AllocationClientSpecifics = (props) => {
     if (errorProjects) return `${errorProjects}`
 
     const { projects } = dataProjects.getClientById
-    // const contributors = selectedProject ? selectedProject.contributors : []
     const currencyInformation = selectCurrencyInformation({
         currency: client.currency
     })
