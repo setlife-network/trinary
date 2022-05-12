@@ -1,0 +1,13 @@
+.AllocationClientSpecifics {
+    .responsive-align {
+        text-align: right;
+    }
+}
+
+@media screen and (min-width: $sm) {
+    .AllocationClientSpecifics {
+        .responsive-align {
+            text-align: center;
+        }
+    }
+}
