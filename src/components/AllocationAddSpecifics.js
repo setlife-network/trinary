@@ -114,8 +114,8 @@ const AllocationAddSpecifics = (props) => {
                 <List component='div' disablePadding>
                     <ListItem button onClick={() => onClickPayment(p)}>
                         <Grid container>
-                            <Grid item xs={3}/>
-                            <Grid item xs={3}>
+                            <Grid item md={3} />
+                            <Grid item xs={6} md={3}>
                                 <ListItemText primary={
                                     `${p.amount
                                         ? `${paymentAmount}`
@@ -124,7 +124,7 @@ const AllocationAddSpecifics = (props) => {
                                 }
                                 />
                             </Grid>
-                            <Grid item xs={3} align='center'>
+                            <Grid item xs={6} md={3} align='center'>
                                 <Typography variant='caption' color='secondary'>
                                     {`${p.date_paid
                                         ? moment.utc(p.date_paid, 'x').format('MM/DD/YYYY')
@@ -132,7 +132,7 @@ const AllocationAddSpecifics = (props) => {
                                     }`}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={3}/>
+                            <Grid item md={3} />
                         </Grid>
                     </ListItem>
                 </List>
@@ -147,16 +147,16 @@ const AllocationAddSpecifics = (props) => {
                 <List component='div' disablePadding>
                     <ListItem button onClick={() => onClickContributor(c)}>
                         <Grid container>
-                            <Grid item xs={3}/>
-                            <Grid item xs={3}>
+                            <Grid item md={3}/>
+                            <Grid item xs={6} md={3}>
                                 <ListItemText primary={`${c.name}`}/>
                             </Grid>
-                            <Grid item xs={3} align='center'>
+                            <Grid item xs={5} md={3} className='responsive-align'>
                                 <Typography variant='caption' color='secondary'>
                                     {`${last(split(c.github_handle, '/'))}`}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={1} md={3}>
                                 {
                                     c.github_access_token &&
                                     <GitHubIcon color='secondary' fontSize='small'/>
