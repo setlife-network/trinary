@@ -44,7 +44,13 @@ const stripeHandler = module.exports = (() => {
             actualCurrency,
             external_uuid
         } = params
-        const clientExternalUuid = external_uuid ? external_uuid : await clientManagement.findClientWithId(clientId)
+
+        let clientExternalUuid = external_uuid
+        if (!external_uuid) {
+            const client = await clientManagement.findClientWithId(clientId)
+            clientExternalUuid = client.external_uuid;
+        }
+
         const invoiceItemProps = {
             customer: clientExternalUuid,
             currency: actualCurrency,
