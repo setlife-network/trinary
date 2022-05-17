@@ -5,10 +5,35 @@
     .warning {
         color: $red;
     }
+    .MuiDialog-paper {
+        margin: 16px
+    }
+    .MuiListItem-gutters {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .responsive-align {
+        text-align: right;
+    }
+    .icon-align {
+        text-align: right;
+    }
 }
 
 @media screen and (min-width: $sm) {
     .AllocationAddForm {
-
+        .MuiDialog-paper {
+            margin: 32px
+        }
+        .MuiListItem-gutters {
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+        .responsive-align {
+            text-align: center;
+        }
+        .icon-align {
+            text-align: left;
+        }
     }
 }

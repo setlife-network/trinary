@@ -156,7 +156,7 @@ const AllocationAddSpecifics = (props) => {
                                     {`${last(split(c.github_handle, '/'))}`}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={1} md={3}>
+                            <Grid item xs={1} md={3} className='icon-align'>
                                 {
                                     c.github_access_token &&
                                     <GitHubIcon color='secondary' fontSize='small'/>
@@ -182,7 +182,7 @@ const AllocationAddSpecifics = (props) => {
                             {project.name}
                         </Typography>
                     </Grid>
-                    <Grid item xs={4} md={3} align='center'>
+                    <Grid item xs={4} md={3} className='responsive-align'>
                         <Typography variant='caption' color='secondary'>
                             {projectGithubRepo}
                         </Typography>
@@ -203,7 +203,7 @@ const AllocationAddSpecifics = (props) => {
                                         {selectedContributor ? selectedContributor.name : ''}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={4} md={3} align='center'>
+                                <Grid item xs={4} md={3} className='responsive-align'>
                                     <Typography variant='caption' color='secondary'>
                                         {contributorGithubUser}
                                     </Typography>
@@ -246,8 +246,7 @@ const AllocationAddSpecifics = (props) => {
                                     }
                                     />
                                 </Grid>
-                                {
-                                    !payment &&
+                                {!payment &&
                                     <Grid item xs={2} md={3} align='right'>
                                         {openPayments
                                             ? <ExpandLess />

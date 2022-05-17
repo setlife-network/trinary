@@ -123,7 +123,7 @@ const AllocationClientSpecifics = (props) => {
                                     {`${last(split(c.github_handle, '/'))}`}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={1} md={3}>
+                            <Grid item xs={1} md={3} className='icon-align'>
                                 {c.github_access_token &&
                                     <GitHubIcon color='secondary' fontSize='small'/>
                                 }
@@ -212,12 +212,12 @@ const AllocationClientSpecifics = (props) => {
                                 <Grid item xs={2} md={3}>
                                     <AssessmentIcon color='primary'/>
                                 </Grid>
-                                <Grid item xs={5} md={3}>
+                                <Grid item xs={4} md={3}>
                                     <Typography>
                                         {selectedProject ? selectedProject.name : 'No selected'}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={3} md={3} align='center'>
+                                <Grid item xs={4} md={3} className='responsive-align'>
                                     <Typography variant='caption' color='secondary'>
                                         {`${githubProjectHandle}`}
                                     </Typography>
@@ -241,12 +241,12 @@ const AllocationClientSpecifics = (props) => {
                                 <Grid item xs={2} md={3}>
                                     <PeopleIcon color='primary'/>
                                 </Grid>
-                                <Grid item xs={5} md={3}>
+                                <Grid item xs={4} md={3}>
                                     <Typography>
                                         {selectedContributor ? selectedContributor.name : 'No selected'}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={3} md={3} align='center'>
+                                <Grid item xs={4} md={3} className='responsive-align'>
                                     <Typography variant='caption' color='secondary'>
                                         {`${githubContributorHandle}`}
                                     </Typography>

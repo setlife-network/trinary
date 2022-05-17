@@ -1,0 +1,13 @@
+.ClientEditDialog {
+    .MuiDialog-paper {
+        margin: 16px
+    }
+}
+
+@media screen and (min-width: $sm) {
+    .ClientEditDialog {
+        .MuiDialog-paper {
+            margin: 32px
+        }
+    }
+}

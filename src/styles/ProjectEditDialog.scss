@@ -1,0 +1,13 @@
+.ProjectEditDialog {
+    .MuiDialog-paper {
+        margin: 16px
+    }
+}
+
+@media screen and (min-width: $sm) {
+    .ProjectEditDialog {
+        .MuiDialog-paper {
+            margin: 32px
+        }
+    }
+}
