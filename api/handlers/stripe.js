@@ -8,7 +8,6 @@ const {
 } = require('../config/constants')
 
 const stripeHandler = module.exports = (() => {
-    const { clientManagement } = require('../modules')
     const stripeClient = stripeAPI(STRIPE.SECRET)
 
     const createCustomer = async (params) => {
@@ -37,6 +36,8 @@ const stripeHandler = module.exports = (() => {
     }
 
     const createInvoice = async (params) => {
+        const clientManagement = require('../modules/clientManagement')
+
         const {
             amount,
             clientId,
@@ -81,6 +82,7 @@ const stripeHandler = module.exports = (() => {
     }
 
     const updateCustomerWithClientId = async (params) => {
+        const clientManagement = require('../modules/clientManagement')
         const { clientId } = params
 
         const client = await clientManagement.findClientWithId(clientId)
