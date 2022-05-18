@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
+import { useToasts } from 'react-toast-notifications'
 import {
     Box,
     Button,
     Dialog,
     DialogTitle,
     FormControl,
-    FormHelperText,
     Grid,
     Snackbar
 } from '@material-ui/core/'
@@ -38,6 +38,7 @@ const PaymentEditDialog = (props) => {
         currency: payment.client.currency
     })
     const history = useHistory()
+    const { addToast } = useToasts()
 
     const [editPayment, {
         dataPayment,
@@ -60,29 +61,43 @@ const PaymentEditDialog = (props) => {
         setDisplayError(false)
     }
     const handleEditPayment = async () => {
-        const variables = {
-            id: Number(payment.id),
-            amount: paymentAmount,
-            date_incurred: dateIncurred,
-            date_paid: datePaid
-        }
-        const editedPayment = await editPayment({
-            variables: variables
-        })
-        if (loadingPayment) return <LoadingProgress/>
-        if (editedPayment.errors) {
-            setEditPaymentError(`${Object.keys(editedPayment.errors[0].extensions.exception.fields)[0]}`)
-            setDisplayError(true)
-        } else {
-            onClose()
-
+        try {
+            const variables = {
+                id: Number(payment.id),
+                amount: paymentAmount,
+                date_incurred: dateIncurred,
+                date_paid: datePaid
+            }
+            const editedPayment = await editPayment({
+                variables: variables
+            })
+            if (loadingPayment) return <LoadingProgress/>
+            if (editedPayment.errors) {
+                setEditPaymentError(`${Object.keys(editedPayment.errors[0].extensions.exception.fields)[0]}`)
+                setDisplayError(true)
+            } else {
+                onClose()
+            }
+        } catch (err) {
+            addToast(err.message, { 
+                appearance: 'error'
+            })
         }
     }
     const handleDateIncurredChange = (date) => {
-        setDateIncurred(moment(date['_d']).format('YYYY-MM-DD'))
+        if (date) {
+            setDateIncurred(moment(date['_d']).format('YYYY-MM-DD'))
+        } else {
+            setDateIncurred(null)
+            setDisableEdit(true)
+        }
     }
     const handleDatePaidChange = (date) => {
-        setDatePaid(moment(date['_d']).format('YYYY-MM-DD'))
+        if (date) {
+            setDatePaid(moment(date['_d']).format('YYYY-MM-DD'))
+        } else {
+            setDatePaid(null)
+        }
     }
     const handlePaymentAmountChange = (input) => {
         setInvalidPaymentAmountInput(false)

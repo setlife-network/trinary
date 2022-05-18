@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useToasts } from 'react-toast-notifications'
 import { useMutation } from '@apollo/client'
 import Alert from '@material-ui/lab/Alert'
 import {
@@ -62,6 +63,8 @@ const ProjectEditDialog = (props) => {
         }
     ] = useMutation(SYNC_TOGGL_PROJECT)
 
+    const { addToast } = useToasts()
+
     const [updateProject, { data, loading: loadingUpdateProject, error }] = useMutation(UPDATE_PROJECT, { errorPolicy: 'all' })
 
     const [budgetTimeframe, setBudgetTimeframe] = useState(null)
@@ -97,54 +100,60 @@ const ProjectEditDialog = (props) => {
         if (date) {
             setProjectEndDate(moment(date['_d']).format('YYYY-MM-DD'))
         } else {
-            setProjectDate(null)
+            setProjectEndDate(null)
         }
     }
     const handleTimeframeChange = (timeframe) => {
         setBudgetTimeframe(timeframe)
     }
     const onEditProject = async () => {
-        if (!verifyGithubURL(githubURL)) {
-            setEditProjectError('The Github URL is invalid')
-            setDisplayError(true)
-            return
-        }
-        if (togglURL) {
-            if (!verifyTogglURL(togglURL)) {
-                setEditProjectError(INVALID_TOGGL_URL_ERROR_MESSAGE)
+        try {
+            if (!verifyGithubURL(githubURL)) {
+                setEditProjectError('The Github URL is invalid')
                 setDisplayError(true)
                 return
             }
-        }
-        const projectInfoToEdit = {
-            project_id: project.id,
-            date: projectDate,
-            end_date: projectEndDate,
-            expected_budget: Number(expectedBudget),
-            expected_budget_timeframe: (
-                budgetTimeframe != null
-                    ? EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
-                    : null
-            ),
-            github_url: githubURL,
-            name: projectName,
-            toggl_url: togglURL,
-            is_active: projectIsActive
-        }
-        const projectEdited = await updateProject({ variables: projectInfoToEdit })
-        if (loadingUpdateProject) return <LoadingProgress/>
-        else if (projectEdited.errors) {
-            setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}  already exists`)
-            setDisplayError(true)
-        } else {
-            await syncTogglProject({
-                variables: {
-                    project_id: project.id,
-                    toggl_url: togglURL
+            if (togglURL) {
+                if (!verifyTogglURL(togglURL)) {
+                    setEditProjectError(INVALID_TOGGL_URL_ERROR_MESSAGE)
+                    setDisplayError(true)
+                    return
                 }
+            }
+            const projectInfoToEdit = {
+                project_id: project.id,
+                date: projectDate,
+                end_date: projectEndDate,
+                expected_budget: Number(expectedBudget),
+                expected_budget_timeframe: (
+                    budgetTimeframe != null
+                        ? EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
+                        : null
+                ),
+                github_url: githubURL,
+                name: projectName,
+                toggl_url: togglURL,
+                is_active: projectIsActive
+            }
+            const projectEdited = await updateProject({ variables: projectInfoToEdit })
+            if (loadingUpdateProject) return <LoadingProgress/>
+            else if (projectEdited.errors) {
+                setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}  already exists`)
+                setDisplayError(true)
+            } else {
+                await syncTogglProject({
+                    variables: {
+                        project_id: project.id,
+                        toggl_url: togglURL
+                    }
+                })
+                if (loadingTogglSync) return <LoadingProgress/>
+                onClose()
+            }
+        } catch (err) {
+            addToast(err.message, { 
+                appearance: 'error'
             })
-            if (loadingTogglSync) return <LoadingProgress/>
-            onClose()
         }
     }
 
@@ -164,6 +173,8 @@ const ProjectEditDialog = (props) => {
         ) {
             setDisableEdit(true)
         } else if (!expectedBudget || !githubURL || !projectName) {
+            setDisableEdit(true)
+        } else if (!projectDate || !expectedBudget) {
             setDisableEdit(true)
         } else {
             setDisableEdit(false)

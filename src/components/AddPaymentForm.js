@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
+import { useToasts } from 'react-toast-notifications'
 import {
     Button,
     FormControl,
@@ -31,6 +32,7 @@ const AddPaymentForm = (props) => {
     } = props
 
     const history = useHistory()
+    const { addToast } = useToasts()
 
     const {
         data: dataClient,
@@ -78,7 +80,9 @@ const AddPaymentForm = (props) => {
                 history.push(`/clients/${clientId}`)
             }
         } catch (err) {
-            console.log(err)
+            addToast(err.message, { 
+                appearance: 'error'
+            })
         }
     }
     const handleDateIncurredChange = (date) => {
