@@ -2,13 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 import {
-    Box,
     Button,
     FormControl,
     Grid,
-    Snackbar,
-    TextField,
-    Typography
+    Snackbar
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import {
@@ -65,19 +62,23 @@ const AddPaymentForm = (props) => {
         setDisplayError(false)
     }
     const handleCreatePayment = async () => {
-        const variables = {
-            amount: paymentAmount,
-            client_id: Number(clientId),
-            date_incurred: dateIncurred,
-            date_paid: datePaid
-        }
-        const newPayment = await createPayment({ variables })
-        if (loadingNewPayment) return <LoadingProgress/>
-        if (newPayment.errors) {
-            setCreatePaymentError(`${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`)
-            setDisplayError(true)
-        } else {
-            history.push(`/clients/${clientId}`)
+        try {
+            const variables = {
+                amount: paymentAmount,
+                client_id: Number(clientId),
+                date_incurred: dateIncurred,
+                date_paid: datePaid
+            }
+            const newPayment = await createPayment({ variables })
+            if (loadingNewPayment) return <LoadingProgress/>
+            if (newPayment.errors) {
+                setCreatePaymentError(`${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`)
+                setDisplayError(true)
+            } else {
+                history.push(`/clients/${clientId}`)
+            }
+        } catch (err) {
+            console.log(err)
         }
     }
     const handleDateIncurredChange = (date) => {
@@ -85,6 +86,7 @@ const AddPaymentForm = (props) => {
             setDateIncurred(moment(date['_d']).format('YYYY-MM-DD'))
         } else {
             setDateIncurred(null)
+            setDisableAdd(true)
         }
     }
     const handleDatePaidChange = (date) => {
@@ -95,9 +97,14 @@ const AddPaymentForm = (props) => {
         }
     }
     const handlePaymentAmountChange = (input) => {
-        setInvalidPaymentAmountInput(false)
-        const amount = Number(input.replace(/\D/g, ''))
-        setPaymentAmount(amount)
+        if (input) {
+            setInvalidPaymentAmountInput(false)
+            const amount = Number(input.replace(/\D/g, ''))
+            setPaymentAmount(amount)
+        } else {
+            setPaymentAmount(null)
+            setDisableAdd(true)
+        }
     }
 
     const [createPaymentError, setCreatePaymentError] = useState('')
