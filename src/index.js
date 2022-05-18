@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client'
+import { ToastProvider } from 'react-toast-notifications'
 
 import './styles/index.scss'
 import App from './App'
@@ -23,7 +24,9 @@ ReactDOM.render(
     <React.StrictMode>
         <ApolloProvider client={client}>
             <BrowserRouter>
-                <App />
+                <ToastProvider placement='bottom-left' autoDismiss autoDismissTimeout={5000}>
+                    <App />
+                </ToastProvider>
             </BrowserRouter>
         </ApolloProvider>
     </React.StrictMode>,
