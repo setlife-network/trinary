@@ -22,6 +22,7 @@ import MomentUtils from '@date-io/moment'
 
 import LoadingProgress from './LoadingProgress'
 import { EDIT_PAYMENT } from '../operations/mutations/PaymentMutations'
+import { GET_CLIENT_TOTAL_PAID } from '../operations/queries/ClientQueries'
 import {
     selectCurrencyInformation
 } from '../scripts/selectors'
@@ -43,7 +44,11 @@ const PaymentEditDialog = (props) => {
         dataPayment,
         loadingPayment,
         errorPayment
-    }] = useMutation(EDIT_PAYMENT)
+    }] = useMutation(EDIT_PAYMENT, {
+        refetchQueries: [
+            GET_CLIENT_TOTAL_PAID
+        ]
+    })
 
     const [dateIncurred, setDateIncurred] = useState(null)
     const [datePaid, setDatePaid] = useState(null)

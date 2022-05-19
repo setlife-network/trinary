@@ -51,6 +51,7 @@ const AllocationClientSpecifics = (props) => {
         error: errorProjects,
         loading: loadingProjects
     } = useQuery(GET_CLIENT_PROJECTS, {
+        fetchPolicy: 'cache-and-network',
         variables: {
             id: client.id
         }

@@ -43,6 +43,7 @@ import { CREATE_RATE } from '../operations/mutations/RateMutations'
 import { CREATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 
 import colors from '../styles/colors.module.scss'
+import { GET_CLIENT_PAYMENTS } from '../operations/queries/ClientQueries'
 
 const { red } = colors
 
@@ -238,6 +239,16 @@ const AllocationAddForm = (props) => {
             query: GET_PROJECT_PAYMENTS,
             variables: {
                 id: selectedProject ? Number(selectedProject.id) : null
+            }
+        }, {
+            query: GET_PAYMENT_ALLOCATIONS,
+            variables: {
+                paymentId: selectedPayment ? Number(selectedPayment.id) : null
+            }
+        }, {
+            query: GET_PAYMENT_TOTAL_ALLOCATED,
+            variables: {
+                paymentId: selectedPayment ? Number(selectedPayment.id) : null
             }
         }]
     })
