@@ -30,6 +30,7 @@ export const GET_PAYMENT_DETAILS = gql`
             date_incurred
             date_paid
             bitcoinCheckoutUrl
+            isBitcoinInvoiceExpired
         }
         getClientById(id: $clientId)
         {

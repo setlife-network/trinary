@@ -7,7 +7,7 @@ import {
     Grid,
     Modal,
     Snackbar,
-    Box
+    Box,
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import {
@@ -44,11 +44,12 @@ const AddPaymentForm = (props) => {
         loading, 
         error, 
         data } = useQuery(GET_PAYMENT_DETAILS, 
-        { variables: 
+        { 
+            variables: 
             { 
                 clientId: Number(clientId),
                 paymentId: Number(paymentId) 
-            } 
+            },
         })
 
     const [editPayment, {
@@ -67,7 +68,8 @@ const AddPaymentForm = (props) => {
     const [disableEdit, setDisableEdit] = useState(true)
     const [editPaymentError, setEditPaymentError] = useState('')
     const [openInvoice, setOpenInvoice] = useState(false)
-    const [bitcoinCheckoutUrl, setBitcoinCheckoutUrl] = useState();
+    const [bitcoinCheckoutUrl, setBitcoinCheckoutUrl] = useState()
+    const [isBitcoinInvoiceExpired, setIsBitcoinInvoiceExpired] = useState(false)
     
     useEffect(() => {
         if (!dateIncurred || !paymentAmount) {
@@ -86,13 +88,24 @@ const AddPaymentForm = (props) => {
             setDatePaid(formattedDatePaid)
             setPaymentAmount(Number(getPaymentById.amount) / 100)
             setBitcoinCheckoutUrl(getPaymentById.bitcoinCheckoutUrl)
+            setIsBitcoinInvoiceExpired(getPaymentById.isBitcoinInvoiceExpired)
         } 
     }, [loading])
 
     const [generateBitcoinInvoice, { 
         dataInvoice, 
         loadingInvoice, 
-        errorInvoice }] = useMutation(CREATE_BITCOIN_INVOICE)
+        errorInvoice }] = useMutation(CREATE_BITCOIN_INVOICE, 
+        {
+            refetchQueries: [{
+                query: GET_PAYMENT_DETAILS,
+                variables: {
+                    clientId: Number(clientId),
+                    paymentId: Number(paymentId) 
+                },
+                awaitReftechQueries: true
+            }]
+        })
 
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${errorPayment}`
@@ -120,9 +133,7 @@ const AddPaymentForm = (props) => {
         if (updatePayment.errors) {
             setCreatePaymentError(`${Object.keys(updatePayment.errors[0].extensions.exception.fields)[0]}`)
             setDisplayError(true)
-        } else {
-            history.push(`/clients/${clientId}`)
-        }
+        } 
     }
     const handleDateIncurredChange = (date) => {
         setDateIncurred(moment(date['_d']).format('YYYY-MM-DD'))
@@ -130,20 +141,31 @@ const AddPaymentForm = (props) => {
     const handleDatePaidChange = (date) => {
         setDatePaid(moment(date['_d']).format('YYYY-MM-DD'))
     }
-    const handlePaymentAmountChange = (input) => {
-        setInvalidPaymentAmountInput(false)
-        setPaymentAmount(Number(input.target.value))
-    }
 
     const handleBitcoinInvoiceGeneration = async () => {
-        const bitcoinInvoice = await generateBitcoinInvoice({ variables: { paymentId: Number(paymentId) } })
-        if (!loadingInvoice && !errorInvoice) {
-            setBitcoinCheckoutUrl(bitcoinInvoice.data.generateBitcoinInvoiceFromPayment.bitcoinCheckoutUrl);
+        try {
+            const bitcoinInvoice = await generateBitcoinInvoice({ 
+                variables: { 
+                    paymentId: Number(paymentId) 
+                } 
+            })
+            if (!loadingInvoice && !errorInvoice) {
+                setBitcoinCheckoutUrl(bitcoinInvoice.data.generateBitcoinInvoiceFromPayment.bitcoinCheckoutUrl);
+                setIsBitcoinInvoiceExpired(false)
+                setOpenInvoice(true)
+            }
+        } catch (error) {
+            setCreatePaymentError(error)
+            setDisplayError(true)
         }
     }
 
     const handleViewBitcoinInvoice = () => {
-        setOpenInvoice(true)
+        if (!isBitcoinInvoiceExpired) setOpenInvoice(true)
+        else {
+            setCreatePaymentError('Bitcoin Invoice has expired')
+            setDisplayError(true)
+        }
     }
 
     const handleCloseInvoice = () => {
@@ -178,7 +200,7 @@ const AddPaymentForm = (props) => {
                                 decimalCharacter={`${currencyInformation['decimal']}`}
                                 digitGroupSeparator={`${currencyInformation['thousand']}`}
                                 value={paymentAmount}
-                                onChange={handlePaymentAmountChange}
+                                onChange={(event, value) => setPaymentAmount(value)}
                             />
                         </Grid>
                     </Grid>
@@ -211,6 +233,18 @@ const AddPaymentForm = (props) => {
                         />
                     </MuiPickersUtilsProvider>
                 </Grid>
+                <Grid item container xs={12} spacing={2}>
+                    <Grid item>
+                        <Button
+                            variant='contained'
+                            color='primary'
+                            disabled={disableAdd}
+                            onClick={handleEditPayment}
+                        >
+                            {`Update Payment`}
+                        </Button>
+                    </Grid>
+                </Grid>
                 <Grid item container xs={12} spacing={1}>
                     <Grid item>
                         <Button 
@@ -222,14 +256,26 @@ const AddPaymentForm = (props) => {
                         </Button>
                     </Grid>
                     <Grid item>
-                        <Button 
-                            variant='contained'
-                            color='secondary'
-                            onClick={handleViewBitcoinInvoice}
-                        >
-                            {`View Bitcoin Invoice`}
-                        </Button>
+                        {
+                            bitcoinCheckoutUrl &&
+                            <Button 
+                                variant='contained'
+                                color='secondary'
+                                onClick={handleViewBitcoinInvoice}
+                            >
+                                {`View Bitcoin Invoice`}
+                            </Button>
+                        }
                     </Grid>
+                </Grid>
+                <Grid item>
+                    <Button 
+                        variant='contained'
+                        color='inherit'
+                        onClick={cancelEditPayment}
+                    >
+                        {`Done`}
+                    </Button>
                 </Grid>
                 <Modal
                     open={openInvoice}
@@ -240,29 +286,6 @@ const AddPaymentForm = (props) => {
                         </iframe>
                     </Box>
                 </Modal>
-                <Grid item xs={12}>
-                    <Grid container spacing={2}>
-                        <Grid item>
-                            <Button
-                                variant='contained'
-                                color='primary'
-                                disabled={disableAdd}
-                                onClick={handleEditPayment}
-                            >
-                                {`Update Payment`}
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button 
-                                variant='contained'
-                                color='inherit'
-                                onClick={cancelEditPayment}
-                            >
-                                {`Cancel`}
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Grid>
             </Grid>
             <Snackbar
                 open={displayError}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import moment from 'moment'
 import {
@@ -20,7 +21,6 @@ import EditIconOutlined from '@material-ui/icons/EditOutlined'
 import AllocationAddForm from './AllocationAddForm'
 import AllocationOverview from './AllocationOverview'
 import DeletePayment from './DeletePayment'
-import PaymentEditDialog from './PaymentEditDialog'
 import {
     GET_PAYMENT_ALLOCATIONS,
     GET_PAYMENT_TOTAL_ALLOCATED
@@ -31,6 +31,8 @@ import {
 } from '../scripts/selectors'
 
 const PaymentTile = (props) => {
+
+    const history = useHistory();
 
     const {
         client,
@@ -63,7 +65,6 @@ const PaymentTile = (props) => {
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
     const [openAllocationOverview, setOpenAllocationOverview] = useState(false)
     const [openDeletePayment, setOpenDeletePayment] = useState(false)
-    const [openEditPayment, setOpenEditPayment] = useState(false)
     const [selectedAllocation, setSelectedAllocation] = useState(null)
 
     const addAllocation = (props) => {
@@ -80,8 +81,8 @@ const PaymentTile = (props) => {
     const handleDeletePayment = (value) => {
         setOpenDeletePayment(value)
     }
-    const handleEditPayment = (value) => {
-        setOpenEditPayment(value)
+    const handleEditPayment = () => {
+        history.push(`/clients/${client.id}/payments/${payment.id}/update`)
     }
     const currencyInformation = selectCurrencyInformation({
         currency: client.currency
@@ -258,14 +259,14 @@ const PaymentTile = (props) => {
                                 <Grid item xs={2} align='right'>
                                     <Tooltip 
                                         title='This payment cannot be edited because it is linked to a Stripe Invoice' 
-                                        disableHoverListener={payment.external_uuid_type ? false : true}
+                                        disableHoverListener={payment.external_uuid_type === 'stripe' ? false : true}
                                         placement='top'
                                     >
                                         <span>
                                             <Button
                                                 color='primary'
                                                 onClick={() => handleEditPayment(true)}
-                                                disabled={payment.external_uuid_type}
+                                                disabled={payment.external_uuid_type === 'stripe'}
                                             >
                                                 <EditIconOutlined />
                                             </Button>
@@ -318,11 +319,6 @@ const PaymentTile = (props) => {
                     payment={paymentClicked}
                 />
             }
-            <PaymentEditDialog
-                payment={payment}
-                onOpen={openEditPayment}
-                onClose={() => handleEditPayment(false)}
-            />
             {selectedAllocation &&
                 <AllocationOverview
                     allocationInfo={selectedAllocation}
