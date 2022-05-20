@@ -58,19 +58,19 @@ const AddPaymentForm = (props) => {
         errorPayment
     }] = useMutation(EDIT_PAYMENT)
 
-    const [createPaymentError, setCreatePaymentError] = useState('')
+    const [alertMessage, setAlertMessage] = useState('')
+    const [alertSeverity, setAlertSeverity] = useState();
+    const [displayAlert, setDisplayAlert] = useState(false)
     const [dateIncurred, setDateIncurred] = useState('')
     const [datePaid, setDatePaid] = useState('')
     const [disableAdd, setDisableAdd] = useState(false)
-    const [displayError, setDisplayError] = useState(false)
     const [invalidPaymentAmountInput, setInvalidPaymentAmountInput] = useState(false)
     const [paymentAmount, setPaymentAmount] = useState(null)
     const [disableEdit, setDisableEdit] = useState(true)
-    const [editPaymentError, setEditPaymentError] = useState('')
     const [openInvoice, setOpenInvoice] = useState(false)
     const [bitcoinCheckoutUrl, setBitcoinCheckoutUrl] = useState()
     const [isBitcoinInvoiceExpired, setIsBitcoinInvoiceExpired] = useState(false)
-    
+
     useEffect(() => {
         if (!dateIncurred || !paymentAmount) {
             setDisableEdit(true)
@@ -118,7 +118,7 @@ const AddPaymentForm = (props) => {
         if (reason === 'clickaway') {
             return
         }
-        setDisplayError(false)
+        setDisplayAlert(false)
     }
     const handleEditPayment = async () => {
         const variables = {
@@ -128,13 +128,25 @@ const AddPaymentForm = (props) => {
             date_incurred: dateIncurred,
             date_paid: datePaid
         }
-        const updatePayment = await editPayment({ variables })
-        if (loadingPayment) return <LoadingProgress/>
-        if (updatePayment.errors) {
-            setCreatePaymentError(`${Object.keys(updatePayment.errors[0].extensions.exception.fields)[0]}`)
-            setDisplayError(true)
-        } 
+
+        setAlertMessage('Updating Payment...')
+        setAlertSeverity('warning')
+        setDisplayAlert(true)
+        
+        try {
+            const updatePayment = await editPayment({ variables })
+
+            setAlertMessage('Payment Updated Successfully')
+            setAlertSeverity('success')
+            setDisplayAlert(true)
+        } catch {
+            setDisableAdd(false)
+            setAlertMessage('Error Updating Payment')
+            setAlertSeverity('error')
+            setDisplayAlert(true)
+        }
     }
+
     const handleDateIncurredChange = (date) => {
         if (date) {
             setDateIncurred(moment(date['_d']).format('YYYY-MM-DD'))
@@ -142,6 +154,7 @@ const AddPaymentForm = (props) => {
             setDateIncurred(null)
         }
     }
+    
     const handleDatePaidChange = (date) => {
         if (date) {
             setDatePaid(moment(date['_d']).format('YYYY-MM-DD'))
@@ -163,16 +176,17 @@ const AddPaymentForm = (props) => {
                 setOpenInvoice(true)
             }
         } catch (error) {
-            setCreatePaymentError(error)
-            setDisplayError(true)
+            setAlertMessage(error)
+            setDisplayAlert(true)
         }
     }
 
     const handleViewBitcoinInvoice = () => {
         if (!isBitcoinInvoiceExpired) setOpenInvoice(true)
         else {
-            setCreatePaymentError('Bitcoin Invoice has expired')
-            setDisplayError(true)
+            setAlertMessage('Bitcoin Invoice has expired')
+            setAlertSeverity('error')
+            setDisplayAlert(true)
         }
     }
 
@@ -296,12 +310,12 @@ const AddPaymentForm = (props) => {
                 </Modal>
             </Grid>
             <Snackbar
-                open={displayError}
+                open={displayAlert}
                 autoHideDuration={4000}
                 onClose={handleAlertClose}
             >
-                <Alert severity='error'>
-                    {`${createPaymentError}`}
+                <Alert severity={alertSeverity}>
+                    {`${alertMessage}`}
                 </Alert>
             </Snackbar>
         </FormControl>
