@@ -27,14 +27,14 @@ import {
 
 const AddPaymentForm = (props) => {
 
+    const history = useHistory()
+
     const modalStyle = {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
     };
-
-    const history = useHistory()
 
     const {
         clientId, paymentId
@@ -154,7 +154,7 @@ const AddPaymentForm = (props) => {
             setDateIncurred(null)
         }
     }
-    
+
     const handleDatePaidChange = (date) => {
         if (date) {
             setDatePaid(moment(date['_d']).format('YYYY-MM-DD'))
@@ -164,6 +164,11 @@ const AddPaymentForm = (props) => {
     }
 
     const handleBitcoinInvoiceGeneration = async () => {
+
+        setAlertMessage('Generating Invoice...')
+        setAlertSeverity('warning')
+        setDisplayAlert(true)
+
         try {
             const bitcoinInvoice = await generateBitcoinInvoice({ 
                 variables: { 
@@ -177,6 +182,7 @@ const AddPaymentForm = (props) => {
             }
         } catch (error) {
             setAlertMessage(error)
+            setAlertSeverity('error')
             setDisplayAlert(true)
         }
     }
