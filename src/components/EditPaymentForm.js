@@ -25,7 +25,7 @@ import {
     selectCurrencyInformation
 } from '../scripts/selectors'
 
-const AddPaymentForm = (props) => {
+const EditPaymentForm = (props) => {
 
     const history = useHistory()
 
@@ -328,4 +328,4 @@ const AddPaymentForm = (props) => {
     )
 }
 
-export default AddPaymentForm
+export default EditPaymentForm

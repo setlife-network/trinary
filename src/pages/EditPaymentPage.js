@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
-import EditPayment from '../components/EditPayment'
+import EditPayment from '../components/EditPaymentForm'
 
 class EditPaymentPage extends React.Component {
 
