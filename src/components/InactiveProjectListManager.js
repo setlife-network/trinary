@@ -52,7 +52,7 @@ const InactiveProjectListManager = ({
                 <Grid
                     container
                     direction='row'
-                    justify='space-between'
+                    justifyContent='space-between'
                     alignItems='flex-end'
                 >
                     <Grid item xs={8} sm={6} md={4}>

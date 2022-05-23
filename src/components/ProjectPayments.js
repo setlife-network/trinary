@@ -79,10 +79,10 @@ const ProjectPayments = (props) => {
 
     return (
 
-        <Grid container justify='center' className='ProjectPayments'>
+        <Grid container justifyContent='center' className='ProjectPayments'>
             <Grid item xs={12} align='left'>
                 <Box p={3}>
-                    <Grid container justify='space-between' alignItems='flex-end'>
+                    <Grid container justifyContent='space-between' alignItems='flex-end'>
                         <Grid item xs={12} sm={8}>
                             <Typography variant='h4'>
                                 <strong>

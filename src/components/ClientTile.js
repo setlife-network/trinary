@@ -20,9 +20,8 @@ const ClientTile = ({
         <div className='ClientTile'>
             <Grid
                 container
-                justify='center'
+                justifyContent='center'
                 alignItems='center'
-                xs={12}
             >
                 <Grid item xs={12}>
                     <Button
@@ -44,7 +43,7 @@ const ClientTile = ({
                                 container
                                 direction='row'
                                 alignItems='center'
-                                justify='space-between'
+                                justifyContent='space-between'
                             >
                                 <Grid
                                     item

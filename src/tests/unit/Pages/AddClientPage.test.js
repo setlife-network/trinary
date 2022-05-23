@@ -1,8 +1,9 @@
 import React from 'react'
-import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import AddClientPage from '../../pages/AddClientPage'
+import { render, cleanup } from '@testing-library/react'
 import { MockedProvider } from '@apollo/client/testing'
+
+import AddClientPage from '../../../pages/AddClientPage'
 
 let getByTestId
 const mocks = []

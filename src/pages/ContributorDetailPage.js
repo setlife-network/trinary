@@ -18,7 +18,7 @@ class ContributorDetailPage extends React.Component {
         return (
             <Grid
                 conatiner
-                justify='center'
+                justifyContent='center'
                 align='center'
                 className='ContributorDetailPage'
             >
@@ -41,7 +41,7 @@ class ContributorDetailPage extends React.Component {
                     >
                         <Grid
                             container
-                            justify='center'
+                            justifyContent='center'
                             align='center'
                         >
                             <Grid item xs={12}>

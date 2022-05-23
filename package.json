@@ -63,7 +63,9 @@
     "dev-server": "cross-env PORT=6001 nodemon server",
     "start": "node server",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "tests:unit": "react-scripts test",
+    "tests:e2e:local": "SITE_URL=localhost:6002 testcafe chrome src/tests/e2e/",
+    "tests:e2e:staging": "SITE_URL=https://trinary-staging.setlife.tech testcafe chrome src/tests/e2e/",
     "eject": "react-scripts eject",
     "prebuild": "npx sequelize-cli db:migrate"
   },
@@ -84,6 +86,8 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "cross-env": "^7.0.2"
+    "cross-env": "^7.0.2",
+    "jest-watch-typeahead": "^0.6.5",
+    "testcafe": "^1.18.6"
   }
 }

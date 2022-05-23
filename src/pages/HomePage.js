@@ -27,14 +27,14 @@ class HomePage extends React.Component {
         return (
             <Grid
                 container
-                justify='center'
+                justifyContent='center'
                 alignItems='center'
                 className='HomePage'
             >
                 <Grid item xs={10}>
                     <Grid
                         container
-                        justify='space-between'
+                        justifyContent='space-between'
                         alignItems='center'
                         xs={12}
                     >

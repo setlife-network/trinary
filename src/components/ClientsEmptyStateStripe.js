@@ -11,7 +11,7 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 const ClientsEmptyStateStripe = () => {
 
     return (
-        <Grid container justify='center' className='EmptyState'>
+        <Grid container justifyContent='center' className='EmptyState'>
             <Box mt={5}>
                 <Typography color='secondary' variant='h6'>
                     There are currently no clients.
