@@ -10,6 +10,10 @@ export const testUser = Role(`${process.env.SITE_URL}/login`, async t => {
     await t.click(trinaryLoginButton);
 
     const githubSignInButton = Selector('input').withAttribute('data-signin-label', 'Sign in')
+    let location = await getWindowLocation()
+
+    console.log('location')
+    console.log(location)
 
     await t
         .typeText('#login_field', process.env.TESTCAFE_ROLE_GITHUB_EMAIL)
@@ -18,8 +22,15 @@ export const testUser = Role(`${process.env.SITE_URL}/login`, async t => {
 
     // Need the code below if Github token expires and requires
     // the authorization step to proceed with authentication
+    location = await getWindowLocation()
+
+    console.log('location')
+    console.log(location)
     await t.wait(3000);
-    const location = await getWindowLocation()
+    location = await getWindowLocation()
+
+    console.log('location')
+    console.log(location)
     
     if (location.host.includes('github.com')) {
         const githubAuthorizeButton = Selector('#js-oauth-authorize-btn')
