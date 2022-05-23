@@ -30,6 +30,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "body-parser": "^1.19.0",
     "concurrently": "^6.2.2",
+    "connect-wwwhisper": "^0.1.21",
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
@@ -53,7 +54,7 @@
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
     "stripe": "^8.150.0",
-    "toggl-api": "^1.0.1",
+    "toggl-api": "https://github.com/setlife-network/node-toggl-api.git",
     "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
