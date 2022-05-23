@@ -12,7 +12,7 @@ class AddClientPage extends React.Component {
             <Grid
                 container
                 className='AddClientPage'
-                justify='center'
+                justifyContent='center'
             >
                 <Grid item xs={10}>
                     <Typography align='left' data-testid='enter-info-text'>

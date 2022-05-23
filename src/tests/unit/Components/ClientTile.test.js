@@ -21,7 +21,7 @@ beforeEach(() => {
             mocks={mocks} 
             addTypename={false}
         >
-            <ClientTile 
+            <ClientTile
                 client={client} 
                 history={history}
             />

@@ -13,7 +13,7 @@ const AddGithubProjectManually = (props) => {
     } = props
 
     return (
-        <Grid container justify='space-between' classname='AddGithubProjectManually'>
+        <Grid container justifyContent='space-between' classname='AddGithubProjectManually'>
             <Grid item xs={12} align='left'>
                 <Box my={3}>
                     <Typography>

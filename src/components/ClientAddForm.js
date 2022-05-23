@@ -39,9 +39,12 @@ const ClientAddForm = ({
 
     const renderCurrencies = (currencies) => {
         return (
-            currencies.map(c => {
+            currencies.map((c, i) => {
                 return (
-                    <MenuItem value={c.name}>
+                    <MenuItem
+                        key={`mi-c-${i}`}
+                        value={c.name}
+                    >
                         {c.name}
                     </MenuItem>
                 )
@@ -65,7 +68,7 @@ const ClientAddForm = ({
         >
             <Grid
                 container
-                justify='space-between'
+                justifyContent='space-between'
                 alignItems='center'
             >
                 <Grid item xs={12} md={5}>

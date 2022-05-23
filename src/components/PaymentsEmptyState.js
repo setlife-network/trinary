@@ -4,7 +4,7 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
 const PaymentsEmptyState = () => {
     return (
-        <Grid container justify='center' className='EmptyState'>
+        <Grid container justifyContent='center' className='EmptyState'>
             <Box mt={5}>
                 <Grid item xs={12}>
                     <Typography color='secondary' variant='h6' align='center'>
