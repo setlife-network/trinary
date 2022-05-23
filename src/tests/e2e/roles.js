@@ -18,6 +18,7 @@ export const testUser = Role(`${process.env.SITE_URL}/login`, async t => {
 
     // Need the code below if Github token expires and requires
     // the authorization step to proceed with authentication
+    await t.wait(3000);
     const location = await getWindowLocation()
     
     if (location.host.includes('github.com')) {
