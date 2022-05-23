@@ -68,7 +68,7 @@ const InactiveClientsList = (props) => {
             <Grid
                 container
                 direction='row'
-                justify='space-between'
+                justifyContent='space-between'
                 alignItems='flex-end'
             >
                 {

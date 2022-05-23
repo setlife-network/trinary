@@ -101,4 +101,10 @@ module.exports = {
         'vars-on-top': ['off'],
         'wrap-iife': ['off'],
     },
+    'overrides': [{
+        'files': ['./src/tests/e2e/*.js'],
+        'rules': {
+            'no-unused-expressions': 'off'
+        }
+    }]
 }

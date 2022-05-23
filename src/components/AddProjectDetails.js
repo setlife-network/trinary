@@ -68,7 +68,7 @@ const AddProjectDetails = (props) => {
     }
 
     return (
-        <Grid container justify='space-between'>
+        <Grid container justifyContent='space-between'>
             <Grid item xs={12} md={5}>
                 <Box mt={5}>
                     <TextField

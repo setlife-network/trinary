@@ -269,7 +269,7 @@ const AllocationOverview = (props) => {
                 <Box mt={1}>
                     <Grid
                         container
-                        justify='space-between'
+                        justifyContent='space-between'
                         style={{ textAlign: 'center' }}
                     >
                         <Grid item xs={12} sm={3}>

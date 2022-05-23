@@ -194,7 +194,7 @@ const AllocationProposeSpecifics = (props) => {
 
     return (
         <Box className='AllocationProposeSpecifics'>
-            <Grid container justify='center'>
+            <Grid container justifyContent='center'>
                 <Grid item xs={12}>
                     <List component='nav'>
                         <ListItem>

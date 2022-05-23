@@ -172,7 +172,7 @@ const AllocationAddSpecifics = (props) => {
 
     return (
         <Box className='AllocationAddSpecifics'>
-            <Grid container justify='center'>
+            <Grid container justifyContent='center'>
                 <ListItem button>
                     <Grid item xs={3}>
                         <AssessmentIcon color='primary'/>

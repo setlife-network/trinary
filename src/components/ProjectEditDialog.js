@@ -205,7 +205,7 @@ const ProjectEditDialog = (props) => {
                 <FormControl>
                     <Grid
                         container
-                        justify='space-between'
+                        justifyContent='space-between'
                         alignItems='center'
                     >
                         <Grid item xs={12} lg={12}>

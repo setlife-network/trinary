@@ -20,7 +20,7 @@ class ClientDetailPage extends React.Component {
         return (
             <Grid
                 container
-                justify='center'
+                justifyContent='center'
                 className='ClientDetailPage'
             >
                 <Grid item xs={10} lg={5}>

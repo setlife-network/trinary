@@ -11,7 +11,7 @@ const THERE_ARE_CURRENTLY_NO_CLIENTS = `There are currently no clients. Add a cl
 
 const ClientsEmptyState = () => {
     return (
-        <Grid container justify='center' className='EmptyState'>
+        <Grid container justifyContent='center' className='EmptyState'>
             <Box mt={5}>
                 <Typography color='secondary' variant='h6'>
                     {THERE_ARE_CURRENTLY_NO_CLIENTS}
