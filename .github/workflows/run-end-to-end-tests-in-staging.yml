@@ -3,12 +3,12 @@
 
 name: Run End-to-End Tests in Staging
 
+# This workflow runs against a PR that is set to merge to the main
+# branch and assumes the staging environment contains these changes
 on:
   workflow_dispatch:
-  push:
-    branches: [ develop ]
   pull_request:
-    branches: [ develop ]
+    branches: [ main ]
 
 jobs:
   build:
