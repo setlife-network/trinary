@@ -34,6 +34,8 @@ jobs:
         run: npm run tests:unit
 
       - name: Run end-to-end tests
+        env:
+          SITE_URL: ${{ secrets.STAGING_URL }}
         uses: DevExpress/testcafe-action@latest
         with:
           skip-install: true
