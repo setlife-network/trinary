@@ -1,0 +1,22 @@
+# This workflow runs against a PR that is set to merge to the main
+# branch and assumes the staging environment contains these changes
+
+name: Run End-to-End Tests in Staging
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Run end-to-end tests
+        env:
+          SITE_URL: ${{ secrets.STAGING_URL }}
+        uses: DevExpress/testcafe-action@latest
+        with:
+          args: "chrome src/tests/e2e/"
