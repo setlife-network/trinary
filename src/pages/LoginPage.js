@@ -30,8 +30,9 @@ class LoginPage extends React.Component {
                             color='primary'
                             href='#contained-buttons'
                             style={{ backgroundColor: setlifeBlue }}
+                            data-testid='login-button'
                         >
-                            <h3 data-testid='button-h3'>{`Log in with your Github Account`}</h3>
+                            <h3 data-testid='login-button-text'>{`Log in with your Github Account`}</h3>
                             <GitHubIcon className='githubIcon' />
                         </Button>
                     )}

@@ -31,7 +31,7 @@ class ProjectDetailPage extends React.Component {
         const selectedTab = location.pathname.replace(match.url, '').slice(1)
 
         return (
-            <Grid container justify='center' className='ProjectDetailPage'>
+            <Grid container justifyContent='center' className='ProjectDetailPage'>
                 <Grid 
                     item 
                     xs={10} 

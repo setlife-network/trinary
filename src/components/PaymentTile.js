@@ -189,13 +189,13 @@ const PaymentTile = (props) => {
                         }}
                     >
                         <Grid container alignItems='center'>
-                            <Grid item xs={6} align='left'>
+                            <Grid item xs={6} align='left' data-testid='payment-tile-amount'>
                                 <Typography variant='h6'>
                                     {`${paymentAmount}`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={5} align='right'>
-                                <Box mb={0.75}>
+                                <Box mb={0.75} data-testid='payment-tile-date'>
                                     <Typography
                                         variant='caption'
                                         color='secondary'

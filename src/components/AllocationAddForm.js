@@ -378,7 +378,7 @@ const AllocationAddForm = (props) => {
                 <DialogTitle>
                     {`Add Allocation`}
                 </DialogTitle>
-                <Grid container spacing={5} justify='center'>
+                <Grid container spacing={5} justifyContent='center'>
                     <Grid item xs={12}>
                         {project
                             ? (

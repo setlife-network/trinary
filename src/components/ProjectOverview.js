@@ -57,7 +57,7 @@ const ProjectOverview = (props) => {
         <Grid
             container
             className='ProjectOverview'
-            justify='center'
+            justifyContent='center'
         >
             <Grid item xs={12}>
                 <Box pb={3}>

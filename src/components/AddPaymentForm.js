@@ -131,7 +131,7 @@ const AddPaymentForm = (props) => {
             <Grid container spacing={5}>
                 <Grid item xs={12}>
                     <Grid container>
-                        <Grid item xs={12} sm={6} lg={4}>
+                        <Grid item xs={12} sm={6} lg={4} data-testid='add-payment-amount-field'>
                             <CurrencyTextField
                                 fullWidth
                                 label='Payment amount'
@@ -146,7 +146,7 @@ const AddPaymentForm = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6} lg={4}>
+                <Grid item xs={12} sm={6} lg={4} data-testid='add-payment-date-incurred-field'>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             fullWidth
@@ -160,7 +160,7 @@ const AddPaymentForm = (props) => {
                         />
                     </MuiPickersUtilsProvider>
                 </Grid>
-                <Grid item xs={12} sm={6} lg={4}>
+                <Grid item xs={12} sm={6} lg={4} data-testid='add-payment-date-paid-field'>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             fullWidth
@@ -180,6 +180,7 @@ const AddPaymentForm = (props) => {
                         color='primary'
                         disabled={disableAdd}
                         onClick={handleCreatePayment}
+                        data-testid='add-payment-submit-button'
                     >
                         {`Add Payment`}
                     </Button>

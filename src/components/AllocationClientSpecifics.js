@@ -173,7 +173,7 @@ const AllocationClientSpecifics = (props) => {
 
     return (
         <Box className='AllocationClientSpecifics'>
-            <Grid container justify='center'>
+            <Grid container justifyContent='center'>
                 <Grid item xs={12}>
                     <List component='nav'>
                         <ListItem>

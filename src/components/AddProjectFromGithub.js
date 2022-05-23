@@ -154,7 +154,7 @@ const AddProjectFromGithub = (props) => {
         <Grid
             container
             spacing={3}
-            justify='space-between'
+            justifyContent='space-between'
             alignItems='flex-end'
             className='AddProjectFromGithub'
         >

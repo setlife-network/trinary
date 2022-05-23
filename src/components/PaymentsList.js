@@ -30,7 +30,7 @@ const PaymentsList = (props) => {
     }
 
     return (
-        <Grid container justify='flex-start' className='PaymentsList'>
+        <Grid container justifyContent='flex-start' className='PaymentsList'>
             {renderPaymentTiles(payments)}
         </Grid>
     )

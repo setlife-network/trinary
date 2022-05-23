@@ -53,7 +53,7 @@ const ProjectTile = ({
                             container
                             direction='row'
                             alignItems='center'
-                            justify='space-around'
+                            justifyContent='space-around'
                         >
                             <Grid item xs={10}>
                                 <Typography variant='h6' noWrap>
