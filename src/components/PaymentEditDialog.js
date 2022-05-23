@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
-import { useToasts } from 'react-toast-notifications'
 import {
     Box,
     Button,
@@ -38,7 +37,6 @@ const PaymentEditDialog = (props) => {
         currency: payment.client.currency
     })
     const history = useHistory()
-    const { addToast } = useToasts()
 
     const [editPayment, {
         dataPayment,
@@ -79,9 +77,8 @@ const PaymentEditDialog = (props) => {
                 onClose()
             }
         } catch (err) {
-            addToast(err.message, { 
-                appearance: 'error'
-            })
+            setEditPaymentError(err)
+            setDisplayError(true)
         }
     }
     const handleDateIncurredChange = (date) => {

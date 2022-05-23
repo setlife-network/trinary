@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useToasts } from 'react-toast-notifications'
 import { useMutation } from '@apollo/client'
 import Alert from '@material-ui/lab/Alert'
 import {
@@ -62,8 +61,6 @@ const ProjectEditDialog = (props) => {
             error: errorTogglSync,
         }
     ] = useMutation(SYNC_TOGGL_PROJECT)
-
-    const { addToast } = useToasts()
 
     const [updateProject, { data, loading: loadingUpdateProject, error }] = useMutation(UPDATE_PROJECT, { errorPolicy: 'all' })
 
@@ -151,9 +148,8 @@ const ProjectEditDialog = (props) => {
                 onClose()
             }
         } catch (err) {
-            addToast(err.message, { 
-                appearance: 'error'
-            })
+            setEditProjectError(`${Object.keys(err)}  already exists`)
+            setDisplayError(true)
         }
     }
 
