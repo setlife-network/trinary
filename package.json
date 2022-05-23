@@ -66,6 +66,7 @@
     "tests:unit": "react-scripts test",
     "tests:e2e:local": "SITE_URL=localhost:6002 testcafe chrome src/tests/e2e/",
     "tests:e2e:staging": "SITE_URL=https://trinary-staging.setlife.tech testcafe chrome src/tests/e2e/",
+    "tests:e2e:staging:args": "SITE_URL=https://trinary-staging.setlife.tech testcafe chrome",
     "eject": "react-scripts eject",
     "prebuild": "npx sequelize-cli db:migrate"
   },
