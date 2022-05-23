@@ -54,7 +54,7 @@
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
     "stripe": "^8.150.0",
-    "toggl-api": "^1.0.2",
+    "toggl-api": "https://github.com/setlife-network/node-toggl-api.git",
     "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
