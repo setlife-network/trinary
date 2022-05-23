@@ -81,10 +81,18 @@ const AddPaymentForm = (props) => {
         }
     }
     const handleDateIncurredChange = (date) => {
-        setDateIncurred(moment(date['_d']).format('YYYY-MM-DD'))
+        if (date) {
+            setDateIncurred(moment(date['_d']).format('YYYY-MM-DD'))
+        } else {
+            setDateIncurred(null)
+        }
     }
     const handleDatePaidChange = (date) => {
-        setDatePaid(moment(date['_d']).format('YYYY-MM-DD'))
+        if (date) {
+            setDatePaid(moment(date['_d']).format('YYYY-MM-DD'))
+        } else {
+            setDatePaid(null)
+        }
     }
     const handlePaymentAmountChange = (input) => {
         setInvalidPaymentAmountInput(false)

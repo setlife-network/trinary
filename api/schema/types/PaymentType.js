@@ -13,6 +13,8 @@ module.exports = gql`
         external_uuid_type: String
         client: Client
         allocations: [Allocation]
+        isBitcoinInvoiceExpired: Boolean
+        bitcoinCheckoutUrl: String
     }
 
     input PaymentInput {
@@ -32,6 +34,10 @@ module.exports = gql`
     type Mutation {
         createPayment(
             createFields: PaymentInput!
+        ): Payment
+
+        generateBitcoinInvoiceFromPayment(
+            paymentId: Int!
         ): Payment
 
         syncPayments(
