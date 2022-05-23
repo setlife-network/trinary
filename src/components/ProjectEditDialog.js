@@ -148,7 +148,13 @@ const ProjectEditDialog = (props) => {
                 onClose()
             }
         } catch (err) {
-            setEditProjectError(`${Object.keys(err)}  already exists`)
+            if (err == 'TypeError: Cannot convert undefined or null to object') {
+                setEditProjectError('Invalid date format')
+            } else if (err == 'Error: Response not successful: Received status code 400') {
+                setEditProjectError('There was an unexpected error, please try again')
+            } else {
+                setEditProjectError(err)
+            }
             setDisplayError(true)
         }
     }

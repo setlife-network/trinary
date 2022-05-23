@@ -78,7 +78,13 @@ const AddPaymentForm = (props) => {
                 history.push(`/clients/${clientId}`)
             }
         } catch (err) {
-            setCreatePaymentError(err)
+            if (err == 'Error: Invalid date format: date_incurred' || err == 'Error: Invalid date format: date_paid') {
+                setCreatePaymentError('Invalid date format')
+            } else if (err == 'Error: Response not successful: Received status code 400') {
+                setCreatePaymentError('There was an unexpected error, please try again')
+            } else {
+                setCreatePaymentError(err)
+            }
             setDisplayError(true)
         }
     }

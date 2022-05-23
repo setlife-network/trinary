@@ -77,7 +77,13 @@ const PaymentEditDialog = (props) => {
                 onClose()
             }
         } catch (err) {
-            setEditPaymentError(err)
+            if (err == 'Error: Invalid date format: date_incurred' || err == 'Error: Invalid date format: date_paid') {
+                setEditPaymentError('Invalid date format')
+            } else if (err == 'Error: Response not successful: Received status code 400') {
+                setEditPaymentError('There was an unexpected error, please try again')
+            } else {
+                setEditPaymentError(err)
+            }
             setDisplayError(true)
         }
     }
