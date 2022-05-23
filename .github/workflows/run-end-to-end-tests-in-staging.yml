@@ -8,7 +8,8 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  run-tests:
+    name: Run Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
