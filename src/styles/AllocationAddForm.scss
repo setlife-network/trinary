@@ -5,9 +5,6 @@
     .warning {
         color: $red;
     }
-    .MuiDialog-paper {
-        margin: 16px
-    }
     .MuiListItem-gutters {
         padding-left: 0;
         padding-right: 0;
@@ -22,9 +19,6 @@
 
 @media screen and (min-width: $sm) {
     .AllocationAddForm {
-        .MuiDialog-paper {
-            margin: 32px
-        }
         .MuiListItem-gutters {
             padding-left: 16px;
             padding-right: 16px;

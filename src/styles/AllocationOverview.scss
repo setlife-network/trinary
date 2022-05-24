@@ -3,9 +3,6 @@
         width: 100%;
         margin-top: 1rem;
     }
-    .MuiDialog-paper {
-        margin: 16px
-    }
 }
 
 @media screen and (min-width: $sm) {
@@ -13,9 +10,6 @@
         .edit-delete {
             width: 70%;
             margin-top: 0;
-        }
-        .MuiDialog-paper {
-            margin: 32px
         }
     }
 }
