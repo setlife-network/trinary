@@ -70,6 +70,7 @@ const EditPaymentForm = (props) => {
     const [openInvoice, setOpenInvoice] = useState(false)
     const [bitcoinCheckoutUrl, setBitcoinCheckoutUrl] = useState()
     const [isBitcoinInvoiceExpired, setIsBitcoinInvoiceExpired] = useState(false)
+    const [clientCurrency, setClientCurrency] = useState();
 
     useEffect(() => {
         if (!dateIncurred || !paymentAmount) {
@@ -89,6 +90,7 @@ const EditPaymentForm = (props) => {
             setPaymentAmount(Number(getPaymentById.amount) / 100)
             setBitcoinCheckoutUrl(getPaymentById.bitcoinCheckoutUrl)
             setIsBitcoinInvoiceExpired(getPaymentById.isBitcoinInvoiceExpired)
+            setClientCurrency(getClientById.currency)
         } 
     }, [loading])
 
@@ -273,6 +275,8 @@ const EditPaymentForm = (props) => {
                         </Button>
                     </Grid>
                 </Grid>
+
+                {(clientCurrency === 'BTC' || clientCurrency === 'SATS') && 
                 <Grid item container xs={12} spacing={1}>
                     <Grid item>
                         <Button 
@@ -295,7 +299,8 @@ const EditPaymentForm = (props) => {
                             </Button>
                         }
                     </Grid>
-                </Grid>
+                </Grid>}
+                
                 <Grid item>
                     <Button 
                         variant='contained'
