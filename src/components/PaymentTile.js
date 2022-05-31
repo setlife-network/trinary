@@ -103,6 +103,31 @@ const PaymentTile = (props) => {
         currencyInformation: currencyInformation
     })
     const numberOfContributorsAllocated = allocations.length
+    const numberOfFilteredContributorsAllocated = project ? filteredAllocations.length : null
+    
+    const totalProjectAllocations = () => {
+        let total = 0
+        filteredAllocations.map(f => {
+            total += (f.amount / 100)
+        })
+        return total
+    }
+    const totalAllocatedContributors = project 
+        ? (formatAmount({
+            amount: totalProjectAllocations(),
+            currencyInformation: currencyInformation
+        }))
+        : null
+
+    const calculateAllocationsOtherProjects = () => {
+        if (project) {
+            return dataTotalAllocated.getPaymentById.totalAllocated / 100 - totalProjectAllocations()
+        }
+    }
+    const totalAllocatedOtherProjects = formatAmount({
+        amount: calculateAllocationsOtherProjects(),
+        currencyInformation: currencyInformation
+    })
 
     const renderPaymentAllocations = (props) => {
 
@@ -240,10 +265,17 @@ const PaymentTile = (props) => {
                                     color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
                                 >
                                     <Typography variant='subtitle2'>
-                                        {`${totalAllocated} allocated`}
+                                        {`${project ? totalAllocatedContributors : totalAllocated} allocated`}
                                         <br/>
-                                        {`to ${numberOfContributorsAllocated} ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}`}
+                                        {`to ${project ? numberOfFilteredContributorsAllocated : numberOfContributorsAllocated} ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}`}
                                     </Typography>
+                                    {project && (calculateAllocationsOtherProjects() > 0 ) &&
+                                    <Typography variant='subtitle2'>
+                                        {`${totalAllocatedOtherProjects} allocated`}
+                                        <br/>
+                                        {`to other projects`}
+                                    </Typography>
+                                    }
                                 </Box>
                             </Grid>
                         </Grid>
