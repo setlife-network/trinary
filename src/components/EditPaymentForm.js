@@ -19,6 +19,7 @@ import moment from 'moment'
 import MomentUtils from '@date-io/moment'
 
 import LoadingProgress from './LoadingProgress'
+import BtcInvoiceModal from './BtcInvoiceModal'
 import { GET_PAYMENT_DETAILS } from '../operations/queries/PaymentQueries'
 import { EDIT_PAYMENT, CREATE_BITCOIN_INVOICE } from '../operations/mutations/PaymentMutations'
 import {
@@ -28,13 +29,6 @@ import {
 const EditPaymentForm = (props) => {
 
     const history = useHistory()
-
-    const modalStyle = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-    };
 
     const {
         clientId, paymentId
@@ -310,15 +304,7 @@ const EditPaymentForm = (props) => {
                         {`Done`}
                     </Button>
                 </Grid>
-                <Modal
-                    open={openInvoice}
-                    onClose={handleCloseInvoice}
-                >
-                    <Box sx={modalStyle}>
-                        <iframe title='invoice' height='660px' src={`${bitcoinCheckoutUrl}`}>
-                        </iframe>
-                    </Box>
-                </Modal>
+                <BtcInvoiceModal open={openInvoice} onClose={handleCloseInvoice} bitcoinCheckoutUrl={bitcoinCheckoutUrl}/>
             </Grid>
             <Snackbar
                 open={displayAlert}
