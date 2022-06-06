@@ -5,9 +5,7 @@ import {
     Button,
     FormControl,
     Grid,
-    Modal,
     Snackbar,
-    Box,
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import {
@@ -57,7 +55,6 @@ const EditPaymentForm = (props) => {
     const [displayAlert, setDisplayAlert] = useState(false)
     const [dateIncurred, setDateIncurred] = useState('')
     const [datePaid, setDatePaid] = useState('')
-    const [disableAdd, setDisableAdd] = useState(false)
     const [paymentAmount, setPaymentAmount] = useState(null)
     const [openInvoice, setOpenInvoice] = useState(false)
     const [bitcoinCheckoutUrl, setBitcoinCheckoutUrl] = useState()
@@ -121,7 +118,7 @@ const EditPaymentForm = (props) => {
         handleDisplayAlert('Updating Payment...', 'warning')
         
         try {
-            const updatePayment = await editPayment({ variables })
+            await editPayment({ variables })
             handleDisplayAlert('Payment Updated Successfully', 'success')
         } catch {
             setDisableAdd(false)
@@ -241,7 +238,6 @@ const EditPaymentForm = (props) => {
                         <Button
                             variant='contained'
                             color='primary'
-                            disabled={disableAdd}
                             onClick={handleEditPayment}
                         >
                             {`Update Payment`}
