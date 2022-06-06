@@ -58,24 +58,11 @@ const EditPaymentForm = (props) => {
     const [dateIncurred, setDateIncurred] = useState('')
     const [datePaid, setDatePaid] = useState('')
     const [disableAdd, setDisableAdd] = useState(false)
-    const [invalidPaymentAmountInput, setInvalidPaymentAmountInput] = useState(false)
     const [paymentAmount, setPaymentAmount] = useState(null)
-    const [disableEdit, setDisableEdit] = useState(true)
     const [openInvoice, setOpenInvoice] = useState(false)
     const [bitcoinCheckoutUrl, setBitcoinCheckoutUrl] = useState()
     const [isBitcoinInvoiceExpired, setIsBitcoinInvoiceExpired] = useState(false)
     const [clientCurrency, setClientCurrency] = useState();
-
-    useEffect(() => {
-        if (!dateIncurred || !paymentAmount) {
-            setDisableEdit(true)
-        } else {
-            setDisableEdit(false)
-        }
-        if (dateIncurred && paymentAmount) {
-            setDisableAdd(false)
-        }
-    })
 
     useEffect(() => {
         if (!loading) {
@@ -110,12 +97,19 @@ const EditPaymentForm = (props) => {
     const formattedDatePaid = moment.utc(parseInt(getPaymentById.date_paid, 10)).format('YYYY-MM-DD')
     const formattedDateIncurred = moment.utc(parseInt(getPaymentById.date_incurred, 10)).format('YYYY-MM-DD')
 
+    const handleDisplayAlert = (message, severity) => {
+        setAlertMessage(message)
+        setAlertSeverity(severity)
+        setDisplayAlert(true)
+    }
+    
     const handleAlertClose = (event, reason) => {
         if (reason === 'clickaway') {
             return
         }
         setDisplayAlert(false)
     }
+
     const handleEditPayment = async () => {
         const variables = {
             id: Number(paymentId),
@@ -124,22 +118,14 @@ const EditPaymentForm = (props) => {
             date_incurred: dateIncurred,
             date_paid: datePaid
         }
-
-        setAlertMessage('Updating Payment...')
-        setAlertSeverity('warning')
-        setDisplayAlert(true)
+        handleDisplayAlert('Updating Payment...', 'warning')
         
         try {
             const updatePayment = await editPayment({ variables })
-
-            setAlertMessage('Payment Updated Successfully')
-            setAlertSeverity('success')
-            setDisplayAlert(true)
+            handleDisplayAlert('Payment Updated Successfully', 'success')
         } catch {
             setDisableAdd(false)
-            setAlertMessage('Error Updating Payment')
-            setAlertSeverity('error')
-            setDisplayAlert(true)
+            handleDisplayAlert('Error Updating Payment', 'error')
         }
     }
 
@@ -160,10 +146,7 @@ const EditPaymentForm = (props) => {
     }
 
     const handleBitcoinInvoiceGeneration = async () => {
-
-        setAlertMessage('Generating Invoice...')
-        setAlertSeverity('warning')
-        setDisplayAlert(true)
+        handleDisplayAlert('Generating Invoice...', 'warning')
 
         try {
             const bitcoinInvoice = await generateBitcoinInvoice({ 
@@ -177,18 +160,14 @@ const EditPaymentForm = (props) => {
                 setOpenInvoice(true)
             }
         } catch (error) {
-            setAlertMessage(error)
-            setAlertSeverity('error')
-            setDisplayAlert(true)
+            handleDisplayAlert(error, 'error')
         }
     }
 
     const handleViewBitcoinInvoice = () => {
         if (!isBitcoinInvoiceExpired) setOpenInvoice(true)
         else {
-            setAlertMessage('Bitcoin Invoice has expired')
-            setAlertSeverity('error')
-            setDisplayAlert(true)
+            handleDisplayAlert('Bitcoin Invoice has expired', 'error')
         }
     }
 
