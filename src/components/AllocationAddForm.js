@@ -7,8 +7,10 @@ import {
     Dialog,
     DialogTitle,
     Grid,
+    Snackbar,
     Typography
 } from '@material-ui/core/'
+import Alert from '@material-ui/lab/Alert'
 import {
     fill,
     filter,
@@ -65,56 +67,68 @@ const AllocationAddForm = (props) => {
         setAllocationTypes([...allocationTypesState])
     }
 
-    const createRateAndAllocation = async (props) => {
-        const {
-            allocation,
-            contributorRates,
-            rate
-        } = props
-        const allocationRate = {}
-        //check if the values are different to any rate and if ti's the case, create new rate
-        const existingRate = findKey(
-            contributorRates,
-            {
-                'hourly_rate': rate.hourly_rate.toString(),
-                'total_expected_hours': Number(rate.total_expected_hours),
-                'type': rate.type,
-                'currency': rateCurrency
-            }
-        )
-        if (existingRate != null) {
-            //create only allocation referencing contributorRates[existingRate].id
-            allocationRate['id'] = contributorRates[`${existingRate}`].id
-        } else {
-            allocationRate['id'] = (
-                await createRate({
-                    variables: {
-                        hourly_rate: rate.hourly_rate.toString(),
-                        total_expected_hours: Number(rate.total_expected_hours),
-                        type: rate.type,
-                        currency: rateCurrency,
-                        contributor_id: selectedContributor.id
-                    }
-                })).data.createRate.id
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
         }
-        //create allocation with that rate id
-        const allocationCreated = await createAllocation({
-            variables: {
-                amount: Number(Number(rate.total_amount).toFixed(2)),
-                start_date: moment(startDate).format('YYYY-MM-DD'),
-                end_date: moment(endDate).format('YYYY-MM-DD'),
-                date_paid: null,
-                payment_id: allocation.payment_id,
-                project_id: Number(selectedProject.id),
-                contributor_id: Number(selectedContributor.id),
-                rate_id: allocationRate.id
+        setDisplayError(false)
+    }
+
+    const createRateAndAllocation = async (props) => {
+        try {
+            const {
+                allocation,
+                contributorRates,
+                rate
+            } = props
+            const allocationRate = {}
+            //check if the values are different to any rate and if ti's the case, create new rate
+            const existingRate = findKey(
+                contributorRates,
+                {
+                    'hourly_rate': rate.hourly_rate.toString(),
+                    'total_expected_hours': Number(rate.total_expected_hours),
+                    'type': rate.type,
+                    'currency': rateCurrency
+                }
+            )
+            if (existingRate != null) {
+                //create only allocation referencing contributorRates[existingRate].id
+                allocationRate['id'] = contributorRates[`${existingRate}`].id
+            } else {
+                allocationRate['id'] = (
+                    await createRate({
+                        variables: {
+                            hourly_rate: rate.hourly_rate.toString(),
+                            total_expected_hours: Number(rate.total_expected_hours),
+                            type: rate.type,
+                            currency: rateCurrency,
+                            contributor_id: selectedContributor.id
+                        }
+                    })).data.createRate.id
             }
-        })
-        if (loadingNewAllocation) return ''
-        else if (allocationCreated.errors) {
-            console.log('Error adding the allocation');
-        } else {
-            onClose()
+            //create allocation with that rate id
+            const allocationCreated = await createAllocation({
+                variables: {
+                    amount: Number(Number(rate.total_amount).toFixed(2)),
+                    start_date: moment(startDate).format('YYYY-MM-DD'),
+                    end_date: moment(endDate).format('YYYY-MM-DD'),
+                    date_paid: null,
+                    payment_id: allocation.payment_id,
+                    project_id: Number(selectedProject.id),
+                    contributor_id: Number(selectedContributor.id),
+                    rate_id: allocationRate.id
+                }
+            })
+            if (loadingNewAllocation) return ''
+            else if (allocationCreated.errors) {
+                console.log('Error adding the allocation');
+            } else {
+                onClose()
+            }
+        } catch (error) {
+            setPaymentError('Error adding the allocation')
+            setDisplayError(true)
         }
     }
 
@@ -202,6 +216,7 @@ const AllocationAddForm = (props) => {
     const [allocationTypes, setAllocationTypes] = useState([1, 0])
     const [contributorAllocations, setContributorAllocations] = useState(null)
     const [contributorRates, setContributorRates] = useState(null)
+    const [displayError, setDisplayError] = useState(false)
     const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
     const [newAllocationRate, setNewAllocationRate] = useState({})
     const [newAllocation, setNewAllocation] = useState({})
@@ -211,6 +226,7 @@ const AllocationAddForm = (props) => {
     const [selectedContributor, setSelectedContributor] = useState(null)
     const [selectedProject, setSelectedProject] = useState(null)
     const [selectedPayment, setSelectedPayment] = useState(null)
+    const [paymentError, setPaymentError] = useState('')
     const [totalAllocatedFromPayment, setTotalAllocatedFromPayment] = useState(null)
 
     const [createAllocation, {
@@ -522,6 +538,15 @@ const AllocationAddForm = (props) => {
                     </>
                 }
             </Box>
+            <Snackbar
+                open={displayError}
+                autoHideDuration={1000}
+                onClose={handleAlertClose}
+            >
+                <Alert severity='error'>
+                    {`${paymentError}`}
+                </Alert>
+            </Snackbar>
         </Dialog>
     )
 }
