@@ -8,7 +8,8 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  run-tests:
+    name: Run Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -17,7 +18,8 @@ jobs:
       - name: Run end-to-end tests
         env:
           SITE_URL: ${{ secrets.STAGING_URL }}
+          TESTCAFE_ROLE_GITHUB_EMAIL: ${{ secrets.TESTCAFE_ROLE_GITHUB_EMAIL }}
+          TESTCAFE_ROLE_GITHUB_PASSWORD: ${{ secrets.TESTCAFE_ROLE_GITHUB_PASSWORD }}
         uses: DevExpress/testcafe-action@latest
         with:
-          skip-install: true
           args: "chrome src/tests/e2e/"

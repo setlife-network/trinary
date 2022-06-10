@@ -7,7 +7,6 @@ import {
     Dialog,
     DialogTitle,
     FormControl,
-    FormHelperText,
     Grid,
     Snackbar
 } from '@material-ui/core/'
@@ -60,29 +59,48 @@ const PaymentEditDialog = (props) => {
         setDisplayError(false)
     }
     const handleEditPayment = async () => {
-        const variables = {
-            id: Number(payment.id),
-            amount: paymentAmount,
-            date_incurred: dateIncurred,
-            date_paid: datePaid
-        }
-        const editedPayment = await editPayment({
-            variables: variables
-        })
-        if (loadingPayment) return <LoadingProgress/>
-        if (editedPayment.errors) {
-            setEditPaymentError(`${Object.keys(editedPayment.errors[0].extensions.exception.fields)[0]}`)
+        try {
+            const variables = {
+                id: Number(payment.id),
+                amount: paymentAmount,
+                date_incurred: dateIncurred,
+                date_paid: datePaid
+            }
+            const editedPayment = await editPayment({
+                variables: variables
+            })
+            if (loadingPayment) return <LoadingProgress/>
+            if (editedPayment.errors) {
+                setEditPaymentError(`${Object.keys(editedPayment.errors[0].extensions.exception.fields)[0]}`)
+                setDisplayError(true)
+            } else {
+                onClose()
+            }
+        } catch (err) {
+            if (err == 'Error: Invalid date format: date_incurred' || err == 'Error: Invalid date format: date_paid') {
+                setEditPaymentError('Invalid date format')
+            } else if (err == 'Error: Response not successful: Received status code 400') {
+                setEditPaymentError('There was an unexpected error, please try again')
+            } else {
+                setEditPaymentError(err)
+            }
             setDisplayError(true)
-        } else {
-            onClose()
-
         }
     }
     const handleDateIncurredChange = (date) => {
-        setDateIncurred(moment(date['_d']).format('YYYY-MM-DD'))
+        if (date) {
+            setDateIncurred(moment(date['_d']).format('YYYY-MM-DD'))
+        } else {
+            setDateIncurred(null)
+            setDisableEdit(true)
+        }
     }
     const handleDatePaidChange = (date) => {
-        setDatePaid(moment(date['_d']).format('YYYY-MM-DD'))
+        if (date) {
+            setDatePaid(moment(date['_d']).format('YYYY-MM-DD'))
+        } else {
+            setDatePaid(null)
+        }
     }
     const handlePaymentAmountChange = (input) => {
         setInvalidPaymentAmountInput(false)
