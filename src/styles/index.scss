@@ -37,11 +37,14 @@ code {
 //Components
 @import './AllocationAddForm.scss';
 @import './AllocationOverview.scss';
+@import './ClientEditDialog';
 @import './EditAllocationRate.scss';
 @import './EmptyState.scss';
 @import './Header.scss';
 @import './LoadingProgress.scss';
 @import './Navigation.scss';
+@import './PaymentEditDialog.scss';
+@import './ProjectEditDialog.scss';
 @import './ProjectTimeTracking.scss';
 @import './RangeDatePicker.scss';
 @import './DateInput.scss';

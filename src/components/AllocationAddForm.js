@@ -400,6 +400,7 @@ const AllocationAddForm = (props) => {
                                     <AllocationClientSpecifics
                                         client={client}
                                         contributor={selectedContributor}
+                                        contributors={contributors}
                                         payment={payment}
                                         project={selectedProject}
                                         setNewAllocation={setNewAllocation}

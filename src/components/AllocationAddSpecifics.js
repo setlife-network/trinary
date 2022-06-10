@@ -114,8 +114,8 @@ const AllocationAddSpecifics = (props) => {
                 <List component='div' disablePadding>
                     <ListItem button onClick={() => onClickPayment(p)}>
                         <Grid container>
-                            <Grid item xs={3}/>
-                            <Grid item xs={3}>
+                            <Grid item md={3} />
+                            <Grid item xs={6} md={3}>
                                 <ListItemText primary={
                                     `${p.amount
                                         ? `${paymentAmount}`
@@ -124,7 +124,7 @@ const AllocationAddSpecifics = (props) => {
                                 }
                                 />
                             </Grid>
-                            <Grid item xs={3} align='center'>
+                            <Grid item xs={6} md={3} align='center'>
                                 <Typography variant='caption' color='secondary'>
                                     {`${p.date_paid
                                         ? moment.utc(p.date_paid, 'x').format('MM/DD/YYYY')
@@ -132,7 +132,7 @@ const AllocationAddSpecifics = (props) => {
                                     }`}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={3}/>
+                            <Grid item md={3} />
                         </Grid>
                     </ListItem>
                 </List>
@@ -147,16 +147,16 @@ const AllocationAddSpecifics = (props) => {
                 <List component='div' disablePadding>
                     <ListItem button onClick={() => onClickContributor(c)}>
                         <Grid container>
-                            <Grid item xs={3}/>
-                            <Grid item xs={3}>
+                            <Grid item md={3}/>
+                            <Grid item xs={6} md={3}>
                                 <ListItemText primary={`${c.name}`}/>
                             </Grid>
-                            <Grid item xs={3} align='center'>
+                            <Grid item xs={5} md={3} className='responsive-align'>
                                 <Typography variant='caption' color='secondary'>
                                     {`${last(split(c.github_handle, '/'))}`}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={1} md={3} className='icon-align'>
                                 {
                                     c.github_access_token &&
                                     <GitHubIcon color='secondary' fontSize='small'/>
@@ -174,20 +174,20 @@ const AllocationAddSpecifics = (props) => {
         <Box className='AllocationAddSpecifics'>
             <Grid container justifyContent='center'>
                 <ListItem button>
-                    <Grid item xs={3}>
+                    <Grid item xs={2} md={3}>
                         <AssessmentIcon color='primary'/>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4} md={3}>
                         <Typography>
                             {project.name}
                         </Typography>
                     </Grid>
-                    <Grid item xs={3} align='center'>
+                    <Grid item xs={4} md={3} className='responsive-align'>
                         <Typography variant='caption' color='secondary'>
                             {projectGithubRepo}
                         </Typography>
                     </Grid>
-                    <Grid item xs={3} align='right'>
+                    <Grid item xs={2} md={3} align='right'>
                         <GitHubIcon color='secondary' fontSize='small'/>
                     </Grid>
                 </ListItem>
@@ -195,22 +195,22 @@ const AllocationAddSpecifics = (props) => {
                     <List component='nav'>
                         <ListItem button onClick={handleClickContributors}>
                             <Grid container>
-                                <Grid item xs={3}>
+                                <Grid item xs={2} md={3}>
                                     <PeopleIcon color='primary'/>
                                 </Grid>
-                                <Grid item xs={3}>
+                                <Grid item xs={4} md={3}>
                                     <Typography>
                                         {selectedContributor ? selectedContributor.name : ''}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={3} align='center'>
+                                <Grid item xs={4} md={3} className='responsive-align'>
                                     <Typography variant='caption' color='secondary'>
                                         {contributorGithubUser}
                                     </Typography>
                                 </Grid>
                                 {
                                     !contributor &&
-                                    <Grid item xs={3} align='right'>
+                                    <Grid item xs={2} md={3} align='right'>
                                         {openContributors
                                             ? <ExpandLess />
                                             : <ExpandMore />
@@ -231,10 +231,10 @@ const AllocationAddSpecifics = (props) => {
                     <List component='nav'>
                         <ListItem button onClick={handleClickPayments}>
                             <Grid container>
-                                <Grid item xs={3}>
+                                <Grid item xs={2} md={3}>
                                     <PaymentIcon color='primary'/>
                                 </Grid>
-                                <Grid item xs={3}>
+                                <Grid item xs={8} md={6}>
                                     <ListItemText primary={
                                         `${selectedPayment.amount
                                             ? `${formatAmount({
@@ -246,7 +246,15 @@ const AllocationAddSpecifics = (props) => {
                                     }
                                     />
                                 </Grid>
-                                <Grid item xs={3} align='center'>
+                                {!payment &&
+                                    <Grid item xs={2} md={3} align='right'>
+                                        {openPayments
+                                            ? <ExpandLess />
+                                            : <ExpandMore />
+                                        }
+                                    </Grid>
+                                }
+                                <Grid item xs={12} md={12} align='center'>
                                     <Typography variant='caption' color='secondary'>
                                         {`${selectedPayment.date_paid
                                             ? moment.utc(selectedPayment.date_paid, 'x').format('MM/DD/YYYY')
@@ -261,15 +269,6 @@ const AllocationAddSpecifics = (props) => {
                                         }`}
                                     </Typography>
                                 </Grid>
-                                {
-                                    !payment &&
-                                    <Grid item xs={3} align='right'>
-                                        {openPayments
-                                            ? <ExpandLess />
-                                            : <ExpandMore />
-                                        }
-                                    </Grid>
-                                }
                             </Grid>
                         </ListItem>
                         {!payment &&
