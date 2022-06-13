@@ -152,6 +152,7 @@ export const GET_PROJECT_ISSUES = gql`
                     contributor {
                         id
                         github_handle
+                        avatar_url
                     }
                 }
             }

@@ -35,6 +35,10 @@ module.exports = (sequelize) => {
         github_access_token: {
             type: DataTypes.STRING,
             unique: true
+        },
+        avatar_url: {
+            type: DataTypes.STRING,
+            unique: true
         }
     },
     {

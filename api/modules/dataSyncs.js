@@ -94,7 +94,8 @@ const dataSyncs = module.exports = (() => {
                         await db.models.Contributor.create({
                             name: contributorInfo.name ? contributorInfo.name : c.login,
                             github_id: c.id,
-                            github_handle: c.html_url
+                            github_handle: c.html_url,
+                            avatar_url: c.avatar_url
                         })
                     )
                 }

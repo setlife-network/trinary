@@ -14,7 +14,7 @@ const RangeDatePickerInput = ({
         <Grid container>
             <Grid item xs={6}>
                 <Box px={2} py={1}>
-                    <Grid container justify='space-between'>
+                    <Grid container justifyContent='space-between'>
                         <Hidden only='xs'>
                             <Grid item xs={2}>
                                 <Icon className='fas fa-calendar-alt' color='primary'/>
@@ -33,7 +33,7 @@ const RangeDatePickerInput = ({
             <hr p={0} m={0} className='divider'/>
             <Grid item xs={5}>
                 <Box py={1} pl={4}>
-                    <Grid container justify='space-between'>
+                    <Grid container justifyContent='space-between'>
                         <Hidden only='xs'>
                             <Grid item xs={2}>
                                 <Icon className='far fa-calendar-alt' color='primary'/>

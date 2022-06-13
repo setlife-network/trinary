@@ -4,7 +4,7 @@ const { createBitcoinInvoice, getInvoiceById } = require('../handlers/btcPayServ
 
 const paymentManagement = module.exports = (() => {
 
-    const isBitcoinInvoiceExpired = async (invoiceId) => {
+    const checkIfBitcoinInvoiceHasExpired = async (invoiceId) => {
         const invoice = await getInvoiceById(invoiceId)
         if (invoice.status === 'Expired') return true
         return false
@@ -24,7 +24,10 @@ const paymentManagement = module.exports = (() => {
 
         if (!isClientCurrencyBtc) throw new Error(`Client's currency is not Bitcoin`)
 
-        const isInvoiceExpired = external_uuid && external_uuid_type === `bitcoin` && await isBitcoinInvoiceExpired(external_uuid)
+        const isInvoiceExpired = (
+            external_uuid && external_uuid_type === `bitcoin` &&
+            await checkIfBitcoinInvoiceHasExpired(external_uuid)
+        )
         if (external_uuid && date_paid && !isInvoiceExpired) throw new Error(`An active invoice already exists`)
 
         const convertedAmount = Number(amount / 100)
@@ -64,8 +67,8 @@ const paymentManagement = module.exports = (() => {
     }
 
     return {
+        checkIfBitcoinInvoiceHasExpired,
         getBitcoinCheckoutUrl,
-        isBitcoinInvoiceExpired,
         processStripeInvoiceWithPayment,
         processBitcoinInvoiceCreation
     }

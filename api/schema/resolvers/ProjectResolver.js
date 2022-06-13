@@ -661,11 +661,8 @@ module.exports = {
         syncTogglProject: async (root, args, { models }) => {
             let project = await models.Project.findByPk(args.project_id)
             if (args.toggl_url) {
-                const toggl_url = args.toggl_url
-                const togglPropertiesFromUrl =
-                    toggl_url
-                        ? await apiModules.automations.getTogglPropertiesFromURL(toggl_url)
-                        : null
+                const { toggl_url } = args
+                const togglPropertiesFromUrl = await apiModules.automations.getTogglPropertiesFromURL(toggl_url)
                 const togglId = togglPropertiesFromUrl.togglId
                 if (!TOGGL.API_KEY) {
                     return new ApolloError('You need to setup a Toggl API KEY on the .env file', 2001)

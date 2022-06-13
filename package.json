@@ -1,6 +1,6 @@
 {
   "name": "project-trinary",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "private": true,
   "engines": {
     "node": "14.x"
@@ -30,6 +30,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "body-parser": "^1.19.0",
     "concurrently": "^6.2.2",
+    "connect-wwwhisper": "^0.1.21",
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
@@ -53,7 +54,7 @@
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
     "stripe": "^8.150.0",
-    "toggl-api": "^1.0.1",
+    "toggl-api": "https://github.com/setlife-network/node-toggl-api.git",
     "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
@@ -62,7 +63,10 @@
     "dev-server": "cross-env PORT=6001 nodemon server",
     "start": "node server",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "tests:unit": "react-scripts test",
+    "tests:e2e:local": "SITE_URL=localhost:6002 testcafe chrome src/tests/e2e/",
+    "tests:e2e:staging": "SITE_URL=https://trinary-staging.setlife.tech testcafe chrome src/tests/e2e/",
+    "tests:e2e:staging:args": "SITE_URL=https://trinary-staging.setlife.tech testcafe chrome",
     "eject": "react-scripts eject",
     "prebuild": "npx sequelize-cli db:migrate"
   },
@@ -83,6 +87,8 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "cross-env": "^7.0.2"
+    "cross-env": "^7.0.2",
+    "jest-watch-typeahead": "^0.6.5",
+    "testcafe": "^1.18.6"
   }
 }

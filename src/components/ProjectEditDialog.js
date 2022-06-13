@@ -87,56 +87,75 @@ const ProjectEditDialog = (props) => {
         setExpectedBudget(amount)
     }
     const handleDateChange = (date) => {
-        setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
+        if (date) {
+            setProjectDate(moment(date['_d']).format('YYYY-MM-DD'))
+        } else {
+            setProjectDate(null)
+        }
     }
     const handleEndDateChange = (date) => {
-        setProjectEndDate(moment(date['_d']).format('YYYY-MM-DD'))
+        if (date) {
+            setProjectEndDate(moment(date['_d']).format('YYYY-MM-DD'))
+        } else {
+            setProjectEndDate(null)
+        }
     }
     const handleTimeframeChange = (timeframe) => {
         setBudgetTimeframe(timeframe)
     }
     const onEditProject = async () => {
-        if (!verifyGithubURL(githubURL)) {
-            setEditProjectError('The Github URL is invalid')
-            setDisplayError(true)
-            return
-        }
-        if (togglURL) {
-            if (!verifyTogglURL(togglURL)) {
-                setEditProjectError(INVALID_TOGGL_URL_ERROR_MESSAGE)
+        try {
+            if (!verifyGithubURL(githubURL)) {
+                setEditProjectError('The Github URL is invalid')
                 setDisplayError(true)
                 return
             }
-        }
-        const projectInfoToEdit = {
-            project_id: project.id,
-            date: projectDate,
-            end_date: projectEndDate,
-            expected_budget: Number(expectedBudget),
-            expected_budget_timeframe: (
-                budgetTimeframe != null
-                    ? EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
-                    : null
-            ),
-            github_url: githubURL,
-            name: projectName,
-            toggl_url: togglURL,
-            is_active: projectIsActive
-        }
-        const projectEdited = await updateProject({ variables: projectInfoToEdit })
-        if (loadingUpdateProject) return <LoadingProgress/>
-        else if (projectEdited.errors) {
-            setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}  already exists`)
-            setDisplayError(true)
-        } else {
-            await syncTogglProject({
-                variables: {
-                    project_id: project.id,
-                    toggl_url: togglURL
+            if (togglURL) {
+                if (!verifyTogglURL(togglURL)) {
+                    setEditProjectError(INVALID_TOGGL_URL_ERROR_MESSAGE)
+                    setDisplayError(true)
+                    return
                 }
-            })
-            if (loadingTogglSync) return <LoadingProgress/>
-            onClose()
+            }
+            const projectInfoToEdit = {
+                project_id: project.id,
+                date: projectDate,
+                end_date: projectEndDate,
+                expected_budget: Number(expectedBudget),
+                expected_budget_timeframe: (
+                    budgetTimeframe != null
+                        ? EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].value
+                        : null
+                ),
+                github_url: githubURL,
+                name: projectName,
+                toggl_url: togglURL,
+                is_active: projectIsActive
+            }
+            const projectEdited = await updateProject({ variables: projectInfoToEdit })
+            if (loadingUpdateProject) return <LoadingProgress/>
+            else if (projectEdited.errors) {
+                setEditProjectError(`${Object.keys(projectEdited.errors[0].extensions.exception.fields)[0]}  already exists`)
+                setDisplayError(true)
+            } else {
+                await syncTogglProject({
+                    variables: {
+                        project_id: project.id,
+                        toggl_url: togglURL
+                    }
+                })
+                if (loadingTogglSync) return <LoadingProgress/>
+                onClose()
+            }
+        } catch (err) {
+            if (err == 'TypeError: Cannot convert undefined or null to object') {
+                setEditProjectError('Invalid date format')
+            } else if (err == 'Error: Response not successful: Received status code 400') {
+                setEditProjectError('There was an unexpected error, please try again')
+            } else {
+                setEditProjectError(err)
+            }
+            setDisplayError(true)
         }
     }
 
@@ -156,6 +175,8 @@ const ProjectEditDialog = (props) => {
         ) {
             setDisableEdit(true)
         } else if (!expectedBudget || !githubURL || !projectName) {
+            setDisableEdit(true)
+        } else if (!projectDate || !expectedBudget) {
             setDisableEdit(true)
         } else {
             setDisableEdit(false)
@@ -197,7 +218,7 @@ const ProjectEditDialog = (props) => {
                 <FormControl>
                     <Grid
                         container
-                        justify='space-between'
+                        justifyContent='space-between'
                         alignItems='center'
                     >
                         <Grid item xs={12} lg={12}>

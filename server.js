@@ -21,6 +21,12 @@ const app = express()
 const isProduction = process.env.NODE_ENV === 'production';
 const port = isProduction ? process.env.PORT : 6001;
 
+// Enable wwwhisper in production for password protection
+if (isProduction) {
+    var wwwhisper = require('connect-wwwhisper');
+    app.use(wwwhisper())
+}
+
 // Serve static assets
 app.use(express.static(__dirname + '/build'));
 

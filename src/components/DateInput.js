@@ -47,7 +47,7 @@ const DateInput = (props) => {
         } else if (years) {
             endingDate = moment(startDate).add(years, 'years')
         }
-        setEndDate(endingDate.toDate())
+        setEndDate(endingDate)
     }
 
     const renderWeeks = () => {

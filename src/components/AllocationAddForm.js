@@ -378,7 +378,7 @@ const AllocationAddForm = (props) => {
                 <DialogTitle>
                     {`Add Allocation`}
                 </DialogTitle>
-                <Grid container spacing={5} justify='center'>
+                <Grid container spacing={5} justifyContent='center'>
                     <Grid item xs={12}>
                         {project
                             ? (
@@ -400,6 +400,7 @@ const AllocationAddForm = (props) => {
                                     <AllocationClientSpecifics
                                         client={client}
                                         contributor={selectedContributor}
+                                        contributors={contributors}
                                         payment={payment}
                                         project={selectedProject}
                                         setNewAllocation={setNewAllocation}

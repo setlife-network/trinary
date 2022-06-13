@@ -12,7 +12,7 @@ class ClientListPage extends React.Component {
             <div>
                 <Grid
                     container
-                    justify='center'
+                    justifyContent='center'
                     className='ClientListPage'
                 >
                     <Grid item xs={12}>

@@ -6,8 +6,6 @@ const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules')
 const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants');
 
-const { isBitcoinInvoiceExpired, getBitcoinCheckoutUrl } = require('../../handlers/btcPayServer')
-
 module.exports = {
 
     Payment: {
@@ -35,12 +33,12 @@ module.exports = {
             return allocations[0].total_amount
         },
         isBitcoinInvoiceExpired: async (payment) => {
-            if ( payment.external_uuid && payment.external_uuid_type === 'bitcoin') {
-                return apiModules.paymentManagement.isBitcoinInvoiceExpired(payment.external_uuid)
+            if (payment.external_uuid && payment.external_uuid_type === 'bitcoin') {
+                return apiModules.paymentManagement.checkIfBitcoinInvoiceHasExpired(payment.external_uuid)
             }
         },
         bitcoinCheckoutUrl: async (payment) => {
-            if ( payment.external_uuid && payment.external_uuid_type === 'bitcoin') {
+            if (payment.external_uuid && payment.external_uuid_type === 'bitcoin') {
                 return apiModules.paymentManagement.getBitcoinCheckoutUrl(payment.external_uuid)
             }
         }

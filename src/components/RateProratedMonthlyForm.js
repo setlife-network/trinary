@@ -129,7 +129,7 @@ const RateProratedMonthlyForm = (props) => {
             </Grid>
             <Grid item xs={12}>
                 <Box my={3}>
-                    <Grid container justify='left' spacing={1}>
+                    <Grid container justifyContent='left' spacing={1}>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 label='Expected monthly hours'

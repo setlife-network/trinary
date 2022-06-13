@@ -10,6 +10,7 @@ module.exports = gql`
         github_id: String
         github_handle: String
         github_access_token: String
+        avatar_url: String
         allocations: [Allocation]
         permissions: [Permission]
         timeEntries: [TimeEntry]
@@ -27,6 +28,7 @@ module.exports = gql`
         external_data_url: String
         github_id: String
         github_handle: String
+        avatar_url: String
     }
 
     input UpdateContributorInput {
@@ -38,6 +40,7 @@ module.exports = gql`
         external_data_url: String
         github_id: String
         github_handle: String
+        avatar_url: String
     }
 
     type ContributorOrganizations {
