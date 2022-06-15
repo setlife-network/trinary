@@ -9,6 +9,10 @@ module.exports = gql`
         contributor_id: Int!
         total_expected_hours: Int
         currency: String
+        minimum_expected_hours: Int
+        minimum_hourly_rate: String
+        maximum_expected_hours: Int
+        maximum_hourly_rate: String
         contributor: Contributor
     }
 
@@ -19,6 +23,10 @@ module.exports = gql`
         type: String
         currency: String
         contributor_id: Int
+        minimum_expected_hours: Int
+        minimum_hourly_rate: String
+        maximum_expected_hours: Int
+        maximum_hourly_rate: String
     }
 
     type Query {
