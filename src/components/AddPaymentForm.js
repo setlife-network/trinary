@@ -71,10 +71,7 @@ const AddPaymentForm = (props) => {
             }
             const newPayment = await createPayment({ variables })
             if (loadingNewPayment) return <LoadingProgress/>
-            if (errorNewPayment) {
-                setCreatePaymentError(`${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`)
-                setDisplayError(true)
-            } else {
+            else {
                 const newPaymentId = newPayment.data.createPayment.id             
                 history.push(`/clients/${clientId}/payments/${newPaymentId}/update`)
             }

@@ -9,8 +9,7 @@ class EditPaymentPage extends React.Component {
 
     render() {
 
-        const { clientId } = this.props.match.params
-        const { paymentId } = this.props.match.params
+        const { clientId, paymentId } = this.props.match.params
 
         return (
             <Grid

@@ -279,7 +279,11 @@ const EditPaymentForm = (props) => {
                         {`Done`}
                     </Button>
                 </Grid>
-                <BtcInvoiceModal open={openInvoice} onClose={handleCloseInvoice} bitcoinCheckoutUrl={bitcoinCheckoutUrl}/>
+                <BtcInvoiceModal 
+                    open={openInvoice} 
+                    onClose={handleCloseInvoice} 
+                    bitcoinCheckoutUrl={bitcoinCheckoutUrl}
+                />
             </Grid>
             <Snackbar
                 open={displayAlert}

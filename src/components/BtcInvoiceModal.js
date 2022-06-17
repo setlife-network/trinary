@@ -15,8 +15,7 @@ export default function BtcInvoiceModal(props) {
                 onClose={props.onClose}
             >
                 <Box sx={modalStyle}>
-                    <iframe title='invoice' height='660px' src={`${props.bitcoinCheckoutUrl}`}>
-                    </iframe>
+                    <iframe title='invoice' height='660px' src={`${props.bitcoinCheckoutUrl}`}/>
                 </Box>
             </Modal>
         </>
