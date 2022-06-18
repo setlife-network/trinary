@@ -15,6 +15,11 @@ const paymentManagement = module.exports = (() => {
         return invoice.checkoutLink
     }
 
+    const getBitcoinInvoiceAmount = async (invoiceId) => {
+        const invoice = await getInvoiceById(invoiceId)
+        return Number(invoice.amount)
+    }
+
     const processBitcoinInvoiceCreation = async (paymentId) => {
         const payment = await db.models.Payment.findByPk(paymentId)
         const { amount, client_id, date_paid, external_uuid, external_uuid_type } = payment.dataValues
@@ -28,13 +33,16 @@ const paymentManagement = module.exports = (() => {
             external_uuid && external_uuid_type === `bitcoin` &&
             await checkIfBitcoinInvoiceHasExpired(external_uuid)
         )
-        if (external_uuid && date_paid && !isInvoiceExpired) throw new Error(`An active invoice already exists`)
-
+        
         const convertedAmount = Number(amount / 100)
 
         const amountInSats = client.dataValues.currency === `BTC` ? 
             Number((convertedAmount * 100000000).toFixed(0)) // 100M sats = 1 BTC
             : convertedAmount
+        
+        const isAmountUpdated = amountInSats != await getBitcoinInvoiceAmount(external_uuid)
+        
+        if (external_uuid && date_paid && !isInvoiceExpired && !isAmountUpdated) throw new Error(`An active invoice already exists`)
             
         return createBitcoinInvoice(amountInSats)
     }
