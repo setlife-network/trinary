@@ -51,10 +51,10 @@ const EditPaymentForm = (props) => {
     }] = useMutation(EDIT_PAYMENT)
 
     const [alertMessage, setAlertMessage] = useState('')
-    const [alertSeverity, setAlertSeverity] = useState();
+    const [alertSeverity, setAlertSeverity] = useState('');
     const [displayAlert, setDisplayAlert] = useState(false)
-    const [dateIncurred, setDateIncurred] = useState('')
-    const [datePaid, setDatePaid] = useState('')
+    const [dateIncurred, setDateIncurred] = useState(null)
+    const [datePaid, setDatePaid] = useState(null)
     const [paymentAmount, setPaymentAmount] = useState(null)
     const [openInvoice, setOpenInvoice] = useState(false)
     const [bitcoinCheckoutUrl, setBitcoinCheckoutUrl] = useState()
@@ -91,7 +91,7 @@ const EditPaymentForm = (props) => {
     if (error) return `Error! ${errorPayment}`
 
     const { getPaymentById, getClientById } = data
-    const formattedDatePaid = moment.utc(parseInt(getPaymentById.date_paid, 10)).format('YYYY-MM-DD')
+    const formattedDatePaid = getPaymentById.date_paid && moment.utc(parseInt(getPaymentById.date_paid, 10)).format('YYYY-MM-DD')
     const formattedDateIncurred = moment.utc(parseInt(getPaymentById.date_incurred, 10)).format('YYYY-MM-DD')
 
     const handleDisplayAlert = (message, severity) => {
