@@ -137,6 +137,17 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         })
 })
 
+app.post('/api/webhooks/btcps/invoice/paid', async (req, res) => {
+    const paidInvoiceDetails = req.body
+    try {
+        await apiModules.budgeting.updatePaymentFromBtcInvoice({
+            paidInvoiceDetails: paidInvoiceDetails
+        })
+    } catch (err) {
+        console.log(`An error occurred: ${err}`)
+    }
+})
+
 app.post('/api/webhooks/invoice/paid', async (req, res) => {
     const invoiceObjectPayload = req.body.data.object
     try {

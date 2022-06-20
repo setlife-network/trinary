@@ -127,6 +127,22 @@ const budgeting = module.exports = (() => {
         }
     }
 
+    const updatePaymentFromBtcInvoice = async ({ paidInvoiceDetails }) => {
+        const updatedAttributes = {}
+        const existingPayment = await getPaymentWithExternalId({ id: paidInvoiceDetails.invoiceId })
+
+        if (existingPayment) {
+            updatedAttributes.date_paid = moment.unix(paidInvoiceDetails.timestamp).format('YYYY-MM-DD') 
+        } else throw ('Payment does not exist')
+        await db.models.Payment.update({
+            ...updatedAttributes
+        }, {
+            where: {
+                id: existingPayment.id
+            }
+        })
+    }
+
     const updatePaymentFromStripeInvoice = async ({ stripeInvoice }) => {
         const existingPayment = await getPaymentWithExternalId({ id: stripeInvoice.id })
 
@@ -171,6 +187,7 @@ const budgeting = module.exports = (() => {
         getPaymentWithId,
         getPaymentWithExternalId,
         processPaymentFromStripeInvoice,
+        updatePaymentFromBtcInvoice,
         updatePaymentFromStripeInvoice,
     }
 })()
