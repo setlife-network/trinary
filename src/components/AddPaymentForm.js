@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery, useMutation } from '@apollo/client'
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 import {
     Button,
@@ -71,11 +71,9 @@ const AddPaymentForm = (props) => {
             }
             const newPayment = await createPayment({ variables })
             if (loadingNewPayment) return <LoadingProgress/>
-            if (newPayment.errors) {
-                setCreatePaymentError(`${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`)
-                setDisplayError(true)
-            } else {
-                history.push(`/clients/${clientId}`)
+            else {
+                const newPaymentId = newPayment.data.createPayment.id             
+                history.push(`/clients/${clientId}/payments/${newPaymentId}/update`)
             }
         } catch (err) {
             if (err == 'Error: Invalid date format: date_incurred' || err == 'Error: Invalid date format: date_paid') {
