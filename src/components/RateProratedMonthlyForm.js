@@ -30,7 +30,6 @@ const RateProratedMonthlyForm = (props) => {
 
     const [monthlyHoursInput, setMonthlyhoursInput] = useState(null)
     const [currentRateInput, setCurrentRateInput] = useState(null)
-    const [errorMessage, setErrorMessage] = useState('')
     const [error, setError] = useState(false)
     const [rateCurrency, setRateCurrency] = useState(null)
     const [totalAmount, setTotalAmount] = useState(null)
@@ -100,14 +99,12 @@ const RateProratedMonthlyForm = (props) => {
     }
 
     const handleHoursChange = (value, monthlyOrRate) => {
-        if (value % 1 == 0) {
-            setError(false)
-            setErrorMessage('')
-        } else {
-            setError(true)
-            setErrorMessage('Decimals not allowed')
-        }
         if (monthlyOrRate) {
+            if (value % 1 == 0) {
+                setError(null)
+            } else {
+                setError('Decimals not allowed')
+            }
             setMonthlyhoursInput(
                 validatePositiveNumbers(value, monthlyHoursInput)
             )
@@ -147,6 +144,7 @@ const RateProratedMonthlyForm = (props) => {
                                 value={`${monthlyHoursInput}`}
                                 fullWidth
                                 error={error}
+                                helperText={error}
                                 onChange={(event) => handleHoursChange(event.target.value, true)}
                             />
                         </Grid>
@@ -156,7 +154,6 @@ const RateProratedMonthlyForm = (props) => {
                                 variant='filled'
                                 value={`${currentRateInput}`}
                                 fullWidth
-                                error={error}
                                 onChange={(event) => handleHoursChange(event.target.value)}
                             />
                         </Grid>
@@ -166,8 +163,6 @@ const RateProratedMonthlyForm = (props) => {
                                 variant='filled'
                                 value={`${paymentAmount}`}
                                 fullWidth
-                                error={error}
-                                helperText={errorMessage}
                             />
                         </Grid>
                     </Grid>
