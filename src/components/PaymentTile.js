@@ -93,7 +93,9 @@ const PaymentTile = (props) => {
 
     const { allocations } = dataPaymentAllocations.getPaymentById
     const orderedAllocations = orderBy(allocations, ['project.name'], ['desc'])
-    const filteredAllocations = project ? filter(allocations, ['project.name', project.name]) : null
+    const filteredAllocations = project 
+        ? filter(allocations, ['project.name', project.name]) 
+        : null
     const totalAllocated = formatAmount({
         amount: dataTotalAllocated.getPaymentById.totalAllocated / 100,
         currencyInformation: currencyInformation
@@ -103,7 +105,9 @@ const PaymentTile = (props) => {
         currencyInformation: currencyInformation
     })
     const numberOfContributorsAllocated = allocations.length
-    const numberOfFilteredContributorsAllocated = project ? filteredAllocations.length : null
+    const numberOfFilteredContributorsAllocated = project 
+        ? filteredAllocations.length 
+        : null
     
     const totalProjectAllocations = () => {
         let total = 0
@@ -224,7 +228,7 @@ const PaymentTile = (props) => {
                 <Accordion>
                     <AccordionSummary
                         expandIcon={
-                            <Grid item xs={1}>
+                            <Grid item xs={0.5}>
                                 <ExpandMoreIcon />
                             </Grid>
                         }
@@ -265,15 +269,22 @@ const PaymentTile = (props) => {
                                     color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
                                 >
                                     <Typography variant='subtitle2'>
-                                        {`${project ? totalAllocatedContributors : totalAllocated} allocated`}
-                                        <br/>
-                                        {`to ${project ? numberOfFilteredContributorsAllocated : numberOfContributorsAllocated} ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}`}
+                                        {`${project ? totalAllocatedContributors : totalAllocated} allocated `}
+                                        {
+                                            (
+                                                `to 
+                                                ${project 
+                                                    ? numberOfFilteredContributorsAllocated 
+                                                    : numberOfContributorsAllocated} 
+                                                ${numberOfContributorsAllocated == 1 || numberOfFilteredContributorsAllocated == 1
+                                                    ? 'contributor' 
+                                                    : 'contributors'}`
+                                            )
+                                        }
                                     </Typography>
                                     {project && (calculateAllocationsOtherProjects() > 0 ) &&
-                                    <Typography variant='subtitle2'>
-                                        {`${totalAllocatedOtherProjects} allocated`}
-                                        <br/>
-                                        {`to other projects`}
+                                    <Typography variant='subtitle2' color='secondary'>
+                                        {`${totalAllocatedOtherProjects} to other projects`}
                                     </Typography>
                                     }
                                 </Box>
