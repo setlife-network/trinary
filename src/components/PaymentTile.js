@@ -274,12 +274,22 @@ const PaymentTile = (props) => {
                                     </Tooltip>
                                 </Grid>
                                 <Grid item xs={2} align='right'>
-                                    <Button
-                                        color='primary'
-                                        onClick={() => handleDeletePayment(true)}
+                                    <Tooltip
+                                        title='This payment cannot be deleted because it has linked Allocations'
+                                        placement='top'
+                                        disableHoverListener={allocations.length > 0 ? false : true}
                                     >
-                                        <DeleteOutlinedIcon color='primary'/>
-                                    </Button>
+                                        <span>
+                                            <Button
+                                                color='primary'
+                                                onClick={() => handleDeletePayment(true)}
+                                                disabled={allocations.length ? true : false}
+                                            >
+                                                <DeleteOutlinedIcon />
+                                            </Button>
+                                        </span>
+                                    </Tooltip>
+
                                 </Grid>
                             </Grid>
                         </Box>
