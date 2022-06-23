@@ -9,6 +9,12 @@ const paymentManagement = module.exports = (() => {
         if (invoice.status === 'Expired') return true
         return false
     }
+
+    const checkIfBitcoinInvoiceIsPaid = async (invoiceId) => {
+        const invoice = await getInvoiceById(invoiceId)
+        if (invoice.status === 'Settled') return true
+        return false
+    }
     
     const getBitcoinCheckoutUrl = async (invoiceId) => {
         const invoice = await getInvoiceById(invoiceId)
@@ -68,6 +74,7 @@ const paymentManagement = module.exports = (() => {
 
     return {
         checkIfBitcoinInvoiceHasExpired,
+        checkIfBitcoinInvoiceIsPaid,
         getBitcoinCheckoutUrl,
         processStripeInvoiceWithPayment,
         processBitcoinInvoiceCreation
