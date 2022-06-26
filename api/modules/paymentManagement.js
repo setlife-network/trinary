@@ -25,6 +25,8 @@ const paymentManagement = module.exports = (() => {
         const payment = await db.models.Payment.findByPk(paymentId)
         const { amount, client_id, date_paid, external_uuid, external_uuid_type } = payment.dataValues
 
+        if (date_paid) throw new Error(`Payment has already been made`)
+
         const client = await db.models.Client.findByPk(client_id)
         const isClientCurrencyBtc = client.dataValues.currency === `BTC` || client.dataValues.currency === `SATS`
 
