@@ -5,7 +5,6 @@ const { fn, col, Op } = require('sequelize')
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules')
 const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants');
-const modules = require('../../modules');
 
 module.exports = {
 
@@ -115,7 +114,7 @@ module.exports = {
             const payment = await models.Payment.findByPk(id)
             const { external_uuid, external_uuid_type } = payment.dataValues 
             if (external_uuid && external_uuid_type === 'bitcoin') {
-                if (await modules.paymentManagement.checkIfBitcoinInvoiceIsPaid(external_uuid)) {
+                if (await apiModules.paymentManagement.checkIfBitcoinInvoiceIsPaid(external_uuid)) {
                     throw new Error('No further changes can be made to this payment')  
                 } 
             }
