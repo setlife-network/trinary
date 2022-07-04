@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery, useMutation } from '@apollo/client'
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 import {
-    Box,
     Button,
     FormControl,
     Grid,
-    Snackbar,
-    TextField,
-    Typography
+    Snackbar
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import {
@@ -65,19 +62,28 @@ const AddPaymentForm = (props) => {
         setDisplayError(false)
     }
     const handleCreatePayment = async () => {
-        const variables = {
-            amount: paymentAmount,
-            client_id: Number(clientId),
-            date_incurred: dateIncurred,
-            date_paid: datePaid
-        }
-        const newPayment = await createPayment({ variables })
-        if (loadingNewPayment) return <LoadingProgress/>
-        if (newPayment.errors) {
-            setCreatePaymentError(`${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`)
+        try {
+            const variables = {
+                amount: paymentAmount,
+                client_id: Number(clientId),
+                date_incurred: dateIncurred,
+                date_paid: datePaid
+            }
+            const newPayment = await createPayment({ variables })
+            if (loadingNewPayment) return <LoadingProgress/>
+            else {
+                const newPaymentId = newPayment.data.createPayment.id             
+                history.push(`/clients/${clientId}/payments/${newPaymentId}/update`)
+            }
+        } catch (err) {
+            if (err == 'Error: Invalid date format: date_incurred' || err == 'Error: Invalid date format: date_paid') {
+                setCreatePaymentError('Invalid date format')
+            } else if (err == 'Error: Response not successful: Received status code 400') {
+                setCreatePaymentError('There was an unexpected error, please try again')
+            } else {
+                setCreatePaymentError(err)
+            }
             setDisplayError(true)
-        } else {
-            history.push(`/clients/${clientId}`)
         }
     }
     const handleDateIncurredChange = (date) => {
@@ -85,6 +91,7 @@ const AddPaymentForm = (props) => {
             setDateIncurred(moment(date['_d']).format('YYYY-MM-DD'))
         } else {
             setDateIncurred(null)
+            setDisableAdd(true)
         }
     }
     const handleDatePaidChange = (date) => {
@@ -95,9 +102,14 @@ const AddPaymentForm = (props) => {
         }
     }
     const handlePaymentAmountChange = (input) => {
-        setInvalidPaymentAmountInput(false)
-        const amount = Number(input.replace(/\D/g, ''))
-        setPaymentAmount(amount)
+        if (input) {
+            setInvalidPaymentAmountInput(false)
+            const amount = Number(input.replace(/\D/g, ''))
+            setPaymentAmount(amount)
+        } else {
+            setPaymentAmount(null)
+            setDisableAdd(true)
+        }
     }
 
     const [createPaymentError, setCreatePaymentError] = useState('')
@@ -131,7 +143,7 @@ const AddPaymentForm = (props) => {
             <Grid container spacing={5}>
                 <Grid item xs={12}>
                     <Grid container>
-                        <Grid item xs={12} sm={6} lg={4}>
+                        <Grid item xs={12} sm={6} lg={4} data-testid='add-payment-amount-field'>
                             <CurrencyTextField
                                 fullWidth
                                 label='Payment amount'
@@ -146,7 +158,7 @@ const AddPaymentForm = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6} lg={4}>
+                <Grid item xs={12} sm={6} lg={4} data-testid='add-payment-date-incurred-field'>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             fullWidth
@@ -160,7 +172,7 @@ const AddPaymentForm = (props) => {
                         />
                     </MuiPickersUtilsProvider>
                 </Grid>
-                <Grid item xs={12} sm={6} lg={4}>
+                <Grid item xs={12} sm={6} lg={4} data-testid='add-payment-date-paid-field'>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             fullWidth
@@ -180,6 +192,7 @@ const AddPaymentForm = (props) => {
                         color='primary'
                         disabled={disableAdd}
                         onClick={handleCreatePayment}
+                        data-testid='add-payment-submit-button'
                     >
                         {`Add Payment`}
                     </Button>

@@ -30,6 +30,7 @@ const RateProratedMonthlyForm = (props) => {
 
     const [monthlyHoursInput, setMonthlyhoursInput] = useState(null)
     const [currentRateInput, setCurrentRateInput] = useState(null)
+    const [error, setError] = useState(false)
     const [rateCurrency, setRateCurrency] = useState(null)
     const [totalAmount, setTotalAmount] = useState(null)
     const [totalWeeks, setTotalWeeks] = useState(null)
@@ -99,6 +100,11 @@ const RateProratedMonthlyForm = (props) => {
 
     const handleHoursChange = (value, monthlyOrRate) => {
         if (monthlyOrRate) {
+            if (value % 1 == 0) {
+                setError(null)
+            } else {
+                setError('Decimals not allowed')
+            }
             setMonthlyhoursInput(
                 validatePositiveNumbers(value, monthlyHoursInput)
             )
@@ -129,7 +135,7 @@ const RateProratedMonthlyForm = (props) => {
             </Grid>
             <Grid item xs={12}>
                 <Box my={3}>
-                    <Grid container justify='left' spacing={1}>
+                    <Grid container justifyContent='left' spacing={1}>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 label='Expected monthly hours'
@@ -137,6 +143,8 @@ const RateProratedMonthlyForm = (props) => {
                                 defaultValue='0'
                                 value={`${monthlyHoursInput}`}
                                 fullWidth
+                                error={error}
+                                helperText={error}
                                 onChange={(event) => handleHoursChange(event.target.value, true)}
                             />
                         </Grid>

@@ -15,7 +15,7 @@ class AddProjectPage extends React.Component {
         return (
             <Grid
                 container
-                justify='center'
+                justifyContent='center'
                 className='AddProjectPage'
             >
                 <Grid item align='center' xs={10}>

@@ -45,7 +45,7 @@ const ClientPaymentsManager = ({
         <Box my={3} mx={0} className='ClientPaymentsManager'>
             <Grid
                 container
-                justify='space-between'
+                justifyContent='space-between'
                 alignItems='center'
                 spacing={1}
             >

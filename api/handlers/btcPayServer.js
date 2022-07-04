@@ -3,9 +3,11 @@ const {
     BTCPAYSERVER
 } = require('../config/credentials')
 const { BTCPAYSERVER_API_ROOT } = require('../config/constants')
+const crypto = require('crypto')
 
 const BTCPAYSERVER_API_KEY = BTCPAYSERVER.API_KEY;
 const BTCPAYSERVER_STORE_ID = BTCPAYSERVER.STORE_ID;
+const BTCPAYSERVER_SECRET = BTCPAYSERVER.SECRET;
 
 let config = {
     headers: {
@@ -62,8 +64,20 @@ const getInvoiceById = async (invoiceId) => {
     return response.data
 }
 
+const webhookSignatureIsValid = (body, signature) => {
+    const expectedSignature = 'sha256=' + crypto.createHmac(
+        'sha256', 
+        Buffer.from(BTCPAYSERVER_SECRET)
+    )
+        .update(JSON.stringify(body, null, 2))
+        .digest('hex')
+    if (signature === expectedSignature) return true
+    return false
+}
+
 module.exports = { 
     createBitcoinInvoice, 
     getAllInvoices, 
-    getInvoiceById 
+    getInvoiceById,
+    webhookSignatureIsValid
 };

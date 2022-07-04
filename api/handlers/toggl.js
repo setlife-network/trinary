@@ -1,9 +1,6 @@
 const TogglClient = require('toggl-api');
 const {
-    TOGGL
-} = require('../config/credentials')
-const {
-    USER_AGENT
+    TOGGL,
 } = require('../config/credentials')
 
 const toggl = module.exports = (() => {
@@ -13,7 +10,7 @@ const toggl = module.exports = (() => {
         return new Promise((resolve, reject) => {
             togglClient.getProjectData(params.projectId, (err, projectData) => {
                 if (projectData) {
-                    resolve(projectData)
+                    return resolve(projectData)
                 }
                 reject(err)
             })
@@ -31,7 +28,7 @@ const toggl = module.exports = (() => {
                             projectTimeEntries.push(t)
                         }
                     })
-                    resolve(projectTimeEntries)
+                    return resolve(projectTimeEntries)
                 }
                 reject(err)
             })
@@ -43,7 +40,7 @@ const toggl = module.exports = (() => {
         return new Promise((resolve, reject) => {
             togglClient.getWorkspaceProjects(params.wId, (err, projects) => {
                 if (err) {
-                    reject(err)
+                    return reject(err)
                 }
                 resolve(projects)
             })
@@ -55,7 +52,7 @@ const toggl = module.exports = (() => {
         return new Promise((resolve, reject) => {
             togglClient.getWorkspaceData(params.wId, (err, workspaces) => {
                 if (err) {
-                    reject(err)
+                    return reject(err)
                 }
                 resolve(workspaces)
             })
@@ -65,7 +62,6 @@ const toggl = module.exports = (() => {
     const fetchWorkspaceTimeEntries = (params) => {
         const togglClient = new TogglClient({ apiToken: TOGGL.API_KEY })
         const options = {
-            user_agent: USER_AGENT,
             workspace_id: params.wId,
             project_ids: params.pId,
             since: params.since,
@@ -75,7 +71,7 @@ const toggl = module.exports = (() => {
         return new Promise((resolve, reject) => {
             togglClient.detailedReport(options, (err, report) => {
                 if (err) {
-                    reject(err)
+                    return reject(err)
                 }
                 if (report) {
                     resolve(report.data)
@@ -91,7 +87,7 @@ const toggl = module.exports = (() => {
         return new Promise((resolve, reject) => {
             togglClient.getUserData((since = 0), (err, userData) => {
                 if (err) {
-                    reject(err)
+                    return reject(err)
                 }
                 resolve(userData)
             })

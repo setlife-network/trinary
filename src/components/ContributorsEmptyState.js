@@ -12,7 +12,7 @@ const ContributorsEmptyState = (props) => {
     return (
         <Grid
             container
-            justify='center'
+            justifyContent='center'
             className='ContributorsEmptyState EmptyState'
         >
             <Box mt={2}>

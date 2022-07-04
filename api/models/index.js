@@ -47,6 +47,7 @@ const db = {
         Permission: require('./Permission')(sequelize),
         Project: require('./Project')(sequelize),
         Rate: require('./Rate')(sequelize),
+        Role: require('./Role')(sequelize),
         TimeEntry: require('./TimeEntry')(sequelize),
     }
 };
@@ -61,7 +62,8 @@ const associations = ({
     Payment, 
     Permission, 
     Project, 
-    Rate, 
+    Rate,
+    Role,
     TimeEntry
 }) => {
     Client.hasMany(Payment, { foreignKey: 'client_id' });
@@ -79,6 +81,7 @@ const associations = ({
     Project.hasMany(TimeEntry, { foreignKey: 'project_id' })
     Rate.hasMany(Allocation, { foreignKey: 'rate_id' })
     Rate.belongsTo(Contributor, { foreignKey: 'contributor_id' })
+    Role.hasMany(Rate, { foreignKey: 'role_id' })
 }
 
 associations(db.models)
