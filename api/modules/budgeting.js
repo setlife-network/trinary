@@ -133,7 +133,10 @@ const budgeting = module.exports = (() => {
 
         if (existingPayment) {
             updatedAttributes.date_paid = moment.unix(paidInvoiceDetails.timestamp).format('YYYY-MM-DD') 
-        } else throw ('Payment does not exist')
+        } else {
+            throw ('Payment does not exist')
+        }
+        
         await db.models.Payment.update({
             ...updatedAttributes
         }, {
