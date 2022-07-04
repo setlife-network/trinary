@@ -9,6 +9,12 @@ const paymentManagement = module.exports = (() => {
         if (invoice.status === 'Expired') return true
         return false
     }
+
+    const checkIfBitcoinInvoiceIsPaid = async (invoiceId) => {
+        const invoice = await getInvoiceById(invoiceId)
+        if (invoice.status === 'Settled') return true
+        return false
+    }
     
     const getBitcoinCheckoutUrl = async (invoiceId) => {
         const invoice = await getInvoiceById(invoiceId)
@@ -29,6 +35,8 @@ const paymentManagement = module.exports = (() => {
             external_uuid, 
             external_uuid_type 
         } = payment.dataValues
+
+        if (date_paid) throw new Error(`Payment has already been made`)
 
         const client = await db.models.Client.findByPk(client_id)
         const isClientCurrencyBtc = client.dataValues.currency === `BTC` || client.dataValues.currency === `SATS`
@@ -82,6 +90,7 @@ const paymentManagement = module.exports = (() => {
 
     return {
         checkIfBitcoinInvoiceHasExpired,
+        checkIfBitcoinInvoiceIsPaid,
         getBitcoinCheckoutUrl,
         processStripeInvoiceWithPayment,
         processBitcoinInvoiceCreation
