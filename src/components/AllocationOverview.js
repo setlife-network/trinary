@@ -22,7 +22,7 @@ import LoadingProgress from './LoadingProgress'
 import { GET_ALLOCATIONS, GET_ALLOCATION_INFO } from '../operations/queries/AllocationQueries'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/ClientQueries'
 import { GET_CONTRIBUTORS, GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
-import { GET_PAYMENT_ALLOCATIONS } from '../operations/queries/PaymentQueries'
+import { GET_PAYMENT_ALLOCATIONS, GET_PAYMENT_TOTAL_ALLOCATED } from '../operations/queries/PaymentQueries'
 import { GET_PROJECT_CONTRIBUTORS, GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { DELETE_ALLOCATION, UPDATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
@@ -107,6 +107,16 @@ const AllocationOverview = (props) => {
             variables: {
                 id: contributorAllocation ? contributorAllocation.project.id : null
             }
+        }, {
+            query: GET_PAYMENT_TOTAL_ALLOCATED,
+            variables: {
+                paymentId: updatedAllocationPayment ? updatedAllocationPayment.id : null
+            }
+        }, {
+            query: GET_PAYMENT_ALLOCATIONS,
+            variables: {
+                paymentId: updatedAllocationPayment ? updatedAllocationPayment.id : null
+            }
         }]
     })
 
@@ -120,6 +130,11 @@ const AllocationOverview = (props) => {
             query: GET_CONTRIBUTOR_ALLOCATIONS,
             variables: {
                 id: contributorAllocation ? contributorAllocation.contributor.id : null
+            }
+        }, {
+            query: GET_PAYMENT_TOTAL_ALLOCATED,
+            variables: {
+                paymentId: updatedAllocationPayment ? updatedAllocationPayment.id : null
             }
         }]
     })
