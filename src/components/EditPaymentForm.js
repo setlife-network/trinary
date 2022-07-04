@@ -121,7 +121,6 @@ const EditPaymentForm = (props) => {
             await editPayment({ variables })
             handleDisplayAlert('Payment Updated Successfully', 'success')
         } catch {
-            setDisableAdd(false)
             handleDisplayAlert('Error Updating Payment', 'error')
         }
     }
