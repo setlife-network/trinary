@@ -75,9 +75,11 @@ const RateProratedMonthlyForm = (props) => {
             hourly_rate: currentRateInput,
             total_expected_hours: monthlyHoursInput,
             total_amount: totalAmount * 100,
+            minimum_expected_hours: minimumExpectedHours,
+            maximum_expected_hours: maximumExpectedHours,
             type: 'prorated_monthly'
         })
-    }, [totalAmount])
+    }, [totalAmount, minimumExpectedHours, maximumExpectedHours])
 
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
