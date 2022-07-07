@@ -191,6 +191,18 @@ const AllocationOverview = (props) => {
                 {
                     hourly_rate: rate.hourly_rate.toString(),
                     total_expected_hours: Number(rate.total_expected_hours),
+                    minimum_expected_hours: rate.minimum_expected_hours 
+                        ? Number(rate.minimum_expected_hours)
+                        : null,
+                    maximum_expected_hours: rate.maximum_expected_hours
+                        ? Number(rate.maximum_expected_hours)
+                        : null,
+                    minimum_hourly_rate: rate.minimum_hourly_rate
+                        ? rate.minimum_hourly_rate.toString() 
+                        : null,
+                    maximum_hourly_rate: rate.maximum_hourly_rate
+                        ? rate.maximum_hourly_rate.toString() 
+                        : null,
                     type: rate.type,
                     currency: selectedCurrency
                 }
@@ -203,6 +215,18 @@ const AllocationOverview = (props) => {
                     variables: {
                         hourly_rate: rate.hourly_rate.toString(),
                         total_expected_hours: Number(rate.total_expected_hours),
+                        minimum_expected_hours: rate.minimum_expected_hours 
+                            ? Number(rate.minimum_expected_hours)
+                            : null,
+                        maximum_expected_hours: rate.maximum_expected_hours
+                            ? Number(rate.maximum_expected_hours)
+                            : null,
+                        minimum_hourly_rate: rate.minimum_hourly_rate
+                            ? rate.minimum_hourly_rate.toString() 
+                            : null,
+                        maximum_hourly_rate: rate.maximum_hourly_rate
+                            ? rate.maximum_hourly_rate.toString() 
+                            : null,
                         type: rate.type,
                         currency: selectedCurrency,
                         contributor_id: contributor.id
