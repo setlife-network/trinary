@@ -40,12 +40,12 @@ const Advanced = (props) => {
         <Grid container className='Advanced'>
             <Box
                 my={3}
-                // display={
-                //     {
-                //         xs: 'none',
-                //         sm: 'block'
-                //     }
-                // }
+                display={
+                    {
+                        xs: 'none',
+                        sm: 'block'
+                    }
+                }
             >
                 <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -72,8 +72,6 @@ const Advanced = (props) => {
                                                     : ''
                                                 }`}
                                                 fullWidth
-                                                // error={error}
-                                                // helperText={error}
                                                 onChange={(event) => handleRateChange(event.target.value, 'minimum_expected')}
                                             />
                                         </Grid>
@@ -88,8 +86,6 @@ const Advanced = (props) => {
                                                     : ''
                                                 }`}
                                                 fullWidth
-                                                // error={error}
-                                                // helperText={error}
                                                 onChange={(event) => handleRateChange(event.target.value, 'maximum_expected')}
                                             />
                                         </Grid>
@@ -104,8 +100,6 @@ const Advanced = (props) => {
                                                     : ''
                                                 }`}
                                                 fullWidth
-                                                // error={error}
-                                                // helperText={error}
                                                 onChange={(event) => handleRateChange(event.target.value, 'minimum_rate')}
                                             />
                                         </Grid>
@@ -120,8 +114,6 @@ const Advanced = (props) => {
                                                     : ''
                                                 }`}
                                                 fullWidth
-                                                // error={error}
-                                                // helperText={error}
                                                 onChange={(event) => handleRateChange(event.target.value, 'maximum_rate')}
                                             />
                                         </Grid>
