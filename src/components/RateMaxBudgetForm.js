@@ -62,8 +62,8 @@ const RateMaxBudgetForm = (props) => {
         setNewAllocationRate({
             hourly_rate: currentRateInput,
             total_amount: totalAmount,
-            minimumHourlyRate: minimumHourlyRate,
-            maximumHourlyRate: maximumHourlyRate,
+            minimum_hourly_rate: minimumHourlyRate,
+            maximum_hourly_rate: maximumHourlyRate,
             type: 'max_budget',
         })
     }, [totalAmount, currentRateInput, minimumHourlyRate, maximumHourlyRate])
