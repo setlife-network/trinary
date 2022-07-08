@@ -37,6 +37,10 @@ const clientManagement = module.exports = (() => {
         try {
             const { createFields } = params
 
+            if (!createFields.email) {
+                createFields.email = null
+            }
+
             const createdClient = await db.models.Client.create({
                 ...createFields
             })
