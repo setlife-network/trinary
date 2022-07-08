@@ -140,7 +140,6 @@ const PaymentTile = (props) => {
             currencyInformation
         } = props
         const projects = []
-        let projectTitle = null
 
         return allocations.map((a, i) => {
             const {
@@ -156,11 +155,10 @@ const PaymentTile = (props) => {
                 currencyInformation: currencyInformation
             })
 
+            let projectTitle = null
             if (!projects.includes(projectName) && !project) {
                 projects.push(projectName)
                 projectTitle = projectName
-            } else {
-                projectTitle = null
             }
 
             return (
