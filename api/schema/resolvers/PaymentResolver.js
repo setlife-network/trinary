@@ -111,6 +111,13 @@ module.exports = {
                 date_incurred: updateFields['date_incurred'],
                 date_paid: updateFields['date_paid']
             })
+            const payment = await models.Payment.findByPk(id)
+            const { external_uuid, external_uuid_type } = payment.dataValues 
+            if (external_uuid && external_uuid_type === 'bitcoin') {
+                if (await apiModules.paymentManagement.checkIfBitcoinInvoiceIsPaid(external_uuid)) {
+                    throw new Error('No further changes can be made to this payment')  
+                } 
+            }
             await models.Payment.update({
                 ...updateFields
             }, {

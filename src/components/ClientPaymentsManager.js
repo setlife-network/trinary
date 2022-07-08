@@ -21,6 +21,7 @@ const ClientPaymentsManager = ({
     const history = useHistory()
 
     const { loading, error, data } = useQuery(GET_CLIENT_TOTAL_PAID, {
+        fetchPolicy: 'cache-and-network',
         variables: {
             id: Number(clientId),
             fromDate: null,
@@ -29,7 +30,6 @@ const ClientPaymentsManager = ({
     })
     if (loading) return <LoadingProgress/>
     if (error) return `Error! ${error.message}`
-
     const { getClientById } = data
 
     const currencyInformation = selectCurrencyInformation({

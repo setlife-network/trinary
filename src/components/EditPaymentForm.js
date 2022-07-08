@@ -18,6 +18,7 @@ import MomentUtils from '@date-io/moment'
 
 import LoadingProgress from './LoadingProgress'
 import BtcInvoiceModal from './BtcInvoiceModal'
+import { GET_CLIENT_TOTAL_PAID } from '../operations/queries/ClientQueries'
 import { GET_PAYMENT_DETAILS } from '../operations/queries/PaymentQueries'
 import { EDIT_PAYMENT, CREATE_BITCOIN_INVOICE } from '../operations/mutations/PaymentMutations'
 import {
@@ -48,7 +49,11 @@ const EditPaymentForm = (props) => {
         dataPayment,
         loadingPayment,
         errorPayment
-    }] = useMutation(EDIT_PAYMENT)
+    }] = useMutation(EDIT_PAYMENT, {
+        refetchQueries: [
+            GET_CLIENT_TOTAL_PAID
+        ]
+    })
 
     const [alertMessage, setAlertMessage] = useState('')
     const [alertSeverity, setAlertSeverity] = useState('');
@@ -121,7 +126,6 @@ const EditPaymentForm = (props) => {
             await editPayment({ variables })
             handleDisplayAlert('Payment Updated Successfully', 'success')
         } catch {
-            setDisableAdd(false)
             handleDisplayAlert('Error Updating Payment', 'error')
         }
     }

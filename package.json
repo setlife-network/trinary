@@ -34,6 +34,7 @@
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.0.1",

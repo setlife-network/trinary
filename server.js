@@ -12,6 +12,7 @@ const schema = require('./api/schema')
 const db = require('./api/models');
 const apiModules = require('./api/modules');
 const github = require('./api/handlers/github')
+const btcPayServer = require('./api/handlers/btcPayServer')
 
 const { GITHUB } = require('./api/config/credentials')
 const { SITE_ROOT } = require('./api/config/constants')
@@ -135,6 +136,20 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         .catch(err => {
             console.log('An error ocurred ' + err);
         })
+})
+
+app.post('/api/webhooks/btcps/invoice/paid', async (req, res) => {
+    try {
+        if (!btcPayServer.webhookSignatureIsValid(
+            req.body, 
+            req.headers['btcpay-sig']
+        )) throw 'Signature Invalid'
+        await apiModules.budgeting.updatePaymentFromBtcInvoice({
+            paidInvoiceDetails: req.body
+        })
+    } catch (err) {
+        console.log(`An error occurred: ${err}`)
+    }
 })
 
 app.post('/api/webhooks/invoice/paid', async (req, res) => {

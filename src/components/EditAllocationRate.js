@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useMutation, useQuery } from '@apollo/client'
 import {
     Box,
     Button,
@@ -7,17 +6,9 @@ import {
     Grid
 } from '@material-ui/core/'
 import moment from 'moment'
-import { findKey } from 'lodash'
 
-import LoadingProgress from './LoadingProgress'
 import RateProratedMonthlyForm from './RateProratedMonthlyForm'
 import RateMaxBudgetForm from './RateMaxBudgetForm'
-import {
-    GET_CONTRIBUTOR_ALLOCATIONS,
-    GET_CONTRIBUTOR_RATES
-} from '../operations/queries/ContributorQueries'
-import { CREATE_RATE } from '../operations/mutations/RateMutations'
-import { UPDATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 import DateInput from './DateInput'
 
 const EditAllocationRate = (props) => {
@@ -47,14 +38,14 @@ const EditAllocationRate = (props) => {
                             color='primary'
                             onClick={() => setSelectedRateType('prorated_monthly')}
                         >
-                            {'Prorated monthly'}
+                            {'Prorated'}
                         </Button>
                         <Button
                             variant={`${selectedRateType == 'max_budget' ? 'contained' : 'outlined'}`}
                             color='primary'
                             onClick={() => setSelectedRateType('max_budget')}
                         >
-                            {'Max Budget'}
+                            {'Budgeted'}
                         </Button>
                     </ButtonGroup>
                 </Grid>

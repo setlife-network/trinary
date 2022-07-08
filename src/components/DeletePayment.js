@@ -7,6 +7,7 @@ import {
 
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/PaymentQueries'
+import { GET_CLIENT_TOTAL_PAID } from '../operations/queries/ClientQueries'
 import { DELETE_PAYMENT } from '../operations/mutations/PaymentMutations'
 
 const DeletePayment = (props) => {
@@ -23,7 +24,7 @@ const DeletePayment = (props) => {
         loadingDeletedPayment,
         errorDeletedPayment
     }] = useMutation(DELETE_PAYMENT, {
-        refetchQueries: [{
+        refetchQueries: [GET_CLIENT_TOTAL_PAID, {
             query: GET_CLIENT_PAYMENTS,
             variables: {
                 clientId: Number(client.id)
