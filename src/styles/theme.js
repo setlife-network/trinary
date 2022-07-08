@@ -56,6 +56,14 @@ const theme = createMuiTheme({
                     fontSize: largeFont
                 }
             }
+        },
+        MuiDialog: {
+            paper: {
+                margin: '16px',
+                [getMediaQuery(sm)]: {
+                    margin: '32px'
+                }
+            }
         }
     },
     palette: {

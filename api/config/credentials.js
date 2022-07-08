@@ -25,5 +25,10 @@ module.exports = {
         DB_USERNAME: process.env.MYSQL_DB_USERNAME,
         DB_PASSWORD: process.env.MYSQL_DB_PASSWORD,
         DB_NAME: process.env.MYSQL_DB_NAME
+    },
+    BTCPAYSERVER: {
+        API_KEY: process.env.BTCPAYSERVER_API_KEY,
+        STORE_ID: process.env.BTCPAYSERVER_STORE_ID,
+        SECRET: process.env.BTCPAYSERVER_SECRET
     }
 };

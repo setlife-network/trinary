@@ -49,7 +49,7 @@ const ProjectSummary = (props) => {
             fontWeight='fontWeightBold'
             className='ProjectSummary'
         >
-            <Grid container justify='center' spacing={2}>
+            <Grid container justifyContent='center' spacing={2}>
                 <Grid item xs={12} sm={10}>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>

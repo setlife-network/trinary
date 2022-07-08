@@ -1,6 +1,6 @@
 {
   "name": "project-trinary",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "private": true,
   "engines": {
     "node": "14.x"
@@ -34,6 +34,7 @@
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.0.1",
@@ -63,7 +64,10 @@
     "dev-server": "cross-env PORT=6001 nodemon server",
     "start": "node server",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "tests:unit": "react-scripts test",
+    "tests:e2e:local": "SITE_URL=localhost:6002 testcafe chrome src/tests/e2e/",
+    "tests:e2e:staging": "SITE_URL=https://trinary-staging.setlife.tech testcafe chrome src/tests/e2e/",
+    "tests:e2e:staging:args": "SITE_URL=https://trinary-staging.setlife.tech testcafe chrome",
     "eject": "react-scripts eject",
     "prebuild": "npx sequelize-cli db:migrate"
   },
@@ -84,6 +88,8 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "cross-env": "^7.0.2"
+    "cross-env": "^7.0.2",
+    "jest-watch-typeahead": "^0.6.5",
+    "testcafe": "^1.18.6"
   }
 }

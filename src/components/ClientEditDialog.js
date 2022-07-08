@@ -66,6 +66,9 @@ const ClientEditDialog = (props) => {
     }
 
     useEffect(() => {
+        if (clientEmail == '') {
+            setClientEmail(null)
+        }
         if (!clientName || !clientCurrency) {
             setDisableEdit(true)
         } else if (
@@ -89,7 +92,7 @@ const ClientEditDialog = (props) => {
                 <FormControl>
                     <Grid
                         container
-                        justify='space-between'
+                        justifyContent='space-between'
                         alignItems='center'
                     >
                         <Grid item xs={12} lg={5}>

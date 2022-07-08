@@ -39,6 +39,7 @@ const AllocationClientSpecifics = (props) => {
     const {
         client,
         contributor,
+        contributors,
         payment,
         project,
         setContributor,
@@ -51,6 +52,7 @@ const AllocationClientSpecifics = (props) => {
         error: errorProjects,
         loading: loadingProjects
     } = useQuery(GET_CLIENT_PROJECTS, {
+        fetchPolicy: 'cache-and-network',
         variables: {
             id: client.id
         }
@@ -113,16 +115,16 @@ const AllocationClientSpecifics = (props) => {
                 <List component='div' disablePadding>
                     <ListItem button onClick={() => onClickContributor({ contributor: c })}>
                         <Grid container>
-                            <Grid item xs={3}/>
-                            <Grid item xs={3}>
+                            <Grid item md={3}/>
+                            <Grid item xs={6} md={3}>
                                 <ListItemText primary={`${c.name}`}/>
                             </Grid>
-                            <Grid item xs={3} align='center'>
+                            <Grid item xs={5} md={3} className='responsive-align'>
                                 <Typography variant='caption' color='secondary'>
                                     {`${last(split(c.github_handle, '/'))}`}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={1} md={3} className='icon-align'>
                                 {c.github_access_token &&
                                     <GitHubIcon color='secondary' fontSize='small'/>
                                 }
@@ -140,11 +142,11 @@ const AllocationClientSpecifics = (props) => {
                 <List component='div' disablePadding>
                     <ListItem button onClick={() => onClickProject({ project })}>
                         <Grid container>
-                            <Grid item xs={3}/>
-                            <Grid item xs={3}>
+                            <Grid item md={3}/>
+                            <Grid item xs={6} md={3}>
                                 <ListItemText primary={`${project.name}`}/>
                             </Grid>
-                            <Grid item xs={3} align='center'>
+                            <Grid item xs={6} md={3} className='responsive-align'>
                                 <Typography variant='caption' color='secondary'>
                                     {`${last(split(project.github_url, '/'))}`}
                                 </Typography>
@@ -160,7 +162,6 @@ const AllocationClientSpecifics = (props) => {
     if (errorProjects) return `${errorProjects}`
 
     const { projects } = dataProjects.getClientById
-    const contributors = selectedProject ? selectedProject.contributors : []
     const currencyInformation = selectCurrencyInformation({
         currency: client.currency
     })
@@ -173,20 +174,20 @@ const AllocationClientSpecifics = (props) => {
 
     return (
         <Box className='AllocationClientSpecifics'>
-            <Grid container justify='center'>
+            <Grid container justifyContent='center'>
                 <Grid item xs={12}>
                     <List component='nav'>
                         <ListItem>
                             <Grid container>
-                                <Grid item xs={3}>
+                                <Grid item xs={2} md={3}>
                                     <PaymentIcon color='primary'/>
                                 </Grid>
-                                <Grid item xs={3}>
+                                <Grid item xs={10} md={3}>
                                     <Typography>
                                         {`${paymentAmount}`}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={6} align='center'>
+                                <Grid item xs={12} md={6} align='center'>
                                     <Typography variant='caption' color='secondary'>
                                         {`${payment.date_paid
                                             ? moment.utc(payment.date_paid, 'x').format('MM/DD/YYYY')
@@ -209,20 +210,20 @@ const AllocationClientSpecifics = (props) => {
                     <List component='nav'>
                         <ListItem button onClick={handleClickProjectsList}>
                             <Grid container>
-                                <Grid item xs={3}>
+                                <Grid item xs={2} md={3}>
                                     <AssessmentIcon color='primary'/>
                                 </Grid>
-                                <Grid item xs={3}>
+                                <Grid item xs={4} md={3}>
                                     <Typography>
                                         {selectedProject ? selectedProject.name : 'No selected'}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={3} align='center'>
+                                <Grid item xs={4} md={3} className='responsive-align'>
                                     <Typography variant='caption' color='secondary'>
                                         {`${githubProjectHandle}`}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={3} align='right'>
+                                <Grid item xs={2} md={3} align='right'>
                                     {openProjectsList
                                         ? <ExpandLess />
                                         : <ExpandMore />
@@ -238,20 +239,20 @@ const AllocationClientSpecifics = (props) => {
                         </Collapse>
                         <ListItem button onClick={handleClickContributorsList}>
                             <Grid container>
-                                <Grid item xs={3}>
+                                <Grid item xs={2} md={3}>
                                     <PeopleIcon color='primary'/>
                                 </Grid>
-                                <Grid item xs={3}>
+                                <Grid item xs={4} md={3}>
                                     <Typography>
                                         {selectedContributor ? selectedContributor.name : 'No selected'}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={3} align='center'>
+                                <Grid item xs={4} md={3} className='responsive-align'>
                                     <Typography variant='caption' color='secondary'>
                                         {`${githubContributorHandle}`}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={3} align='right'>
+                                <Grid item xs={2} md={3} align='right'>
                                     {openContributorsList
                                         ? <ExpandLess />
                                         : <ExpandMore />

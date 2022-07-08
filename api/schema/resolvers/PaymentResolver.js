@@ -4,7 +4,7 @@ const { fn, col, Op } = require('sequelize')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules')
-const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants')
+const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants');
 
 module.exports = {
 
@@ -31,6 +31,16 @@ module.exports = {
                 raw: true
             })
             return allocations[0].total_amount
+        },
+        isBitcoinInvoiceExpired: async (payment) => {
+            if (payment.external_uuid && payment.external_uuid_type === 'bitcoin') {
+                return apiModules.paymentManagement.checkIfBitcoinInvoiceHasExpired(payment.external_uuid)
+            }
+        },
+        bitcoinCheckoutUrl: async (payment) => {
+            if (payment.external_uuid && payment.external_uuid_type === 'bitcoin') {
+                return apiModules.paymentManagement.getBitcoinCheckoutUrl(payment.external_uuid)
+            }
         }
     },
     Query: {
@@ -58,7 +68,6 @@ module.exports = {
                     id: createFields['client_id']
                 }
             })
-
             // Check if the client has an associated Stripe account and if the currency is supported
             // If it does, proceed to create the invoice on Stripe
             if (client.external_uuid && STRIPE_SUPPORTED_CURRENCIES.includes(client.currency)) {
@@ -77,6 +86,19 @@ module.exports = {
         deletePaymentById: (root, { id }, { models }) => {
             return models.Payment.destroy({ where: { id } })
         },
+        generateBitcoinInvoiceFromPayment: async (root, { paymentId }, { models }) => {
+            const newInvoice = await apiModules.paymentManagement.processBitcoinInvoiceCreation(paymentId)
+            await models.Payment.update(
+                {
+                    external_uuid: newInvoice.id,
+                    external_uuid_type: `bitcoin`
+                }, 
+                { 
+                    where: { id: paymentId } 
+                }
+            )
+            return models.Payment.findByPk(paymentId)
+        },
         syncPayments: async (root, { source }, { models }) => {
             if (source.toUpperCase() == 'INVOICELY') {
                 return apiModules.dataSyncs.syncInvoicelyCSV()
@@ -89,6 +111,13 @@ module.exports = {
                 date_incurred: updateFields['date_incurred'],
                 date_paid: updateFields['date_paid']
             })
+            const payment = await models.Payment.findByPk(id)
+            const { external_uuid, external_uuid_type } = payment.dataValues 
+            if (external_uuid && external_uuid_type === 'bitcoin') {
+                if (await apiModules.paymentManagement.checkIfBitcoinInvoiceIsPaid(external_uuid)) {
+                    throw new Error('No further changes can be made to this payment')  
+                } 
+            }
             await models.Payment.update({
                 ...updateFields
             }, {

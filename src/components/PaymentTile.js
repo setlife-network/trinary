@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import moment from 'moment'
+import { orderBy, filter } from 'lodash'
 import {
     Accordion,
     AccordionDetails,
@@ -20,7 +22,6 @@ import EditIconOutlined from '@material-ui/icons/EditOutlined'
 import AllocationAddForm from './AllocationAddForm'
 import AllocationOverview from './AllocationOverview'
 import DeletePayment from './DeletePayment'
-import PaymentEditDialog from './PaymentEditDialog'
 import {
     GET_PAYMENT_ALLOCATIONS,
     GET_PAYMENT_TOTAL_ALLOCATED
@@ -31,6 +32,8 @@ import {
 } from '../scripts/selectors'
 
 const PaymentTile = (props) => {
+
+    const history = useHistory();
 
     const {
         client,
@@ -63,7 +66,6 @@ const PaymentTile = (props) => {
     const [openAddAllocationDialog, setOpenAddAllocationDialog] = useState(false)
     const [openAllocationOverview, setOpenAllocationOverview] = useState(false)
     const [openDeletePayment, setOpenDeletePayment] = useState(false)
-    const [openEditPayment, setOpenEditPayment] = useState(false)
     const [selectedAllocation, setSelectedAllocation] = useState(null)
 
     const addAllocation = (props) => {
@@ -80,8 +82,8 @@ const PaymentTile = (props) => {
     const handleDeletePayment = (value) => {
         setOpenDeletePayment(value)
     }
-    const handleEditPayment = (value) => {
-        setOpenEditPayment(value)
+    const handleEditPayment = () => {
+        history.push(`/clients/${client.id}/payments/${payment.id}/update`)
     }
     const currencyInformation = selectCurrencyInformation({
         currency: client.currency
@@ -91,6 +93,10 @@ const PaymentTile = (props) => {
     if (errorTotalAllocated || errorPaymentAllocations) return `An error ocurred`
 
     const { allocations } = dataPaymentAllocations.getPaymentById
+    const orderedAllocations = orderBy(allocations, ['project.name'], ['desc'])
+    const filteredAllocations = project 
+        ? filter(allocations, ['project.name', project.name]) 
+        : null
     const totalAllocated = formatAmount({
         amount: dataTotalAllocated.getPaymentById.totalAllocated / 100,
         currencyInformation: currencyInformation
@@ -100,15 +106,41 @@ const PaymentTile = (props) => {
         currencyInformation: currencyInformation
     })
     const numberOfContributorsAllocated = allocations.length
-
-    const projectName = (allocations.length > 0) ? allocations[0].project.name : ''
+    const numberOfFilteredContributorsAllocated = project 
+        ? filteredAllocations.length 
+        : null
     
+    const totalProjectAllocations = () => {
+        let total = 0
+        filteredAllocations.map(f => {
+            total += (f.amount / 100)
+        })
+        return total
+    }
+    const totalAllocatedContributors = project 
+        ? (formatAmount({
+            amount: totalProjectAllocations(),
+            currencyInformation: currencyInformation
+        }))
+        : null
+
+    const calculateAllocationsOtherProjects = () => {
+        if (project) {
+            return dataTotalAllocated.getPaymentById.totalAllocated / 100 - totalProjectAllocations()
+        }
+    }
+    const totalAllocatedOtherProjects = formatAmount({
+        amount: calculateAllocationsOtherProjects(),
+        currencyInformation: currencyInformation
+    })
+
     const renderPaymentAllocations = (props) => {
 
         const {
             allocations,
             currencyInformation
         } = props
+        const projects = []
 
         return allocations.map((a, i) => {
             const {
@@ -117,17 +149,34 @@ const PaymentTile = (props) => {
                 end_date,
                 rate
             } = a
+            const projectName = a.project.name
             const paymentAmount = formatAmount({
                 amount: parseFloat(amount / 100).toFixed(2),
                 // amount: parseFloat((amount / 100).toFixed(2)).toString(),
                 currencyInformation: currencyInformation
             })
-            
+
+            let projectTitle = null
+            if (!projects.includes(projectName) && !project) {
+                projects.push(projectName)
+                projectTitle = projectName
+            }
+
             return (
                 <Box 
                     mb={3} 
                     className='PaymentTile' 
                 >
+                    {!project &&
+                        <Grid item xs={12} align='center'>
+                            <Typography 
+                                variant='h6'
+                                className='project-name'
+                            >
+                                {projectTitle}
+                            </Typography>
+                        </Grid>
+                    }
                     <Grid
                         container
                         className='payments-grid'
@@ -178,7 +227,7 @@ const PaymentTile = (props) => {
                 <Accordion>
                     <AccordionSummary
                         expandIcon={
-                            <Grid item xs={1}>
+                            <Grid item xs={0.5}>
                                 <ExpandMoreIcon />
                             </Grid>
                         }
@@ -189,13 +238,13 @@ const PaymentTile = (props) => {
                         }}
                     >
                         <Grid container alignItems='center'>
-                            <Grid item xs={6} align='left'>
+                            <Grid item xs={6} align='left' data-testid='payment-tile-amount'>
                                 <Typography variant='h6'>
                                     {`${paymentAmount}`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={5} align='right'>
-                                <Box mb={0.75}>
+                                <Box mb={0.75} data-testid='payment-tile-date'>
                                     <Typography
                                         variant='caption'
                                         color='secondary'
@@ -219,10 +268,24 @@ const PaymentTile = (props) => {
                                     color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
                                 >
                                     <Typography variant='subtitle2'>
-                                        {`${totalAllocated} allocated`}
-                                        <br/>
-                                        {`to ${numberOfContributorsAllocated} ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}`}
+                                        {`${project ? totalAllocatedContributors : totalAllocated} allocated `}
+                                        {
+                                            (
+                                                `to 
+                                                ${project 
+                                                    ? numberOfFilteredContributorsAllocated 
+                                                    : numberOfContributorsAllocated} 
+                                                ${numberOfContributorsAllocated == 1 || numberOfFilteredContributorsAllocated == 1
+                                                    ? 'contributor' 
+                                                    : 'contributors'}`
+                                            )
+                                        }
                                     </Typography>
+                                    {project && (calculateAllocationsOtherProjects() > 0 ) &&
+                                    <Typography variant='subtitle2' color='secondary'>
+                                        {`${totalAllocatedOtherProjects} to other projects`}
+                                    </Typography>
+                                    }
                                 </Box>
                             </Grid>
                         </Grid>
@@ -230,17 +293,9 @@ const PaymentTile = (props) => {
                     {!project &&
                         <Box align='left' mb={2} mx={2}>
                             <Grid container>
-                                <Grid item xs={12} align='center'>
-                                    <Typography 
-                                        variant='h6'
-                                        className='project-name'
-                                    >
-                                        {projectName}
-                                    </Typography>
-                                </Grid>
                                 <Grid item xs={12}>
                                     {renderPaymentAllocations({
-                                        allocations: allocations,
+                                        allocations: orderedAllocations,
                                         currencyInformation: currencyInformation
                                     })}
                                 </Grid>
@@ -258,14 +313,14 @@ const PaymentTile = (props) => {
                                 <Grid item xs={2} align='right'>
                                     <Tooltip 
                                         title='This payment cannot be edited because it is linked to a Stripe Invoice' 
-                                        disableHoverListener={payment.external_uuid_type ? false : true}
+                                        disableHoverListener={payment.external_uuid_type === 'stripe' ? false : true}
                                         placement='top'
                                     >
                                         <span>
                                             <Button
                                                 color='primary'
                                                 onClick={() => handleEditPayment(true)}
-                                                disabled={payment.external_uuid_type}
+                                                disabled={payment.external_uuid_type === 'stripe'}
                                             >
                                                 <EditIconOutlined />
                                             </Button>
@@ -273,12 +328,22 @@ const PaymentTile = (props) => {
                                     </Tooltip>
                                 </Grid>
                                 <Grid item xs={2} align='right'>
-                                    <Button
-                                        color='primary'
-                                        onClick={() => handleDeletePayment(true)}
+                                    <Tooltip
+                                        title='This payment cannot be deleted because it has linked Allocations'
+                                        placement='top'
+                                        disableHoverListener={allocations.length > 0 ? false : true}
                                     >
-                                        <DeleteOutlinedIcon color='primary'/>
-                                    </Button>
+                                        <span>
+                                            <Button
+                                                color='primary'
+                                                onClick={() => handleDeletePayment(true)}
+                                                disabled={allocations.length ? true : false}
+                                            >
+                                                <DeleteOutlinedIcon />
+                                            </Button>
+                                        </span>
+                                    </Tooltip>
+
                                 </Grid>
                             </Grid>
                         </Box>
@@ -288,7 +353,7 @@ const PaymentTile = (props) => {
                             <Grid container>
                                 <Grid item xs={12}>
                                     {renderPaymentAllocations({
-                                        allocations: allocations,
+                                        allocations: filteredAllocations,
                                         currencyInformation: currencyInformation
                                     })}
                                 </Grid>
@@ -318,11 +383,6 @@ const PaymentTile = (props) => {
                     payment={paymentClicked}
                 />
             }
-            <PaymentEditDialog
-                payment={payment}
-                onOpen={openEditPayment}
-                onClose={() => handleEditPayment(false)}
-            />
             {selectedAllocation &&
                 <AllocationOverview
                     allocationInfo={selectedAllocation}

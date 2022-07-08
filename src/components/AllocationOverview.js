@@ -6,8 +6,10 @@ import {
     Dialog,
     DialogTitle,
     Grid,
+    Snackbar,
     Typography
 } from '@material-ui/core/'
+import Alert from '@material-ui/lab/Alert'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import moment from 'moment'
 import { findKey } from 'lodash'
@@ -20,7 +22,7 @@ import LoadingProgress from './LoadingProgress'
 import { GET_ALLOCATIONS, GET_ALLOCATION_INFO } from '../operations/queries/AllocationQueries'
 import { GET_CLIENT_PAYMENTS } from '../operations/queries/ClientQueries'
 import { GET_CONTRIBUTORS, GET_CONTRIBUTOR_ALLOCATIONS, GET_CONTRIBUTOR_RATES } from '../operations/queries/ContributorQueries'
-import { GET_PAYMENT_ALLOCATIONS } from '../operations/queries/PaymentQueries'
+import { GET_PAYMENT_ALLOCATIONS, GET_PAYMENT_TOTAL_ALLOCATED } from '../operations/queries/PaymentQueries'
 import { GET_PROJECT_CONTRIBUTORS, GET_PROJECT_PAYMENTS } from '../operations/queries/ProjectQueries'
 import { DELETE_ALLOCATION, UPDATE_ALLOCATION } from '../operations/mutations/AllocationMutations'
 import { CREATE_RATE } from '../operations/mutations/RateMutations'
@@ -36,10 +38,12 @@ const AllocationOverview = (props) => {
     const [clientPayments, setClientPayments] = useState(null)
     const [contributorAllocation, setContributorAllocation] = useState(null)
     const [contributorRates, setContributorRates] = useState(null)
+    const [displayError, setDisplayError] = useState(false)
     const [updatedAllocationPayment, setUpdatedAllocationPayment] = useState(null)
     const [updatedAllocationRate, setUpdatedAllocationRate] = useState({})
     const [openDeleteAllocation, setOpenDeleteAllocation] = useState(false)
     const [selectedCurrency, setSelectedCurrency] = useState(null)
+    const [paymentError, setPaymentError] = useState('')
     const [updatedAllocationStartDate, setUpdatedAllocationStartDate] = useState(null)
     const [updatedAllocationEndDate, setUpdatedAllocationEndDate] = useState(null)
 
@@ -103,6 +107,16 @@ const AllocationOverview = (props) => {
             variables: {
                 id: contributorAllocation ? contributorAllocation.project.id : null
             }
+        }, {
+            query: GET_PAYMENT_TOTAL_ALLOCATED,
+            variables: {
+                paymentId: updatedAllocationPayment ? updatedAllocationPayment.id : null
+            }
+        }, {
+            query: GET_PAYMENT_ALLOCATIONS,
+            variables: {
+                paymentId: updatedAllocationPayment ? updatedAllocationPayment.id : null
+            }
         }]
     })
 
@@ -116,6 +130,11 @@ const AllocationOverview = (props) => {
             query: GET_CONTRIBUTOR_ALLOCATIONS,
             variables: {
                 id: contributorAllocation ? contributorAllocation.contributor.id : null
+            }
+        }, {
+            query: GET_PAYMENT_TOTAL_ALLOCATED,
+            variables: {
+                paymentId: updatedAllocationPayment ? updatedAllocationPayment.id : null
             }
         }]
     })
@@ -148,6 +167,13 @@ const AllocationOverview = (props) => {
         onClose()
     }
 
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setDisplayError(false)
+    }
+
     const handleUpdateAllocation = async ({
         allocation,
         contributor,
@@ -158,33 +184,57 @@ const AllocationOverview = (props) => {
         startDate,
     }) => {
         //look for rate with same values
-        const selectedRate = {}
-        const existingRate = findKey(
-            contributorRates,
-            {
-                hourly_rate: rate.hourly_rate.toString(),
-                total_expected_hours: Number(rate.total_expected_hours),
-                type: rate.type,
-                currency: selectedCurrency
-            }
-        )
-        if (existingRate) {
-            selectedRate.id = contributorRates[existingRate].id
-        } else {
-            //create rate
-            const newRate = await createRate({
-                variables: {
+        try {
+            const selectedRate = {}
+            const existingRate = findKey(
+                contributorRates,
+                {
                     hourly_rate: rate.hourly_rate.toString(),
                     total_expected_hours: Number(rate.total_expected_hours),
+                    minimum_expected_hours: rate.minimum_expected_hours 
+                        ? Number(rate.minimum_expected_hours)
+                        : null,
+                    maximum_expected_hours: rate.maximum_expected_hours
+                        ? Number(rate.maximum_expected_hours)
+                        : null,
+                    minimum_hourly_rate: rate.minimum_hourly_rate
+                        ? rate.minimum_hourly_rate.toString() 
+                        : null,
+                    maximum_hourly_rate: rate.maximum_hourly_rate
+                        ? rate.maximum_hourly_rate.toString() 
+                        : null,
                     type: rate.type,
-                    currency: selectedCurrency,
-                    contributor_id: contributor.id
+                    currency: selectedCurrency
                 }
-            })
-            selectedRate.id = newRate.data.createRate.id
-        }
-        //update allocation with that rate id
-        try {
+            )
+            if (existingRate) {
+                selectedRate.id = contributorRates[existingRate].id
+            } else {
+                //create rate
+                const newRate = await createRate({
+                    variables: {
+                        hourly_rate: rate.hourly_rate.toString(),
+                        total_expected_hours: Number(rate.total_expected_hours),
+                        minimum_expected_hours: rate.minimum_expected_hours 
+                            ? Number(rate.minimum_expected_hours)
+                            : null,
+                        maximum_expected_hours: rate.maximum_expected_hours
+                            ? Number(rate.maximum_expected_hours)
+                            : null,
+                        minimum_hourly_rate: rate.minimum_hourly_rate
+                            ? rate.minimum_hourly_rate.toString() 
+                            : null,
+                        maximum_hourly_rate: rate.maximum_hourly_rate
+                            ? rate.maximum_hourly_rate.toString() 
+                            : null,
+                        type: rate.type,
+                        currency: selectedCurrency,
+                        contributor_id: contributor.id
+                    }
+                })
+                selectedRate.id = newRate.data.createRate.id
+            }
+            //update allocation with that rate id
             const updatedAllocation = await updateAllocation({
                 variables: {
                     id: allocation.id,
@@ -203,8 +253,8 @@ const AllocationOverview = (props) => {
                 onClose()
             }
         } catch (error) {
-            console.log(`error ${error}`);
-            onClose()
+            setPaymentError('Error saving the allocation')
+            setDisplayError(true)
         }
 
     }
@@ -269,7 +319,7 @@ const AllocationOverview = (props) => {
                 <Box mt={1}>
                     <Grid
                         container
-                        justify='space-between'
+                        justifyContent='space-between'
                         style={{ textAlign: 'center' }}
                     >
                         <Grid item xs={12} sm={3}>
@@ -309,6 +359,15 @@ const AllocationOverview = (props) => {
                     onClose={() => setOpenDeleteAllocation(false)}
                 />
             </Box>
+            <Snackbar
+                open={displayError}
+                autoHideDuration={1000}
+                onClose={handleAlertClose}
+            >
+                <Alert severity='error'>
+                    {`${paymentError}`}
+                </Alert>
+            </Snackbar>
         </Dialog>
     )
 }

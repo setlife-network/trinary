@@ -81,7 +81,7 @@ const EditAllocationInfo = (props) => {
                 <List component='div' disablePadding>
                     <ListItem button onClick={() => onClickPayment(payment)}>
                         <Grid container>
-                            <Grid item xs={6}>
+                            <Grid item xs={6} md={6}>
                                 <ListItemText
                                     primary={`${
                                         payment
@@ -90,7 +90,7 @@ const EditAllocationInfo = (props) => {
                                     }`}
                                 />
                             </Grid>
-                            <Grid item xs={3} align='center'>
+                            <Grid item xs={6} md={3} align='center'>
                                 <Typography variant='caption' color='secondary'>
                                     {`${payment
                                         ? payment.date_paid
@@ -100,7 +100,7 @@ const EditAllocationInfo = (props) => {
                                     }`}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={3}/>
+                            <Grid item md={3}/>
                         </Grid>
                     </ListItem>
                 </List>
@@ -138,7 +138,7 @@ const EditAllocationInfo = (props) => {
                     {`${allocation.project.client.name}`}
                 </Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
                 <Typography>
                     {`Payment`}
                 </Typography>
@@ -152,7 +152,7 @@ const EditAllocationInfo = (props) => {
                                     />
                                 </Typography>
                             </Grid>
-                            <Grid item xs={3} align='right'>
+                            <Grid item xs={2} align='right'>
                                 {openPayments
                                     ? <ExpandLess />
                                     : <ExpandMore />

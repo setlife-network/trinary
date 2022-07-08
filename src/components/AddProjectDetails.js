@@ -68,9 +68,9 @@ const AddProjectDetails = (props) => {
     }
 
     return (
-        <Grid container justify='space-between'>
+        <Grid container justifyContent='space-between'>
             <Grid item xs={12} md={5}>
-                <Box>
+                <Box mt={5}>
                     <TextField
                         label='Project name'
                         id='projectName'
@@ -83,7 +83,7 @@ const AddProjectDetails = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12} md={5}>
-                <Box>
+                <Box mt={5}>
                     <TextField
                         label='Toggl URL'
                         id='projectToggl'
