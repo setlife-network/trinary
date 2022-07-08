@@ -6,7 +6,7 @@ module.exports = gql`
         id: Int!
         is_active: Boolean!
         name: String!
-        email: String!
+        email: String
         currency: String!
         external_uuid: String!
         payments: [Payment]

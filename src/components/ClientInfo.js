@@ -55,7 +55,7 @@ const ClientInfo = ({
                 </Typography>
                 <Typography variant='h6'>
                     <Box overflow='hidden' textOverflow='ellipsis'>
-                        {client.email}
+                        {client.email ? client.email : 'Email not provided'}
                     </Box>
                 </Typography>
                 <Grid container alignItems='flex-end' >
