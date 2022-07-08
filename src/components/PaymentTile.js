@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import moment from 'moment'
+import { orderBy, filter } from 'lodash'
 import {
     Accordion,
     AccordionDetails,
@@ -92,6 +93,10 @@ const PaymentTile = (props) => {
     if (errorTotalAllocated || errorPaymentAllocations) return `An error ocurred`
 
     const { allocations } = dataPaymentAllocations.getPaymentById
+    const orderedAllocations = orderBy(allocations, ['project.name'], ['desc'])
+    const filteredAllocations = project 
+        ? filter(allocations, ['project.name', project.name]) 
+        : null
     const totalAllocated = formatAmount({
         amount: dataTotalAllocated.getPaymentById.totalAllocated / 100,
         currencyInformation: currencyInformation
@@ -101,15 +106,41 @@ const PaymentTile = (props) => {
         currencyInformation: currencyInformation
     })
     const numberOfContributorsAllocated = allocations.length
-
-    const projectName = (allocations.length > 0) ? allocations[0].project.name : ''
+    const numberOfFilteredContributorsAllocated = project 
+        ? filteredAllocations.length 
+        : null
     
+    const totalProjectAllocations = () => {
+        let total = 0
+        filteredAllocations.map(f => {
+            total += (f.amount / 100)
+        })
+        return total
+    }
+    const totalAllocatedContributors = project 
+        ? (formatAmount({
+            amount: totalProjectAllocations(),
+            currencyInformation: currencyInformation
+        }))
+        : null
+
+    const calculateAllocationsOtherProjects = () => {
+        if (project) {
+            return dataTotalAllocated.getPaymentById.totalAllocated / 100 - totalProjectAllocations()
+        }
+    }
+    const totalAllocatedOtherProjects = formatAmount({
+        amount: calculateAllocationsOtherProjects(),
+        currencyInformation: currencyInformation
+    })
+
     const renderPaymentAllocations = (props) => {
 
         const {
             allocations,
             currencyInformation
         } = props
+        const projects = []
 
         return allocations.map((a, i) => {
             const {
@@ -118,17 +149,34 @@ const PaymentTile = (props) => {
                 end_date,
                 rate
             } = a
+            const projectName = a.project.name
             const paymentAmount = formatAmount({
                 amount: parseFloat(amount / 100).toFixed(2),
                 // amount: parseFloat((amount / 100).toFixed(2)).toString(),
                 currencyInformation: currencyInformation
             })
-            
+
+            let projectTitle = null
+            if (!projects.includes(projectName) && !project) {
+                projects.push(projectName)
+                projectTitle = projectName
+            }
+
             return (
                 <Box 
                     mb={3} 
                     className='PaymentTile' 
                 >
+                    {!project &&
+                        <Grid item xs={12} align='center'>
+                            <Typography 
+                                variant='h6'
+                                className='project-name'
+                            >
+                                {projectTitle}
+                            </Typography>
+                        </Grid>
+                    }
                     <Grid
                         container
                         className='payments-grid'
@@ -179,7 +227,7 @@ const PaymentTile = (props) => {
                 <Accordion>
                     <AccordionSummary
                         expandIcon={
-                            <Grid item xs={1}>
+                            <Grid item xs={0.5}>
                                 <ExpandMoreIcon />
                             </Grid>
                         }
@@ -220,10 +268,24 @@ const PaymentTile = (props) => {
                                     color={`${!totalAllocated || totalAllocated > payment.amount ? 'red' : 'primary.main'}`}
                                 >
                                     <Typography variant='subtitle2'>
-                                        {`${totalAllocated} allocated`}
-                                        <br/>
-                                        {`to ${numberOfContributorsAllocated} ${numberOfContributorsAllocated == 1 ? 'contributor' : 'contributors'}`}
+                                        {`${project ? totalAllocatedContributors : totalAllocated} allocated `}
+                                        {
+                                            (
+                                                `to 
+                                                ${project 
+                                                    ? numberOfFilteredContributorsAllocated 
+                                                    : numberOfContributorsAllocated} 
+                                                ${numberOfContributorsAllocated == 1 || numberOfFilteredContributorsAllocated == 1
+                                                    ? 'contributor' 
+                                                    : 'contributors'}`
+                                            )
+                                        }
                                     </Typography>
+                                    {project && (calculateAllocationsOtherProjects() > 0 ) &&
+                                    <Typography variant='subtitle2' color='secondary'>
+                                        {`${totalAllocatedOtherProjects} to other projects`}
+                                    </Typography>
+                                    }
                                 </Box>
                             </Grid>
                         </Grid>
@@ -231,17 +293,9 @@ const PaymentTile = (props) => {
                     {!project &&
                         <Box align='left' mb={2} mx={2}>
                             <Grid container>
-                                <Grid item xs={12} align='center'>
-                                    <Typography 
-                                        variant='h6'
-                                        className='project-name'
-                                    >
-                                        {projectName}
-                                    </Typography>
-                                </Grid>
                                 <Grid item xs={12}>
                                     {renderPaymentAllocations({
-                                        allocations: allocations,
+                                        allocations: orderedAllocations,
                                         currencyInformation: currencyInformation
                                     })}
                                 </Grid>
@@ -299,7 +353,7 @@ const PaymentTile = (props) => {
                             <Grid container>
                                 <Grid item xs={12}>
                                     {renderPaymentAllocations({
-                                        allocations: allocations,
+                                        allocations: filteredAllocations,
                                         currencyInformation: currencyInformation
                                     })}
                                 </Grid>
