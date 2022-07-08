@@ -49,6 +49,10 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
                     hourly_rate
                     currency
                     total_expected_hours
+                    minimum_expected_hours
+                    maximum_expected_hours
+                    minimum_hourly_rate
+                    maximum_hourly_rate
                 }
                 project {
                     id
@@ -95,6 +99,10 @@ export const GET_CONTRIBUTOR_RATES = gql`
                 hourly_rate
                 currency
                 total_expected_hours
+                minimum_expected_hours
+                maximum_expected_hours
+                minimum_hourly_rate
+                maximum_hourly_rate
             }
 
         }

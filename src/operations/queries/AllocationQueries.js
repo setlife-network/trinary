@@ -19,6 +19,10 @@ export const GET_ALLOCATIONS = gql`
                 type
                 currency
                 total_expected_hours
+                minimum_hourly_rate,
+                minimum_expected_hours,
+                maximum_hourly_rate,
+                maximum_expected_hours
             }
             payment {
                 id
@@ -74,6 +78,10 @@ export const GET_ALLOCATION_INFO = gql`
                 total_expected_hours
                 type
                 currency
+                minimum_hourly_rate,
+                minimum_expected_hours,
+                maximum_hourly_rate,
+                maximum_expected_hours
             }
         }
     }

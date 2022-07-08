@@ -8,6 +8,7 @@ import {
     TextField,
     Typography
 } from '@material-ui/core/'
+import Advanced from './Advanced'
 
 import { CURRENCIES } from '../constants'
 import {
@@ -35,12 +36,16 @@ const RateProratedMonthlyForm = (props) => {
     const [totalAmount, setTotalAmount] = useState(null)
     const [totalWeeks, setTotalWeeks] = useState(null)
     const [totalHours, setTotalHours] = useState(0)
+    const [minimumExpectedHours, setMinimumExpectedHours] = useState(null)
+    const [maximumExpectedHours, setMaximumExpectedHours] = useState(null)
 
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
         setMonthlyhoursInput(currentRate ? currentRate.total_expected_hours : 160)
         setRateCurrency(currentRate ? currentRate.currency : clientCurrency)
+        setMinimumExpectedHours(currentRate ? currentRate.minimum_expected_hours : '')
+        setMaximumExpectedHours(currentRate ? currentRate.maximum_expected_hours : '')
     }, [currentRate])
 
     useEffect(() => {
@@ -70,9 +75,11 @@ const RateProratedMonthlyForm = (props) => {
             hourly_rate: currentRateInput,
             total_expected_hours: monthlyHoursInput,
             total_amount: totalAmount * 100,
+            minimum_expected_hours: minimumExpectedHours,
+            maximum_expected_hours: maximumExpectedHours,
             type: 'prorated_monthly'
         })
-    }, [totalAmount])
+    }, [totalAmount, minimumExpectedHours, maximumExpectedHours])
 
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
@@ -138,7 +145,7 @@ const RateProratedMonthlyForm = (props) => {
                     <Grid container justifyContent='left' spacing={1}>
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                label='Expected monthly hours'
+                                label='Expected hours'
                                 variant='filled'
                                 defaultValue='0'
                                 value={`${monthlyHoursInput}`}
@@ -169,12 +176,21 @@ const RateProratedMonthlyForm = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <Box mb={2} mt={1}>
+                <Box mt={1}>
                     <Typography>
                         {`Total hours per week = ${Math.trunc((totalHours / totalWeeks))}`}
                     </Typography>
                 </Box>
             </Grid>
+            <Box>
+                <Advanced 
+                    minimumExpectedHours={minimumExpectedHours}
+                    maximumExpectedHours={maximumExpectedHours}
+                    setMinimumExpectedHours={setMinimumExpectedHours}
+                    setMaximumExpectedHours={setMaximumExpectedHours}
+                    type={'prorated_monthly'}
+                />
+            </Box>
         </Grid>
     )
 }

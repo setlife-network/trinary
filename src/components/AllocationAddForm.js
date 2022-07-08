@@ -459,7 +459,7 @@ const AllocationAddForm = (props) => {
                                             })
                                         )}
                                     >
-                                        {'Prorated monthly'}
+                                        {'Prorated'}
                                     </Button>
                                     <Button
                                         variant={`${allocationTypes[1] ? 'contained' : 'outlined'}`}
@@ -471,7 +471,7 @@ const AllocationAddForm = (props) => {
                                             })
                                         )}
                                     >
-                                        {'Max Budget'}
+                                        {'Budgeted'}
                                     </Button>
                                 </ButtonGroup>
                             </Grid>

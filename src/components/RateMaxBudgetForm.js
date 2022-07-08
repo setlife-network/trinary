@@ -9,6 +9,7 @@ import {
     Typography
 } from '@material-ui/core/'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
+import Advanced from './Advanced'
 
 import { CURRENCIES } from '../constants'
 import { selectCurrencyInformation } from '../scripts/selectors'
@@ -33,6 +34,8 @@ const RateMaxBudgetForm = (props) => {
     const [totalAmount, setTotalAmount] = useState(currentTotal ? currentTotal : 0)
     const [totalWeeks, setTotalWeeks] = useState(null)
     const [totalHours, setTotalHours] = useState(0)
+    const [minimumHourlyRate, setMinimumHourlyRate] = useState(null)
+    const [maximumHourlyRate, setMaximumHourlyRate] = useState(null)
 
     useEffect(() => {
         if (rateCurrency) {
@@ -44,6 +47,8 @@ const RateMaxBudgetForm = (props) => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
         setCurrentRateInput(currentRate ? currentRate.hourly_rate : 0)
         setRateCurrency(currentRate ? currentRate.currency : clientCurrency)
+        setMinimumHourlyRate(currentRate ? currentRate.minimum_hourly_rate : '')
+        setMaximumHourlyRate(currentRate ? currentRate.maximum_hourly_rate : '')
     }, [currentRate])
 
     useEffect(() => {
@@ -57,9 +62,11 @@ const RateMaxBudgetForm = (props) => {
         setNewAllocationRate({
             hourly_rate: currentRateInput,
             total_amount: totalAmount,
-            type: 'max_budget'
+            minimum_hourly_rate: minimumHourlyRate,
+            maximum_hourly_rate: maximumHourlyRate,
+            type: 'max_budget',
         })
-    }, [totalAmount, currentRateInput])
+    }, [totalAmount, currentRateInput, minimumHourlyRate, maximumHourlyRate])
 
     useEffect(() => {
         setTotalWeeks(endDate.diff(startDate, 'days') / 7)
@@ -140,7 +147,7 @@ const RateMaxBudgetForm = (props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <Box mb={2} mt={1}>
+                <Box mt={1}>
                     <Typography>
                         {`Total hours = ${totalHours ? totalHours : 0}`}
                     </Typography>
@@ -157,6 +164,15 @@ const RateMaxBudgetForm = (props) => {
                     </Typography>
                 </Box>
             </Grid>
+            <Box>
+                <Advanced 
+                    minimumHourlyRate={minimumHourlyRate}
+                    maximumHourlyRate={maximumHourlyRate}
+                    setMinimumHourlyRate={setMinimumHourlyRate}
+                    setMaximumHourlyRate={setMaximumHourlyRate}
+                    type={'max_budget'}
+                />
+            </Box>
         </Grid>
     )
 }
