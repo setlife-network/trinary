@@ -54,9 +54,10 @@ const paymentManagement = module.exports = (() => {
             ? Number((convertedAmount * 100000000).toFixed(0)) // 100M sats = 1 BTC
             : convertedAmount
         
-        const amountUpdated = amountInSats != await getBitcoinInvoiceAmount(external_uuid)
+        const amountUpdated = external_uuid && 
+        ( amountInSats != await getBitcoinInvoiceAmount(external_uuid) )
         
-        if (external_uuid && date_paid && !isInvoiceExpired && !amountUpdated) throw new Error(`An active invoice already exists`)
+        if (external_uuid && !isInvoiceExpired && !amountUpdated) throw new Error(`An active invoice already exists`)
             
         return createBitcoinInvoice(amountInSats)
     }
