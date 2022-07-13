@@ -22,6 +22,7 @@ const PaymentsList = (props) => {
                             payment={p}
                             client={p.client}
                             project={project}
+                            active={Number(localStorage.getItem('openPayment')) == p.id ? true : false}
                         />
                     </Box>
                 </Grid>
