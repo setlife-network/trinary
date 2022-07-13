@@ -54,7 +54,7 @@ const paymentManagement = module.exports = (() => {
             const isInvoiceExpired = invoice.status === `Expired`
             const isAmountUpdated = amountInSats != Number(invoice.amount)
             
-            if (external_uuid && !isInvoiceExpired && !isAmountUpdated) {
+            if (!isInvoiceExpired && !isAmountUpdated) {
                 throw new Error(`An active invoice already exists`)
             }
         }
