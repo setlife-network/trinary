@@ -21,11 +21,6 @@ const paymentManagement = module.exports = (() => {
         return invoice.checkoutLink
     }
 
-    const getBitcoinInvoiceAmount = async (invoiceId) => {
-        const invoice = await getInvoiceById(invoiceId)
-        return Number(invoice.amount)
-    }
-
     const processBitcoinInvoiceCreation = async (paymentId) => {
         const payment = await db.models.Payment.findByPk(paymentId)
         const { 
@@ -39,25 +34,30 @@ const paymentManagement = module.exports = (() => {
         if (date_paid) throw new Error(`Payment has already been made`)
 
         const client = await db.models.Client.findByPk(client_id)
-        const isClientCurrencyBtc = client.dataValues.currency === `BTC` || client.dataValues.currency === `SATS`
-
-        if (!isClientCurrencyBtc) throw new Error(`Client's currency is not Bitcoin`)
-
-        const isInvoiceExpired = (
-            external_uuid && external_uuid_type === `bitcoin` &&
-            await checkIfBitcoinInvoiceHasExpired(external_uuid)
-        )
+        const isClientCurrencyBtc = 
+            client.dataValues.currency === `BTC` ||
+            client.dataValues.currency === `SATS`
         
+        if (!isClientCurrencyBtc) {
+            throw new Error(`Client's currency is not Bitcoin`)
+        } 
+
         const convertedAmount = Number(amount / 100)
 
         const amountInSats = client.dataValues.currency === `BTC` 
             ? Number((convertedAmount * 100000000).toFixed(0)) // 100M sats = 1 BTC
             : convertedAmount
-        
-        const amountUpdated = external_uuid && 
-        ( amountInSats != await getBitcoinInvoiceAmount(external_uuid) )
-        
-        if (external_uuid && !isInvoiceExpired && !amountUpdated) throw new Error(`An active invoice already exists`)
+
+        if (external_uuid && external_uuid_type === `bitcoin`) {
+            
+            const invoice = await getInvoiceById(external_uuid)
+            const isInvoiceExpired = invoice.status === `Expired`
+            const isAmountUpdated = amountInSats != Number(invoice.amount)
+            
+            if (external_uuid && !isInvoiceExpired && !isAmountUpdated) {
+                throw new Error(`An active invoice already exists`)
+            }
+        }
             
         return createBitcoinInvoice(amountInSats)
     }
