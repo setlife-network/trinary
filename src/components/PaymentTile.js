@@ -38,9 +38,11 @@ const PaymentTile = (props) => {
     const {
         client,
         payment,
-        project
+        project,
+        active
     } = props
 
+    localStorage.removeItem('openPayment')
     const formattedDatePaid = moment.utc(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
     const formattedDateIncurred = moment.utc(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
     const paymentHasBeenMade = payment.date_paid != null
@@ -67,6 +69,7 @@ const PaymentTile = (props) => {
     const [openAllocationOverview, setOpenAllocationOverview] = useState(false)
     const [openDeletePayment, setOpenDeletePayment] = useState(false)
     const [selectedAllocation, setSelectedAllocation] = useState(null)
+    const [activeAccordion, setActiveAccordion] = useState(active)
 
     const addAllocation = (props) => {
         setOpenAddAllocationDialog(true)
@@ -84,6 +87,13 @@ const PaymentTile = (props) => {
     }
     const handleEditPayment = () => {
         history.push(`/clients/${client.id}/payments/${payment.id}/update`)
+    }
+    const handleRedirect = () => {
+        history.push(`/clients/${client.id}`)
+        localStorage.setItem('openPayment', payment.id)
+    }
+    const handleAccordion = () => {
+        setActiveAccordion(activeAccordion ? false : true)
     }
     const currencyInformation = selectCurrencyInformation({
         currency: client.currency
@@ -224,7 +234,10 @@ const PaymentTile = (props) => {
                 mx={1}
                 className='PaymentTile'
             >
-                <Accordion>
+                <Accordion 
+                    expanded={activeAccordion}
+                    onChange={() => handleAccordion()}
+                >
                     <AccordionSummary
                         expandIcon={
                             <Grid item xs={0.5}>
@@ -282,7 +295,12 @@ const PaymentTile = (props) => {
                                         }
                                     </Typography>
                                     {project && (calculateAllocationsOtherProjects() > 0 ) &&
-                                    <Typography variant='subtitle2' color='secondary'>
+                                    <Typography 
+                                        variant='subtitle2' 
+                                        color='secondary'
+                                        className='link'
+                                        onClick={() => handleRedirect()}
+                                    >
                                         {`${totalAllocatedOtherProjects} to other projects`}
                                     </Typography>
                                     }
