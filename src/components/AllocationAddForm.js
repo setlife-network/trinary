@@ -60,6 +60,22 @@ const AllocationAddForm = (props) => {
         open
     } = props
 
+    const [allocationTypes, setAllocationTypes] = useState([1, 0])
+    const [contributorAllocations, setContributorAllocations] = useState(null)
+    const [contributorRates, setContributorRates] = useState(null)
+    const [displayError, setDisplayError] = useState(false)
+    const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
+    const [newAllocationRate, setNewAllocationRate] = useState({})
+    const [newAllocation, setNewAllocation] = useState({})
+    const [rateCurrency, setRateCurrency] = useState(null)
+    const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month'))
+    const [endDate, setEndDate] = useState(moment().add(1, 'months').endOf('month'))
+    const [selectedContributor, setSelectedContributor] = useState(null)
+    const [selectedProject, setSelectedProject] = useState(null)
+    const [selectedPayment, setSelectedPayment] = useState(null)
+    const [paymentError, setPaymentError] = useState('')
+    const [totalAllocatedFromPayment, setTotalAllocatedFromPayment] = useState(null)
+
     const changeAllocationType = (props) => {
         const { allocationTypes, selectedType } = props
         const allocationTypesState = allocationTypes
@@ -89,6 +105,18 @@ const AllocationAddForm = (props) => {
                 {
                     'hourly_rate': rate.hourly_rate.toString(),
                     'total_expected_hours': Number(rate.total_expected_hours),
+                    'minimum_expected_hours': rate.minimum_expected_hours 
+                        ? Number(rate.minimum_expected_hours)
+                        : null,
+                    'maximum_expected_hours': rate.maximum_expected_hours
+                        ? Number(rate.maximum_expected_hours)
+                        : null,
+                    'minimum_hourly_rate': rate.minimum_hourly_rate
+                        ? rate.minimum_hourly_rate.toString() 
+                        : null,
+                    'maximum_hourly_rate': rate.maximum_hourly_rate
+                        ? rate.maximum_hourly_rate.toString() 
+                        : null,
                     'type': rate.type,
                     'currency': rateCurrency
                 }
@@ -102,6 +130,18 @@ const AllocationAddForm = (props) => {
                         variables: {
                             hourly_rate: rate.hourly_rate.toString(),
                             total_expected_hours: Number(rate.total_expected_hours),
+                            minimum_expected_hours: rate.minimum_expected_hours 
+                                ? Number(rate.minimum_expected_hours)
+                                : null,
+                            maximum_expected_hours: rate.maximum_expected_hours
+                                ? Number(rate.maximum_expected_hours)
+                                : null,
+                            minimum_hourly_rate: rate.minimum_hourly_rate
+                                ? rate.minimum_hourly_rate.toString() 
+                                : null,
+                            maximum_hourly_rate: rate.maximum_hourly_rate
+                                ? rate.maximum_hourly_rate.toString() 
+                                : null,
                             type: rate.type,
                             currency: rateCurrency,
                             contributor_id: selectedContributor.id
@@ -213,22 +253,6 @@ const AllocationAddForm = (props) => {
         loadingNewRate,
         errorNewRate
     }] = useMutation(CREATE_RATE)
-
-    const [allocationTypes, setAllocationTypes] = useState([1, 0])
-    const [contributorAllocations, setContributorAllocations] = useState(null)
-    const [contributorRates, setContributorRates] = useState(null)
-    const [displayError, setDisplayError] = useState(false)
-    const [mostRecentAllocation, setMostRecentAllocation] = useState(null)
-    const [newAllocationRate, setNewAllocationRate] = useState({})
-    const [newAllocation, setNewAllocation] = useState({})
-    const [rateCurrency, setRateCurrency] = useState(null)
-    const [startDate, setStartDate] = useState(moment().add(1, 'months').startOf('month'))
-    const [endDate, setEndDate] = useState(moment().add(1, 'months').endOf('month'))
-    const [selectedContributor, setSelectedContributor] = useState(null)
-    const [selectedProject, setSelectedProject] = useState(null)
-    const [selectedPayment, setSelectedPayment] = useState(null)
-    const [paymentError, setPaymentError] = useState('')
-    const [totalAllocatedFromPayment, setTotalAllocatedFromPayment] = useState(null)
 
     const [createAllocation, {
         dataNewAllocations,
