@@ -42,7 +42,6 @@ const PaymentTile = (props) => {
         active
     } = props
 
-    localStorage.removeItem('openPayment')
     const formattedDatePaid = moment.utc(parseInt(payment.date_paid, 10)).format('MM/DD/YYYY')
     const formattedDateIncurred = moment.utc(parseInt(payment.date_incurred, 10)).format('MM/DD/YYYY')
     const paymentHasBeenMade = payment.date_paid != null
@@ -89,8 +88,7 @@ const PaymentTile = (props) => {
         history.push(`/clients/${client.id}/payments/${payment.id}/update`)
     }
     const handleRedirect = () => {
-        history.push(`/clients/${client.id}`)
-        localStorage.setItem('openPayment', payment.id)
+        history.push(`/clients/${client.id}?paymentId=${payment.id}`)
     }
     const handleAccordion = () => {
         setActiveAccordion(activeAccordion ? false : true)
