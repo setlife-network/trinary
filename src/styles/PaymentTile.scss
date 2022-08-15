@@ -23,6 +23,9 @@
     .project-name{
         text-transform: capitalize;
     }
+    .link:hover {
+        text-decoration: underline;
+    }
 }
 
 @media screen and (min-width: $sm) {
