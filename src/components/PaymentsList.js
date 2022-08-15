@@ -13,6 +13,10 @@ const PaymentsList = (props) => {
         project
     } = props
 
+    const activePayment = window.location.search
+        ? window.location.search.replace('?paymentId=', '')
+        : ''
+
     const renderPaymentTiles = (payments) => {
         return payments.map(p => {
             return (
@@ -22,6 +26,7 @@ const PaymentsList = (props) => {
                             payment={p}
                             client={p.client}
                             project={project}
+                            active={Number(activePayment) == p.id ? true : false}
                         />
                     </Box>
                 </Grid>
