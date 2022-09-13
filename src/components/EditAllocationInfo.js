@@ -111,8 +111,6 @@ const EditAllocationInfo = (props) => {
         })
     }
 
-    console.log(allocation.contributor)
-
     const redirectToContributor = () => {
         history.push('/contributor/' + allocation.contributor.id)
     }
