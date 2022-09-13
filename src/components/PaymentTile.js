@@ -149,12 +149,15 @@ const PaymentTile = (props) => {
             currencyInformation
         } = props
         const projects = []
+        
+        const sortAllocationsByEndDate = orderBy(allocations, ['end_date'], ['desc'])
 
-        return allocations.map((a, i) => {
+        return sortAllocationsByEndDate.map((a, i) => {
             const {
                 amount,
                 contributor,
                 end_date,
+                start_date,
                 rate
             } = a
             const projectName = a.project.name
@@ -201,11 +204,16 @@ const PaymentTile = (props) => {
                                 className='edit-button' 
                             />
                         </Grid>
-                        <Grid items xs={12}>
+                        <Grid items xs={6}>
                             <Typography color='secondary' variant='caption' className='animation-effect-left'>
                                 {`${currencyInformation['symbol']} ${rate.hourly_rate}/hr (
                                     ${rate.type == 'prorated_monthly' ? 'monthly rate' : 'max budget'}
                                 )`}
+                            </Typography>
+                        </Grid>
+                        <Grid items xs={6} align='right'>
+                            <Typography color='secondary' variant='caption' className='animation-effect-right'>
+                                {`Starts ${moment(start_date, 'x').format('MM/DD/YYYY')} `}
                             </Typography>
                         </Grid>
                         <Grid item xs={6}>
