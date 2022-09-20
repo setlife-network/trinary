@@ -67,7 +67,7 @@ const ProjectSummary = (props) => {
                                 <Grid xs={10} align='left'>
                                     <Typography 
                                         variant='' 
-                                        className='redirect'
+                                        className='grey-link'
                                         onClick={redirectToClient}
                                     >
                                         <span>
