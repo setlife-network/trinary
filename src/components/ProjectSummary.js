@@ -43,7 +43,7 @@ const ProjectSummary = (props) => {
         currencyInformation: currencyInformation
     })
 
-    const redirectToClient = () => {
+    const goToClientPage = () => {
         history.push('/clients/' + project.client.id)
     }
     
@@ -68,7 +68,7 @@ const ProjectSummary = (props) => {
                                     <Typography 
                                         variant='' 
                                         className='grey-link'
-                                        onClick={redirectToClient}
+                                        onClick={goToClientPage}
                                     >
                                         <span>
                                             {`Client - ${project.client.name}`}
