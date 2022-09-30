@@ -150,9 +150,9 @@ const PaymentTile = (props) => {
         } = props
         const projects = []
         
-        const sortAllocationsByEndDate = orderBy(allocations, ['end_date'], ['desc'])
+        const sortedAllocations = orderBy(allocations, ['end_date'], ['desc'])
 
-        return sortAllocationsByEndDate.map((a, i) => {
+        return sortedAllocations.map((a, i) => {
             const {
                 amount,
                 contributor,
