@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import {
     Box,
     Button,
@@ -23,6 +24,8 @@ const ProjectSummary = (props) => {
         projectId
     } = props
     const [openEditDialog, setOpenEditDialog] = useState(false)
+    const history = useHistory()
+
     const handleEditOpen = () => {
         setOpenEditDialog(true)
     }
@@ -40,6 +43,10 @@ const ProjectSummary = (props) => {
         currencyInformation: currencyInformation
     })
 
+    const goToClientPage = () => {
+        history.push('/clients/' + project.client.id)
+    }
+    
     return (
         <Box
             px={[1, 3]}
@@ -58,7 +65,15 @@ const ProjectSummary = (props) => {
                                     <Icon className='fas fa-address-card' color='primary'/>
                                 </Grid>
                                 <Grid xs={10} align='left'>
-                                    {`Client - ${project.client.name}`}
+                                    <Typography 
+                                        variant='' 
+                                        className='grey-link'
+                                        onClick={goToClientPage}
+                                    >
+                                        <span>
+                                            {`Client - ${project.client.name}`}
+                                        </span>
+                                    </Typography>
                                 </Grid>
                             </Grid>
                         </Grid>

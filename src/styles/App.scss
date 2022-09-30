@@ -49,6 +49,13 @@ body {
     //color: $blue;
 }
 
+.grey-link {
+    cursor: pointer;
+    :hover {
+        color: $grey
+    }
+}
+
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);
