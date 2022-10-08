@@ -1,15 +1,15 @@
 import { ClientFunction, Selector } from 'testcafe';
-import { testUser } from './roles';
+import { MockedCookieHook } from './hooks/MockedCookieHook';
 
 const getWindowLocation = ClientFunction(() => window.location);
 
+const mockedCookieHook = new MockedCookieHook()
+
 fixture`Home`
     .page`${process.env.SITE_URL}/home/clients`
-    .beforeEach(async t => {
-        await t.useRole(testUser)
-    })
+    .requestHooks(mockedCookieHook)
 
-test.skip('Open Add Client page from the Home page', async t => {
+test('Open Add Client page from the Home page', async t => {
     const addClientButton = Selector('.ClientListManager').find('button')
 
     await t
