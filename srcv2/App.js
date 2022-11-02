@@ -1,11 +1,17 @@
 import React from 'react'
-import { Route, withRouter, Redirect } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
+import PublicRoute from './components/PublicRoute'
+
+import LandingPage from './pages/LandingPage'
 
 class App extends React.Component {
     render() {
         return (
             <div className='App'>
-                App
+                <PublicRoute
+                    path='/'
+                    component={LandingPage}
+                />
             </div>
         )
     }
