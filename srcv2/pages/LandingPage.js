@@ -1,4 +1,5 @@
 import React from 'react'
+
 import Section from '../components/Section'
 
 const LandingPage = () => {
@@ -12,18 +13,26 @@ const LandingPage = () => {
             {
                 title: 'Budgeting',
                 goals: ['Allocate funds to your team', 'Negotiate compensation rates', 'Fund allocations with BTC']
+            },
+            {
+                title: 'Bitcoin Bonuses',
+                goals: []
             }
         ]
         return FEATURES.map((feature, idx) => {
             const goals = feature.goals.map(goal => {
                 return (
-                    <p>{goal}</p>
+                    <p className='goal text-center font-bold text-xl text-grey'>
+                        {goal}
+                    </p>
                 )
             })
             return (
-                <div className='feature justify-center grid grid-flow-row auto-rows-max gap-8'>
+                <div className='feature justify-center grid grid grid-cols-1 gap-4'>
                     <div className='rounded-full bg-setlife w-fit px-2 mx-auto'>
-                        {idx}
+                        <p className='text-white p-2 text-lg font-bold'>
+                            {idx + 1}
+                        </p>
                     </div>
                     <p className='title text-3xl text-center font-bold'>
                         {feature.title}
@@ -49,7 +58,7 @@ const LandingPage = () => {
                 </div>
             </Section>
             <Section className='flex justify-center'>
-                <button className='bg-black rounded-full' type='submit'>
+                <button className='bg-black rounded-full w-full md:w-2/6' type='submit'>
                     <div className='grid grid-cols-8 px-8 py-2'>
                         <div></div>
                         <div className='col-span-8'>
@@ -59,7 +68,7 @@ const LandingPage = () => {
                 </button>
             </Section>
             <Section>
-                <div className='features grid grid-flow-row auto-rows-max'>
+                <div className='features grid grid-flow-row auto-rows-max gap-12'>
                     { renderFeatures() }
                 </div>
             </Section>

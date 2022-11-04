@@ -6,7 +6,7 @@ const Section = ({
     className
 }) => {
     return (
-        <div className={`Section ${backgroundColor} px-24 md:px-48 lg:px-64 py-12 ${className}`}>
+        <div className={`Section ${backgroundColor} px-12 sm:px-24 md:px-48 lg:px-64 py-12 ${className}`}>
             { children }
         </div>
     )
