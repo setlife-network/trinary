@@ -60,6 +60,7 @@
   },
   "scripts": {
     "ui": "cross-env PORT=6002 react-scripts start",
+    "ui-v2": "cross-env PORT=6002 react-app-rewired start",
     "server": "cross-env PORT=6001 node server",
     "dev-server": "cross-env PORT=6001 nodemon server",
     "start": "node server",
@@ -90,6 +91,7 @@
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.2",
     "jest-watch-typeahead": "^0.6.5",
+    "react-app-rewired": "^2.2.1",
     "testcafe": "^1.18.6"
   }
 }
