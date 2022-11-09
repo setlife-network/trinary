@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import PublicRoute from './components/PublicRoute'
 
+import Footer from './components/Footer'
 import LandingPage from './pages/LandingPage'
 
 class App extends React.Component {
@@ -12,6 +13,7 @@ class App extends React.Component {
                     path='/'
                     component={LandingPage}
                 />
+                <Footer/>
             </div>
         )
     }

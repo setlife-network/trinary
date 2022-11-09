@@ -2,21 +2,27 @@ import React from 'react'
 
 import Section from '../components/Section'
 
+import { GITHUB_LOGO_URL } from '../constants'
+
 const LandingPage = () => {
 
     const renderFeatures = () => {
         const FEATURES = [
             {
                 title: 'Project Administration',
-                goals: ['Create projects from any Github repo', 'View insights for a project']
+                goals: ['Create projects from any Github repo', 'View insights for a project'],
+                imageUrl: 'https://project-trinary.s3.us-east-1.amazonaws.com/images/iphone-landing-mockup.png',
+                imageHeight: 'h-'
             },
             {
                 title: 'Budgeting',
-                goals: ['Allocate funds to your team', 'Negotiate compensation rates', 'Fund allocations with BTC']
+                goals: ['Allocate funds to your team', 'Negotiate compensation rates', 'Fund allocations with BTC'],
+                imageUrl: 'https://project-trinary.s3.us-east-1.amazonaws.com/images/budget-landing-mockup.png'
             },
             {
                 title: 'Bitcoin Bonuses',
-                goals: []
+                goals: [],
+                imageUrl: 'https://project-trinary.s3.us-east-1.amazonaws.com/images/btc-landing-mockup.png'
             }
         ]
         return FEATURES.map((feature, idx) => {
@@ -38,6 +44,9 @@ const LandingPage = () => {
                         {feature.title}
                     </p>
                     {goals}
+                    <div className='h-auto m-auto'>
+                        <img src={feature.imageUrl} alt={feature.title} className='h-fit' />
+                    </div>
                 </div>
             )
         })
@@ -46,7 +55,7 @@ const LandingPage = () => {
     return (
         <div className='LandingPage'>
             <Section backgroundColor={'bg-light'} className={'rounded-b-[70px]'}>
-                <div className='grid grid-flow-row auto-rows-max'>
+                <div className='header grid grid-flow-row auto-rows-max gap-8'>
                     <div className='grid grid-cols-1 gap-8'>
                         <p className='text-5xl text-center font-bold'>
                             Trinary
@@ -55,14 +64,21 @@ const LandingPage = () => {
                             Build a “micro-economy” for your team to share knowledge, trade feedback, & hold each other accountable
                         </p>
                     </div>
+                    <div className='grid grid-cols-1'>
+                        <img src='https://project-trinary.s3.us-east-1.amazonaws.com/images/landing-banner.png' alt='landing' className=' lg:mt-8 mx-auto' />
+                    </div>
                 </div>
             </Section>
             <Section className='flex justify-center'>
-                <button className='bg-black rounded-full w-full md:w-2/6' type='submit'>
-                    <div className='grid grid-cols-8 px-8 py-2'>
-                        <div></div>
-                        <div className='col-span-8'>
-                            <p className='text-white'>Continue with GitHub</p>
+                <button className='bg-black rounded-full w-full md:w-64 xl:w-2/6' type='submit'>
+                    <div className='grid grid-flow-col auto-cols-max px-8 py-2 justify-center gap-4'>
+                        <div className=''>
+                            <img src={GITHUB_LOGO_URL} alt={'GitHub'} className='h-6'/>
+                        </div>
+                        <div className=''>
+                            <p className='text-white'>
+                                Continue with GitHub
+                            </p>
                         </div> 
                     </div>
                 </button>
