@@ -1,8 +1,9 @@
 import React from 'react'
 
+import GitHubButton from '../components/GitHubButton'
 import Section from '../components/Section'
 
-import { GITHUB_LOGO_URL } from '../constants'
+import { HERO_IMAGE_URL } from '../constants'
 
 const LandingPage = () => {
 
@@ -44,8 +45,8 @@ const LandingPage = () => {
                         {feature.title}
                     </p>
                     {goals}
-                    <div className='h-auto m-auto'>
-                        <img src={feature.imageUrl} alt={feature.title} className='h-fit' />
+                    <div className='h-auto m-auto max-h-80'>
+                        <img src={feature.imageUrl} alt={feature.title} className='h-fit max-h-80' />
                     </div>
                 </div>
             )
@@ -65,23 +66,14 @@ const LandingPage = () => {
                         </p>
                     </div>
                     <div className='grid grid-cols-1'>
-                        <img src='https://project-trinary.s3.us-east-1.amazonaws.com/images/landing-banner.png' alt='landing' className=' lg:mt-8 mx-auto' />
+                        <img src={HERO_IMAGE_URL} alt='landing' className=' lg:mt-8 mx-auto' />
                     </div>
                 </div>
             </Section>
             <Section className='flex justify-center'>
-                <button className='bg-black rounded-full w-full md:w-64 xl:w-2/6' type='submit'>
-                    <div className='grid grid-flow-col auto-cols-max px-8 py-2 justify-center gap-4'>
-                        <div className=''>
-                            <img src={GITHUB_LOGO_URL} alt={'GitHub'} className='h-6'/>
-                        </div>
-                        <div className=''>
-                            <p className='text-white'>
-                                Continue with GitHub
-                            </p>
-                        </div> 
-                    </div>
-                </button>
+                <div className='w-full'>
+                    <GitHubButton text={'Continue with GitHub'} />
+                </div>
             </Section>
             <Section>
                 <div className='features grid grid-flow-row auto-rows-max gap-12'>

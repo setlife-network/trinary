@@ -38,7 +38,7 @@ const Footer = () => {
         
     }
     return (
-        <div className='Footer'>
+        <div className='Footer absolute bottom-0 w-full'>
             <Section backgroundColor={'bg-black'}>
                 <div className='grid grid-rows-2 grid-flow-col gap-8'>
                     <div>

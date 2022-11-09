@@ -9,6 +9,8 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    min-height: 100vh;
 }
 
 code {
@@ -21,5 +23,6 @@ code {
 
 //Pages
 @import './LandingPage.scss';
+@import './LoginPage.scss';
 
 //Components
