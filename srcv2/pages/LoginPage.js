@@ -6,6 +6,7 @@ import Section from '../components/Section'
 import { HERO_IMAGE_URL } from '../constants'
 
 const LoginPage = () => {
+
     return (
         <div className='LoginPage'>
             <Section backgroundColor={'bg-light'} className={'rounded-b-[70px]'}>
