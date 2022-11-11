@@ -8,6 +8,8 @@ import Footer from './components/Footer'
 import DashboardPage from './pages/DashboardPage'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
+import OnboardingPage from './pages/OnboardingPage'
+import OnboardingContributorPage from './pages/OnboardingContributorPage'
 
 class App extends React.Component {
     render() {
@@ -28,6 +30,16 @@ class App extends React.Component {
                         exact
                         path='/dashboard'
                         component={DashboardPage}
+                    />
+                    <PrivateRoute
+                        exact
+                        path='/onboarding'
+                        component={OnboardingPage}
+                    />
+                    <PrivateRoute
+                        exact
+                        path='/onboarding-contributor'
+                        component={OnboardingContributorPage}
                     />
                 </div>
                 <Footer/>

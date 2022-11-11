@@ -3,7 +3,11 @@ import React from 'react'
 import GitHubButton from '../components/GitHubButton'
 import Section from '../components/Section'
 
-import { HERO_IMAGE_URL } from '../constants'
+import {
+    BUDGETING_IMAGE_URL,
+    HERO_IMAGE_URL, 
+    IPHONE_IMAGE_URL
+} from '../constants'
 
 const LandingPage = () => {
 
@@ -12,13 +16,13 @@ const LandingPage = () => {
             {
                 title: 'Project Administration',
                 goals: ['Create projects from any Github repo', 'View insights for a project'],
-                imageUrl: 'https://project-trinary.s3.us-east-1.amazonaws.com/images/iphone-landing-mockup.png',
+                imageUrl: IPHONE_IMAGE_URL,
                 imageHeight: 'h-'
             },
             {
                 title: 'Budgeting',
                 goals: ['Allocate funds to your team', 'Negotiate compensation rates', 'Fund allocations with BTC'],
-                imageUrl: 'https://project-trinary.s3.us-east-1.amazonaws.com/images/budget-landing-mockup.png'
+                imageUrl: BUDGETING_IMAGE_URL
             },
             {
                 title: 'Bitcoin Bonuses',
