@@ -10,6 +10,11 @@ const ProjectAdministrationOnboarding = () => {
         <div className='ProjectAdminstrationOnboarding'>
             <Section backgroundColor={'bg-setlife'} className={'rounded-br-[70px] pb-0 px-0'}>
                 <div className='header grid grid-flow-row auto-rows-max'>
+                    <div className='rounded-full bg-white w-fit px-2 mx-auto my-4'>
+                        <p className='text-setlife p-2 text-lg font-bold'>
+                            1
+                        </p>
+                    </div>
                     <div className='grid grid-cols-1 gap-2'>
                         <p className='text-3xl text-center font-bold'>
                             Project Administration

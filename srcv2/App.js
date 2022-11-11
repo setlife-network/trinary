@@ -42,7 +42,6 @@ class App extends React.Component {
                         component={OnboardingContributorPage}
                     />
                 </div>
-                <Footer/>
             </div>
         )
     }

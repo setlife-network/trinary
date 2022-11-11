@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 import BudgetingOnboarding from '../components/BudgetingOnboarding'
+import CreateProjectOnboarding from '../components/CreateProjectOnboarding'
 import ProjectAdministrationOnboarding from '../components/ProjectAdministrationOnboarding'
 import Section from '../components/Section'
 
 const OnboardingContributorPage = () => {
 
-    const sections = [<ProjectAdministrationOnboarding/>, <BudgetingOnboarding/>, <div>Create</div>, <div>Fund</div>]
+    const sections = [<ProjectAdministrationOnboarding/>, <BudgetingOnboarding/>, <CreateProjectOnboarding/>, <div>Fund</div>]
     
     const [currentSectionIdx, setCurrentSectionIdx] = useState(0)
 
@@ -17,7 +18,7 @@ const OnboardingContributorPage = () => {
     return (
         <div className='OnboardingContributorPage'>
             {renderCurrentSection()}
-            <Section className='mb-24 absolute bottom-16 w-full'>
+            <Section className='absolute bottom-4 w-full'>
                 <div className='grid grid-cols-1 gap-4'>
                     <p className='text-center' onClick={() => history.push('/dashboard')}>
                         Skip

@@ -2,6 +2,7 @@ import React from 'react'
 
 import GitHubButton from '../components/GitHubButton'
 import Section from '../components/Section'
+import Footer from '../components/Footer'
 
 import {
     BUDGETING_IMAGE_URL,
@@ -84,6 +85,7 @@ const LandingPage = () => {
                     { renderFeatures() }
                 </div>
             </Section>
+            <Footer/>
         </div>
     )
 }
