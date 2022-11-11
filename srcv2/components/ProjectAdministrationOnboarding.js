@@ -1,11 +1,18 @@
 import React from 'react'
 
 import Section from './Section'
+import OnboardingNextSection from './OnboardingNextSection'
+
 import {
     IPHONE_IMAGE_URL
 } from '../constants'
 
-const ProjectAdministrationOnboarding = () => {
+const ProjectAdministrationOnboarding = (props) => {
+
+    const { 
+        goToNextSection
+    } = props
+
     return (
         <div className='ProjectAdminstrationOnboarding'>
             <Section backgroundColor={'bg-setlife'} className={'rounded-br-[70px] pb-0 px-0'}>
@@ -31,6 +38,7 @@ const ProjectAdministrationOnboarding = () => {
                     </div>
                 </div>
             </Section>
+            <OnboardingNextSection goToNextSection={goToNextSection} />
         </div>
     )
 }

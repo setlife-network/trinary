@@ -1,12 +1,18 @@
 import React from 'react'
 
 import Section from './Section'
+import OnboardingNextSection from './OnboardingNextSection'
 
 import {
     BUDGETING_IMAGE_URL
 } from '../constants'
 
-const BudgetingOnboarding = () => {
+const BudgetingOnboarding = (props) => {
+
+    const { 
+        goToNextSection
+    } = props
+
     return (
         <div className='BudgetingOnboarding'>
             <Section backgroundColor={'bg-light'} className={'rounded-br-[70px] pb-0 px-0'}>
@@ -32,6 +38,7 @@ const BudgetingOnboarding = () => {
                     </div>
                 </div>
             </Section>
+            <OnboardingNextSection goToNextSection={goToNextSection} />
         </div>
     )
 }

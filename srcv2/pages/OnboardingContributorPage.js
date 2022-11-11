@@ -6,10 +6,25 @@ import ProjectAdministrationOnboarding from '../components/ProjectAdministration
 import Section from '../components/Section'
 
 const OnboardingContributorPage = () => {
-
-    const sections = [<ProjectAdministrationOnboarding/>, <BudgetingOnboarding/>, <CreateProjectOnboarding/>, <div>Fund</div>]
     
     const [currentSectionIdx, setCurrentSectionIdx] = useState(0)
+
+    const goToNextSection = () => {
+        setCurrentSectionIdx(currentSectionIdx + 1)
+    }
+
+    const sections = [
+        <ProjectAdministrationOnboarding
+            goToNextSection={goToNextSection}
+        />, 
+        <BudgetingOnboarding
+            goToNextSection={goToNextSection}
+        />,
+        <CreateProjectOnboarding
+            goToNextSection={goToNextSection}
+        />, 
+        <div>Fund</div>
+    ]
 
     const renderCurrentSection = () => {
         return (sections[currentSectionIdx])
@@ -18,20 +33,6 @@ const OnboardingContributorPage = () => {
     return (
         <div className='OnboardingContributorPage'>
             {renderCurrentSection()}
-            <Section className='absolute bottom-4 w-full'>
-                <div className='grid grid-cols-1 gap-4'>
-                    <p className='text-center' onClick={() => history.push('/dashboard')}>
-                        Skip
-                    </p>
-                    <button
-                        className='bg-setlife rounded-full w-full py-2'
-                        onClick={() => setCurrentSectionIdx(currentSectionIdx + 1)}
-                        type='button'
-                    >
-                        Continue
-                    </button>
-                </div>
-            </Section>
         </div>
     )
 }

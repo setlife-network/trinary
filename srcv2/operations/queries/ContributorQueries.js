@@ -13,3 +13,27 @@ export const CHECK_SESSION = gql`
         }
     }
 `
+
+export const GET_CONTRIBUTOR_ORGANIZATIONS_FROM_GITHUB = gql`
+    query GithubOrganizations($id: Int) {
+        getGithubOrganizations(contributorId: $id) {
+            id
+            avatar
+            name
+        }
+    }
+`
+
+export const GET_CONTRIBUTOR_REPOS_FROM_GITHUB = gql`
+    query GithubOrganizationRepos($githubPageNumber: Int!, $accountId: Int!) {
+        getGithubRepos(
+            githubPageNumber: $githubPageNumber, 
+            accountId: $accountId 
+        ) 
+        {
+            id
+            name
+            githubUrl
+        }
+    }
+`

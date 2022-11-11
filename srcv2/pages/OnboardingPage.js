@@ -20,12 +20,12 @@ const OnboardingPage = () => {
                         </p>
                     </div>
                     <div className='grid grid-cols-1'>
-                        <img src='https://project-trinary.s3.us-east-1.amazonaws.com/images/onboarding-hero.png' alt='onboarding' className=' lg:mt-8 mx-auto' />
+                        <img src='https://project-trinary.s3.us-east-1.amazonaws.com/images/onboarding-hero.png' alt='onboarding' className=' lg:mt-8 mx-auto max-h-96' />
                     </div>
                 </div>
             </Section>
-            <Section>
-                <div className='grid grid-cols-1 gap-4 pb-12'>
+            <Section className='absolute w-full bottom-0'>
+                <div className='grid grid-cols-1 gap-4 pb-2'>
                     <p className='text-center' onClick={() => history.push('/dashboard')}>
                         Skip
                     </p>
