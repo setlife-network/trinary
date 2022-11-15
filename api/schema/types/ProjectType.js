@@ -90,13 +90,13 @@ module.exports = gql`
     }
 
     input CreateProjectInput {
-        expected_budget: Int!
-        is_active: Boolean!
+        expected_budget: Int
+        is_active: Boolean
         name: String!
         github_url: String!
         toggl_url: String
-        client_id: Int!
-        date: String!
+        client_id: Int
+        date: String
         end_date: String
         expected_budget_timeframe: String
     }
