@@ -60,6 +60,7 @@ module.exports = gql`
         id: Int
         name: String
         githubUrl: String
+        private: Boolean
     }
 
     type TotalAllocatedByCurrency {

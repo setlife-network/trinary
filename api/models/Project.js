@@ -46,6 +46,9 @@ module.exports = (sequelize) => {
         end_date: {
             type: DataTypes.DATE,
         },
+        is_public: {
+            type: DataTypes.INTEGER
+        },
         date_last_synced: {
             type: DataTypes.DATE,
         },

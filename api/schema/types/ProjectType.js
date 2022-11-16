@@ -6,6 +6,7 @@ module.exports = gql`
         id: Int!
         expected_budget: Int!
         is_active: Boolean!
+        is_public: Boolean
         name: String!
         github_url: String!
         toggl_url: String
@@ -92,6 +93,7 @@ module.exports = gql`
     input CreateProjectInput {
         expected_budget: Int
         is_active: Boolean
+        is_public: Boolean
         name: String!
         github_url: String!
         toggl_url: String

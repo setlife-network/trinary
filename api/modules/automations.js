@@ -43,6 +43,7 @@ const automations = module.exports = (() => {
                     id: r.id,
                     name: r.name,
                     githubUrl: r.html_url,
+                    private: r.private
                 })
             }
         })
