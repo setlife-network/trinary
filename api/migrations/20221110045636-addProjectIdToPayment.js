@@ -11,14 +11,6 @@ module.exports = {
                         model: 'Projects',
                         key: 'id'
                     }
-                }, { transaction: t }),
-                queryInterface.changeColumn('Payments', 'client_id', {
-                    type: Sequelize.DataTypes.INTEGER,
-                    allowNull: true,
-                    references: {
-                        model: 'Clients',
-                        key: 'id'
-                    }
                 }, { transaction: t })
             ])
         })
@@ -29,14 +21,6 @@ module.exports = {
             return Promise.all([
                 queryInterface.removeColumn('Payments', 'project_id',
                     { transaction: t }),
-                queryInterface.changeColumn('Payments', 'client_id', {
-                    type: Sequelize.DataTypes.INTEGER,
-                    allowNull: false,
-                    references: {
-                        model: 'Clients',
-                        key: id
-                    }
-                }, { transaction: t })
             ])
         })
     }

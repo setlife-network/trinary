@@ -58,6 +58,10 @@ module.exports = (sequelize) => {
                 model: 'Clients',
                 key: 'id'
             }
+        },
+        expected_budget_currency: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     },
     {

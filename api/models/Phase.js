@@ -45,6 +45,8 @@ module.exports = (sequelize) => {
     }, {
         sequelize,
         modelName: 'Phase',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
     });
     return Phase;
 };
