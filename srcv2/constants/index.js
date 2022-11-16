@@ -4,3 +4,47 @@ export const GITHUB_LOGO_URL = 'https://project-trinary.s3.us-east-1.amazonaws.c
 export const HERO_IMAGE_URL = 'https://project-trinary.s3.us-east-1.amazonaws.com/images/landing-banner.png'
 export const IPHONE_IMAGE_URL = 'https://project-trinary.s3.us-east-1.amazonaws.com/images/iphone-landing-mockup.png'
 export const BUDGETING_IMAGE_URL = 'https://project-trinary.s3.us-east-1.amazonaws.com/images/budget-landing-mockup.png'
+export const CURRENCIES = [
+    {
+        name: 'USD',
+        symbol: '$',
+        decimal: '.',
+        thousand: ',',
+        precision: 2,
+    },
+    {
+        name: 'MXN',
+        symbol: '$',
+        decimal: '.',
+        thousand: ',',
+        precision: 2,
+    },
+    {
+        name: 'EUR',
+        symbol: '€',
+        decimal: ',',
+        thousand: '.',
+        precision: 2,
+    },
+    {
+        name: 'BTC',
+        symbol: '₿',
+        decimal: '.',
+        thousand: ',',
+        precision: 2,
+    },
+    {
+        name: 'SATS',
+        symbol: 's ',
+        decimal: '.',
+        thousand: ',',
+        precision: 0,
+    },
+    {
+        name: '',
+        symbol: '',
+        decimal: '.',
+        thousand: ',',
+        precision: 2,
+    }
+]

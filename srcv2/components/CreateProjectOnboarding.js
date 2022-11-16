@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client'
 
 import Section from './Section'
+import Selector from './Selector'
 import OnboardingNextSection from './OnboardingNextSection'
 
 import { CREATE_PERMISSION } from '../operations/mutations/PermissionMutations'
@@ -14,7 +15,8 @@ import { sessionUser } from '../reactivities/variables'
 const CreateProjectOnboarding = (props) => {
 
     const {
-        goToNextSection 
+        goToNextSection,
+        setProjectCreated
     } = props
 
     const [openUsers, setOpenUsers] = useState(false)
@@ -101,7 +103,8 @@ const CreateProjectOnboarding = (props) => {
 
     const saveAndGoToNextSection = async () => {
         try {
-            createProject()
+            const newProject = await createProject()
+            setProjectCreated(newProject)
             goToNextSection()
         } catch (err) {
             console.log(err)
@@ -111,9 +114,13 @@ const CreateProjectOnboarding = (props) => {
     const createProject = async () => {
         const newProjectVariables = {
             name: selectedRepo.name,
-            github_url: selectedRepo.githubUrl
+            github_url: selectedRepo.githubUrl,
+            is_public: !selectedRepo.private
         }
         const newProject = await addProject({ variables: newProjectVariables })
+        if (newProject.errors) {
+            throw new Error('An error ocurred while creating the project')
+        }
         const newPermission = await createPermission({
             variables: {
                 contributor_id: sessionUser().id,
@@ -133,6 +140,7 @@ const CreateProjectOnboarding = (props) => {
                 }
             })
         }
+        return newProject
     }
 
     const renderGitHubOrgs = () => {
@@ -160,7 +168,6 @@ const CreateProjectOnboarding = (props) => {
             setSelectedRepo(repo)
         }
         return repoOptions.map(repo => {
-            console.log(repo)
             return (
                 <button 
                     type='button'
@@ -175,37 +182,6 @@ const CreateProjectOnboarding = (props) => {
                 </button>    
             )
         })
-    }
-
-    const selector = ({ title, renderOptions, openOptions, setOpenOptions, loadingOptions }) => {
-        return (
-            <div>
-                <button type='button' className='border border-light rounded-lg px-4 py-1 w-full' onClick={() => setOpenOptions(!openOptions)}>
-                    <div className='grid grid-flow-col auto-cols-max flex justify-between'>
-                        <p className='text-light text-left'>{title}</p>
-                        <svg className='-mr-1 ml-2 h-5 w-5' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>
-                            <path fillRule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z' clipRule='evenodd' />
-                        </svg>
-                    </div>
-                </button>
-                {openOptions &&
-                    <div 
-                        className='absolute right-0 left-0 z-10 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none mx-12 sm:mx-24 md:mx-48 lg:mx-96 max-h-52 overflow-scroll' 
-                        role='menu'
-                        aria-orientation='vertical' 
-                        aria-labelledby='menu-button'
-                        tabIndex='-1'
-                    >
-                        <div className='py-1' role='none'>
-                            {loadingOptions && 
-                                'Loading'
-                            }
-                            {renderOptions()}
-                        </div>
-                    </div>
-                }
-            </div>
-        )
     }
 
     return (
@@ -232,20 +208,20 @@ const CreateProjectOnboarding = (props) => {
                     </p>
                 </div>
                 <div className='grid grid-cols-1 gap-4 mt-4'>
-                    {selector({
-                        title: selectedUser ? selectedUser.name : 'User/Organization',
-                        renderOptions: renderGitHubOrgs,
-                        openOptions: openUsers,
-                        setOpenOptions: setOpenUsers,
-                        loadingOptions: loadingOrganizations
-                    })}
-                    {selector({
-                        title: selectedRepo ? selectedRepo.name : 'Repo',
-                        renderOptions: renderRepos,
-                        openOptions: openRepos,
-                        setOpenOptions: setOpenRepos,
-                        loadingOptions: loadingOrganizationRepos
-                    })}
+                    <Selector
+                        title={selectedUser ? selectedUser.name : 'User/Organization'}
+                        renderOptions={renderGitHubOrgs}
+                        openOptions={openUsers}
+                        setOpenOptions={setOpenUsers}
+                        loadingOptions={loadingOrganizations}
+                    />
+                    <Selector
+                        title={selectedRepo ? selectedRepo.name : 'Repo'}
+                        renderOptions={renderRepos}
+                        openOptions={openRepos}
+                        setOpenOptions={setOpenRepos}
+                        loadingOptions={loadingOrganizationRepos}
+                    />
                     {/* {<div className='border border-light rounded-lg px-4 py-1'>
                         <p className='text-light'>Project name</p>
                     </div>} */}

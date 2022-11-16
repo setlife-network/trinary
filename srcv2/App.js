@@ -3,7 +3,7 @@ import { withRouter, Redirect } from 'react-router-dom'
 import PublicRoute from './components/PublicRoute'
 import PrivateRoute from './components/PrivateRoute'
 
-import Footer from './components/Footer'
+import Authentication from './components/Authentication'
 
 import DashboardPage from './pages/DashboardPage'
 import LandingPage from './pages/LandingPage'
@@ -15,6 +15,7 @@ class App extends React.Component {
     render() {
         return (
             <div className='App'>
+                <Authentication/>
                 <div className='content pb-24'>
                     <PublicRoute
                         path='/'

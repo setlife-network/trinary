@@ -34,6 +34,7 @@ export const GET_CONTRIBUTOR_REPOS_FROM_GITHUB = gql`
             id
             name
             githubUrl
+            private
         }
     }
 `
