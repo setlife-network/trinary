@@ -6,7 +6,6 @@ module.exports = {
             return Promise.all([
                 queryInterface.addColumn('Projects', 'expected_budget_currency', {
                     type: Sequelize.DataTypes.STRING,
-                    allowNull: false,
                 }, { transaction: t })
             ])
         })

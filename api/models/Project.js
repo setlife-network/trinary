@@ -60,8 +60,7 @@ module.exports = (sequelize) => {
             }
         },
         expected_budget_currency: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.STRING
         }
     },
     {

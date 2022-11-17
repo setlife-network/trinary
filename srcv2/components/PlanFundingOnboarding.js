@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { useMutation } from '@apollo/client'
+import { useHistory } from 'react-router-dom'
 
 import OnboardingNextSection from './OnboardingNextSection'
 import Selector from './Selector'
@@ -6,14 +8,17 @@ import Section from './Section'
 
 import { CURRENCIES } from '../constants'
 
+import { UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
+
 const FUNDING_PLAN_TIMEFRAME_AMOUNTS = ['Monthly amount', 'Total amount', 'Quarterly']
 
 const PlanFundingOnboarding = (props) => {
 
     const {
-        goToNextSection,
         project
     } = props
+
+    const history = useHistory()
 
     const [budgetRange, setBudgetRange] = useState(null)
     const [currency, setCurrency] = useState(CURRENCIES[0])
@@ -21,12 +26,33 @@ const PlanFundingOnboarding = (props) => {
     const [timeframeAmount, setTimeFrameAmount] = useState(FUNDING_PLAN_TIMEFRAME_AMOUNTS[0])
     const [openTimeFrameOpts, setOpenTimeFrameOpts] = useState(false)
 
-    useEffect(() => {
-        console.log('project')
-        console.log(project)
-    }, [])
+    const [
+        addProjectFunding,
+        {
+            data,
+            loading,
+            error
+        }
+    ] = useMutation(UPDATE_PROJECT, {
+        errorPolicy: 'all'
+    })
 
-    const saveAndGoToNextSection = () => {
+    const saveAndGoToNextSection = async () => {
+        try {
+            const fundProjectVariables = {
+                project_id: project.data.createProject.id,
+                expected_budget: budgetRange,
+                expected_budget_timeframe: timeframeAmount,
+                expected_budget_currency: currency.name
+            }
+            await addProjectFunding({ 
+                variables: fundProjectVariables
+            })
+            history.push('/dashboard')
+        } catch (err) {
+            console.log('err')
+            console.log(err)
+        }
         return true
     }
 
@@ -101,6 +127,7 @@ const PlanFundingOnboarding = (props) => {
                     <input 
                         type='text'
                         placeholder='Budget range'
+                        onChange={(e) => setBudgetRange(parseInt(e.target.value, 10))}
                         className='
                         form-control
                         block
