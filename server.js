@@ -104,6 +104,7 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
             //if the user is already in th db but 1st time loggin in store the github access token
             if (!contributorInfo.contributor) {
                 contributorInfo.contributor = await apiModules.authentication.createContributor({ ...contributorInfo.githubContributor })
+                contributorInfo.newUser = true
             } else if (
                 !contributorInfo.contributor['github_access_token'] ||
                 contributorInfo.contributor['github_access_token'] != githubAccessToken
@@ -129,9 +130,13 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
             apiModules.authentication.grantProjectPermissions({
                 contributor: contributorInfo.contributor.dataValues
             })
+            return contributorInfo
         })
-        .then(() => {
-            res.redirect(SITE_ROOT)
+        .then((contributorInfo) => {
+            if (contributorInfo.newUser) {
+                return res.redirect(`${SITE_ROOT}/onboarding`)
+            }
+            res.redirect(`${SITE_ROOT}/dashboard`)
         })
         .catch(err => {
             console.log('An error ocurred ' + err);
