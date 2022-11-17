@@ -38,6 +38,14 @@ module.exports = (sequelize) => {
                 model: 'Clients',
                 key: 'id',
             }
+        },
+        project_id: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model: 'Projects',
+                key: 'id'
+            }
         }
     },
     {
