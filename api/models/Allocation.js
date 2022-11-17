@@ -64,7 +64,19 @@ module.exports = (sequelize) => {
                 model: 'Rates',
                 key: 'id',
             }
-        }
+        },
+        status: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        proposed_by_contributor_id: { 
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Contributors',
+                key: 'id',
+            }
+        },
     },
     {
         // Model options go here
