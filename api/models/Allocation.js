@@ -71,7 +71,7 @@ module.exports = (sequelize) => {
         },
         proposed_by_contributor_id: { 
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
             references: {
                 model: 'Contributors',
                 key: 'id',

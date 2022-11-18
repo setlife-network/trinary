@@ -6,7 +6,7 @@ module.exports = {
             return Promise.all([
                 queryInterface.addColumn('Allocations', 'proposed_by_contributor_id', {
                     type: Sequelize.DataTypes.INTEGER(11),
-                    allowNull: false,
+                    allowNull: true,
                     references: {
                         model: 'Contributors',
                         key: 'id'
