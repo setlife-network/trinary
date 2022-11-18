@@ -11,10 +11,12 @@ module.exports = gql`
         created_at: String!
         end_date: String
         date_paid: String
+        status: String
         payment: Payment
         project: Project
         contributor: Contributor
         rate: Rate
+        proposedBy: Contributor
     }
 
     input CreateAllocationInput {
@@ -39,6 +41,7 @@ module.exports = gql`
         project_id: Int
         contributor_id: Int
         rate_id: Int
+        status: String
     }
 
     type Query {
