@@ -84,7 +84,7 @@ const AllocationTile = (props) => {
     }
 
     return (
-        <div className='AllocationTile rounded-lg bg-white px-4 py-4'>
+        <div className='AllocationTile rounded-lg bg-white px-6 py-4'>
             <div className='grid grid-cols-6'>
                 <div className='col-span-4 gap-4'>
                     <div className='flex gap-4 mb-2'>

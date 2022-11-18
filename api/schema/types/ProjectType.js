@@ -22,6 +22,7 @@ module.exports = gql`
         averageHourlyPaid(fromDate: String, toDate: String): Int
         averageIssueCost(fromDate: String, toDate: String): AverageIssueCost
         client: Client
+        admin: Contributor
         contributors: [Contributor]
         githubContributors: [Contributor]
         issuesOpened(fromDate: String, toDate: String): Int

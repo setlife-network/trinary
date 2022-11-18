@@ -1,6 +1,7 @@
 import React from 'react'
 
 import AllocationsList from '../components/AllocationsList'
+import ProjectsList from '../components/ProjectsList'
 import Section from '../components/Section'
 
 import { sessionUser } from '../reactivities/variables'
@@ -26,6 +27,7 @@ const DashboardPage = () => {
             </Section>
             <Section>
                 <AllocationsList/>
+                <ProjectsList/>
             </Section>
         </div>
     )

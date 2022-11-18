@@ -32,13 +32,10 @@ const AllocationsList = () => {
         })
     }
 
-    console.log('dataContributorAllocations')
-    console.log(dataContributorAllocations)
-
     return (
         <div className='AllocationsList'>
             <div className='grid grid-flow-row auto-rows-max'>
-                <div className='gap-2 flex mb-4'>
+                <div className='gap-2 flex mb-4 mt-4'>
                     <Icon className='icon fas fa-money-bill-wave-alt'/>
                     <p>
                         Recent allocations

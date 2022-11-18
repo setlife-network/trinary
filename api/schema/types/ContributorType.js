@@ -14,6 +14,7 @@ module.exports = gql`
         allocations: [Allocation]
         permissions: [Permission]
         timeEntries: [TimeEntry]
+        projects: [Project]
         rates: [Rate]
         "The following attributes are calculated and aren't on the database"
         totalPaid: Int!

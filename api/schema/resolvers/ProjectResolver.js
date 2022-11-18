@@ -14,6 +14,18 @@ const apiModules = require('../../modules')
 module.exports = {
 
     Project: {
+        admin: (project, args, { models }) => {
+            return models.Contributor.findOne({
+                include: {
+                    model: models.Permission,
+                    required: true,
+                    where: {
+                        project_id: project.id,
+                        type: 'owner'
+                    }
+                }
+            })
+        },
         allocations: (project, args, { models }) => {
             const whereConditions = {
                 project_id: project.id

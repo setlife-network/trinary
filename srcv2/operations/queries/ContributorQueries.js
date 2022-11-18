@@ -65,3 +65,21 @@ export const GET_CONTRIBUTOR_ALLOCATIONS = gql`
         }
     }
 `
+
+export const GET_CONTRIBUTOR_PROJECTS = gql`
+    query ContributorProjects($id: Int!) {
+        getContributorById(id: $id) {
+            id
+            projects {
+                id
+                name
+                is_active
+                expected_budget_currency
+                admin {
+                    id
+                    name
+                }
+            }
+        }
+    }
+`
