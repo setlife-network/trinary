@@ -134,9 +134,9 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
         })
         .then((contributorInfo) => {
             if (contributorInfo.newUser) {
-                return res.redirect(`${SITE_ROOT}/onboarding`)
+                return res.redirect(`${SITE_ROOT}/${OAUTH_REDIRECT_NEW_USERS}`)
             }
-            res.redirect(`${SITE_ROOT}/dashboard`)
+            res.redirect(`${SITE_ROOT}/${OAUTH_REDIRECT_EXISTING_USERS}`)
         })
         .catch(err => {
             console.log('An error ocurred ' + err);
