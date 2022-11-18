@@ -10,6 +10,7 @@ export const CHECK_SESSION = gql`
             github_access_token
             toggl_id
             external_data_url
+            totalPaid
         }
     }
 `

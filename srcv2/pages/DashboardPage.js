@@ -16,7 +16,7 @@ const DashboardPage = () => {
                     </p>
                     <div className='rounded bg-setlife grid grid-flow-row auto-rows-max gap-2 px-8 py-4'>
                         <p className='text-white'>My allocations</p>
-                        <p className='text-5xl text-white font-bold'>$ 450</p>
+                        <p className='text-5xl text-white font-bold'>{`${sessionUser().totalPaid} units`}</p>
                     </div>
                     <div className='mx-auto'>
                         <button type='button'>
