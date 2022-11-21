@@ -15,7 +15,6 @@ module.exports = (sequelize) => {
         },
         expected_budget: {
             type: DataTypes.INTEGER,
-            allowNull: false
         },
         is_active: {
             type: DataTypes.INTEGER,
@@ -43,25 +42,25 @@ module.exports = (sequelize) => {
         },
         date: {
             type: DataTypes.DATE,
-            allowNull: false
         },
         end_date: {
             type: DataTypes.DATE,
+        },
+        is_public: {
+            type: DataTypes.INTEGER
         },
         date_last_synced: {
             type: DataTypes.DATE,
         },
         client_id: { //FK
             type: DataTypes.INTEGER(11),
-            allowNull: false,
             references: {
                 model: 'Clients',
                 key: 'id'
             }
         },
         expected_budget_currency: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.STRING
         }
     },
     {
