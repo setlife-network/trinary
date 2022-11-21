@@ -134,7 +134,7 @@ const PlanFundingOnboarding = (props) => {
                         w-full
                         px-3
                         py-1.5
-                        text-light
+                        text-black
                         font-normal
                         bg-white bg-clip-padding
                         border border-solid border-light

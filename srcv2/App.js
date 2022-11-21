@@ -16,20 +16,22 @@ class App extends React.Component {
         return (
             <div className='App'>
                 <Authentication/>
-                <div className='content pb-24'>
+                <div className='content'>
                     <PublicRoute
+                        restricted
                         path='/'
                         component={LandingPage}
                         exact
                     />
                     <PublicRoute
+                        restricted
                         path='/login'
                         component={LoginPage}
                         exact
                     />
                     <PrivateRoute
                         exact
-                        path='/dashboard'
+                        path={['/dashboard', '/']}
                         component={DashboardPage}
                     />
                     <PrivateRoute
