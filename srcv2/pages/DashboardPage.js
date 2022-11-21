@@ -25,16 +25,14 @@ const DashboardPage = () => {
                             </>
                         }
                         {!sessionUser().totalPaid &&
-                            <div className='flex gap-2'>
-                                <Icon className='icon fas fa-wallet text-white my-auto'/>
+                            <div className='flex gap-2 text-3xl'>
+                                <Icon className='icon fas fa-wallet text-white my-auto' fontSize='inherit'/>
                                 <div className='m-auto'>
-                                    <p className='text-3xl text-white font-bold'>Setup your wallet</p>
+                                    <p className='text-white font-bold'>Setup your wallet</p>
                                     <p className='text-xl text-white font-bold'>Coming soon</p>
                                 </div>  
                             </div>
-
                         }
-
                     </div>
                     {!!sessionUser().totalPaid &&
                         <div className='mx-auto'>

@@ -30,6 +30,8 @@ const ProjectsList = () => {
         })
     }
 
+    const projectsToShow = dataContributorProjects && dataContributorProjects.getContributorById.projects.length
+
     return (
         <div className='ProjectsList'>
             <div className='grid grid-flow-row auto-rows-max'>
@@ -42,8 +44,31 @@ const ProjectsList = () => {
                 {loadingContributorProjects &&
                     `Loading...`
                 }
-                {dataContributorProjects &&
-                    <div className='projects-list bg-white p-4 rounded-lg'>
+                <button type='button' onClick={() => history.pushState('/create-project')}>
+                    <div className={`
+                        bg-white
+                        flex
+                        px-8 py-6
+                        gap-4
+                        ${projectsToShow ? '' : 'rounded-lg'}
+                    `}
+                    >
+                        <div>
+                            <div className='rounded-full h-10 w-10 bg-setlife'>
+                                <p className='text-2xl text-white font-bold'>
+                                    +
+                                </p>
+                            </div>
+                        </div>
+                        <div className='h-fit my-auto'>
+                            <p className='text-xl font-bold'>
+                                Add new project
+                            </p>
+                        </div>
+                    </div>
+                </button>
+                {projectsToShow &&
+                    <div className={`projects-list bg-white pb-4 px-4`}>
                         {renderProjects()}
                     </div>
                 }
