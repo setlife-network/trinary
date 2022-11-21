@@ -60,7 +60,7 @@ const LandingPage = () => {
 
     return (
         <div className='LandingPage'>
-            <Section backgroundColor={'bg-light'} className={'rounded-b-[70px]'}>
+            <Section backgroundColor={'bg-white-light'} className={'rounded-b-[70px]'}>
                 <div className='header grid grid-flow-row auto-rows-max gap-8'>
                     <div className='grid grid-cols-1 gap-8'>
                         <p className='text-5xl text-center font-bold'>
