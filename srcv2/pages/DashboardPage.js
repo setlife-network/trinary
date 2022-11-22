@@ -11,7 +11,7 @@ import { sessionUser } from '../reactivities/variables'
 
 const DashboardPage = () => {
     return (
-        <div className='DashboardPage bg-white-light'>
+        <div className='DashboardPage bg-white-light absolute bottom-0 top-0 right-0 left-0'>
             <Section backgroundColor={'bg-white'} className={'rounded-b-[70px]'}>
                 <div className='grid grid-flow-row auto-rows-max gap-8'>
                     <p className='text-3xl text-center font-bold'>
