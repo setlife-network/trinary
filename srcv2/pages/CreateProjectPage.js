@@ -108,6 +108,13 @@ const CreateProjectPage = () => {
 
     return (
         <div className='CreateProject'>
+            <Section>
+                <div className='grid grid-cols-1 gap-2'>
+                    <p className='text-3xl text-center font-bold'>
+                        Create a project
+                    </p>
+                </div>
+            </Section>
             <CreateProject
                 selectedUser={selectedUser}
                 selectedRepo={selectedRepo}
@@ -124,7 +131,7 @@ const CreateProjectPage = () => {
             />
             <Section>
                 <button
-                    className='bg-setlife rounded-full w-full py-2'
+                    className='bg-setlife rounded-full  py-2 absolute bottom-20 left-16 right-16'
                     onClick={() => saveAndContinue()}
                     type='button'
                 >
