@@ -4,11 +4,10 @@ import { useQuery } from '@apollo/client'
 import moment from 'moment'
 import { Icon } from '@material-ui/core'
 
+import OpenInGithubButton from '../components/OpenInGithubButton'
 import Section from '../components/Section'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
-
-import { GITHUB_ALT_LOGO_URL } from '../constants'
 
 const ProjectDetailPage = (props) => {
 
@@ -49,7 +48,7 @@ const ProjectDetailPage = (props) => {
     }
 
     return (
-        <div className='ProjectDetailPage'>
+        <div className='ProjectDetailPage mb-10'>
             <Section backgroundColor='bg-light' className='rounded-b-lg'>
                 <p className='font-bold text-xl mb-4'>
                     Overview
@@ -113,23 +112,7 @@ const ProjectDetailPage = (props) => {
                         </div>
                     }
                 </div>
-                <a 
-                    className='open-github bg-transparent rounded-full w-full' 
-                    href={project.github_url}
-                    target='_blank'
-                    rel='noreferrer'
-                >
-                    <div className='grid grid-flow-col auto-cols-max px-8 py-2 justify-center gap-4'>
-                        <div className=''>
-                            <img src={GITHUB_ALT_LOGO_URL} alt={'GitHub'} className='h-6'/>
-                        </div>
-                        <div className=''>
-                            <p className=''>
-                                Open in GitHub
-                            </p>
-                        </div> 
-                    </div>
-                </a>
+                <OpenInGithubButton/>
             </Section>
             <Section>
                 <p className='font-bold text-xl mb-4'>
@@ -139,6 +122,51 @@ const ProjectDetailPage = (props) => {
                     {renderContributors([{ name: 'Sofia' }, { name: 'Oscar' }, { name: 'Stef' }])}
                 </div>
             </Section>
+            <Section>
+                <p className='font-bold text-xl mb-4'>
+                    Issues
+                </p>
+                <div className='rounded-lg bg-light p-4'>
+                    <div className='grid grid-cols-2 gap-4'>
+                        <div>
+                            <p>Active</p>
+                        </div>
+                        <div>
+                            <p className='font-bold text-right'>{project.githubIssuesOpened}</p>
+                        </div>
+                        <div>
+                            <p>Closed</p>
+                        </div>
+                        <div>
+                            <p className='font-bold text-right'>{project.githubIssuesClosed}</p>
+                        </div>
+                    </div>
+                    <div className='my-4'>
+                        <p className='font-bold text-xl'>Pull request</p>
+                    </div>
+                    <div className='grid grid-cols-2 gap-4'>
+                        <div>
+                            <p>Open</p>
+                        </div>
+                        <div>
+                            <p className='font-bold text-right'>{project.githubPullRequestsOpened}</p>
+                        </div>
+                        <div>
+                            <p>Merged</p>
+                        </div>
+                        <div>
+                            <p className='font-bold text-right'>{project.githubPullRequestsMerged}</p>
+                        </div>
+                        <div>
+                            <p>Closed</p>
+                        </div>
+                        <div>
+                            <p className='font-bold text-right'>{project.githubPullRequestsClosed}</p>
+                        </div>
+                    </div>
+                </div>
+            </Section>
+            <OpenInGithubButton url={`${project.github_url}/pulls`}/>
         </div>
     )
 }

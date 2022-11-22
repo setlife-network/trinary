@@ -15,6 +15,11 @@ export const GET_PROJECT = gql`
             expected_budget_timeframe
             expected_budget_currency
             totalPaid
+            githubPullRequestsOpened
+            githubPullRequestsClosed
+            githubPullRequestsMerged
+            githubIssuesOpened
+            githubIssuesClosed
             contributors {
                 id
                 name
