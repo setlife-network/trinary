@@ -10,6 +10,7 @@ import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import OnboardingPage from './pages/OnboardingPage'
 import OnboardingContributorPage from './pages/OnboardingContributorPage'
+import ProjectDetailPage from './pages/ProjectDetailPage'
 
 class App extends React.Component {
     render() {
@@ -44,6 +45,11 @@ class App extends React.Component {
                         path='/onboarding-contributor'
                         component={OnboardingContributorPage}
                     />
+                    <PrivateRoute
+                        exact
+                        path='/projects/:projectId'
+                        component={ProjectDetailPage}
+                    />                    
                 </div>
             </div>
         )
