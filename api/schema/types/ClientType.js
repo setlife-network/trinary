@@ -1,6 +1,7 @@
 const { gql } = require('apollo-server')
 
 module.exports = gql`
+    directive @authorizedContributor on FIELD_DEFINITION
 
     type Client {
         id: Int!
@@ -34,12 +35,12 @@ module.exports = gql`
     }
 
     type Query {
-        getClientById(id: Int!): Client
-        getClients: [Client]
-        getActiveClients: [Client]
-        getInactiveClients: [Client]
-        getActiveClientsCount: Int!
-        getInactiveClientsCount: Int!
+        getClientById(id: Int!): Client @authorizedContributor
+        getClients: [Client] @authorizedContributor
+        getActiveClients: [Client] @authorizedProjectContributor
+        getInactiveClients: [Client] @authorizedContributor
+        getActiveClientsCount: Int! @authorizedContributor
+        getInactiveClientsCount: Int! @authorizedContributor
     }
 
     type Mutation {

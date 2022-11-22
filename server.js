@@ -235,10 +235,12 @@ app.post('/api/webhooks/customer/delete', async (req, res) => {
 
 const server = new ApolloServer({
     schema,
-    context: ({ req }) => ({
-        ...db,
-        cookies: req.session
-    }),
+    context: ({ req }) => {
+        return {
+            ...db,
+            cookies: req.session
+        }
+    },
     introspection: true,
     playground: {
         settings: {

@@ -1,6 +1,7 @@
 const { gql } = require('apollo-server')
 
 module.exports = gql`
+    directive @authorizedProjectContributor on FIELD_DEFINITION
 
     type Project {
         id: Int!
@@ -121,7 +122,7 @@ module.exports = gql`
     }
 
     type Query {
-        getProjectById(id: Int!): Project
+        getProjectById(id: Int!): Project @authorizedProjectAdmin @authorizedContributor
         getProjects: [Project]
         getActiveProjects: [Project]
         getActiveProjectsCount(clientId: Int): Int!
