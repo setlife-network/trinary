@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import moment from 'moment'
+import { Icon } from '@material-ui/core'
 
 import Section from '../components/Section'
 
@@ -31,6 +32,21 @@ const ProjectDetailPage = (props) => {
     console.log(dataProject)
 
     const project = dataProject.getProjectById
+
+    const renderContributors = (contributors) => {
+        return contributors.map(contributor => {
+            return (
+                <div className='contributor w-14'>
+                    <div className='rounded-full h-14 w-14 bg-light text-4xl'>
+                        <Icon className='icon fas fa-user text-grey text-center w-full h-full mt-2.5' fontSize='inherit'/>
+                    </div>
+                    <div className='w-full'>
+                        <p className='text-center'>{contributor.name}</p>
+                    </div>
+                </div>
+            )
+        })
+    }
 
     return (
         <div className='ProjectDetailPage'>
@@ -114,6 +130,14 @@ const ProjectDetailPage = (props) => {
                         </div> 
                     </div>
                 </a>
+            </Section>
+            <Section>
+                <p className='font-bold text-xl mb-4'>
+                    Active Contributors
+                </p>
+                <div className='flex gap-4 overflow-x-scroll'>
+                    {renderContributors([{ name: 'Sofia' }, { name: 'Oscar' }, { name: 'Stef' }])}
+                </div>
             </Section>
         </div>
     )
