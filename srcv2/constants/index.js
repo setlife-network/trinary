@@ -70,3 +70,4 @@ export const FOOTER_LINKS = [
         url: 'https://www.linkedin.com/company/setlife-network/'
     }
 ]
+export const FUNDING_PLAN_TIMEFRAME_AMOUNTS = ['Monthly amount', 'Total amount', 'Quarterly']
