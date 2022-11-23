@@ -9,7 +9,7 @@ const OnboardingPage = () => {
 
     return (
         <div className='OnboardingPage'>
-            <Section backgroundColor={'bg-light'} className={'rounded-b-[70px]'}>
+            <Section backgroundColor={'bg-white-light'} className={'rounded-b-[70px]'}>
                 <div className='header grid grid-flow-row auto-rows-max gap-8'>
                     <div className='grid grid-cols-1 gap-8'>
                         <p className='text-4xl font-bold'>

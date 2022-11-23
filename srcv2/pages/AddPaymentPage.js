@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import {
     MuiPickersUtilsProvider,
@@ -20,6 +20,8 @@ const AddPaymentPage = () => {
     const [paymentAmount, setPaymentAmount] = useState(null)
     const [paymentIncurred, setPaymentIncurred] = useState(null)
     const [paymentPaid, setPaymentPaid] = useState(null)
+
+    const history = useHistory()
 
     const {
         data: dataProject,
@@ -45,16 +47,11 @@ const AddPaymentPage = () => {
 
     const disabledPayment = !paymentAmount || !paymentIncurred
 
-    console.log('disabledPayment')
-    console.log(disabledPayment)
-
     const handleCreatePayment = async () => {
-        console.log('here')
         if (disabledPayment) return
-        console.log('handleCreatePayment');
         const variables = {
             amount: paymentAmount,
-            client_id: Number(projectId),
+            project_id: Number(projectId),
             date_incurred: paymentIncurred,
             date_paid: paymentPaid,
             currency: project.expected_budget_currency
@@ -66,6 +63,10 @@ const AddPaymentPage = () => {
         }
         console.log('newPayment')
         console.log(newPayment)
+        const {
+            createPayment: payment
+        } = newPayment.data
+        history.push(`/payments/edit/${payment.id}`)
     }
 
     const cancelPayment = () => {
@@ -124,7 +125,7 @@ const AddPaymentPage = () => {
                             variant='inline'
                             format='MM/DD/YYYY'
                             margin='normal'
-                            label='Payment date incurred'
+                            label='Payment date paid'
                             value={paymentPaid}
                             onChange={(e) => setPaymentPaid(moment(e['_d']).format('YYYY-MM-DD'))}
                         />

@@ -15,7 +15,7 @@ const BudgetingOnboarding = (props) => {
 
     return (
         <div className='BudgetingOnboarding'>
-            <Section backgroundColor={'bg-light'} className={'rounded-br-[70px] pb-0 px-0'}>
+            <Section backgroundColor={'bg-white-light'} className={'rounded-br-[70px] pb-0 px-0'}>
                 <div className='header grid grid-flow-row auto-rows-max'>
                     <div className='rounded-full bg-setlife w-fit px-2 mx-auto mb-4'>
                         <p className='text-white p-2 text-lg font-bold'>
