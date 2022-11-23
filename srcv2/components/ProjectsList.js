@@ -52,7 +52,7 @@ const ProjectsList = () => {
                     `Loading...`
                 }
                 {!projectsToShow &&
-                    <button type='button' onClick={() => history.pushState('/create-project')}>
+                    <button type='button' onClick={() => history.push('/create-project')}>
                         <div className={`
                             bg-white
                             flex
