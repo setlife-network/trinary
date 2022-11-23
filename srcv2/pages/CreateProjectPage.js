@@ -15,11 +15,13 @@ import { CURRENCIES, FUNDING_PLAN_TIMEFRAME_AMOUNTS } from '../constants'
 
 const CreateProjectPage = () => {
 
+    const [currentProjectCreationPhase, setCurrentProjectCreationPhase] = useState(0)
     const [selectedUser, setSelectedUser] = useState(null)
     const [selectedRepo, setSelectedRepo] = useState(null)
     const [budgetRange, setBudgetRange] = useState(null)
     const [currency, setCurrency] = useState(CURRENCIES[0])
     const [timeframeAmount, setTimeFrameAmount] = useState(FUNDING_PLAN_TIMEFRAME_AMOUNTS[0])
+    const [newProject, setNewProject] = useState()
 
     const history = useHistory()
 
@@ -91,8 +93,17 @@ const CreateProjectPage = () => {
     const saveAndContinue = async () => {
         try {
             const newProject = await createProject()
+            setNewProject(newProject.data.createProject)
+            setCurrentProjectCreationPhase(currentProjectCreationPhase + 1)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const saveProjectFunding = async () => {
+        try {
             const fundProjectVariables = {
-                project_id: newProject.data.createProject.id,
+                project_id: newProject.id,
                 expected_budget: budgetRange,
                 expected_budget_timeframe: timeframeAmount,
                 expected_budget_currency: currency.name
@@ -100,8 +111,7 @@ const CreateProjectPage = () => {
             await addProjectFunding({ 
                 variables: fundProjectVariables
             })
-            const newProjectId = newProject.data.createProject.id
-            history.push(`/projects/${newProjectId}`)
+            history.push('/dashboard')
         } catch (err) {
             console.log(err)
         }
@@ -116,29 +126,51 @@ const CreateProjectPage = () => {
                     </p>
                 </div>
             </Section>
-            <CreateProject
-                selectedUser={selectedUser}
-                selectedRepo={selectedRepo}
-                setSelectedUser={setSelectedUser}
-                setSelectedRepo={setSelectedRepo}
-            />
-            <CreateProjectFunding
-                budgetRange={budgetRange}
-                currency={currency}
-                timeframeAmount={timeframeAmount}
-                setBudgetRange={setBudgetRange}
-                setCurrency={setCurrency}
-                setTimeFrameAmount={setTimeFrameAmount}
-            />
-            <Section>
-                <button
-                    className='bg-setlife rounded-full  py-2 absolute bottom-20 left-16 right-16'
-                    onClick={() => saveAndContinue()}
-                    type='button'
-                >
-                    Create
-                </button>
-            </Section>
+            {!currentProjectCreationPhase &&
+                <>
+                    <CreateProject
+                        selectedUser={selectedUser}
+                        selectedRepo={selectedRepo}
+                        setSelectedUser={setSelectedUser}
+                        setSelectedRepo={setSelectedRepo}
+                    />
+                    <Section>
+                        <button
+                            className='bg-setlife rounded-full  py-2 absolute bottom-20 left-16 right-16'
+                            onClick={() => saveAndContinue()}
+                            type='button'
+                        >
+                            Create
+                        </button>
+                    </Section>
+                </>
+            }
+            {!!currentProjectCreationPhase &&
+                <>
+                    <CreateProjectFunding
+                        budgetRange={budgetRange}
+                        currency={currency}
+                        timeframeAmount={timeframeAmount}
+                        setBudgetRange={setBudgetRange}
+                        setCurrency={setCurrency}
+                        setTimeFrameAmount={setTimeFrameAmount}
+                    />
+                    <Section>
+                        <div className='grid grid-cols-1 gap-4 fixed bottom-20 left-20 right-20'>
+                            <button type='button' className='text-center' onClick={() => history.push('/dashboard')}>
+                                Skip
+                            </button>
+                            <button
+                                className='bg-setlife rounded-full w-full py-2'
+                                onClick={() => saveProjectFunding()}
+                                type='button'
+                            >
+                                Continue
+                            </button>
+                        </div>
+                    </Section>
+                </>
+            }
         </div>
     )
 }
