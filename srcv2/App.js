@@ -8,6 +8,7 @@ import Authentication from './components/Authentication'
 import CreateProjectPage from './pages/CreateProjectPage'
 import AddPaymentPage from './pages/AddPaymentPage'
 import DashboardPage from './pages/DashboardPage'
+import EditPaymentPage from './pages/EditPaymentPage'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import OnboardingPage from './pages/OnboardingPage'
@@ -61,7 +62,12 @@ class App extends React.Component {
                         exact
                         path='/add-payment/:projectId'
                         component={AddPaymentPage}
-                    />                   
+                    />
+                    <PrivateRoute
+                        exact
+                        path='/payments/edit/:paymentId'
+                        component={EditPaymentPage}
+                    />                 
                 </div>
             </div>
         )
