@@ -5,7 +5,7 @@ module.exports = {
           queryInterface.addColumn('Payments', 'currency', {
             type: Sequelize.DataTypes.STRING
           }, { transaction: t }),
-          queryInterface.addColumn('Paymetns', 'contributor_id', {
+          queryInterface.addColumn('Payments', 'contributor_id', {
             type: Sequelize.DataTypes.INTEGER,
             allowNull: true,
             references: {
