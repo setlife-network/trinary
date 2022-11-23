@@ -100,7 +100,8 @@ const CreateProjectPage = () => {
             await addProjectFunding({ 
                 variables: fundProjectVariables
             })
-            history.push('/dashboard')
+            const newProjectId = newProject.data.createProject.id
+            history.push(`/projects/${newProjectId}`)
         } catch (err) {
             console.log(err)
         }
