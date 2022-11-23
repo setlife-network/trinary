@@ -3,6 +3,7 @@ import {
     Icon
 } from '@material-ui/core'
 import { useQuery } from '@apollo/client'
+import { useHistory } from 'react-router-dom';
 
 import ProjectTile from './ProjectTile'
 
@@ -11,6 +12,8 @@ import { sessionUser } from '../reactivities/variables'
 import { GET_CONTRIBUTOR_PROJECTS } from '../operations/queries/ContributorQueries'
 
 const ProjectsList = () => {
+
+    const history = useHistory()
 
     const {
         data: dataContributorProjects,
@@ -25,7 +28,11 @@ const ProjectsList = () => {
     const renderProjects = () => {
         return dataContributorProjects.getContributorById.projects.map(project => {
             return (
-                <ProjectTile project={project}/>
+                <div className='w-full'>
+                    <button type='button' className='w-full' onClick={() => history.push(`/projects/${project.id}`)}>
+                        <ProjectTile project={project}/>
+                    </button>
+                </div>
             )
         })
     }
