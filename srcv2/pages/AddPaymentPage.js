@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker
@@ -11,6 +11,7 @@ import moment from 'moment'
 import Section from '../components/Section'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
+import { CREATE_PAYMENT } from '../operations/mutations/PaymentMutations'
 
 const AddPaymentPage = () => {
 
@@ -30,6 +31,12 @@ const AddPaymentPage = () => {
         }
     })
 
+    const [createPayment, {
+        dataNewPayment,
+        loadingNewPayment,
+        errorNewPayment
+    }] = useMutation(CREATE_PAYMENT)
+
     if (loadingProject) return ('Loading...')
 
     if (errorProject) return (`${errorProject}`)
@@ -38,9 +45,27 @@ const AddPaymentPage = () => {
 
     const disabledPayment = !paymentAmount || !paymentIncurred
 
-    const createPayment = () => {
+    console.log('disabledPayment')
+    console.log(disabledPayment)
+
+    const handleCreatePayment = async () => {
+        console.log('here')
         if (disabledPayment) return
-        console.log('createPayment');
+        console.log('handleCreatePayment');
+        const variables = {
+            amount: paymentAmount,
+            client_id: Number(projectId),
+            date_incurred: paymentIncurred,
+            date_paid: paymentPaid,
+            currency: project.expected_budget_currency
+        }
+        const newPayment = await createPayment({ variables })
+        if (loadingNewPayment) return 'Loading...'
+        if (newPayment.errors) {
+            return `An error ocurred ${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`
+        }
+        console.log('newPayment')
+        console.log(newPayment)
     }
 
     const cancelPayment = () => {
@@ -110,8 +135,8 @@ const AddPaymentPage = () => {
                         <button
                             type='button'
                             className={`${disabledPayment ? 'disabled pointer-events-none bg-light' : 'bg-setlife'} rounded-lg px-8 py-2 text-white w-full`}
-                            onClick={() => createPayment()}
-                            disabled={disabledPayment ? false : true}
+                            onClick={() => handleCreatePayment()}
+                            disabled={disabledPayment}
                         >
                             Save Payment
                         </button>
