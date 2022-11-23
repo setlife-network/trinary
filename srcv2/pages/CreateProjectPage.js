@@ -112,6 +112,7 @@ const CreateProjectPage = () => {
                 variables: fundProjectVariables
             })
             history.push('/dashboard')
+            history.go(0)
         } catch (err) {
             console.log(err)
         }
@@ -157,7 +158,14 @@ const CreateProjectPage = () => {
                     />
                     <Section>
                         <div className='grid grid-cols-1 gap-4 fixed bottom-20 left-20 right-20'>
-                            <button type='button' className='text-center' onClick={() => history.push('/dashboard')}>
+                            <button 
+                                type='button' 
+                                className='text-center' 
+                                onClick={() => {
+                                    history.push('/dashboard')
+                                    history.go(0)
+                                }}
+                            >
                                 Skip
                             </button>
                             <button
