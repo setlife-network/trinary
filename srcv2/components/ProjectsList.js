@@ -37,7 +37,7 @@ const ProjectsList = () => {
         })
     }
 
-    const projectsToShow = false
+    const projectsToShow = !loadingContributorProjects && !!dataContributorProjects.getContributorById.projects.length
 
     return (
         <div className='ProjectsList'>
@@ -77,11 +77,11 @@ const ProjectsList = () => {
                     </button>
                 }
                 
-                {/* {projectsToShow &&
+                {projectsToShow &&
                     <div className={`projects-list bg-white pb-4 px-4 rounded-lg`}>
                         {renderProjects()}
                     </div>
-                } */}
+                }
             </div>
         </div>
     )
