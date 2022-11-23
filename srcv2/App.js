@@ -5,6 +5,7 @@ import PrivateRoute from './components/PrivateRoute'
 
 import Authentication from './components/Authentication'
 
+import CreateProjectPage from './pages/CreateProjectPage'
 import DashboardPage from './pages/DashboardPage'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
@@ -43,6 +44,11 @@ class App extends React.Component {
                         exact
                         path='/onboarding-contributor'
                         component={OnboardingContributorPage}
+                    />
+                    <PrivateRoute
+                        exact
+                        path='/create-project'
+                        component={CreateProjectPage}
                     />
                 </div>
             </div>

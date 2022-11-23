@@ -1,34 +1,47 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
+import { useHistory } from 'react-router-dom'
 
-import Section from './Section'
-import OnboardingNextSection from './OnboardingNextSection'
-import CreateProject from './CreateProject'
+import CreateProject from '../components/CreateProject'
+import CreateProjectFunding from '../components/CreateProjectFunding'
+import Section from '../components/Section'
 
+import { ADD_PROJECT, UPDATE_PROJECT } from '../operations/mutations/ProjectMutations'
 import { CREATE_PERMISSION } from '../operations/mutations/PermissionMutations'
-
-import { ADD_PROJECT } from '../operations/mutations/ProjectMutations'
 
 import { sessionUser } from '../reactivities/variables'
 
-const CreateProjectOnboarding = (props) => {
+import { CURRENCIES, FUNDING_PLAN_TIMEFRAME_AMOUNTS } from '../constants'
 
-    const {
-        goToNextSection,
-        setProjectCreated
-    } = props
+const CreateProjectPage = () => {
 
     const [selectedUser, setSelectedUser] = useState(null)
     const [selectedRepo, setSelectedRepo] = useState(null)
+    const [budgetRange, setBudgetRange] = useState(null)
+    const [currency, setCurrency] = useState(CURRENCIES[0])
+    const [timeframeAmount, setTimeFrameAmount] = useState(FUNDING_PLAN_TIMEFRAME_AMOUNTS[0])
+
+    const history = useHistory()
 
     const [
         addProject,
         {
-            data,
+            data: addProjectData,
             loading: loadingAddProject,
-            error
+            error: errorProjectData
         }
     ] = useMutation(ADD_PROJECT, {
+        errorPolicy: 'all'
+    })
+
+    const [
+        addProjectFunding,
+        {
+            data,
+            loading,
+            error
+        }
+    ] = useMutation(UPDATE_PROJECT, {
         errorPolicy: 'all'
     })
 
@@ -42,16 +55,6 @@ const CreateProjectOnboarding = (props) => {
     ] = useMutation(CREATE_PERMISSION, {
         errorPolicy: 'all'
     })
-
-    const saveAndGoToNextSection = async () => {
-        try {
-            const newProject = await createProject()
-            setProjectCreated(newProject)
-            goToNextSection()
-        } catch (err) {
-            console.log(err)
-        }
-    }
 
     const createProject = async () => {
         const newProjectVariables = {
@@ -84,8 +87,27 @@ const CreateProjectOnboarding = (props) => {
         }
         return newProject
     }
+
+    const saveAndContinue = async () => {
+        try {
+            const newProject = await createProject()
+            const fundProjectVariables = {
+                project_id: newProject.data.createProject.id,
+                expected_budget: budgetRange,
+                expected_budget_timeframe: timeframeAmount,
+                expected_budget_currency: currency.name
+            }
+            await addProjectFunding({ 
+                variables: fundProjectVariables
+            })
+            history.push('/dashboard')
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     return (
-        <div className='CreateProjectOnboarding'>
+        <div className='CreateProject'>
             <Section>
                 <div className='grid grid-cols-1 gap-2'>
                     <p className='text-3xl text-center font-bold'>
@@ -99,9 +121,25 @@ const CreateProjectOnboarding = (props) => {
                 setSelectedUser={setSelectedUser}
                 setSelectedRepo={setSelectedRepo}
             />
-            <OnboardingNextSection goToNextSection={saveAndGoToNextSection} />
+            <CreateProjectFunding
+                budgetRange={budgetRange}
+                currency={currency}
+                timeframeAmount={timeframeAmount}
+                setBudgetRange={setBudgetRange}
+                setCurrency={setCurrency}
+                setTimeFrameAmount={setTimeFrameAmount}
+            />
+            <Section>
+                <button
+                    className='bg-setlife rounded-full  py-2 absolute bottom-20 left-16 right-16'
+                    onClick={() => saveAndContinue()}
+                    type='button'
+                >
+                    Create
+                </button>
+            </Section>
         </div>
     )
 }
 
-export default CreateProjectOnboarding
+export default CreateProjectPage

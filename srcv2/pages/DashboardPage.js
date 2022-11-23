@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core'
 
 import AllocationsList from '../components/AllocationsList'
+import CreateProjectFloatingButton from '../components/CreateProjectFloatingButton'
 import ProjectsList from '../components/ProjectsList'
 import Section from '../components/Section'
 
@@ -47,6 +48,7 @@ const DashboardPage = () => {
                 <AllocationsList/>
                 <ProjectsList/>
             </Section>
+            <CreateProjectFloatingButton />
         </div>
     )
 }
