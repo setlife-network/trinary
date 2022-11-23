@@ -119,7 +119,12 @@ const ProjectDetailPage = (props) => {
                     Active Contributors
                 </p>
                 <div className='flex gap-4 overflow-x-scroll'>
-                    {renderContributors([{ name: 'Sofia' }, { name: 'Oscar' }, { name: 'Stef' }])}
+                    {renderContributors(project.contributors)}
+                    {!project.contributors.length &&
+                        <p className='text-center w-full'>
+                            No active contributors at the moment
+                        </p>
+                    }
                 </div>
             </Section>
             <Section>
