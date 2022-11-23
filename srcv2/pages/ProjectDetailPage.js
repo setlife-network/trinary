@@ -49,7 +49,7 @@ const ProjectDetailPage = (props) => {
     return (
         <div className='ProjectDetailPage mb-10'>
             <button type='button' className='w-fit' onClick={() => history.push('/dashboard')}>
-                <Icon className='fas fa-arrow-left px-12 sm:px-24 md:px-48 lg:px-96 pt-4 pb-6'/>
+                <Icon className='fas fa-arrow-left px-12 sm:px-24 md:px-48 lg:px-96 pt-2 pb-6'/>
             </button>
             <Section backgroundColor='bg-light' className='rounded-b-lg'>
                 <p className='font-bold text-xl mb-4'>
@@ -114,7 +114,7 @@ const ProjectDetailPage = (props) => {
                         </div>
                     }
                 </div>
-                <OpenInGithubButton/>
+                <OpenInGithubButton url={project.github_url}/>
             </Section>
             <Section>
                 <p className='font-bold text-xl mb-4'>
