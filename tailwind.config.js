@@ -9,7 +9,8 @@ module.exports = {
                 'setlife': '#00C2D4',
                 'light': '#E2E2E2',
                 'grey': '#9BAAB9',
-                'black': '#000000'
+                'black': '#000000',
+                'white-light': '#F4F4F4'
             }
         },
     },

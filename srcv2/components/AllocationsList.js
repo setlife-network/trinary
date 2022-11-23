@@ -33,6 +33,7 @@ const AllocationsList = () => {
     }
 
     return (
+        
         <div className='AllocationsList'>
             <div className='grid grid-flow-row auto-rows-max gap-4'>
                 <div className='gap-2 flex mb-4 mt-4'>
@@ -43,6 +44,18 @@ const AllocationsList = () => {
                 </div>
                 {loadingContributorAllocations &&
                     `Loading...`
+                }
+                {(dataContributorAllocations && !dataContributorAllocations.getContributorById.allocations.length) && 
+                    <div className='text-center'>
+                        <div className='text-5xl mb-4'>
+                            <Icon className='fas fa-hammer' fontSize='inherit'/>
+                        </div>
+                        <div>
+                            <p className='text-xl'>
+                                You haven't received any allocations yet
+                            </p> 
+                        </div>  
+                    </div>
                 }
                 {dataContributorAllocations &&
                     renderAllocations()

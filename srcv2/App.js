@@ -31,7 +31,7 @@ class App extends React.Component {
                     />
                     <PrivateRoute
                         exact
-                        path={['/dashboard', '/']}
+                        path='/dashboard'
                         component={DashboardPage}
                     />
                     <PrivateRoute
