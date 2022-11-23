@@ -17,6 +17,10 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        currency: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         external_uuid: {
             type: DataTypes.STRING,
             unique: true
@@ -37,6 +41,14 @@ module.exports = (sequelize) => {
             references: {
                 model: 'Clients',
                 key: 'id',
+            }
+        },
+        contributor_id: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model: 'Contributors',
+                key: 'id'
             }
         },
         project_id: {
