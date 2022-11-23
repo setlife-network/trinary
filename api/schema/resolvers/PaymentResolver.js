@@ -65,7 +65,7 @@ module.exports = {
             })
 
             if (createFields['client_id']) {
-                const client = createFields['client_id'] && await models.Client.findOne({
+                const client = await models.Client.findOne({
                     where: {
                         id: createFields['client_id']
                     }
