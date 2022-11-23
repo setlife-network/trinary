@@ -33,7 +33,7 @@ module.exports = (sequelize) => {
         },
         client_id: { //FK
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
             references: {
                 model: 'Clients',
                 key: 'id',
