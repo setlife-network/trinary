@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client'
 import moment from 'moment'
 import { Icon } from '@material-ui/core'
 
+import CreatePaymentFloatingBadge from '../components/CreatePaymentFloatingBadge'
 import OpenInGithubButton from '../components/OpenInGithubButton'
 import Section from '../components/Section'
 
@@ -172,6 +173,7 @@ const ProjectDetailPage = (props) => {
                 </div>
             </Section>
             <OpenInGithubButton url={`${project.github_url}/pulls`}/>
+            <CreatePaymentFloatingBadge projectId={projectId} />
         </div>
     )
 }
