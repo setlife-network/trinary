@@ -28,9 +28,6 @@ const ProjectDetailPage = (props) => {
 
     if (errorProject) return (`${errorProject}`)
 
-    console.log('dataProject')
-    console.log(dataProject)
-
     const project = dataProject.getProjectById
 
     const renderContributors = (contributors) => {

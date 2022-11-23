@@ -6,6 +6,7 @@ import PrivateRoute from './components/PrivateRoute'
 import Authentication from './components/Authentication'
 
 import CreateProjectPage from './pages/CreateProjectPage'
+import AddPaymentPage from './pages/AddPaymentPage'
 import DashboardPage from './pages/DashboardPage'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
@@ -55,7 +56,12 @@ class App extends React.Component {
                         exact
                         path='/projects/:projectId'
                         component={ProjectDetailPage}
-                    />                    
+                    /> 
+                    <PrivateRoute
+                        exact
+                        path='/add-payment/:projectId'
+                        component={AddPaymentPage}
+                    />                   
                 </div>
             </div>
         )
