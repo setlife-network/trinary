@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import moment from 'moment'
 import { Icon } from '@material-ui/core'
@@ -13,6 +13,7 @@ import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 const ProjectDetailPage = (props) => {
 
     const { projectId } = useParams()
+    const history = useHistory()
 
     const {
         data: dataProject,
@@ -47,6 +48,9 @@ const ProjectDetailPage = (props) => {
 
     return (
         <div className='ProjectDetailPage mb-10'>
+            <button type='button' className='w-fit' onClick={() => history.push('/dashboard')}>
+                <Icon className='fas fa-arrow-left px-12 sm:px-24 md:px-48 lg:px-96 pt-4 pb-6'/>
+            </button>
             <Section backgroundColor='bg-light' className='rounded-b-lg'>
                 <p className='font-bold text-xl mb-4'>
                     Overview
