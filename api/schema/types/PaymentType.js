@@ -22,7 +22,7 @@ module.exports = gql`
 
     input PaymentInput {
         amount: Int,
-        currency: String!,
+        currency: String,
         client_id: Int,
         contributor_id: Int,
         date_incurred: String,
