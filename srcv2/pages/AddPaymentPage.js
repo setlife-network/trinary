@@ -7,8 +7,11 @@ import {
 } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
+import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import Section from '../components/Section'
+
+import { selectCurrencyInformation } from '../scripts/selectors'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 import { CREATE_PAYMENT } from '../operations/mutations/PaymentMutations'
@@ -47,6 +50,12 @@ const AddPaymentPage = () => {
 
     const disabledPayment = !paymentAmount || !paymentIncurred
 
+    const currencyInformation = project.expected_budget_currency
+        ? selectCurrencyInformation({
+            currency: project.expected_budget_currency
+        }) 
+        : null
+
     const handleCreatePayment = async () => {
         if (disabledPayment) return
         const variables = {
@@ -61,8 +70,6 @@ const AddPaymentPage = () => {
         if (newPayment.errors) {
             return `An error ocurred ${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`
         }
-        console.log('newPayment')
-        console.log(newPayment)
         const {
             createPayment: payment
         } = newPayment.data
@@ -70,7 +77,7 @@ const AddPaymentPage = () => {
     }
 
     const cancelPayment = () => {
-        console.log('cancelPayment')
+        history.push(`/projects/${project.id}`)
     }
 
     return (
@@ -80,32 +87,18 @@ const AddPaymentPage = () => {
                     <p className='text-xl font-bold'>
                         Enter info below to add a payment
                     </p>
-                    <div className='flex gap-4'>
-                        <input 
-                            type='text'
-                            placeholder='Amount'
-                            onChange={(e) => setPaymentAmount(parseInt(e.target.value, 10))}
-                            className='
-                                form-control
-                                block
-                                w-full
-                                px-3
-                                py-1.5
-                                text-black
-                                font-normal
-                                bg-white bg-clip-padding
-                                border border-solid border-light
-                                rounded-lg
-                                transition
-                                ease-in-out
-                                m-0
-                                focus:text-gray-700 focus:bg-white focus:border-setlife focus:outline-none
-                            '
-                        />
-                        <p className='m-auto text-grey'>
-                            {project.expected_budget_currency}
-                        </p>
-                    </div>
+                    <CurrencyTextField
+                        fullWidth
+                        label='Payment amount'
+                        variant='outlined'
+                        currencySymbol={`${currencyInformation['symbol']}`}
+                        minimumValue='0'
+                        outputFormat='string'
+                        decimalCharacter={`${currencyInformation['decimal']}`}
+                        digitGroupSeparator={`${currencyInformation['thousand']}`}
+                        value={paymentAmount}
+                        onChange={(event, value) => setPaymentAmount(parseInt(value, 10))}
+                    />
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <KeyboardDatePicker
                             fullWidth
