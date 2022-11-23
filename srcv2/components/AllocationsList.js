@@ -12,6 +12,8 @@ import { GET_CONTRIBUTOR_ALLOCATIONS } from '../operations/queries/ContributorQu
 
 const AllocationsList = () => {
 
+    const allocationPrototypeLink = 'https://www.figma.com/proto/qgGWXmprU7vTv7guzWzvML/Project-Trinary?node-id=4830%3A20523&scaling=scale-down&page-id=4076%3A12706&starting-point-node-id=4830%3A20523&show-proto-sidebar=1'
+
     const {
         data: dataContributorAllocations,
         loading: loadingContributorAllocations,
@@ -45,7 +47,7 @@ const AllocationsList = () => {
                 {loadingContributorAllocations &&
                     `Loading...`
                 }
-                {(dataContributorAllocations && !dataContributorAllocations.getContributorById.allocations.length) && 
+                {/* {(dataContributorAllocations && !dataContributorAllocations.getContributorById.allocations.length) && 
                     <div className='text-center'>
                         <div className='text-5xl mb-4'>
                             <Icon className='fas fa-hammer' fontSize='inherit'/>
@@ -56,7 +58,12 @@ const AllocationsList = () => {
                             </p> 
                         </div>  
                     </div>
-                }
+                } */}
+                <div className='text-center'>
+                    <p className='text-base text-setlife' onClick={() => window.open(allocationPrototypeLink, '_blank')}>
+                        Learn More
+                    </p> 
+                </div>
                 {dataContributorAllocations &&
                     renderAllocations()
                 }
