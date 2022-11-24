@@ -15,7 +15,7 @@ const DashboardPage = () => {
     const walletSetupPrototypeLink = 'https://www.figma.com/proto/qgGWXmprU7vTv7guzWzvML/Project-Trinary?node-id=4561%3A17974&scaling=scale-down&page-id=4076%3A12706&starting-point-node-id=4552%3A15225&show-proto-sidebar=1'
     
     return (
-        <div className='DashboardPage bg-white-light h-full'>
+        <div className='DashboardPage bg-white-light h-full min-h-screen'>
             <Section backgroundColor={'bg-white'} className={'rounded-b-[70px]'}>
                 <div className='grid grid-flow-row auto-rows-max gap-8'>
                     <p className='text-2xl text-left font-bold'>
