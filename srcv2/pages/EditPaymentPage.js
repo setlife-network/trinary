@@ -206,7 +206,7 @@ const EditPaymentPage = (props) => {
                     }
                     <button 
                         type='button'
-                        className='bg-light rounded-lg text-white px-4 py-2 fixed bottom-10 right-10 left-10'
+                        className='rounded-lg px-4 py-2 fixed bottom-10 right-10 left-10'
                         onClick={() => history.push(`/projects/${payment.project_id}`)}
                     >
                         {`Cancel`}

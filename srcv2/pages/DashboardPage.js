@@ -15,13 +15,13 @@ const DashboardPage = () => {
     const walletSetupPrototypeLink = 'https://www.figma.com/proto/qgGWXmprU7vTv7guzWzvML/Project-Trinary?node-id=4561%3A17974&scaling=scale-down&page-id=4076%3A12706&starting-point-node-id=4552%3A15225&show-proto-sidebar=1'
     
     return (
-        <div className='DashboardPage bg-white-light absolute bottom-0 top-0 right-0 left-0'>
+        <div className='DashboardPage bg-white-light h-full'>
             <Section backgroundColor={'bg-white'} className={'rounded-b-[70px]'}>
                 <div className='grid grid-flow-row auto-rows-max gap-8'>
-                    <p className='text-3xl text-center font-bold'>
+                    <p className='text-2xl text-left font-bold'>
                         {`Welcome, @${sessionUser().github_handle.split('/').pop()}`}
                     </p>
-                    <div className='rounded bg-setlife grid grid-flow-row auto-rows-max gap-2 px-8 py-4'>
+                    <div className={`${sessionUser().totalPaid ? 'bg-setlife px-8' : 'bg-white'} rounded grid grid-flow-row auto-rows-max gap-2 py-4`}>
                         {!!sessionUser().totalPaid &&
                             <>
                                 <p className='text-white'>My allocations</p>
@@ -29,12 +29,16 @@ const DashboardPage = () => {
                             </>
                         }
                         {!sessionUser().totalPaid &&
-                            <div className='flex gap-2 text-3xl'>
-                                <Icon className='icon fas fa-wallet text-white my-auto' fontSize='inherit'/>
-                                <div className='m-auto'>
-                                    <p onClick={() => window.open(walletSetupPrototypeLink, '_blank')} className='text-white font-bold'>Setup your wallet</p>
+                            <button type='button' className='flex gap-2 text-xl' onClick={() => window.open(walletSetupPrototypeLink, '_blank')}>
+                                <Icon className='icon fas fa-wallet text-black my-auto' fontSize='large'/>
+                                <div className='ml-4'>
+                                    <p 
+                                        className='text-black font-bold'
+                                    >
+                                        Setup your wallet
+                                    </p>
                                 </div>  
-                            </div>
+                            </button>
                         }
                     </div>
                     {!!sessionUser().totalPaid &&
@@ -47,8 +51,10 @@ const DashboardPage = () => {
                 </div>
             </Section>
             <Section>
-                <AllocationsList/>
-                <ProjectsList/>
+                <div className='grid gap-4'>
+                    <AllocationsList/>
+                    <ProjectsList/>
+                </div>
             </Section>
             <CreateProjectFloatingButton />
         </div>
