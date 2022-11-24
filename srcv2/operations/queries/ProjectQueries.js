@@ -39,6 +39,16 @@ export const GET_PROJECT = gql`
                     name
                 }
             }
+            payments {
+                id
+                amount
+                currency
+                contributor {
+                    id
+                    name
+                    github_handle
+                }
+            }
         }
     }
 `

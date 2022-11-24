@@ -41,6 +41,13 @@ module.exports = {
             if (payment.external_uuid && payment.external_uuid_type === 'bitcoin') {
                 return apiModules.paymentManagement.getBitcoinCheckoutUrl(payment.external_uuid)
             }
+        },
+        contributor: (payment, args, { models }) => {
+            return models.Contributor.findOne({
+                where: {
+                    id: payment.contributor_id
+                }
+            })
         }
     },
     Query: {

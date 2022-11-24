@@ -16,6 +16,8 @@ import { selectCurrencyInformation } from '../scripts/selectors'
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 import { CREATE_PAYMENT } from '../operations/mutations/PaymentMutations'
 
+import { sessionUser } from '../reactivities/variables'
+
 const AddPaymentPage = () => {
 
     const { projectId } = useParams()
@@ -63,7 +65,8 @@ const AddPaymentPage = () => {
             project_id: Number(projectId),
             date_incurred: paymentIncurred,
             date_paid: paymentPaid,
-            currency: project.expected_budget_currency
+            currency: project.expected_budget_currency,
+            contributor_id: sessionUser().id
         }
         const newPayment = await createPayment({ variables })
         if (loadingNewPayment) return 'Loading...'

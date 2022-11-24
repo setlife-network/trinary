@@ -18,6 +18,7 @@ module.exports = gql`
         allocations: [Allocation]
         isBitcoinInvoiceExpired: Boolean
         bitcoinCheckoutUrl: String
+        contributor: Contributor
     }
     
 

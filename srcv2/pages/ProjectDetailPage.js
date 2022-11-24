@@ -10,6 +10,8 @@ import Section from '../components/Section'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 
+import { getHandle, selectCurrencyInformation } from '../scripts/selectors'
+
 const ProjectDetailPage = (props) => {
 
     const { projectId } = useParams()
@@ -31,6 +33,9 @@ const ProjectDetailPage = (props) => {
 
     const project = dataProject.getProjectById
 
+    console.log('project')
+    console.log(project)
+
     const renderContributors = (contributors) => {
         return contributors.map(contributor => {
             return (
@@ -41,6 +46,37 @@ const ProjectDetailPage = (props) => {
                     <div className='w-full'>
                         <p className='text-center'>{contributor.name}</p>
                     </div>
+                </div>
+            )
+        })
+    }
+
+    const renderPayments = (payments) => {
+        return payments.map(payment => {
+            return (
+                <div className='payment bg-white-light rounded-lg p-4 grid grid-flow-row auto-rows-max'>
+                    <div className='flex grid grid-cols-2 gap-4 '>
+                        <div className='text-left'>
+                            {payment.contributor &&
+                                <>
+                                    <p className='text-xl font-bold'>
+                                        {payment.contributor.name}
+                                    </p>
+                                    <p>
+                                        {`@${getHandle(payment.contributor.github_handle)}`}
+                                    </p>
+                                </>
+                            }
+                        </div>
+                        <div>
+                            <p className='text-xl font-bold text-right'>
+                                {`${selectCurrencyInformation({ currency: payment.currency }).symbol} ${payment.amount}`}
+                            </p>
+                        </div>
+                    </div>
+                    <button type='button' className='text-right w-fit ml-auto' onClick={() => history.push(`/payments/edit/${payment.id}`)}>
+                        <Icon className='fas fa-pen text-grey' fontSize='small'/>
+                    </button>
                 </div>
             )
         })
@@ -140,7 +176,7 @@ const ProjectDetailPage = (props) => {
                 </div>
             </Section>
             <Section>
-                <p className='font-bold text-xl mb-4'>
+                <p className='font-bold text-xl mb-2'>
                     Issues
                 </p>
                 <div className='rounded-lg bg-white-light p-4'>
@@ -184,6 +220,14 @@ const ProjectDetailPage = (props) => {
                 </div>
             </Section>
             <OpenInGithubButton url={`${project.github_url}/pulls`}/>
+            <Section>
+                <p className='font-bold text-xl mb-2'>
+                    Payments
+                </p>
+                <div className='grid gap-4'>
+                    {renderPayments(project.payments)}
+                </div>
+            </Section>
             <CreatePaymentFloatingBadge projectId={projectId} />
         </div>
     )
