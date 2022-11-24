@@ -22,6 +22,7 @@ const CreateProjectPage = () => {
     const [currency, setCurrency] = useState(CURRENCIES[0])
     const [timeframeAmount, setTimeFrameAmount] = useState(FUNDING_PLAN_TIMEFRAME_AMOUNTS[0])
     const [newProject, setNewProject] = useState()
+    const [errorMessage, setErrorMessage] = useState()
 
     const history = useHistory()
 
@@ -96,7 +97,9 @@ const CreateProjectPage = () => {
             setNewProject(newProject.data.createProject)
             setCurrentProjectCreationPhase(currentProjectCreationPhase + 1)
         } catch (err) {
+            
             console.log(err)
+            setErrorMessage(`${err}`)
         }
     }
 
@@ -114,7 +117,9 @@ const CreateProjectPage = () => {
             history.push('/dashboard')
             history.go(0)
         } catch (err) {
+            
             console.log(err)
+            setErrorMessage(`${err}`)
         }
     }
 
@@ -135,14 +140,26 @@ const CreateProjectPage = () => {
                         setSelectedUser={setSelectedUser}
                         setSelectedRepo={setSelectedRepo}
                     />
+                    <p className='text-red-500 text-center'>
+                        {errorMessage}
+                    </p>
                     <Section>
-                        <button
-                            className='bg-setlife rounded-full  py-2 absolute bottom-20 left-16 right-16'
-                            onClick={() => saveAndContinue()}
-                            type='button'
-                        >
-                            Create
-                        </button>
+                        <div className='grid absolute bottom-20 left-16 right-16 gap-2'>
+                            <button
+                                className='w-fit rounded-full py-2 m-auto'
+                                onClick={() => history.push('/dashboard')}
+                                type='button'
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className='bg-setlife rounded-full py-2 w-full'
+                                onClick={() => saveAndContinue()}
+                                type='button'
+                            >
+                                Create
+                            </button>
+                        </div>
                     </Section>
                 </>
             }
@@ -156,6 +173,9 @@ const CreateProjectPage = () => {
                         setCurrency={setCurrency}
                         setTimeFrameAmount={setTimeFrameAmount}
                     />
+                    <p className='text-red-500 text-center'>
+                        {errorMessage}
+                    </p>
                     <Section>
                         <div className='grid grid-cols-1 gap-4 fixed bottom-20 left-20 right-20'>
                             <button 

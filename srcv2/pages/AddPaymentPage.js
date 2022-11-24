@@ -125,6 +125,15 @@ const AddPaymentPage = () => {
                     </MuiPickersUtilsProvider>
                 </div>
                 <div className='grid grid-cols-1 gap-4 fixed bottom-20 left-20 right-20'>
+                    
+                    <button
+                        type='button'
+                        className=' rounded-lg px-8 py-2 w-fit text-center m-auto'
+                        onClick={() => cancelPayment()}
+                    >
+                        Cancel
+                    </button>
+                   
                     <div className='w-full'>
                         <button
                             type='button'
@@ -133,15 +142,6 @@ const AddPaymentPage = () => {
                             disabled={disabledPayment}
                         >
                             Save Payment
-                        </button>
-                    </div>
-                    <div className='w-full'>
-                        <button
-                            type='button'
-                            className='bg-grey rounded-lg px-8 py-2 text-white w-full'
-                            onClick={() => cancelPayment()}
-                        >
-                            Cancel
                         </button>
                     </div>
                 </div>

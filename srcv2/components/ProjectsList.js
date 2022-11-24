@@ -78,7 +78,7 @@ const ProjectsList = () => {
                 }
                 
                 {projectsToShow &&
-                    <div className={`projects-list bg-white pb-4 px-4 rounded-lg`}>
+                    <div className={`projects-list bg-white pb-4 px-4 rounded-lg mt-2`}>
                         {renderProjects()}
                     </div>
                 }

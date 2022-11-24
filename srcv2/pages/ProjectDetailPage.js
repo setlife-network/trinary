@@ -51,7 +51,7 @@ const ProjectDetailPage = (props) => {
             <button type='button' className='w-fit' onClick={() => history.push('/dashboard')}>
                 <Icon className='fas fa-arrow-left px-12 sm:px-24 md:px-48 lg:px-96 pt-2 pb-6'/>
             </button>
-            <Section backgroundColor='bg-light' className='rounded-b-lg'>
+            <Section backgroundColor='bg-white-light' className='rounded-b-lg'>
                 <p className='font-bold text-xl mb-4'>
                     Overview
                 </p>
@@ -114,6 +114,16 @@ const ProjectDetailPage = (props) => {
                         </div>
                     }
                 </div>
+                <button
+                    type='button'
+                    className='bg-setlife w-full rounded-full py-2 mb-4'
+                    onClick={() => window.open('https://www.figma.com/proto/qgGWXmprU7vTv7guzWzvML/Project-Trinary?node-id=4830%3A20523&scaling=scale-down&page-id=4076%3A12706&starting-point-node-id=4830%3A20523&show-proto-sidebar=1', '_blank')}
+                >
+                    <div className='flex gap-2 m-auto text-center w-fit'>
+                        <Icon className='icon far fa-money-bill-alt text-white w-fit' fontSize=''/>
+                        <p className='text-white'>Fund project</p>
+                    </div>
+                </button>
                 <OpenInGithubButton url={project.github_url}/>
             </Section>
             <Section>
@@ -133,7 +143,7 @@ const ProjectDetailPage = (props) => {
                 <p className='font-bold text-xl mb-4'>
                     Issues
                 </p>
-                <div className='rounded-lg bg-light p-4'>
+                <div className='rounded-lg bg-white-light p-4'>
                     <div className='grid grid-cols-2 gap-4'>
                         <div>
                             <p>Active</p>
