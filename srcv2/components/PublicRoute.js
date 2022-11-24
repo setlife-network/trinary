@@ -14,7 +14,7 @@ const PublicRoute = (props) => {
             {...rest}
             render={(props) => (
                 isLoggedIn && restricted
-                    ? <Redirect to='/'/>
+                    ? <Redirect to='/dashboard'/>
                     : <Component {...props} />
             )}
         >
