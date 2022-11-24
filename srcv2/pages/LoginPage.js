@@ -16,7 +16,7 @@ const LoginPage = () => {
                             Log in
                         </p>
                         <p className='text-xl'>
-                            Lorem Ipsum is simply dummy text of the printing and typesetting
+                            A budgeting tool for tracking workflows and cashflows while collaborating with others on projects
                         </p>
                     </div>
                     <div className='grid grid-cols-1'>
