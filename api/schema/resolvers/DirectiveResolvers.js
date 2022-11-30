@@ -22,12 +22,13 @@ module.exports = {
     authorizedProjectAdmin: async (next, src, args, { models, cookies }, operation) => {
 
         const contributor_id = cookies.userSession
-        console.log(operation.variableValues.id)
         const fieldName = operation.fieldName
         const fieldId = operation.variableValues.id
         // const fieldId = operation.fieldNodes[0].arguments[0].value.value
         const project_id = fetchProjectId(fieldName, fieldId, operation)
         console.log(fieldName)
+        console.log(project_id)
+        console.log(contributor_id)
         const permission = await models.Permission.findOne({ where: { project_id: project_id, contributor_id: contributor_id } })
         if (!permission) {
             return new Error('Contributor not authorized')

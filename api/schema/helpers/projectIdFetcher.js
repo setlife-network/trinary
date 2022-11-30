@@ -1,11 +1,11 @@
 const db = require('../../models')
 
-module.exports = async (fieldName, fieldId, operation) => {
+module.exports = (fieldName, fieldId, operation) => {
     if (fieldName == 'getProjectById') {
         return fieldId
     }
     if (fieldName == 'getAllocationById' || fieldName == 'updateAllocationById' || fieldName == 'deleteAllocationByI') {
-        console.log(await db.models.Allocation.findByPk(fieldId).dataValues.project_id)
+        console.log( db.models.Allocation.findByPk(fieldId).dataValues.project_id)
         return db.models.Allocation.findByPk(fieldId).dataValues.project_id
     }
     if (fieldName == 'getClientById' || fieldName == 'updateClientById' || fieldName == 'deleteClientByI') {
