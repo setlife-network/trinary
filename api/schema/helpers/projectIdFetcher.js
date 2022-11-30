@@ -1,15 +1,17 @@
 const db = require('../../models')
 
-module.exports = (fieldName, id) => {
-    return {
-        getAllocationById: (id) => db.models.Allocation.findByPk(id).dataValues.project_id,
-        updateAllocationById: (id) => db.models.Allocation.findByPk(id).dataValues.project_id,
-        deleteAllocationById: (id) => db.models.Allocation.findByPk(id).dataValues.project_id,
-        getClientById: (id) => db.models.Client.findByPk(id).dataValues.project_id,
-        updateClientById: (id) => db.models.Client.findByPk(id).dataValues.project_id,
-        deleteClientById: (id) => db.models.Client.findByPk(id).dataValues.project_id,
-        getPaymentById: (id) => db.models.Payment.findByPk(id).dataValues.project_id,
-        updatePaymentById: (id) => db.models.Payment.findByPk(id).dataValues.project_id,
-        deletePaymentById: (id) => db.models.Payment.findByPk(id).dataValues.project_id,
+module.exports = async (fieldName, fieldId, operation) => {
+    if (fieldName == 'getProjectById') {
+        return fieldId
+    }
+    if (fieldName == 'getAllocationById' || fieldName == 'updateAllocationById' || fieldName == 'deleteAllocationByI') {
+        console.log(await db.models.Allocation.findByPk(fieldId).dataValues.project_id)
+        return db.models.Allocation.findByPk(fieldId).dataValues.project_id
+    }
+    if (fieldName == 'getClientById' || fieldName == 'updateClientById' || fieldName == 'deleteClientByI') {
+        return db.models.Client.findByPk(fieldId).dataValues.project_id
+    }
+    if (fieldName == 'getPaymentById' || fieldName == 'updatePaymentById' || fieldName == 'deletePaymentById') {
+        return db.models.Payment.findByPk(fieldId).dataValues.project_id
     }
 }

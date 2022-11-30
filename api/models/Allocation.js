@@ -66,12 +66,14 @@ module.exports = (sequelize) => {
             }
         },
         status: {
+            defaultValue: 'active',
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         proposed_by_contributor_id: { 
+            defaultValue: 1,
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
             references: {
                 model: 'Contributors',
                 key: 'id',

@@ -122,7 +122,7 @@ module.exports = gql`
     }
 
     type Query {
-        getProjectById(id: Int!): Project @authorizedProjectAdmin @authorizedContributor
+        getProjectById(id: Int!): Project @authorizedProjectAdmin
         getProjects: [Project]
         getActiveProjects: [Project]
         getActiveProjectsCount(clientId: Int): Int!

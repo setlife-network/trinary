@@ -46,7 +46,7 @@ module.exports = gql`
     }
 
     type Query {
-        getAllocationById(id: Int!): Allocation 
+        getAllocationById(id: Int!): Allocation @authorizedProjectAdmin
         getAllocations(contributorId: Int, projectId: Int): [Allocation] 
     }
 
