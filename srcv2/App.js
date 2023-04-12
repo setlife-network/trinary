@@ -14,6 +14,7 @@ import LoginPage from './pages/LoginPage'
 import OnboardingPage from './pages/OnboardingPage'
 import OnboardingContributorPage from './pages/OnboardingContributorPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
+import WalletSetupPage from './pages/WalletSetupPage'
 
 class App extends React.Component {
     render() {
@@ -67,7 +68,12 @@ class App extends React.Component {
                         exact
                         path='/payments/edit/:paymentId'
                         component={EditPaymentPage}
-                    />                 
+                    />     
+                    <PrivateRoute 
+                        exact
+                        path='/wallet'
+                        component={WalletSetupPage}
+                    />            
                 </div>
             </div>
         )
