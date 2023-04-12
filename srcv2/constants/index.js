@@ -81,7 +81,7 @@ export const WALLET_OPTIONS = [
     {
         icon: 'wallet',
         title: 'Advanced',
-        subtitle: 'Connect yout Node',
+        subtitle: 'Connect your Node',
         route: 'setup/advanced'
     },
     {
