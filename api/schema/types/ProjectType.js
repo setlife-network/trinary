@@ -19,6 +19,7 @@ module.exports = gql`
         expected_budget_currency: String
         allocations(contributorId: Int): [Allocation]
         allocatedPayments: [Payment]
+        payments: [Payment]
         averageHourlyPaid(fromDate: String, toDate: String): Int
         averageIssueCost(fromDate: String, toDate: String): AverageIssueCost
         client: Client

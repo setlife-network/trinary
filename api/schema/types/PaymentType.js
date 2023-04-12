@@ -8,6 +8,7 @@ module.exports = gql`
         date_incurred: String!
         date_paid: String
         client_id: Int
+        project_id: Int
         contributor_id: Int
         currency: String
         totalAllocated: Int
@@ -17,6 +18,7 @@ module.exports = gql`
         allocations: [Allocation]
         isBitcoinInvoiceExpired: Boolean
         bitcoinCheckoutUrl: String
+        contributor: Contributor
     }
     
 
@@ -24,6 +26,7 @@ module.exports = gql`
         amount: Int,
         currency: String,
         client_id: Int,
+        project_id: Int,
         contributor_id: Int,
         date_incurred: String,
         date_paid: String

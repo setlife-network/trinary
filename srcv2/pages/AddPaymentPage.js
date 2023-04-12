@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import {
     MuiPickersUtilsProvider,
@@ -16,6 +16,8 @@ import { selectCurrencyInformation } from '../scripts/selectors'
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 import { CREATE_PAYMENT } from '../operations/mutations/PaymentMutations'
 
+import { sessionUser } from '../reactivities/variables'
+
 const AddPaymentPage = () => {
 
     const { projectId } = useParams()
@@ -23,6 +25,8 @@ const AddPaymentPage = () => {
     const [paymentAmount, setPaymentAmount] = useState(null)
     const [paymentIncurred, setPaymentIncurred] = useState(null)
     const [paymentPaid, setPaymentPaid] = useState(null)
+
+    const history = useHistory()
 
     const {
         data: dataProject,
@@ -48,27 +52,31 @@ const AddPaymentPage = () => {
 
     const disabledPayment = !paymentAmount || !paymentIncurred
 
-    console.log('disabledPayment')
-    console.log(disabledPayment)
+    const currencyInformation = project.expected_budget_currency
+        ? selectCurrencyInformation({
+            currency: project.expected_budget_currency
+        }) 
+        : null
 
     const handleCreatePayment = async () => {
-        console.log('here')
         if (disabledPayment) return
-        console.log('handleCreatePayment');
         const variables = {
             amount: paymentAmount,
-            client_id: Number(projectId),
+            project_id: Number(projectId),
             date_incurred: paymentIncurred,
             date_paid: paymentPaid,
-            currency: project.expected_budget_currency
+            currency: project.expected_budget_currency,
+            contributor_id: sessionUser().id
         }
         const newPayment = await createPayment({ variables })
         if (loadingNewPayment) return 'Loading...'
         if (newPayment.errors) {
             return `An error ocurred ${Object.keys(newPayment.errors[0].extensions.exception.fields)[0]}`
         }
-        console.log('newPayment')
-        console.log(newPayment)
+        const {
+            createPayment: payment
+        } = newPayment.data
+        history.push(`/payments/edit/${payment.id}`)
     }
 
     const cancelPayment = () => {
@@ -113,7 +121,7 @@ const AddPaymentPage = () => {
                             variant='inline'
                             format='MM/DD/YYYY'
                             margin='normal'
-                            label='Payment date incurred'
+                            label='Payment date paid'
                             value={paymentPaid}
                             onChange={(e) => setPaymentPaid(moment(e['_d']).format('YYYY-MM-DD'))}
                         />

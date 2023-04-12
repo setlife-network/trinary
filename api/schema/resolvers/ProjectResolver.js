@@ -47,6 +47,13 @@ module.exports = {
                 ]
             })
         },
+        payments: (project, args, { models }) => {
+            return models.Payment.findAll({
+                where: {
+                    project_id: project.id
+                }
+            })
+        },
         averageHourlyPaid: async (project, args, { models }) => {
             validateDatesFormat({
                 fromDate: args.fromDate,

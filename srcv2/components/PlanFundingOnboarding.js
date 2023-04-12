@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom'
 
 import CreateProjectFunding from './CreateProjectFunding'
 import OnboardingNextSection from './OnboardingNextSection'
-import Selector from './Selector'
 import Section from './Section'
 
 import { CURRENCIES } from '../constants'
