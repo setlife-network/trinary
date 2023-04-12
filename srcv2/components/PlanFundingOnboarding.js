@@ -62,9 +62,6 @@ const PlanFundingOnboarding = (props) => {
                     <p className='text-3xl text-center font-bold'>
                         Plan funding
                     </p>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting
-                    </p>
                 </div>
             </Section>
             <CreateProjectFunding

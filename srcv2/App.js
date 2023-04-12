@@ -6,11 +6,14 @@ import PrivateRoute from './components/PrivateRoute'
 import Authentication from './components/Authentication'
 
 import CreateProjectPage from './pages/CreateProjectPage'
+import AddPaymentPage from './pages/AddPaymentPage'
 import DashboardPage from './pages/DashboardPage'
+import EditPaymentPage from './pages/EditPaymentPage'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import OnboardingPage from './pages/OnboardingPage'
 import OnboardingContributorPage from './pages/OnboardingContributorPage'
+import ProjectDetailPage from './pages/ProjectDetailPage'
 
 class App extends React.Component {
     render() {
@@ -32,7 +35,7 @@ class App extends React.Component {
                     />
                     <PrivateRoute
                         exact
-                        path='/dashboard'
+                        path={'/dashboard'}
                         component={DashboardPage}
                     />
                     <PrivateRoute
@@ -50,6 +53,21 @@ class App extends React.Component {
                         path='/create-project'
                         component={CreateProjectPage}
                     />
+                    <PrivateRoute
+                        exact
+                        path='/projects/:projectId'
+                        component={ProjectDetailPage}
+                    /> 
+                    <PrivateRoute
+                        exact
+                        path='/add-payment/:projectId'
+                        component={AddPaymentPage}
+                    />
+                    <PrivateRoute
+                        exact
+                        path='/payments/edit/:paymentId'
+                        component={EditPaymentPage}
+                    />                 
                 </div>
             </div>
         )

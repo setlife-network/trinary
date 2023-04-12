@@ -15,8 +15,8 @@ const LoginPage = () => {
                         <p className='text-4xl font-bold'>
                             Log in
                         </p>
-                        <p className='text-xl'>
-                            Lorem Ipsum is simply dummy text of the printing and typesetting
+                        <p className='font-bold text-xl text-grey'>
+                            A budgeting tool for tracking workflows and cashflows while collaborating with others on projects
                         </p>
                     </div>
                     <div className='grid grid-cols-1'>
@@ -29,12 +29,12 @@ const LoginPage = () => {
                     <p className='text-center'>
                         Not a member? 
                         <a href='https://github.com/' target='_blank' rel='noreferrer'>
-                            <u> Sign up now in Github </u>
+                            <u> Sign up now in GitHub </u>
                         </a>
                     </p>
                     <div className='w-fit m-auto'>
                         <GitHubButton
-                            text={'Log in with your Github Account'}
+                            text={'Login with GitHub'}
                         />
                     </div>
                 </div>
