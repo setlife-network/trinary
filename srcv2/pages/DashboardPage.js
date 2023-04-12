@@ -32,7 +32,7 @@ const DashboardPage = () => {
                             </>
                         }
                         {!sessionUser().totalPaid &&
-                            <button type='button' className='flex gap-2 text-xl' onClick={() => history.push('/wallet')}>
+                            <button type='button' className='flex gap-2 text-xl' onClick={() => history.push('/wallet/setup')}>
                                 <Icon className='icon fas fa-wallet text-black my-auto' fontSize='large'/>
                                 <div className='ml-4'>
                                     <p 

@@ -71,7 +71,7 @@ class App extends React.Component {
                     />     
                     <PrivateRoute 
                         exact
-                        path='/wallet'
+                        path='/wallet/setup'
                         component={WalletSetupPage}
                     />            
                 </div>

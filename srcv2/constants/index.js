@@ -76,19 +76,19 @@ export const WALLET_OPTIONS = [
         icon: 'key',
         title: 'Simple',
         subtitle: 'Provide a BTC address',
-        route: 'wallet/setup/simple'
+        route: 'setup/simple'
     },
     {
         icon: 'wallet',
         title: 'Advanced',
         subtitle: 'Connect yout Node',
-        route: 'wallet/setup/advanced'
+        route: 'setup/advanced'
     },
     {
         icon: 'network-wired',
         title: 'Federated',
         subtitle: 'Download External Wallet',
-        route: 'wallet/setup/federated'
+        route: 'setup/federated'
     }
 ]
 export const FUNDING_PLAN_TIMEFRAME_AMOUNTS = ['Monthly amount', 'Total amount', 'Quarterly']
