@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
+import {
+    Snackbar
+} from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert'
 
 import CreateProject from '../components/CreateProject'
 import CreateProjectFunding from '../components/CreateProjectFunding'
@@ -22,7 +26,7 @@ const CreateProjectPage = () => {
     const [currency, setCurrency] = useState(CURRENCIES[0])
     const [timeframeAmount, setTimeFrameAmount] = useState(FUNDING_PLAN_TIMEFRAME_AMOUNTS[0])
     const [newProject, setNewProject] = useState()
-    const [errorMessage, setErrorMessage] = useState()
+    const [errorMessage, setErrorMessage] = useState('')
 
     const history = useHistory()
 
@@ -67,6 +71,9 @@ const CreateProjectPage = () => {
         }
         const newProject = await addProject({ variables: newProjectVariables })
         if (newProject.errors) {
+            if (newProject.errors[0] && newProject.errors[0].message) {
+                throw new Error(newProject.errors[0].message)
+            }
             throw new Error('An error ocurred while creating the project')
         }
         const newPermission = await createPermission({
@@ -89,6 +96,13 @@ const CreateProjectPage = () => {
             })
         }
         return newProject
+    }
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setErrorMessage('')
     }
 
     const saveAndContinue = async () => {
@@ -124,7 +138,7 @@ const CreateProjectPage = () => {
     }
 
     return (
-        <div className='CreateProject'>
+        <div className='CreateProjectPage'>
             <Section>
                 <div className='grid grid-cols-1 gap-2'>
                     <p className='text-3xl text-center font-bold'>
@@ -140,9 +154,6 @@ const CreateProjectPage = () => {
                         setSelectedUser={setSelectedUser}
                         setSelectedRepo={setSelectedRepo}
                     />
-                    <p className='text-red-500 text-center'>
-                        {errorMessage}
-                    </p>
                     <Section>
                         <div className='grid absolute bottom-20 left-16 right-16 gap-2'>
                             <button
@@ -199,6 +210,15 @@ const CreateProjectPage = () => {
                     </Section>
                 </>
             }
+            <Snackbar
+                autoHideDuration={4000}
+                open={errorMessage != ''}
+                onClose={handleAlertClose}
+            >
+                <Alert severity='error'>
+                    {`${errorMessage}`}
+                </Alert>
+            </Snackbar>
         </div>
     )
 }
