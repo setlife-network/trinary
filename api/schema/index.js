@@ -7,6 +7,7 @@ const ClientResolver = require('./resolvers/ClientResolver')
 const ContributionResolver = require('./resolvers/ContributionResolver')
 const ConfigResolver = require('./resolvers/ConfigResolver')
 const ContributorResolver = require('./resolvers/ContributorResolver')
+const directiveResolvers = require('./resolvers/DirectiveResolvers')
 const IssueResolver = require('./resolvers/IssueResolver')
 const PaymentResolver = require('./resolvers/PaymentResolver')
 const PermissionResolver = require('./resolvers/PermissionResolver')
@@ -25,7 +26,7 @@ const PaymentType = require('./types/PaymentType')
 const PermissionType = require('./types/PermissionType')
 const ProjectType = require('./types/ProjectType')
 const RateType = require('./types/RateType')
-const TimeEntry = require('./types/TimeEntryType')
+const TimeEntry = require('./types/TimeEntryType');
 
 //merge types
 const typeDefs = mergeTypeDefs([
@@ -60,5 +61,6 @@ const resolvers = mergeResolvers([
 // Export generated schema
 module.exports = makeExecutableSchema({
     typeDefs,
-    resolvers
+    resolvers,
+    directiveResolvers
 });

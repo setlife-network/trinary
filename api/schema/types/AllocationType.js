@@ -1,6 +1,7 @@
 const { gql } = require('apollo-server')
 //TODO: Change this when rates table added
 module.exports = gql`
+    directive @authorizedProjectAdmin on FIELD_DEFINITION
 
     type Allocation {
         id: Int!
@@ -45,8 +46,8 @@ module.exports = gql`
     }
 
     type Query {
-        getAllocationById(id: Int!): Allocation
-        getAllocations(contributorId: Int, projectId: Int): [Allocation]
+        getAllocationById(id: Int!): Allocation @authorizedProjectAdmin
+        getAllocations(contributorId: Int, projectId: Int): [Allocation] 
     }
 
     type Mutation {
