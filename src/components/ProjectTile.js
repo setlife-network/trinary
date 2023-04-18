@@ -59,7 +59,7 @@ const ProjectTile = ({
                                 <Typography variant='h6' noWrap>
                                     {project.name}
                                 </Typography>
-                                {fromProjects &&
+                                {fromProjects && project.client &&
                                     <Typography variant='caption'>
                                         {project.client.name}
                                     </Typography>
