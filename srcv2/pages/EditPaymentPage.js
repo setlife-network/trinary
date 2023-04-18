@@ -43,9 +43,9 @@ const EditPaymentPage = (props) => {
             const { getPaymentById: payment } = paymentData
             setPaymentAmount(payment.amount)
             setPaymentCurrency(payment.currency)
-            setDateIncurred(moment(payment.date_incurred, 'x').format('YYYY-MM-DD'))
+            setDateIncurred(moment.utc(payment.date_incurred, 'x').format('YYYY-MM-DD'))
             setDatePaid(payment.date_paid 
-                ? moment(payment.date_paid, 'x').format('YYYY-MM-DD')
+                ? moment.utc(payment.date_paid, 'x').format('YYYY-MM-DD')
                 : null)
         }
     })
