@@ -614,6 +614,12 @@ module.exports = {
                 const togglId = togglArray[togglArray.length - 1]
                 projectToCreate['toggl_id'] = togglId
             }
+            const projectAlreadyCreated = await models.Project.findOne({
+                where: {
+                    github_url: projectToCreate['github_url']
+                }
+            })
+            if (projectAlreadyCreated) { throw new Error('Project already exists') }
             const newProject = await models.Project.create({
                 ...projectToCreate
             })
