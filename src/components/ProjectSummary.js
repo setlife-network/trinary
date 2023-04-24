@@ -33,7 +33,9 @@ const ProjectSummary = (props) => {
         setOpenEditDialog(false)
     }
 
-    const currencyInformation = selectCurrencyInformation({ currency: project.client.currency })
+    console.log(project)
+
+    const currencyInformation = selectCurrencyInformation({ currency: project.expected_budget_currency || 'USD' })
     const expectedBudgetAmount = formatAmount({
         amount: project.expected_budget / 100,
         currencyInformation: currencyInformation
@@ -59,24 +61,26 @@ const ProjectSummary = (props) => {
             <Grid container justifyContent='center' spacing={2}>
                 <Grid item xs={12} sm={10}>
                     <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <Grid container>
-                                <Grid item xs={2}>
-                                    <Icon className='fas fa-address-card' color='primary'/>
-                                </Grid>
-                                <Grid xs={10} align='left'>
-                                    <Typography 
-                                        variant='' 
-                                        className='grey-link'
-                                        onClick={goToClientPage}
-                                    >
-                                        <span>
-                                            {`Client - ${project.client.name}`}
-                                        </span>
-                                    </Typography>
+                        {project.client &&
+                            <Grid item xs={12}>
+                                <Grid container>
+                                    <Grid item xs={2}>
+                                        <Icon className='fas fa-address-card' color='primary'/>
+                                    </Grid>
+                                    <Grid xs={10} align='left'>
+                                        <Typography 
+                                            variant='' 
+                                            className='grey-link'
+                                            onClick={goToClientPage}
+                                        >
+                                            <span>
+                                                {`Client - ${project.client.name}`}
+                                            </span>
+                                        </Typography>
+                                    </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
+                        }
                         <Grid item xs={12}>
                             <Grid container>
                                 <Grid item xs={2}>
@@ -101,16 +105,18 @@ const ProjectSummary = (props) => {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Grid container>
-                                <Grid item xs={2}>
-                                    <Icon className='far fa-flag' color='primary'/>
-                                </Grid>
-                                <Grid xs={10} align='left'>
-                                    {`Start date - ${moment.utc(project.date, 'x').format('MM/DD/YYYY')}`}
+                        {project.date &&
+                            <Grid item xs={12}>
+                                <Grid container>
+                                    <Grid item xs={2}>
+                                        <Icon className='far fa-flag' color='primary'/>
+                                    </Grid>
+                                    <Grid xs={10} align='left'>
+                                        {`Start date - ${moment.utc(project.date, 'x').format('MM/DD/YYYY')}`}
+                                    </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
+                        }
                         {project.end_date &&
                             <Grid item xs={12}>
                                 <Grid container>

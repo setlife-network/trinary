@@ -15,7 +15,7 @@ import {
     TextField,
     Switch
 } from '@material-ui/core/'
-import { findIndex, split } from 'lodash'
+import { find, findIndex, split } from 'lodash'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 import {
     MuiPickersUtilsProvider,
@@ -50,7 +50,7 @@ const ProjectEditDialog = (props) => {
     const currentDate = moment.utc(project.date, 'x').format('YYYY-MM-DD')
     const endDate = project.end_date ? moment(project.end_date, 'x').format('YYYY-MM-DD') : null
     const currencyInformation = selectCurrencyInformation({
-        currency: project.client.currency
+        currency: project.expected_budget_currency || 'USD'
     })
 
     const [
@@ -166,7 +166,7 @@ const ProjectEditDialog = (props) => {
             projectName == project.name &&
             togglURL == project.toggl_url &&
             ((budgetTimeframe != null
-                ? EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe].label
+                ? EXPECTED_BUDGET_TIMEFRAME_OPTIONS[budgetTimeframe]
                 : null
             ) == project.expected_budget_timeframe) &&
             projectDate == currentDate &&

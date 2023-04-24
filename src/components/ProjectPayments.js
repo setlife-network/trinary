@@ -62,7 +62,7 @@ const ProjectPayments = (props) => {
     const { allocatedPayments, client } = getProjectById
     pageName(getProjectById.name)
     const payments = orderBy(allocatedPayments, ['date_paid'], ['desc'])
-    const currencyInformation = selectCurrencyInformation({ currency: client.currency })
+    const currencyInformation = selectCurrencyInformation({ currency: client ? client.currency : 'USD' })
     const totalPaidAmount = formatAmount({
         amount: calculateTotalPayments(allocatedPayments) / 100,
         currencyInformation: currencyInformation

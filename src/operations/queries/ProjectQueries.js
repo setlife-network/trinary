@@ -37,7 +37,8 @@ export const GET_PROJECT = gql`
             date
             end_date
             totalPaid
-            expected_budget_timeframe
+            expected_budget_timeframe,
+            expected_budget_currency,
             client {
                 id
                 name
