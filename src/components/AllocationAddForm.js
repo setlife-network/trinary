@@ -392,22 +392,20 @@ const AllocationAddForm = (props) => {
         : dataProjectContributors
             ? dataProjectContributors.allocations
             : null
-    const payments = dataClientPayments.getProjectById.client
+    const payments = dataClientPayments
         ? [...dataClientPayments.getProjectById.client.payments, {
             amount: null,
             date_paid: null
         }].sort((a, b) => b.date_incurred - a.date_incurred)
         : [null]
     const clientCurrency = (
-        dataClientPayments.getProjectById.client
+        dataClientPayments
             ? dataClientPayments.getProjectById.client.currency
             : client
                 ? client.currency
                 : selectedProject
-                    ? selectedProject.client
-                        ? selectedProject.client.currency
-                        : 'USD'
-                    : 'USD'
+                    ? selectedProject.client.currency
+                    : null
     )
     const rates = contributorRates
         ? dataContributorRates.getContributorById.rates
@@ -420,8 +418,6 @@ const AllocationAddForm = (props) => {
     if (!rateCurrency && clientCurrency) {
         setRateCurrency(clientCurrency)
     }
-
-    console.log(dataClientPayments)
 
     return (
         <Dialog

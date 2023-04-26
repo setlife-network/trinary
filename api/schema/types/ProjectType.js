@@ -12,7 +12,7 @@ module.exports = gql`
         toggl_url: String
         date: String
         date_last_synced: String
-        client_id: Int
+        client_id: Int!
         end_date: String
         toggl_id: String
         expected_budget_timeframe: String
