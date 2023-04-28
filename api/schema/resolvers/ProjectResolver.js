@@ -566,13 +566,19 @@ module.exports = {
         getActiveProjects: (root, args, { models }) => {
             return models.Project.findAll({
                 where: {
-                    is_active: true
+                    is_active: true,
+                    client_id: {
+                        [Op.is]: !null
+                    }
                 }
             })
         },
         getActiveProjectsCount: (root, args, { models }) => {
             const whereFields = {
-                is_active: true
+                is_active: true,
+                client_id: {
+                    [Op.is]: !null
+                }
             }
             if (args.clientId) whereFields.client_id = args.clientId
             return models.Project.count({
