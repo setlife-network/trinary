@@ -564,7 +564,6 @@ module.exports = {
             return models.Project.findAll()
         },
         getActiveProjects: (root, args, { models }) => {
-
             return models.Project.findAll({
                 where: {
                     is_active: true,
