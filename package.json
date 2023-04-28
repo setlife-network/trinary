@@ -60,7 +60,7 @@
     },
     "scripts": {
         "ui": "cross-env PORT=6002 react-scripts start",
-        "ui-v2": "cross-env PORT=6002 react-app-rewired start",
+        "ui-v2": "cross-env PORT=6003 react-app-rewired start",
         "server": "cross-env PORT=6001 node server",
         "dev-server": "cross-env PORT=6001 nodemon server",
         "start": "node server",

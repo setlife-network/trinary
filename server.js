@@ -47,6 +47,7 @@ const whitelist = [
     'http://localhost:4000',
     'http://localhost:6001',
     'http://localhost:6002',
+    'http://localhost:6003',
     'http://github.com/',
     'https://github.com/',
     'https://project-trinary.herokuapp.com/',
