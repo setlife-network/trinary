@@ -9,7 +9,8 @@ export const CREATE_ALLOCATION = gql`
         $payment_id: Int,
         $project_id: Int!,
         $contributor_id: Int!,
-        $rate_id: Int!
+        $rate_id: Int!,
+        $status: String!
     ) {
         createAllocation(createFields: {
             amount: $amount
@@ -20,7 +21,8 @@ export const CREATE_ALLOCATION = gql`
             payment_id:$payment_id
             project_id: $project_id
             contributor_id: $contributor_id
-            rate_id: $rate_id
+            rate_id: $rate_id,
+            status: $status
         }){
             id
             amount
