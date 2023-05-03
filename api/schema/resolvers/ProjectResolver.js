@@ -513,7 +513,9 @@ module.exports = {
             })
             const total = await models.Payment.findOne({
                 attributes: [[fn('sum', col('amount')), 'totalPaid']],
+                
                 where: {
+                    project_id: project.id,
                     date_paid: {
                         [Op.and]: [
                             { [Op.ne]: null },
@@ -530,7 +532,7 @@ module.exports = {
                         ]
                     },
                 },
-                include: [
+                include: args.allocationsOnly ? [
                     {
                         model: models.Allocation,
                         where: {
@@ -538,7 +540,7 @@ module.exports = {
                         },
                         required: true
                     }
-                ]
+                ] : []
             })
             return total
                 ? total.dataValues.totalPaid
