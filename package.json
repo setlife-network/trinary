@@ -65,7 +65,7 @@
         "dev-server": "cross-env PORT=6001 nodemon server",
         "start": "node server",
         "build-v1": "BUILD_PATH='./build-v1' PUBLIC_URL=/build-v1 react-scripts build",
-        "build": "react-app-rewired build",
+        "build": "react-app-rewired build && BUILD_PATH='./build-v1' PUBLIC_URL=/build-v1 react-scripts build",
         "tests:unit": "react-scripts test",
         "tests:e2e:local": "SITE_URL=localhost:6002 testcafe chrome src/tests/e2e/",
         "tests:e2e:staging": "SITE_URL=https://trinary-staging.setlife.tech testcafe chrome src/tests/e2e/",
