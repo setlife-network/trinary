@@ -64,7 +64,7 @@
         "server": "cross-env PORT=6001 node server",
         "dev-server": "cross-env PORT=6001 nodemon server",
         "start": "node server",
-        "build-v1": "react-scripts build",
+        "build-v1": "BUILD_PATH='./build-v1' PUBLIC_URL=/build-v1 react-scripts build",
         "build": "react-app-rewired build",
         "tests:unit": "react-scripts test",
         "tests:e2e:local": "SITE_URL=localhost:6002 testcafe chrome src/tests/e2e/",
