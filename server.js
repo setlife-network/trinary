@@ -60,7 +60,9 @@ const whitelist = [
     'https://project-trinary.herokuapp.com/',
     'https://trinary.setlife.tech',
     'https://trinary-v2.setlife.tech',
-    'https://trinary-staging.herokuapp.com'
+    'https://trinary-staging.herokuapp.com',
+    'https://trinary-staging.setlife.tech',
+    'trinary-staging.setlife.tech'
 ];
 const corsOptions = {
     origin: function(origin, callback) {
