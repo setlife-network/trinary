@@ -100,11 +100,13 @@ const AllocationTile = (props) => {
                     {allocationOptionsOpen &&
                             renderAllocationOptions()
                     }
-                    <div className='mt-2'>
-                        <p>
-                            {`@${allocation.proposedBy.name}`}
-                        </p>
-                    </div>
+                    {allocation.proposedBy &&
+                        <div className='mt-2'>
+                            <p>
+                                {`@${allocation.proposedBy.name}`}
+                            </p>
+                        </div>
+                    }
                 </div>
                 <div className='col-span-2 flex gap-4 justify-end my-auto'>
                     <Icon className='fas fa-wallet text-setlife'/>

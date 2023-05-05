@@ -77,7 +77,8 @@ module.exports = gql`
         "The total paid from the client"
         totalPaid(
             fromDate: String,
-            toDate: String
+            toDate: String,
+            allocationsOnly: Boolean
         ): Int
         totalIncurredPayments: Int # The total incurred not paid from the client
     }

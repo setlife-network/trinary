@@ -202,7 +202,7 @@ export const GET_PROJECT_PAYMENTS_SUMMARY = gql`
             id
             totalAllocated
             totalAllocatedConfirmed: totalAllocated(confirmedOnly: true)
-            totalPaid
+            totalPaid(allocationsOnly: true)
             totalIncurredPayments
         }
     }
