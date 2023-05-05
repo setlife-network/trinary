@@ -29,16 +29,23 @@ if (isProduction) {
 }
 
 // Serve static assets
-app.use(express.static(__dirname + '/build'));
+app.use('/', express.static(__dirname + '/build'));
+app.use('/build-v1', express.static(__dirname + '/build-v1'));
 
 app.get('*', function(req, res, next) {
     if (req.path.indexOf('/api/') != -1) {
         //route to the next middleware function
         return next()
     }
-    fs.readFile(__dirname + '/build/index.html', 'utf8', function (err, text) {
-        res.send(text);
-    });
+    if (req.path.indexOf('/build-v1') != -1) {
+        fs.readFile(__dirname + '/build-v1/index.html', 'utf8', function (err, text) {
+            res.send(text);
+        });
+    } else {
+        fs.readFile(__dirname + '/build/index.html', 'utf8', function (err, text) {
+            res.send(text);
+        });
+    }
 })
 
 const whitelist = [
@@ -47,12 +54,15 @@ const whitelist = [
     'http://localhost:4000',
     'http://localhost:6001',
     'http://localhost:6002',
+    'http://localhost:6003',
     'http://github.com/',
     'https://github.com/',
     'https://project-trinary.herokuapp.com/',
     'https://trinary.setlife.tech',
     'https://trinary-v2.setlife.tech',
-    'https://trinary-staging.herokuapp.com'
+    'https://trinary-staging.herokuapp.com',
+    'https://trinary-staging.setlife.tech',
+    'trinary-staging.setlife.tech'
 ];
 const corsOptions = {
     origin: function(origin, callback) {

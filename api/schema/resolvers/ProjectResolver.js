@@ -513,7 +513,9 @@ module.exports = {
             })
             const total = await models.Payment.findOne({
                 attributes: [[fn('sum', col('amount')), 'totalPaid']],
+                
                 where: {
+                    project_id: project.id,
                     date_paid: {
                         [Op.and]: [
                             { [Op.ne]: null },
@@ -530,7 +532,7 @@ module.exports = {
                         ]
                     },
                 },
-                include: [
+                include: args.allocationsOnly ? [
                     {
                         model: models.Allocation,
                         where: {
@@ -538,7 +540,7 @@ module.exports = {
                         },
                         required: true
                     }
-                ]
+                ] : []
             })
             return total
                 ? total.dataValues.totalPaid
@@ -566,13 +568,19 @@ module.exports = {
         getActiveProjects: (root, args, { models }) => {
             return models.Project.findAll({
                 where: {
-                    is_active: true
+                    is_active: true,
+                    client_id: {
+                        [Op.is]: !null
+                    }
                 }
             })
         },
         getActiveProjectsCount: (root, args, { models }) => {
             const whereFields = {
-                is_active: true
+                is_active: true,
+                client_id: {
+                    [Op.is]: !null
+                }
             }
             if (args.clientId) whereFields.client_id = args.clientId
             return models.Project.count({
@@ -614,6 +622,12 @@ module.exports = {
                 const togglId = togglArray[togglArray.length - 1]
                 projectToCreate['toggl_id'] = togglId
             }
+            const projectAlreadyCreated = await models.Project.findOne({
+                where: {
+                    github_url: projectToCreate['github_url']
+                }
+            })
+            if (projectAlreadyCreated) { throw new Error('Project already exists') }
             const newProject = await models.Project.create({
                 ...projectToCreate
             })
