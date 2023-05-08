@@ -15,6 +15,7 @@ const WalletSetupPage = () => {
                     subtitle={w.subtitle}
                     route={w.route}
                     count={i}
+                    disabled={w.disabled}
                 />
             )
         })
