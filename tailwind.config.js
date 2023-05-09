@@ -4,9 +4,6 @@ module.exports = {
         './srcv2/**/*.{js,jsx,ts,tsx}'
     ],
     theme: {
-        fontSize: {
-            '3xl': '28px'
-        },
         extend: {
             colors: {
                 'setlife': '#00C2D4',
