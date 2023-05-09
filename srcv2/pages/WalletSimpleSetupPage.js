@@ -2,12 +2,17 @@ import React, { useState } from 'react'
 import {
     Icon
 } from '@material-ui/core'
+import { useHistory } from 'react-router-dom'
 
 import Section from '../components/Section'
+
+import { UPDATE_WALLET_ADDRESS } from '../operations/mutations/WalletMutations'
 
 const WalletSimpleSetupPage = () => {
 
     const [btcAddress, setBtcAddress] = useState('')
+
+    const history = useHistory()
 
     return (
         <div className='WalletSimpleSetupPage h-full min-h-screen'>
@@ -51,7 +56,7 @@ const WalletSimpleSetupPage = () => {
                     />
                 </div> 
                 <div className='grid absolute bottom-10 left-16 right-16 gap-4'>
-                    <button type='button'>
+                    <button type='button' onClick={() => history.pushState('/wallet/setup')}>
                         Cancel
                     </button>
                     <button type='button' className='bg-setlife rounded-full py-2 w-full text-white font-bold'>
