@@ -16,19 +16,25 @@ const WalletOption = ({
 
     const history = useHistory()
 
+    const handleButton = () => {
+        if (!disabled) {
+            history.push(route)
+        }
+    }
+
     return (
         <div className='WalletOption mb-5'>
-            <button type='button' className='w-full text-start' onClick={() => history.push(route)}>
+            <button disabled={disabled} type='button' className='w-full text-start' onClick={() => handleButton()}>
                 <div className={`bg-white rounded-lg border-light border-2 !py-3 px-6`}>
                     <div className='flex'>
                         <div className='mr-4 self-center'>
-                            <Icon className={`icon fas fa-${icon} text-setlife my-auto !w-8`}/>
+                            <Icon className={`icon fas fa-${icon} my-auto !w-8 ${disabled ? 'text-grey' : 'text-setlife'}`}/>
                         </div>
                         <div>
-                            <p className='text-base font-semibold'>
+                            <p className={`text-base font-semibold ${disabled ? 'text-grey' : ''}`}>
                                 {`${count + 1}. ${title}`}
                             </p>
-                            <p className='text-sm'>
+                            <p className={`text-sm ${disabled ? 'text-grey' : ''}`}>
                                 {subtitle}
                             </p>
                         </div>
