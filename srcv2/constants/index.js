@@ -71,4 +71,27 @@ export const FOOTER_LINKS = [
         url: 'https://www.linkedin.com/company/setlife-network/'
     }
 ]
+export const WALLET_OPTIONS = [
+    {
+        icon: 'key',
+        title: 'Simple',
+        subtitle: 'Provide a BTC address',
+        route: 'setup/simple',
+        disabled: false
+    },
+    {
+        icon: 'wallet',
+        title: 'Advanced',
+        subtitle: 'Download External Wallet',
+        route: 'setup/advanced',
+        disabled: false
+    },
+    {
+        icon: 'network-wired',
+        title: 'Federated',
+        subtitle: 'Connect your Node',
+        route: 'setup/federated',
+        disabled: true
+    }
+]
 export const FUNDING_PLAN_TIMEFRAME_AMOUNTS = ['Monthly amount', 'Total amount', 'Quarterly']

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom';
 import {
     Icon
 } from '@material-ui/core'
@@ -14,8 +15,8 @@ import { getHandle } from '../scripts/selectors'
 
 const DashboardPage = () => {
 
-    const walletSetupPrototypeLink = 'https://www.figma.com/proto/qgGWXmprU7vTv7guzWzvML/Project-Trinary?node-id=4561%3A17974&scaling=scale-down&page-id=4076%3A12706&starting-point-node-id=4552%3A15225&show-proto-sidebar=1'
-    
+    const history = useHistory()
+
     return (
         <div className='DashboardPage bg-white-light h-full min-h-screen'>
             <Section backgroundColor={'bg-white'} className={'rounded-b-[70px]'}>
@@ -31,7 +32,7 @@ const DashboardPage = () => {
                             </>
                         }
                         {!sessionUser().totalPaid &&
-                            <button type='button' className='flex gap-2 text-xl' onClick={() => window.open(walletSetupPrototypeLink, '_blank')}>
+                            <button type='button' className='flex gap-2 text-xl' onClick={() => history.push('/wallet/setup')}>
                                 <Icon className='icon fas fa-wallet text-black my-auto' fontSize='large'/>
                                 <div className='ml-4'>
                                     <p 
