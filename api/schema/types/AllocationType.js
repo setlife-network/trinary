@@ -29,6 +29,7 @@ module.exports = gql`
         project_id: Int!
         contributor_id: Int!
         rate_id: Int!
+        status: String
     }
 
     input UpdateAllocationInput {

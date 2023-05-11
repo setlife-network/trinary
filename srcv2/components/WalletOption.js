@@ -25,7 +25,7 @@ const WalletOption = ({
     return (
         <div className='WalletOption mb-5'>
             <button disabled={disabled} type='button' className='w-full text-start' onClick={() => handleButton()}>
-                <Section backgroundColor={'bg-white'} className={'rounded-lg border-light border-2 !py-3 px-6'}>
+                <div className={`bg-white rounded-lg border-light border-2 !py-3 px-6`}>
                     <div className='flex'>
                         <div className='mr-4 self-center'>
                             <Icon className={`icon fas fa-${icon} my-auto !w-8 ${disabled ? 'text-grey' : 'text-setlife'}`}/>
@@ -39,7 +39,7 @@ const WalletOption = ({
                             </p>
                         </div>
                     </div>
-                </Section>
+                </div>
             </button>
         </div>
     )

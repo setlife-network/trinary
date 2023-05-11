@@ -82,14 +82,14 @@ export const WALLET_OPTIONS = [
     {
         icon: 'wallet',
         title: 'Advanced',
-        subtitle: 'Connect your Node',
+        subtitle: 'Download External Wallet',
         route: 'setup/advanced',
         disabled: false
     },
     {
         icon: 'network-wired',
         title: 'Federated',
-        subtitle: 'Download External Wallet',
+        subtitle: 'Connect your Node',
         route: 'setup/federated',
         disabled: true
     }
