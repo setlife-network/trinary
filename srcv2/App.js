@@ -15,6 +15,7 @@ import OnboardingPage from './pages/OnboardingPage'
 import OnboardingContributorPage from './pages/OnboardingContributorPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
 import WalletSetupPage from './pages/WalletSetupPage'
+import AdvancedWalletSetup from './components/AdvancedWalletSetup'
 
 class App extends React.Component {
     render() {
@@ -73,7 +74,12 @@ class App extends React.Component {
                         exact
                         path='/wallet/setup'
                         component={WalletSetupPage}
-                    />            
+                    />  
+                    <PrivateRoute 
+                        exact
+                        path='/wallet/setup/advanced'
+                        component={AdvancedWalletSetup}
+                    />          
                 </div>
             </div>
         )
