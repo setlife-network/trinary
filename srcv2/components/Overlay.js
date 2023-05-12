@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Modal, Icon } from '@material-ui/core'
 
 import Section from './Section'
-import Step from './Step'
 
 const Overlay = ({
     open,
@@ -12,21 +11,8 @@ const Overlay = ({
     goBackAction,
     height,
     fullScreen,
-    title,
-    description,
-    steps
+    children,
 }) => {
-
-    const renderSteps = () => {
-        return steps.map((s, i) => {
-            return (
-                <Step  
-                    title={s.title}
-                    number={i + 1}
-                />
-            )
-        })
-    }
 
     return (
         <div className='Overlay'>
@@ -48,16 +34,10 @@ const Overlay = ({
                             />
                         </div>
                         <div className='flex-grow mt-5'>
-                            <p className='text-3xl font-bold mb-2'>
-                                {title}
-                            </p>
-                            <p>
-                                {description}
-                            </p>
-                            {steps && renderSteps()}
+                            { children }
                         </div>
                         <button
-                            className='bg-setlife rounded-full py-2 w-full font-bold text-white mt-4 mb-2 self-end'
+                            className={`bg-setlife rounded-full py-2 w-full font-bold text-white mt-4 mb-2 self-end ${buttonText ? 'visible' : 'invisible'}`}
                             onClick={() => { buttonAction() }}
                             type='button'
                         >
