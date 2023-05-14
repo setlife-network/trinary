@@ -9,9 +9,11 @@ const Overlay = ({
     buttonText,
     buttonAction,
     goBackAction,
-    height,
+    height = '',
     fullScreen,
     children,
+    containerClassName,
+    position = 'bottom'
 }) => {
 
     return (
@@ -19,10 +21,12 @@ const Overlay = ({
             <Modal
                 open={open}
                 onClose={() => { setOpen(false) }}
-                className={'fixed inset-0 flex bg-black bg-opacity-50 items-center justify-center transition-opacity duration-300 z-40'}
+                className={'modal fixed inset-0 flex bg-black bg-opacity-50 items-center justify-center transition-opacity duration-300 z-40'}
             >
-                <div className={'fixed inset-5 mt-20'} onClick={() => { setOpen(false) }}>
-                    <Section backgroundColor={'bg-white'} className={`flex flex-col rounded-lg border-2 !py-3 px-6 ${fullScreen ? 'h-full' : ''} ${height ? height : ''}`}>
+                <div className={'Overlay fixed inset-5'} onClick={() => { setOpen(false) }}>
+                    <div
+                        className={`bg-white flex flex-col rounded-lg border-2 !py-3 px-6 ${fullScreen ? 'h-full' : position} ${height} ${containerClassName}`}
+                    >
                         <div className='y-3'>
                             <Icon 
                                 className={`icon fas fa-arrow-left my-3 !w-8 ${goBackAction ? 'visible' : 'invisible'}`}
@@ -43,7 +47,7 @@ const Overlay = ({
                         >
                             {buttonText}
                         </button>
-                    </Section>
+                    </div>
                 </div>
             </Modal>
         </div>
