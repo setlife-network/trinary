@@ -94,7 +94,7 @@ const WalletSimpleSetupPage = () => {
                     />
                 </div> 
                 <div className='grid absolute bottom-10 left-16 right-16 gap-4'>
-                    <button type='button' onClick={() => history.pushState('/wallet/setup')}>
+                    <button type='button' onClick={() => history.push('/wallet/setup')}>
                         Cancel
                     </button>
                     <button
