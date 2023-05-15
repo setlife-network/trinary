@@ -13,6 +13,7 @@ const PermissionResolver = require('./resolvers/PermissionResolver')
 const ProjectResolver = require('./resolvers/ProjectResolver')
 const RateResolver = require('./resolvers/RateResolver')
 const TimeEntryResolver = require('./resolvers/TimeEntryResolver')
+const WalletResolver = require('./resolvers/WalletResolver')
 
 //import types
 const AllocationType = require('./types/AllocationType')
@@ -26,6 +27,7 @@ const PermissionType = require('./types/PermissionType')
 const ProjectType = require('./types/ProjectType')
 const RateType = require('./types/RateType')
 const TimeEntry = require('./types/TimeEntryType')
+const Wallet = require('./types/WalletType')
 
 //merge types
 const typeDefs = mergeTypeDefs([
@@ -39,7 +41,8 @@ const typeDefs = mergeTypeDefs([
     PermissionType,
     ProjectType,
     RateType,
-    TimeEntry
+    TimeEntry,
+    Wallet
 ])
 
 //merge resolvers
@@ -54,7 +57,8 @@ const resolvers = mergeResolvers([
     PermissionResolver,
     ProjectResolver,
     RateResolver,
-    TimeEntryResolver
+    TimeEntryResolver,
+    WalletResolver
 ])
 
 // Export generated schema
