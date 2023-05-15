@@ -41,7 +41,7 @@ const ProjectDetailPage = (props) => {
             return (
                 <div className='contributor w-14'>
                     <div className='rounded-full h-14 w-14 bg-light text-4xl'>
-                        <Icon className='icon fas fa-user text-grey text-center w-full h-full mt-2.5' fontSize='inherit'/>
+                        <Icon className='icon fas fa-user text-gray text-center w-full h-full mt-2.5' fontSize='inherit'/>
                     </div>
                     <div className='w-full'>
                         <p className='text-center'>{contributor.name}</p>
@@ -75,7 +75,7 @@ const ProjectDetailPage = (props) => {
                         </div>
                     </div>
                     <button type='button' className='text-right w-fit ml-auto' onClick={() => history.push(`/payments/edit/${payment.id}`)}>
-                        <Icon className='fas fa-pen text-grey' fontSize='small'/>
+                        <Icon className='fas fa-pen text-gray' fontSize='small'/>
                     </button>
                 </div>
             )

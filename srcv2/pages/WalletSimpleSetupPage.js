@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useMutation } from '@apollo/client'
 import {
-    Icon
+    Icon,
+    Snackbar
 } from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert'
 import { useHistory } from 'react-router-dom'
 
 import Section from '../components/Section'
@@ -11,8 +14,43 @@ import { UPDATE_WALLET_ADDRESS } from '../operations/mutations/WalletMutations'
 const WalletSimpleSetupPage = () => {
 
     const [btcAddress, setBtcAddress] = useState('')
+    const [displayAlert, setDisplayAlert] = useState(false)
 
     const history = useHistory()
+
+    const [
+        updateWalletAddress,
+        {
+            data: updateWalletAddressData,
+            loading: updateWalletAddressLoading,
+            error: updateWalletAddressError
+        }
+    ] = useMutation(UPDATE_WALLET_ADDRESS, {
+        errorPolicy: 'all'
+    })
+    
+    useEffect(() => {
+        if (updateWalletAddressError != undefined || updateWalletAddressData != undefined) {
+            setDisplayAlert(true)
+        }
+    }, [updateWalletAddressError, updateWalletAddressData])
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setDisplayAlert(false)
+    }
+
+    const updateAddress = async (address) => {
+        const variables = {
+            address: address
+        }
+        await updateWalletAddress({ variables: variables })
+        if (!updateWalletAddressError) {
+            setBtcAddress('')
+        }
+    }
 
     return (
         <div className='WalletSimpleSetupPage h-full min-h-screen'>
@@ -59,11 +97,31 @@ const WalletSimpleSetupPage = () => {
                     <button type='button' onClick={() => history.pushState('/wallet/setup')}>
                         Cancel
                     </button>
-                    <button type='button' className='bg-setlife rounded-full py-2 w-full text-white font-bold'>
+                    <button
+                        type='button'
+                        className={`rounded-full py-2 w-full text-white font-bold ${updateWalletAddressLoading ? 'bg-gray' : 'bg-setlife'}`}
+                        onClick={() => updateAddress(btcAddress)}
+                        disabled={updateWalletAddressLoading}
+                    >
                         Set Up Wallet
                     </button>
                 </div>
             </Section>
+            <Snackbar
+                autoHideDuration={4000}
+                open={displayAlert}
+                onClose={handleAlertClose}
+            >
+                {updateWalletAddressData != undefined ? (
+                    <Alert>
+                        {`Wallet updated`}
+                    </Alert>
+                ) : (
+                    <Alert severity='error'>
+                        {`${updateWalletAddressError}`}
+                    </Alert>
+                )}
+            </Snackbar>
         </div>
 
     )
