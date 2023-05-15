@@ -9,11 +9,13 @@ import { useHistory } from 'react-router-dom'
 
 import Section from '../components/Section'
 
+import { sessionUser } from '../reactivities/variables'
+
 import { UPDATE_WALLET_ADDRESS } from '../operations/mutations/WalletMutations'
 
 const WalletSimpleSetupPage = () => {
 
-    const [btcAddress, setBtcAddress] = useState('')
+    const [btcAddress, setBtcAddress] = useState(sessionUser().wallet.onchain_address ?? '')
     const [displayAlert, setDisplayAlert] = useState(false)
 
     const history = useHistory()
@@ -47,9 +49,6 @@ const WalletSimpleSetupPage = () => {
             address: address
         }
         await updateWalletAddress({ variables: variables })
-        if (!updateWalletAddressError) {
-            setBtcAddress('')
-        }
     }
 
     return (
@@ -74,6 +73,7 @@ const WalletSimpleSetupPage = () => {
                     <input 
                         type='text'
                         placeholder='Paste BTC wallet address'
+                        value={btcAddress}
                         onChange={(e) => setBtcAddress(e.target.value)}
                         className='
                             form-control
