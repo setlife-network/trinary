@@ -7,7 +7,10 @@ import {
 import Alert from '@material-ui/lab/Alert'
 import { useHistory } from 'react-router-dom'
 
+import Overlay from '../components/Overlay'
 import Section from '../components/Section'
+import Step from '../components/Step'
+import WalletSimpleSetupOnboarding from '../components/WalletSimpleSetupOnboarding'
 
 import { sessionUser } from '../reactivities/variables'
 
@@ -17,6 +20,7 @@ const WalletSimpleSetupPage = () => {
 
     const [btcAddress, setBtcAddress] = useState(sessionUser().wallet.onchain_address ?? '')
     const [displayAlert, setDisplayAlert] = useState(false)
+    const [onboardOverlayOpen, setOnboardOverlayOpen] = useState(false)
 
     const history = useHistory()
 
@@ -65,7 +69,7 @@ const WalletSimpleSetupPage = () => {
                         <Icon
                             className='icon fas fa-info-circle text-black my-auto'
                             fontSize='medium'
-                            onClick={() => console.log('open modal (TODO)')}
+                            onClick={() => setOnboardOverlayOpen(true)}
                         />
                     </div>
                 </div>
@@ -122,6 +126,9 @@ const WalletSimpleSetupPage = () => {
                     </Alert>
                 )}
             </Snackbar>
+            <Overlay open={onboardOverlayOpen} setOpen={setOnboardOverlayOpen} height={'h-4/5'}>
+                <WalletSimpleSetupOnboarding/>
+            </Overlay>
         </div>
 
     )
