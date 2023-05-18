@@ -67,7 +67,7 @@ const ProjectSummary = (props) => {
                                 <Grid xs={10} align='left'>
                                     <Typography 
                                         variant='' 
-                                        className='grey-link'
+                                        className='gray-link'
                                         onClick={goToClientPage}
                                     >
                                         <span>

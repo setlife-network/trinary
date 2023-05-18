@@ -11,6 +11,9 @@ export const CHECK_SESSION = gql`
             toggl_id
             external_data_url
             totalPaid
+            wallet {
+                onchain_address
+            }
         }
     }
 `

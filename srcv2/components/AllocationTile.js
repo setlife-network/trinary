@@ -93,7 +93,7 @@ const AllocationTile = (props) => {
                         </p>
                         {allocation.status == 'pending' &&
                             <button type='button' onClick={() => setAllocationOptionsOpen(!allocationOptionsOpen)}>
-                                <Icon className='fas fa-chevron-down my-auto text-grey'/>
+                                <Icon className='fas fa-chevron-down my-auto text-gray'/>
                             </button>
                         }
                     </div>

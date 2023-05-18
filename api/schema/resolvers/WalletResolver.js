@@ -7,15 +7,16 @@ module.exports = {
     Query: {
     },
     Mutation: {
-        updateContributorOnChainAddress: async (root, { contributor_id, address }, { models }) => {
+        updateContributorOnChainAddress: async (root, { contributor_id, address }, { cookies, models }) => {
+            const contributorId = cookies.userSession ?? contributor_id
             const contributorWallet = await models.Wallet.findOne({
                 where: {        
-                    contributor_id: contributor_id
+                    contributor_id: contributorId
                 }
             })
             if (!contributorWallet) {
                 const createFields = {
-                    contributor_id: contributor_id,
+                    contributor_id: contributorId,
                     onchain_address: address
                 }
                 const wallet = await models.Wallet.create({
@@ -32,7 +33,7 @@ module.exports = {
             })
             return models.Wallet.findOne({
                 where: {        
-                    contributor_id: contributor_id
+                    contributor_id: contributorId
                 }
             })
         },

@@ -15,7 +15,7 @@ const {
     setlifeBlue,
     lightBlue,
     darkBlue,
-    grey,
+    gray,
     lightGrey,
     black,
     white
@@ -75,7 +75,7 @@ const theme = createMuiTheme({
             light: white
         },
         secondary: {
-            main: grey,
+            main: gray,
             light: lightGrey
         },
         action: {

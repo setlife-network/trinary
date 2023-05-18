@@ -15,7 +15,7 @@ const LoginPage = () => {
                         <p className='text-4xl font-bold'>
                             Log in
                         </p>
-                        <p className='font-bold text-xl text-grey'>
+                        <p className='font-bold text-xl text-gray'>
                             A budgeting tool for tracking workflows and cashflows while collaborating with others on projects
                         </p>
                     </div>

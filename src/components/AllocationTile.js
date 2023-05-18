@@ -19,7 +19,7 @@ import {
 } from '../scripts/selectors'
 import colors from '../styles/colors.module.scss'
 
-const { grey, orange, red, setlifeBlue } = colors
+const { gray, orange, red, setlifeBlue } = colors
 
 const AllocationTile = (props) => {
 
@@ -98,7 +98,7 @@ const AllocationTile = (props) => {
                     <Box
                         color={
                             `${!allocation.date_paid
-                                ? `${grey}`
+                                ? `${gray}`
                                 : futureAllocation
                                     ? `${orange}`
                                     : `${setlifeBlue}`
@@ -120,7 +120,7 @@ const AllocationTile = (props) => {
                     <Box
                         color={
                             `${!allocation.date_paid
-                                ? `${grey}`
+                                ? `${gray}`
                                 : weeksOfdDifference == 2
                                     ? `${red}`
                                     : futureAllocation

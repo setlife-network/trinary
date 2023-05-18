@@ -26,10 +26,10 @@ const BudgetingOnboarding = (props) => {
                         <p className='text-3xl text-center font-bold'>
                             Budgeting
                         </p>
-                        <p className='text-grey text-xl text-center font-bold'>
+                        <p className='text-gray text-xl text-center font-bold'>
                             Allocate funds to your team
                         </p>
-                        <p className='text-grey text-xl text-center font-bold'>
+                        <p className='text-gray text-xl text-center font-bold'>
                             Negotiate compensation rates
                         </p>
                     </div>

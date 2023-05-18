@@ -34,7 +34,7 @@ const LandingPage = () => {
         return FEATURES.map((feature, idx) => {
             const goals = feature.goals.map(goal => {
                 return (
-                    <p className='goal text-center font-bold text-xl text-grey'>
+                    <p className='goal text-center font-bold text-xl text-gray'>
                         {goal}
                     </p>
                 )
@@ -66,7 +66,7 @@ const LandingPage = () => {
                         <p className='text-5xl text-center font-bold'>
                             Trinary
                         </p>
-                        <p className='text-grey text-2xl text-center font-bold'>
+                        <p className='text-gray text-2xl text-center font-bold'>
                             Build a “micro-economy” for your team to share knowledge, trade feedback, & hold each other accountable
                         </p>
                     </div>
