@@ -122,7 +122,7 @@ const AdvancedWalletSetup = () => {
                             focus:text-gray-700 focus:bg-white focus:border-setlife focus:outline-none
                         '
                     />
-                    <div className='absolute left-[19rem] top-0 mt-2' onClick={() => pasteFromClipboard(r)}>
+                    <div className='absolute right-5 top-0 mt-2' onClick={() => pasteFromClipboard(r)}>
                         <Icon fontSize='small' className={'icon fas fa-paste'}/>
                     </div>
                 </div>
@@ -147,29 +147,31 @@ const AdvancedWalletSetup = () => {
     }
 
     return (
-        <div className='AdvancedWalletSetup'>
-            <Section className={'px-6'}>
+        <div className='AdvancedWalletSetup h-full min-h-screen'>
+            <Section backgroundColor={'bg-white-light'} className={'h-full min-h-screen px-6'}>
                 <div className='flex mb-5'>
                     <p className='font-bold text-lg'>
                         {'Enter your info bellow to set up your node'}
                     </p>
-                    <Icon className={`icon fas fa-circle-question my-auto !w-8`}></Icon>
+                    <Icon className={`icon fas fa-circle-question my-auto !w-8 ml-auto`}></Icon>
                 </div>
-                <Selector
-                    title={nodeInterface}
-                    renderOptions={renderNodeOptions}
-                    openOptions={openNodeOpts}
-                    setOpenOptions={setOpenNodeOpts}
-                    loadingOptions={false}
-                    margin={'7'}
-                />
+                <div className='relative'>
+                    <Selector
+                        title={nodeInterface}
+                        renderOptions={renderNodeOptions}
+                        openOptions={openNodeOpts}
+                        setOpenOptions={setOpenNodeOpts}
+                        loadingOptions={false}
+                        buttonClassName='bg-white'
+                    />
+                </div>
                 {renderAdvancedWalletInputs()}
                 <div className='grid absolute bottom-10 left-16 right-16 gap-4'>
                     <button
                         type='button'
-                        className={`rounded-full py-2 w-full text-white font-bold ${disabledButton ? 'bg-light' : 'bg-setlife'}`}
+                        className={`rounded-full py-2 w-full text-white font-bold ${(disabledButton || loadingNodeData) ? 'bg-light' : 'bg-setlife'}`}
                         onClick={() => handleSaveNodeButton()}
-                        disabled={disabledButton}
+                        disabled={disabledButton || loadingNodeData}
                     >
                         Create
                     </button>
