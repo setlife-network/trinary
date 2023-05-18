@@ -1,3 +1,5 @@
+const { validate } = require('bitcoin-address-validation')
+
 const apiModules = require('../../modules')
 
 module.exports = {
@@ -9,6 +11,10 @@ module.exports = {
     Mutation: {
         updateContributorOnChainAddress: async (root, { contributor_id, address }, { cookies, models }) => {
             const contributorId = cookies.userSession ?? contributor_id
+
+            if (!validate(address)) {
+                throw new Error('Invalid BTC Address')
+            }
             const contributorWallet = await models.Wallet.findOne({
                 where: {        
                     contributor_id: contributorId

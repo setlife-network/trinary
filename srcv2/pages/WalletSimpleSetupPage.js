@@ -112,13 +112,13 @@ const WalletSimpleSetupPage = () => {
                 open={displayAlert}
                 onClose={handleAlertClose}
             >
-                {updateWalletAddressData != undefined ? (
-                    <Alert>
-                        {`Wallet updated`}
+                {updateWalletAddressError ? (
+                    <Alert severity='error'>
+                        {`${updateWalletAddressError.message}`}
                     </Alert>
                 ) : (
-                    <Alert severity='error'>
-                        {`${updateWalletAddressError}`}
+                    <Alert>
+                        {`Wallet updated`}
                     </Alert>
                 )}
             </Snackbar>
