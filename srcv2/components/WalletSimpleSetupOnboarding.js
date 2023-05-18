@@ -11,9 +11,19 @@ import {
     ZEUS_ICON_URL
 } from '../constants'
 
-const WalletSimpleSetupOnboarding = () => {
+const WalletSimpleSetupOnboarding = ({
+    setOnboardingScreenIndex,
+    onboardingScreenIndex,
+    setOpen
+}) => {
 
-    const [onboardingScreenIndex, setOnboardingScreenIndex] = useState(0)
+    const goToNextScreen = () => {
+        if (onboardingScreenIndex >= onboardingScreenRenders.length - 1) {
+            setOpen(false)
+            return 
+        }
+        setOnboardingScreenIndex(onboardingScreenIndex + 1)
+    }
 
     const renderFirst = () => {
         const SETUP_STEPS = [
@@ -102,7 +112,7 @@ const WalletSimpleSetupOnboarding = () => {
                 <div className='w-10 h-10 rounded-full bg-setlife text-white flex items-center justify-center mx-auto'>
                     <p className='font-bold text-lg'>2</p>
                 </div>
-                <p className='text-2xl text-center font-bold'>Create Bitcoin Address</p>
+                <p className='text-2xl text-center font-bold mt-4'>Create Bitcoin Address</p>
                 <div className='mt-4'>
                     <p>
                         Follow the step-by-step guide of your downloaded wallet and create a BTC address
@@ -118,17 +128,17 @@ const WalletSimpleSetupOnboarding = () => {
                 <div className='w-10 h-10 rounded-full bg-setlife text-white flex items-center justify-center mx-auto'>
                     <p className='font-bold text-lg'>3</p>
                 </div>
-                <p className='text-2xl text-center font-bold'>Back Up your Wallet</p>
-                <div className='mt-4'>
+                <p className='text-2xl text-center font-bold mt-4'>Back Up your Wallet</p>
+                <div className='mt-4 mb-8'>
                     <p>
                         Remember to create a backup to never lose access to your wallet
                     </p>
                 </div>
-                <div className='text-3xl mt-12'>
+                <div className='text-7xl mt-12 w-fit m-auto'>
                     <Icon className='fas fa-lock w-full text-center text-setlife' fontSize='inherit'/>
                 </div>
                 <div className='rounded-md bg-white-light h-12 mx-12 mt-6 flex justify-center'>
-                    <p className='text-center m-auto'>
+                    <p className='text-center m-auto text-xl font-bold'>
                         ************
                     </p>
                 </div>
@@ -136,10 +146,22 @@ const WalletSimpleSetupOnboarding = () => {
         )
     }
 
+    const renderFifth = () => {
+        return (
+            <div>
+                <div className='w-10 h-10 rounded-full bg-setlife text-white flex items-center justify-center mx-auto'>
+                    <p className='font-bold text-lg'>4</p>
+                </div>
+                <p className='text-2xl text-center font-bold mt-4'> Start Receiving Payments</p>
+            </div>
+        )
+    }
+
     const renderOnboardingScreens = () => {
-        const onboardingScreenRenders = [renderFirst(), renderSecond(), renderThird(), renderFourth()]
         return onboardingScreenRenders[onboardingScreenIndex]
     }
+
+    const onboardingScreenRenders = [renderFirst(), renderSecond(), renderThird(), renderFourth(), renderFifth()]
 
     return (
         <div className='WalletSimpleSetupOnboarding'>
@@ -148,7 +170,7 @@ const WalletSimpleSetupOnboarding = () => {
                 <button
                     type='button'
                     className={`rounded-full py-2 w-full text-white font-bold bg-setlife`}
-                    onClick={() => setOnboardingScreenIndex(onboardingScreenIndex + 1)}
+                    onClick={() => goToNextScreen()}
                 >
                     Continue
                 </button>
