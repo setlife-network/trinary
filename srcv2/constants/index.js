@@ -94,4 +94,18 @@ export const WALLET_OPTIONS = [
         disabled: true
     }
 ]
+export const NODE_OPTIONS = [
+    {
+        name: 'LND',
+        active: true
+    },
+    {
+        name: 'CLD',
+        active: false
+    },
+    {
+        name: 'Eclair',
+        active: false
+    },
+]
 export const FUNDING_PLAN_TIMEFRAME_AMOUNTS = ['Monthly amount', 'Total amount', 'Quarterly']

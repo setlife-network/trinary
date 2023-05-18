@@ -19,6 +19,12 @@ module.exports = gql`
     }
 
     type Mutation {
+        updateContributorNode(
+            contributor_id: Int
+            host: String
+            port: Int
+            macaroon: String
+        ): Wallet
         updateContributorOnChainAddress(
             contributor_id: Int
             address: String

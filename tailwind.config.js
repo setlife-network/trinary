@@ -12,6 +12,9 @@ module.exports = {
                 'black': '#000000',
                 'white-light': '#F4F4F4',
                 'med-grey': '#E5E5E5'
+            },
+            spacing: {
+                '19rem': '19rem'
             }
         },
     },

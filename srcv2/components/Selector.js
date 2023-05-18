@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Selector = ({ title, renderOptions, openOptions, setOpenOptions, loadingOptions }) => {
+const Selector = ({ title, renderOptions, openOptions, setOpenOptions, loadingOptions, margin }) => {
 
     const selectorOptions = renderOptions()
 
@@ -16,7 +16,7 @@ const Selector = ({ title, renderOptions, openOptions, setOpenOptions, loadingOp
             </button>
             {openOptions &&
                 <div 
-                    className='absolute right-0 left-0 z-10 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none mx-12 sm:mx-24 md:mx-48 lg:mx-96 max-h-52 overflow-scroll' 
+                    className={`absolute right-0 left-0 z-10 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none mx-${margin} sm:mx-24 md:mx-48 lg:mx-96 max-h-52 overflow-scroll`}
                     role='menu'
                     aria-orientation='vertical' 
                     aria-labelledby='menu-button'
@@ -36,6 +36,10 @@ const Selector = ({ title, renderOptions, openOptions, setOpenOptions, loadingOp
             }
         </div>
     )
+}
+
+Selector.defaultProps = {
+    margin: '12'
 }
 
 export default Selector
