@@ -10,12 +10,13 @@ import Section from './Section'
 import Selector from './Selector'
 import { NODE_OPTIONS } from '../constants'
 import { UPDATE_NODE } from '../operations/mutations/WalletMutations'
+import { sessionUser } from '../reactivities/variables'
 
 const AdvancedWalletSetup = () => {
 
-    const [host, setHost] = useState(null)
-    const [restPort, setRestPort] = useState(null)
-    const [macaroon, setMacaroon] = useState(null)
+    const [host, setHost] = useState(sessionUser().wallet.lnd_host ?? '')
+    const [restPort, setRestPort] = useState(sessionUser().wallet.lnd_port ?? '')
+    const [macaroon, setMacaroon] = useState(sessionUser().wallet.invoice_macaroon ?? '')
     const [nodeInterface, setNodeInterface] = useState('Node Interface')
     const [openNodeOpts, setOpenNodeOpts] = useState(false)
     const [displayAlert, setDisplayAlert] = useState(false)
@@ -146,6 +147,8 @@ const AdvancedWalletSetup = () => {
         setDisplayAlert(false)
     }
 
+    console.log(sessionUser().wallet)
+
     return (
         <div className='AdvancedWalletSetup h-full min-h-screen'>
             <Section backgroundColor={'bg-white-light'} className={'h-full min-h-screen px-6'}>
@@ -173,7 +176,7 @@ const AdvancedWalletSetup = () => {
                         onClick={() => handleSaveNodeButton()}
                         disabled={disabledButton || loadingNodeData}
                     >
-                        Create
+                        Save
                     </button>
                 </div>
             </Section>
