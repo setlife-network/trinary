@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import {
+    Icon
+} from '@material-ui/core'
 
 import Step from './Step'
 
@@ -11,6 +14,41 @@ import {
 const WalletSimpleSetupOnboarding = () => {
 
     const [onboardingScreenIndex, setOnboardingScreenIndex] = useState(0)
+
+    const renderFirst = () => {
+        const SETUP_STEPS = [
+            {
+                text: 'Download a wallet'
+            },
+            {
+                text: 'Create a BTC address'
+            },
+            {
+                text: 'Complete your security backup'
+            },
+            {
+                text: 'Receive payments'
+            }
+        ]
+        const renderSetupSteps = () => {
+            return SETUP_STEPS.map((step, idx) => {
+                return (
+                    <Step number={idx + 1} title={step.text}/>
+                )
+            })
+        }
+        return (
+            <div>
+                <p className='text-2xl text-left font-bold'>Simple Option</p>
+                <div className='mt-4'>
+                    <p>
+                        To receive payments in Trinary you need a BTC address to link the account
+                    </p>
+                </div>
+                {renderSetupSteps()}
+            </div>
+        )
+    }
 
     const renderSecond = () => {
         const renderWallets = () => {
@@ -58,48 +96,53 @@ const WalletSimpleSetupOnboarding = () => {
         )
     }
 
-    const renderFirst = () => {
-        const SETUP_STEPS = [
-            {
-                text: 'Download a wallet'
-            },
-            {
-                text: 'Create a BTC address'
-            },
-            {
-                text: 'Complete your security backup'
-            },
-            {
-                text: 'Receive payments'
-            }
-        ]
-        const renderSetupSteps = () => {
-            return SETUP_STEPS.map((step, idx) => {
-                return (
-                    <Step number={idx + 1} title={step.text}/>
-                )
-            })
-        }
+    const renderThird = () => {
         return (
             <div>
-                <p className='text-2xl text-left font-bold'>Simple Option</p>
+                <div className='w-10 h-10 rounded-full bg-setlife text-white flex items-center justify-center mx-auto'>
+                    <p className='font-bold text-lg'>2</p>
+                </div>
+                <p className='text-2xl text-center font-bold'>Create Bitcoin Address</p>
                 <div className='mt-4'>
                     <p>
-                        To receive payments in Trinary you need a BTC address to link the account
+                        Follow the step-by-step guide of your downloaded wallet and create a BTC address
                     </p>
                 </div>
-                {renderSetupSteps()}
+            </div>
+        )
+    }
+
+    const renderFourth = () => {
+        return (
+            <div>
+                <div className='w-10 h-10 rounded-full bg-setlife text-white flex items-center justify-center mx-auto'>
+                    <p className='font-bold text-lg'>3</p>
+                </div>
+                <p className='text-2xl text-center font-bold'>Back Up your Wallet</p>
+                <div className='mt-4'>
+                    <p>
+                        Remember to create a backup to never lose access to your wallet
+                    </p>
+                </div>
+                <div className='text-3xl mt-12'>
+                    <Icon className='fas fa-lock w-full text-center text-setlife' fontSize='inherit'/>
+                </div>
+                <div className='rounded-md bg-white-light h-12 mx-12 mt-6 flex justify-center'>
+                    <p className='text-center m-auto'>
+                        ************
+                    </p>
+                </div>
             </div>
         )
     }
 
     const renderOnboardingScreens = () => {
-        const onboardingScreenRenders = [renderFirst(), renderSecond()]
+        const onboardingScreenRenders = [renderFirst(), renderSecond(), renderThird(), renderFourth()]
         return onboardingScreenRenders[onboardingScreenIndex]
     }
 
     return (
-        <div>
+        <div className='WalletSimpleSetupOnboarding'>
             {renderOnboardingScreens()}
             <div className='grid absolute bottom-10 left-8 right-8'>
                 <button
