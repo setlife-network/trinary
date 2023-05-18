@@ -28,13 +28,13 @@ const WalletOption = ({
                 <div className={`bg-white rounded-lg border-light border-2 !py-3 px-6`}>
                     <div className='flex'>
                         <div className='mr-4 self-center'>
-                            <Icon className={`icon fas fa-${icon} my-auto !w-8 ${disabled ? 'text-grey' : 'text-setlife'}`}/>
+                            <Icon className={`icon fas fa-${icon} my-auto !w-8 ${disabled ? 'text-gray' : 'text-setlife'}`}/>
                         </div>
                         <div>
-                            <p className={`text-base font-semibold ${disabled ? 'text-grey' : ''}`}>
+                            <p className={`text-base font-semibold ${disabled ? 'text-gray' : ''}`}>
                                 {`${count + 1}. ${title}`}
                             </p>
-                            <p className={`text-sm ${disabled ? 'text-grey' : ''}`}>
+                            <p className={`text-sm ${disabled ? 'text-gray' : ''}`}>
                                 {subtitle}
                             </p>
                         </div>

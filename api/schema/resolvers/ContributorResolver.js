@@ -82,6 +82,13 @@ module.exports = {
                     contributor_id: contributor.id
                 }
             })
+        },
+        wallet: async (root, args, { cookies, models }) => {
+            return models.Wallet.findOne({
+                where: {
+                    contributor_id: cookies.userSession
+                }
+            })
         }
     },
     Query: {

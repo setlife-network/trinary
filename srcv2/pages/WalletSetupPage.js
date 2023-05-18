@@ -22,7 +22,7 @@ const WalletSetupPage = () => {
     }
 
     return (
-        <div className='WalletSetupPage bg-med-grey h-full min-h-screen'>
+        <div className='WalletSetupPage bg-med-gray h-full min-h-screen'>
             <Section>
                 <p className='text-3xl font-bold mb-2'>
                     {'Choose one option'}

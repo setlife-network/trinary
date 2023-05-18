@@ -19,6 +19,7 @@ module.exports = gql`
         "The following attributes are calculated and aren't on the database"
         totalPaid: Int!
         paidByCurrency: [TotalAllocatedByCurrency]
+        wallet: Wallet
     }
 
     input CreateContributorInput {

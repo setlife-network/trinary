@@ -21,7 +21,7 @@ const ProjectTile = (props) => {
                     <p>{project.expected_budget_currency}</p>
                 </div>
             </div>
-            <hr/>
+            <hr className='text-light'/>
         </div>
     )
 }
