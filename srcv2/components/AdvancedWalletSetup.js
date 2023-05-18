@@ -147,8 +147,6 @@ const AdvancedWalletSetup = () => {
         setDisplayAlert(false)
     }
 
-    console.log(sessionUser().wallet)
-
     return (
         <div className='AdvancedWalletSetup h-full min-h-screen'>
             <Section backgroundColor={'bg-white-light'} className={'h-full min-h-screen px-6'}>
