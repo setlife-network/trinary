@@ -7,7 +7,10 @@ import {
 import Alert from '@material-ui/lab/Alert'
 import { useHistory } from 'react-router-dom'
 
+import Overlay from '../components/Overlay'
 import Section from '../components/Section'
+import Step from '../components/Step'
+import WalletSimpleSetupOnboarding from '../components/WalletSimpleSetupOnboarding'
 
 import { sessionUser } from '../reactivities/variables'
 
@@ -17,6 +20,13 @@ const WalletSimpleSetupPage = () => {
 
     const [btcAddress, setBtcAddress] = useState(sessionUser().wallet.onchain_address ?? '')
     const [displayAlert, setDisplayAlert] = useState(false)
+    const [onboardOverlayOpen, setOnboardOverlayOpen] = useState(false)
+    const [onboardingScreenIndex, setOnboardingScreenIndex] = useState(0)
+
+    const openOnboardingOverlay = () => {
+        setOnboardingScreenIndex(0)
+        setOnboardOverlayOpen(!onboardOverlayOpen)
+    }
 
     const history = useHistory()
 
@@ -68,7 +78,7 @@ const WalletSimpleSetupPage = () => {
                         <Icon
                             className='icon fas fa-info-circle text-black my-auto'
                             fontSize='medium'
-                            onClick={() => console.log('open modal (TODO)')}
+                            onClick={() => setOnboardOverlayOpen(true)}
                         />
                     </div>
                 </div>
@@ -115,16 +125,28 @@ const WalletSimpleSetupPage = () => {
                 open={displayAlert}
                 onClose={handleAlertClose}
             >
-                {updateWalletAddressData != undefined ? (
+                {updateWalletAddressError ? (
+                    <Alert severity='error'>
+                        {`${updateWalletAddressError.message}`}
+                    </Alert>
+                ) : (
                     <Alert>
                         {`Wallet updated`}
                     </Alert>
-                ) : (
-                    <Alert severity='error'>
-                        {`${updateWalletAddressError}`}
-                    </Alert>
                 )}
             </Snackbar>
+            <Overlay
+                open={onboardOverlayOpen}
+                setOpen={openOnboardingOverlay}
+                height={'h-4/5'}
+                goBackAction={onboardingScreenIndex == 0 ? false : () => setOnboardingScreenIndex(onboardingScreenIndex - 1)}
+            >
+                <WalletSimpleSetupOnboarding
+                    onboardingScreenIndex={onboardingScreenIndex}
+                    setOnboardingScreenIndex={setOnboardingScreenIndex}
+                    setOpen={openOnboardingOverlay}
+                />
+            </Overlay>
         </div>
 
     )

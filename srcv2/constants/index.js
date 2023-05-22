@@ -5,6 +5,9 @@ export const GITHUB_ALT_LOGO_URL = 'https://setlife-solutions.s3.us-east-1.amazo
 export const HERO_IMAGE_URL = 'https://project-trinary.s3.us-east-1.amazonaws.com/images/landing-banner.png'
 export const IPHONE_IMAGE_URL = 'https://project-trinary.s3.us-east-1.amazonaws.com/images/iphone-landing-mockup.png'
 export const BUDGETING_IMAGE_URL = 'https://project-trinary.s3.us-east-1.amazonaws.com/images/budget-landing-mockup.png'
+export const WALLET_OF_SATOSHI_ICON_URL = 'https://project-trinary.s3.us-east-1.amazonaws.com/images/wallet-of-satoshi.png'
+export const MUUN_ICON_URL = 'https://play-lh.googleusercontent.com/8fbesX3FwtlJXy_W72BOHGqbMM220XX3q6O7K3xE04XyLR9Pz9wwDdZOyjklYG1Lm8o'
+export const ZEUS_ICON_URL = 'https://store.zeusln.app/wp-content/uploads/2022/03/Word-Logo-300x153.png'
 export const CURRENCIES = [
     {
         name: 'USD',
