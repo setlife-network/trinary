@@ -4,10 +4,13 @@ import Section from '../components/Section'
 import WalletOption from '../components/WalletOption'
 import { WALLET_OPTIONS } from '../constants'
 
+import { sessionUser } from '../reactivities/variables'
+
 const WalletSetupPage = () => {
 
     const renderWalletOptions = () => {
         return WALLET_OPTIONS.map((w, i) => {
+            const isCompleted = sessionUser().wallet[w.attribute] != null && sessionUser().wallet[w.attribute] != ''
             return (
                 <WalletOption
                     icon={w.icon}
@@ -16,6 +19,7 @@ const WalletSetupPage = () => {
                     route={w.route}
                     count={i}
                     disabled={w.disabled}
+                    completed={isCompleted}
                 />
             )
         })

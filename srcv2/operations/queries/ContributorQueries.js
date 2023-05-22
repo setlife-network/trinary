@@ -13,6 +13,9 @@ export const CHECK_SESSION = gql`
             totalPaid
             wallet {
                 onchain_address
+                invoice_macaroon
+                lnd_host
+                lnd_port
             }
         }
     }

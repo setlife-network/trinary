@@ -28,7 +28,10 @@ const WalletSimpleSetupPage = () => {
             error: updateWalletAddressError
         }
     ] = useMutation(UPDATE_WALLET_ADDRESS, {
-        errorPolicy: 'all'
+        errorPolicy: 'all',
+        onCompleted: dataWallet => {
+            setProjectGithubUrl(dataProject.getProjectById.github_url)
+        }
     })
     
     useEffect(() => {
