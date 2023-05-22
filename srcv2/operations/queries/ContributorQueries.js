@@ -74,6 +74,12 @@ export const GET_CONTRIBUTOR_PROJECTS = gql`
     query ContributorProjects($id: Int!) {
         getContributorById(id: $id) {
             id
+            wallet {
+                onchain_address
+                invoice_macaroon
+                lnd_host
+                lnd_port
+            }
             projects {
                 id
                 name
