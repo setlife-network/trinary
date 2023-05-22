@@ -23,9 +23,9 @@ const Overlay = ({
                 onClose={() => { setOpen(false) }}
                 className={'modal fixed inset-0 flex bg-black bg-opacity-50 items-center justify-center transition-opacity duration-300 z-40'}
             >
-                <div className={'Overlay fixed inset-5'} onClick={() => { setOpen(false) }}>
+                <div className={'Overlay fixed inset-5'}>
                     <div
-                        className={`bg-white flex flex-col rounded-lg border-2 !py-3 px-6 ${fullScreen ? 'h-full' : position} ${height} ${containerClassName}`}
+                        className={`bg-white flex flex-col rounded-lg !py-3 px-6 ${fullScreen ? 'h-full' : position} ${height} ${containerClassName}`}
                     >
                         <div className='y-3'>
                             <Icon 
