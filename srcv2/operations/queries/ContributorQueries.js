@@ -90,3 +90,16 @@ export const GET_CONTRIBUTOR_PROJECTS = gql`
         }
     }
 `
+
+export const GET_CONTRIBUTOR_WALLETS = gql`
+    query ContributorWallets($id: Int!) {
+        getContributorById(id: $id) {
+            wallet {
+                onchain_address
+                invoice_macaroon
+                lnd_host
+                lnd_port
+            }
+        }
+    }
+`

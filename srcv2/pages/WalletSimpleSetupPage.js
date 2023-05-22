@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import {
     Icon,
     Snackbar
@@ -15,6 +15,8 @@ import WalletSimpleSetupOnboarding from '../components/WalletSimpleSetupOnboardi
 import { sessionUser } from '../reactivities/variables'
 
 import { UPDATE_WALLET_ADDRESS } from '../operations/mutations/WalletMutations'
+
+import { GET_CONTRIBUTOR_WALLETS } from '../operations/queries/ContributorQueries'
 
 const WalletSimpleSetupPage = () => {
 
@@ -39,9 +41,12 @@ const WalletSimpleSetupPage = () => {
         }
     ] = useMutation(UPDATE_WALLET_ADDRESS, {
         errorPolicy: 'all',
-        onCompleted: dataWallet => {
-            setProjectGithubUrl(dataProject.getProjectById.github_url)
-        }
+        refetchQueries: [{
+            query: GET_CONTRIBUTOR_WALLETS,
+            variables: {
+                id: Number(sessionUser().id)
+            }
+        }],
     })
     
     useEffect(() => {
