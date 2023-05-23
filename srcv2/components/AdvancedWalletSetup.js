@@ -5,22 +5,24 @@ import {
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import { useMutation } from '@apollo/client'
+import axios from 'axios'
 
 import Section from './Section'
 import Selector from './Selector'
-import { NODE_OPTIONS } from '../constants'
+import { NODE_OPTIONS, API_ROOT } from '../constants'
 import { UPDATE_NODE } from '../operations/mutations/WalletMutations'
 import { sessionUser } from '../reactivities/variables'
 
 const AdvancedWalletSetup = () => {
 
     const [host, setHost] = useState(sessionUser().wallet.lnd_host ?? '')
-    const [restPort, setRestPort] = useState(sessionUser().wallet.lnd_port ?? '')
+    const [port, setPort] = useState(sessionUser().wallet.lnd_port ?? '')
     const [macaroon, setMacaroon] = useState(sessionUser().wallet.invoice_macaroon ?? '')
     const [nodeInterface, setNodeInterface] = useState('Node Interface')
     const [openNodeOpts, setOpenNodeOpts] = useState(false)
     const [displayAlert, setDisplayAlert] = useState(false)
     const [disabledButton, setDisabledButton] = useState(true)
+    const [invalidNode, setInvalidNode] = useState(false)
 
     const [
         updateNode,
@@ -32,32 +34,33 @@ const AdvancedWalletSetup = () => {
     ] = useMutation(UPDATE_NODE)
 
     useEffect(() => {
-        if (errorNodeData != undefined || updateNodeData != undefined) {
+        if (errorNodeData != undefined || updateNodeData != undefined || invalidNode) {
             setDisplayAlert(true)
+            setInvalidNode(false)
         }
-    }, [errorNodeData, updateNodeData])
+    }, [errorNodeData, updateNodeData, invalidNode])
 
     useEffect(() => {
-        if (host && restPort && macaroon) {
+        if (host && port && macaroon) {
             setDisabledButton(false)
         } else {
             setDisabledButton(true)
         }
-    }, [host, restPort, macaroon])
+    }, [host, port, macaroon])
 
     const inputOptions = [
         {
-            label: 'Host',
+            label: 'Rest Host',
             value: host,
             buttonAction: setHost
         },
         {
             label: 'Rest port',
-            value: restPort,
-            buttonAction: setRestPort
+            value: port,
+            buttonAction: setPort
         },
         {
-            label: 'Invoice Macaroon',
+            label: 'Admin Macaroon',
             value: macaroon,
             buttonAction: setMacaroon
         }
@@ -132,12 +135,22 @@ const AdvancedWalletSetup = () => {
     }
 
     const handleSaveNodeButton = async () => {
-        const variables = {
-            host: host,
-            port: Number(restPort),
-            macaroon: macaroon
+        try {
+            const response = await axios.post(`${API_ROOT}/connect`, { host, port, macaroon })
+            console.log(response)
+            if (response.data.block_hash) {
+                const variables = {
+                    host: host,
+                    port: Number(port),
+                    macaroon: macaroon
+                }
+                await updateNode({ variables: variables })
+            } else {
+                setInvalidNode(true)
+            }
+        } catch (error) {
+            setInvalidNode(true)
         }
-        await updateNode({ variables: variables })
     }
 
     const handleAlertClose = (event, reason) => {
@@ -179,7 +192,7 @@ const AdvancedWalletSetup = () => {
                 </div>
             </Section>
             <Snackbar
-                autoHideDuration={2000}
+                autoHideDuration={3000}
                 open={displayAlert}
                 onClose={handleAlertClose}
                 className='mb-32 px-5'
@@ -190,7 +203,7 @@ const AdvancedWalletSetup = () => {
                     </Alert>
                 ) : (
                     <Alert severity='error'>
-                        {`${errorNodeData}`}
+                        {`${errorNodeData || 'Invalid Node'}`}
                     </Alert>
                 )}
             </Snackbar>
