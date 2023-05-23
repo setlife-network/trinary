@@ -80,14 +80,16 @@ export const WALLET_OPTIONS = [
         title: 'Simple',
         subtitle: 'Provide a BTC address',
         route: 'setup/simple',
-        disabled: false
+        disabled: false,
+        attribute: 'onchain_address'
     },
     {
         icon: 'wallet',
         title: 'Advanced',
         subtitle: 'Download External Wallet',
         route: 'setup/advanced',
-        disabled: false
+        disabled: false,
+        attribute: 'lnd_host'
     },
     {
         icon: 'network-wired',
