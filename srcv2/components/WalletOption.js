@@ -11,7 +11,8 @@ const WalletOption = ({
     subtitle,
     route,
     count,
-    disabled
+    disabled,
+    completed
 }) => {
 
     const history = useHistory()
@@ -28,7 +29,9 @@ const WalletOption = ({
                 <div className={`bg-white rounded-lg border-light border-2 !py-3 px-6`}>
                     <div className='flex'>
                         <div className='mr-4 self-center'>
-                            <Icon className={`icon fas fa-${icon} my-auto !w-8 ${disabled ? 'text-gray' : 'text-setlife'}`}/>
+                            <Icon
+                                className={`icon fas fa-${icon} my-auto !w-8 ${disabled ? 'text-gray' : completed ? 'text-green-500' : 'text-setlife'}`}
+                            />
                         </div>
                         <div>
                             <p className={`text-base font-semibold ${disabled ? 'text-gray' : ''}`}>

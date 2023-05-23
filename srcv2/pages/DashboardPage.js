@@ -17,6 +17,8 @@ const DashboardPage = () => {
 
     const history = useHistory()
 
+    const userWallet = sessionUser().wallet
+
     return (
         <div className='DashboardPage bg-white-light h-full min-h-screen'>
             <Section backgroundColor={'bg-white'} className={'rounded-b-[70px]'}>
@@ -24,6 +26,30 @@ const DashboardPage = () => {
                     <p className='text-2xl text-left font-bold'>
                         {`Welcome, @${getHandle(sessionUser().github_handle)}`}
                     </p>
+                  
+                    <button type='button' className='flex gap-2 text-xl' onClick={() => history.push('/wallet/setup')}>
+                        <Icon className='icon fas fa-wallet text-black my-auto' fontSize='medium'/>
+                        <div className='ml-4 h-full flex items-center'>
+                            <p 
+                                className='text-black font-bold text-base'
+                            >
+                                {
+                                    (!userWallet.onchain_address && !userWallet.lnd_port) 
+                                        ? 'Setup your wallet' 
+                                        : 'Change your wallet'
+                                }
+                            </p>
+                        </div>  
+                        <div className='info ml-auto'>
+                            <Icon
+                                className='icon fas fa-info-circle text-black my-auto align-middle'
+                                fontSize='medium'
+                                onClick={() => console.log('Show info')}
+                            />
+                        </div>
+                    </button>
+ 
+                    {/* DEPRECATED
                     <div className={`${sessionUser().totalPaid ? 'bg-setlife px-8' : 'bg-white'} rounded grid grid-flow-row auto-rows-max gap-2 py-4`}>
                         {!!sessionUser().totalPaid &&
                             <>
@@ -50,7 +76,7 @@ const DashboardPage = () => {
                                 See summary
                             </button>
                         </div>
-                    }
+                    } */}
                 </div>
             </Section>
             <Section>
