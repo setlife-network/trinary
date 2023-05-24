@@ -93,7 +93,7 @@ const AdvancedWalletSetupOnboarding = ({
                 <div className='w-10 h-10 rounded-full bg-setlife text-white flex items-center justify-center mx-auto'>
                     <p className='font-bold text-lg'>3</p>
                 </div>
-                <p className='text-2xl text-center font-bold mt-4'>Start Receiving Payments</p>
+                <p className='text-2xl text-center font-bold mt-4'>Receive payments directly to your node</p>
             </div>
         )
     }
