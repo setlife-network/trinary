@@ -39,12 +39,12 @@ const ProjectDetailPage = (props) => {
     const renderContributors = (contributors) => {
         return contributors.map(contributor => {
             return (
-                <div className='contributor w-14'>
-                    <div className='rounded-full h-14 w-14 bg-light text-4xl'>
+                <div className='contributor'>
+                    <div className='rounded-full h-14 w-14 bg-light text-4xl m-auto'>
                         <Icon className='icon fas fa-user text-gray text-center w-full h-full mt-2.5' fontSize='inherit'/>
                     </div>
-                    <div className='w-full'>
-                        <p className='text-center'>{contributor.name}</p>
+                    <div className='w-18 mt-2'>
+                        <p className='text-center text-ellipsis overflow-hidden word-break'>{contributor.name}</p>
                     </div>
                 </div>
             )
