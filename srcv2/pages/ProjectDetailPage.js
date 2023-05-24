@@ -121,7 +121,7 @@ const ProjectDetailPage = (props) => {
                                 <p>Expected Budget</p>
                             </div>
                             <div>
-                                <p className='text-right font-bold'>{`${project.expected_budget_currency} ${project.expected_budget}`}</p>
+                                <p className='text-right font-bold'>{`${project.expected_budget_currency ?? '$'} ${project.expected_budget}`}</p>
                             </div>
                         </div>
                     }
@@ -130,7 +130,7 @@ const ProjectDetailPage = (props) => {
                             <p>Total paid</p>
                         </div>
                         <div>
-                            <p className='text-right font-bold'>{`${project.expected_budget_currency} ${project.totalPaid ?? 0}`}</p>
+                            <p className='text-right font-bold'>{`${project.expected_budget_currency ?? '$'} ${project.totalPaid ?? 0}`}</p>
                         </div>
                     </div>
                     {project.date && 
