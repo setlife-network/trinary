@@ -18,7 +18,7 @@ const AdvancedWalletSetup = () => {
     const [host, setHost] = useState(sessionUser().wallet.lnd_host ?? '')
     const [port, setPort] = useState(sessionUser().wallet.lnd_port ?? '')
     const [macaroon, setMacaroon] = useState(sessionUser().wallet.invoice_macaroon ?? '')
-    const [nodeInterface, setNodeInterface] = useState('Node Interface')
+    const [nodeInterface, setNodeInterface] = useState('LND')
     const [openNodeOpts, setOpenNodeOpts] = useState(false)
     const [displayAlert, setDisplayAlert] = useState(false)
     const [disabledButton, setDisabledButton] = useState(true)
@@ -52,17 +52,19 @@ const AdvancedWalletSetup = () => {
         {
             label: 'Rest Host',
             value: host,
-            buttonAction: setHost
+            regex: /^[0-9\.]+$/,
+            setValue: setHost
         },
         {
             label: 'Rest port',
             value: port,
-            buttonAction: setPort
+            regex: /^[0-9]{1,4}$/,
+            setValue: setPort
         },
         {
             label: 'Admin Macaroon',
             value: macaroon,
-            buttonAction: setMacaroon
+            setValue: setMacaroon
         }
     ]
 
@@ -98,6 +100,16 @@ const AdvancedWalletSetup = () => {
         }
     }
 
+    const handleInputChange = (value, setValue, regex) => {
+        if (regex) {
+            if (regex.test(value)) {
+                setValue(value)
+            }
+        } else {
+            setValue(value)
+        }
+    }
+
     const renderAdvancedWalletInputs = () => {
         return inputOptions.map(r => {
             return (
@@ -106,7 +118,7 @@ const AdvancedWalletSetup = () => {
                         type='text'
                         placeholder={r.label}
                         value={r.value}
-                        onChange={(e) => r.buttonAction(e.target.value)}
+                        onChange={(e) => handleInputChange(e.target.value, r.setValue, r.regex)}
                         className='
                             mt-5
                             form-control

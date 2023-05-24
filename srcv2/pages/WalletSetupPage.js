@@ -1,13 +1,32 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useQuery } from '@apollo/client'
 
 import Section from '../components/Section'
 import WalletOption from '../components/WalletOption'
 import { WALLET_OPTIONS } from '../constants'
 
+import { sessionUser } from '../reactivities/variables'
+
+import { GET_CONTRIBUTOR_WALLETS } from '../operations/queries/ContributorQueries'
+
 const WalletSetupPage = () => {
 
+    const {
+        data: dataContributorWallets,
+        loading: loadingContributorWallets,
+        error: errorContributorWallets
+    } = useQuery(GET_CONTRIBUTOR_WALLETS, {
+        variables: {
+            id: Number(sessionUser().id)
+        }
+    })
+
     const renderWalletOptions = () => {
+        const contributorWallets = dataContributorWallets.getContributorById.wallet
+
         return WALLET_OPTIONS.map((w, i) => {
+
+            const isCompleted = contributorWallets[w.attribute] != null && contributorWallets[w.attribute] != ''
             return (
                 <WalletOption
                     icon={w.icon}
@@ -16,10 +35,13 @@ const WalletSetupPage = () => {
                     route={w.route}
                     count={i}
                     disabled={w.disabled}
+                    completed={isCompleted}
                 />
             )
         })
     }
+
+    if (!dataContributorWallets) { return ('Loading...') }
 
     return (
         <div className='WalletSetupPage bg-med-gray h-full min-h-screen'>
