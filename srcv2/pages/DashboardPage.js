@@ -34,7 +34,7 @@ const DashboardPage = () => {
                                 className='text-black font-bold text-base'
                             >
                                 {
-                                    (!userWallet.onchain_address && !userWallet.lnd_port) 
+                                    (!userWallet) 
                                         ? 'Setup your wallet' 
                                         : 'Change your wallet'
                                 }
