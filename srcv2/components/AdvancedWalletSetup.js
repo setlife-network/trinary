@@ -12,6 +12,9 @@ import { NODE_OPTIONS } from '../constants'
 import { UPDATE_NODE } from '../operations/mutations/WalletMutations'
 import { sessionUser } from '../reactivities/variables'
 
+import Overlay from './Overlay'
+import AdvancedWalletSetupOnboarding from './AdvancedWalletSetupOnboarding'
+
 const AdvancedWalletSetup = () => {
 
     const [host, setHost] = useState(sessionUser().wallet.lnd_host ?? '')
@@ -21,6 +24,8 @@ const AdvancedWalletSetup = () => {
     const [openNodeOpts, setOpenNodeOpts] = useState(false)
     const [displayAlert, setDisplayAlert] = useState(false)
     const [disabledButton, setDisabledButton] = useState(true)
+    const [onboardOverlayOpen, setOnboardOverlayOpen] = useState(false)
+    const [onboardingScreenIndex, setOnboardingScreenIndex] = useState(0)
 
     const [
         updateNode,
@@ -159,6 +164,11 @@ const AdvancedWalletSetup = () => {
         setDisplayAlert(false)
     }
 
+    const openOnboardingOverlay = () => {
+        setOnboardingScreenIndex(0)
+        setOnboardOverlayOpen(!onboardOverlayOpen)
+    }
+
     return (
         <div className='AdvancedWalletSetup h-full min-h-screen'>
             <Section backgroundColor={'bg-white-light'} className={'h-full min-h-screen px-6'}>
@@ -166,7 +176,10 @@ const AdvancedWalletSetup = () => {
                     <p className='font-bold text-lg'>
                         {'Enter your info bellow to set up your node'}
                     </p>
-                    <Icon className={`icon fas fa-circle-question my-auto !w-8 ml-auto`}></Icon>
+                    <Icon 
+                        className={`icon fas fa-circle-question my-auto !w-8 ml-auto`} 
+                        onClick={() => setOnboardOverlayOpen(true)}
+                    />
                 </div>
                 <div className='relative'>
                     <Selector
@@ -206,6 +219,18 @@ const AdvancedWalletSetup = () => {
                     </Alert>
                 )}
             </Snackbar>
+            <Overlay
+                open={onboardOverlayOpen}
+                setOpen={openOnboardingOverlay}
+                height={'h-4/5'}
+                goBackAction={onboardingScreenIndex == 0 ? false : () => setOnboardingScreenIndex(onboardingScreenIndex - 1)}
+            >
+                <AdvancedWalletSetupOnboarding
+                    onboardingScreenIndex={onboardingScreenIndex}
+                    setOnboardingScreenIndex={setOnboardingScreenIndex}
+                    setOpen={openOnboardingOverlay}
+                />
+            </Overlay>
         </div>
     )
 }
