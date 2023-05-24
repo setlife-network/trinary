@@ -34,11 +34,11 @@ const AdvancedWalletSetup = () => {
     ] = useMutation(UPDATE_NODE)
 
     useEffect(() => {
-        if (errorNodeData != undefined || updateNodeData != undefined || invalidNode) {
+        if (errorNodeData != undefined || updateNodeData != undefined) {
             setDisplayAlert(true)
             setInvalidNode(false)
         }
-    }, [errorNodeData, updateNodeData, invalidNode])
+    }, [errorNodeData, updateNodeData])
 
     useEffect(() => {
         if (host && port && macaroon) {
@@ -52,13 +52,13 @@ const AdvancedWalletSetup = () => {
         {
             label: 'Rest Host',
             value: host,
-            regex: /^[0-9\.]+$/,
+            regex: /^([0-9\.]*)$/,
             setValue: setHost
         },
         {
-            label: 'Rest port',
+            label: 'Rest Port',
             value: port,
-            regex: /^[0-9]{1,4}$/,
+            regex: /^([0-9]{0,4})$/,
             setValue: setPort
         },
         {
@@ -90,11 +90,11 @@ const AdvancedWalletSetup = () => {
             )
         })
     }
-
+    
     const pasteFromClipboard = async (r) => {
         try {
             let text = await navigator.clipboard.readText();
-            r.buttonAction(text);
+            r.setValue(text);
         } catch (err) {
             console.error('Failed to read clipboard contents: ', err);
         }
@@ -149,8 +149,8 @@ const AdvancedWalletSetup = () => {
     const handleSaveNodeButton = async () => {
         try {
             const response = await axios.post(`${API_ROOT}/connect`, { host, port, macaroon })
-            console.log(response)
             if (response.data.block_hash) {
+                setInvalidNode(false)
                 const variables = {
                     host: host,
                     port: Number(port),
@@ -159,9 +159,11 @@ const AdvancedWalletSetup = () => {
                 await updateNode({ variables: variables })
             } else {
                 setInvalidNode(true)
+                setDisplayAlert(true)
             }
         } catch (error) {
             setInvalidNode(true)
+            setDisplayAlert(true)
         }
     }
 
@@ -209,13 +211,13 @@ const AdvancedWalletSetup = () => {
                 onClose={handleAlertClose}
                 className='mb-32 px-5'
             >
-                {updateNodeData != undefined ? (
+                {updateNodeData != undefined && !invalidNode ? (
                     <Alert>
                         {`Wallet updated`}
                     </Alert>
                 ) : (
                     <Alert severity='error'>
-                        {`${errorNodeData || 'Invalid Node'}`}
+                        {'Invalid Node Information'}
                     </Alert>
                 )}
             </Snackbar>
