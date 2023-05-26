@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import moment from 'moment'
 import { Icon } from '@material-ui/core'
 
+import AddContributorList from '../components/AddContributorList'
 import CreatePaymentFloatingBadge from '../components/CreatePaymentFloatingBadge'
 import OpenInGithubButton from '../components/OpenInGithubButton'
+import Overlay from '../components/Overlay'
 import Section from '../components/Section'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
@@ -16,6 +18,8 @@ const ProjectDetailPage = (props) => {
 
     const { projectId } = useParams()
     const history = useHistory()
+
+    const [openAddContributorOverlay, setOpenAddContributorOverlay] = useState(false)
 
     const {
         data: dataProject,
@@ -174,6 +178,18 @@ const ProjectDetailPage = (props) => {
                         </p>
                     }
                 </div>
+                <div className='px-12 mt-8'>
+                    <button
+                        type='button'
+                        className='border-2 border-setlife w-full rounded-full py-1'
+                        onClick={() => setOpenAddContributorOverlay(true)}
+                    >
+                        <div className='flex gap-2 m-auto text-center w-fit'>
+                            <p className='text-setlife'>Add new contributor</p>
+                        </div>
+                    </button>
+                </div>
+                
             </Section>
             <Section>
                 <p className='font-bold text-xl mb-2'>
@@ -229,6 +245,15 @@ const ProjectDetailPage = (props) => {
                 </div>
             </Section>
             <CreatePaymentFloatingBadge projectId={projectId} />
+            <Overlay
+                open={openAddContributorOverlay}
+                setOpen={setOpenAddContributorOverlay}
+                fullScreen
+            >
+                <AddContributorList
+                    projectId={projectId}
+                />
+            </Overlay>
         </div>
     )
 }
