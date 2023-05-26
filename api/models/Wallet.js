@@ -35,7 +35,7 @@ module.exports = (sequelize) => {
             allowNull: true
         },
         invoice_macaroon: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(600),
             allowNull: true
         },
         lnd_host: {
