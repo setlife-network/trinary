@@ -5,22 +5,24 @@ import {
 } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import { useMutation } from '@apollo/client'
+import axios from 'axios'
 
 import Section from './Section'
 import Selector from './Selector'
-import { NODE_OPTIONS } from '../constants'
+import { NODE_OPTIONS, API_ROOT } from '../constants'
 import { UPDATE_NODE } from '../operations/mutations/WalletMutations'
 import { sessionUser } from '../reactivities/variables'
 
 const AdvancedWalletSetup = () => {
 
     const [host, setHost] = useState(sessionUser().wallet ? sessionUser().wallet.lnd_host : '')
-    const [restPort, setRestPort] = useState(sessionUser().wallet ? sessionUser().wallet.lnd_port : '')
+    const [port, setPort] = useState(sessionUser().wallet ? sessionUser().wallet.lnd_port : '')
     const [macaroon, setMacaroon] = useState(sessionUser().wallet ? sessionUser().wallet.invoice_macaroon : '')
     const [nodeInterface, setNodeInterface] = useState('LND')
     const [openNodeOpts, setOpenNodeOpts] = useState(false)
     const [displayAlert, setDisplayAlert] = useState(false)
     const [disabledButton, setDisabledButton] = useState(true)
+    const [invalidNode, setInvalidNode] = useState(false)
 
     const [
         updateNode,
@@ -34,32 +36,33 @@ const AdvancedWalletSetup = () => {
     useEffect(() => {
         if (errorNodeData != undefined || updateNodeData != undefined) {
             setDisplayAlert(true)
+            setInvalidNode(false)
         }
     }, [errorNodeData, updateNodeData])
 
     useEffect(() => {
-        if (host && restPort && macaroon) {
+        if (host && port && macaroon) {
             setDisabledButton(false)
         } else {
             setDisabledButton(true)
         }
-    }, [host, restPort, macaroon])
+    }, [host, port, macaroon])
 
     const inputOptions = [
         {
-            label: 'Host',
+            label: 'Rest Host',
             value: host,
-            regex: /^[0-9\.]+$/,
+            regex: /^([0-9\.]*)$/,
             setValue: setHost
         },
         {
-            label: 'Rest port',
-            value: restPort,
-            regex: /^[0-9]{1,4}$/,
-            setValue: setRestPort
+            label: 'Rest Port',
+            value: port,
+            regex: /^([0-9]{0,4})$/,
+            setValue: setPort
         },
         {
-            label: 'Invoice Macaroon',
+            label: 'Admin Macaroon',
             value: macaroon,
             setValue: setMacaroon
         }
@@ -87,11 +90,11 @@ const AdvancedWalletSetup = () => {
             )
         })
     }
-
+    
     const pasteFromClipboard = async (r) => {
         try {
             let text = await navigator.clipboard.readText();
-            r.buttonAction(text);
+            r.setValue(text);
         } catch (err) {
             console.error('Failed to read clipboard contents: ', err);
         }
@@ -144,12 +147,24 @@ const AdvancedWalletSetup = () => {
     }
 
     const handleSaveNodeButton = async () => {
-        const variables = {
-            host: host,
-            port: Number(restPort),
-            macaroon: macaroon
+        try {
+            const response = await axios.post(`${API_ROOT}/connect`, { host, port, macaroon })
+            if (response.data.block_hash) {
+                setInvalidNode(false)
+                const variables = {
+                    host: host,
+                    port: Number(port),
+                    macaroon: macaroon
+                }
+                await updateNode({ variables: variables })
+            } else {
+                setInvalidNode(true)
+                setDisplayAlert(true)
+            }
+        } catch (error) {
+            setInvalidNode(true)
+            setDisplayAlert(true)
         }
-        await updateNode({ variables: variables })
     }
 
     const handleAlertClose = (event, reason) => {
@@ -191,18 +206,18 @@ const AdvancedWalletSetup = () => {
                 </div>
             </Section>
             <Snackbar
-                autoHideDuration={2000}
+                autoHideDuration={3000}
                 open={displayAlert}
                 onClose={handleAlertClose}
                 className='mb-32 px-5'
             >
-                {updateNodeData != undefined ? (
+                {updateNodeData != undefined && !invalidNode ? (
                     <Alert>
                         {`Wallet updated`}
                     </Alert>
                 ) : (
                     <Alert severity='error'>
-                        {`${errorNodeData}`}
+                        {'Invalid Node Information'}
                     </Alert>
                 )}
             </Snackbar>
