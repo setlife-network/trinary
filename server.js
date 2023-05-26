@@ -7,6 +7,7 @@ const cookieSession = require('cookie-session') //store the user session key
 const cookieParser = require('cookie-parser') //transform cooki session into object with key name
 const moment = require('moment') //momentjs libreary for expitation cookie date
 const { findIndex } = require('lodash')
+const axios = require('axios')
 
 const schema = require('./api/schema')
 const db = require('./api/models');
@@ -241,6 +242,23 @@ app.post('/api/webhooks/customer/delete', async (req, res) => {
         res.sendStatus(200)
     } catch (err) {
         console.log(`An error ocurred: ${err}`)
+    }
+})
+
+app.post('/api/connect', async (req, res) => {
+    const { host, port, macaroon } = req.body
+    const options = {
+        // Work-around for self-signed certificates.
+        httpsAgent: new (require('https').Agent)({ rejectUnauthorized: false }),
+        headers: {
+            'Grpc-Metadata-macaroon': macaroon,
+        },
+    }
+    try {
+        const response = await axios.get(`https://${host}:${port}/v1/getinfo`, options)
+        return res.json(response.data)
+    } catch (error) {
+        return res.json(error.code)
     }
 })
 
