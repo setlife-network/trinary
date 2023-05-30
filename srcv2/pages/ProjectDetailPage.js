@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import moment from 'moment'
@@ -7,6 +7,7 @@ import { Icon } from '@material-ui/core'
 import CreatePaymentFloatingBadge from '../components/CreatePaymentFloatingBadge'
 import OpenInGithubButton from '../components/OpenInGithubButton'
 import Section from '../components/Section'
+import Overlay from '../components/Overlay'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 
@@ -16,6 +17,8 @@ const ProjectDetailPage = (props) => {
 
     const { projectId } = useParams()
     const history = useHistory()
+
+    const [openBonusesOverlay, setOpenBonusesOverlay] = useState(false)
 
     const {
         data: dataProject,
@@ -163,9 +166,20 @@ const ProjectDetailPage = (props) => {
                 <OpenInGithubButton url={project.github_url}/>
             </Section>
             <Section>
-                <p className='font-bold text-xl mb-4'>
-                    Active Contributors
-                </p>
+                <div className='grid grid-rows-1 grid-cols-2'>
+                    <div>
+                        <p className='font-bold text-xl mb-4'>
+                            Active Contributors
+                        </p>
+                    </div>
+                    <button
+                        type='button'
+                        className='border-2 border-setlife text-setlife rounded-full py-1 mb-4 w-fit px-2 ml-auto'
+                        onClick={() => setOpenBonusesOverlay(true)}
+                    >
+                        Send bonuses
+                    </button>
+                </div>
                 <div className='flex gap-4 overflow-x-scroll'>
                     {renderContributors(project.contributors)}
                     {!project.contributors.length &&
@@ -229,6 +243,13 @@ const ProjectDetailPage = (props) => {
                 </div>
             </Section>
             <CreatePaymentFloatingBadge projectId={projectId} />
+            <Overlay
+                open={openBonusesOverlay}
+                setOpen={setOpenBonusesOverlay}
+                fullScreen
+            >
+                Send bonuses
+            </Overlay>
         </div>
     )
 }
