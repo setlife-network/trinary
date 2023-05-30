@@ -8,6 +8,7 @@ import CreatePaymentFloatingBadge from '../components/CreatePaymentFloatingBadge
 import OpenInGithubButton from '../components/OpenInGithubButton'
 import Section from '../components/Section'
 import Overlay from '../components/Overlay'
+import SendBonus from '../components/SendBonus'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 
@@ -174,7 +175,7 @@ const ProjectDetailPage = (props) => {
                     </div>
                     <button
                         type='button'
-                        className='border-2 border-setlife text-setlife rounded-full py-1 mb-4 w-fit px-2 ml-auto'
+                        className='border-2 border-setlife text-setlife rounded-full py-1 mb-4 w-fit h-fit px-2 ml-auto'
                         onClick={() => setOpenBonusesOverlay(true)}
                     >
                         Send bonuses
@@ -248,7 +249,7 @@ const ProjectDetailPage = (props) => {
                 setOpen={setOpenBonusesOverlay}
                 fullScreen
             >
-                Send bonuses
+                <SendBonus/>
             </Overlay>
         </div>
     )
