@@ -52,3 +52,15 @@ export const GET_PROJECT = gql`
         }
     }
 `
+
+export const GET_PROJECT_CONTRIBUTORS = gql`
+    query ProjectContributors($id: Int!){
+        getProjectById(id: $id) {
+            contributors {
+                id
+                name
+                avatar_url
+            }
+        }
+    }
+`
