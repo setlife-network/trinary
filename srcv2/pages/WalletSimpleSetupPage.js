@@ -20,7 +20,7 @@ import { GET_CONTRIBUTOR_WALLETS } from '../operations/queries/ContributorQuerie
 
 const WalletSimpleSetupPage = () => {
 
-    const [btcAddress, setBtcAddress] = useState(sessionUser().wallet.onchain_address ?? '')
+    const [btcAddress, setBtcAddress] = useState(sessionUser().wallet ? sessionUser().wallet.onchain_address : '')
     const [displayAlert, setDisplayAlert] = useState(false)
     const [onboardOverlayOpen, setOnboardOverlayOpen] = useState(false)
     const [onboardingScreenIndex, setOnboardingScreenIndex] = useState(0)

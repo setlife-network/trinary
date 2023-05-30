@@ -23,10 +23,10 @@ const WalletSetupPage = () => {
 
     const renderWalletOptions = () => {
         const contributorWallets = dataContributorWallets.getContributorById.wallet
-
+        
         return WALLET_OPTIONS.map((w, i) => {
 
-            const isCompleted = contributorWallets[w.attribute] != null && contributorWallets[w.attribute] != ''
+            const isCompleted = contributorWallets ? (contributorWallets[w.attribute] != null && contributorWallets[w.attribute] != '') : false
             return (
                 <WalletOption
                     icon={w.icon}

@@ -15,9 +15,9 @@ import { sessionUser } from '../reactivities/variables'
 
 const AdvancedWalletSetup = () => {
 
-    const [host, setHost] = useState(sessionUser().wallet.lnd_host ?? '')
-    const [port, setPort] = useState(sessionUser().wallet.lnd_port ?? '')
-    const [macaroon, setMacaroon] = useState(sessionUser().wallet.invoice_macaroon ?? '')
+    const [host, setHost] = useState(sessionUser().wallet ? sessionUser().wallet.lnd_host : '')
+    const [port, setPort] = useState(sessionUser().wallet ? sessionUser().wallet.lnd_port : '')
+    const [macaroon, setMacaroon] = useState(sessionUser().wallet ? sessionUser().wallet.invoice_macaroon : '')
     const [nodeInterface, setNodeInterface] = useState('LND')
     const [openNodeOpts, setOpenNodeOpts] = useState(false)
     const [displayAlert, setDisplayAlert] = useState(false)
