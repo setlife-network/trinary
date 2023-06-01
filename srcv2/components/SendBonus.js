@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import CurrencyTextField from '@unicef/material-ui-currency-textfield'
+
+import SendBonusEqualy from './SendBonusEqualy'
 
 const BONUS_SPLIT_TYPES = [
     {
@@ -11,7 +14,9 @@ const BONUS_SPLIT_TYPES = [
     }
 ]
 
-const SendBonus = () => {
+const SendBonus = (props) => {
+
+    const { project } = props
 
     const [selectedBonusSplitType, setSelectedBonusSplitType] = useState(0)
 
@@ -40,6 +45,7 @@ const SendBonus = () => {
                     </p>
                 </button>
             </div>
+            <SendBonusEqualy project={project}/>
         </div>
     )
 }

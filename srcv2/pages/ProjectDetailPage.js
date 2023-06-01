@@ -37,14 +37,11 @@ const ProjectDetailPage = (props) => {
 
     const project = dataProject.getProjectById
 
-    console.log('project')
-    console.log(project)
-
     const renderContributors = (contributors) => {
         return contributors.map(contributor => {
             return (
                 <div className='contributor w-14'>
-                    <div className='rounded-full h-14 w-14 bg-light text-4xl'>
+                    <div className='rounded-full h-14 w-14 bg-light text-4xl text-center'>
                         <Icon className='icon fas fa-user text-gray text-center w-full h-full mt-2.5' fontSize='inherit'/>
                     </div>
                     <div className='w-full'>
@@ -249,7 +246,9 @@ const ProjectDetailPage = (props) => {
                 setOpen={setOpenBonusesOverlay}
                 fullScreen
             >
-                <SendBonus/>
+                <SendBonus
+                    project={project}
+                />
             </Overlay>
         </div>
     )
