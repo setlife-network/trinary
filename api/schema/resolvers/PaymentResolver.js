@@ -1,10 +1,11 @@
-const { UserInputError } = require('apollo-server');
+const { UserInputError } = require('apollo-server')
 const moment = require('moment')
 const { fn, col, Op } = require('sequelize')
+const bitcoinConversion = require('bitcoin-conversion')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules')
-const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants');
+const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants')
 
 module.exports = {
 
@@ -137,6 +138,17 @@ module.exports = {
                 }
             })
             return models.Payment.findByPk(id)
+        },
+        convertUSDtoSATS: async (root, { amount }, { models }) => {
+            try {
+                // Convert the USD amount to SATS
+                const sats = await bitcoinConversion.fiatToSatoshis(amount, 'USD')
+                
+                return sats
+        
+            } catch (error) {
+                throw new Error('Failed to convert USD to SATS: ', error);
+            }
         }
     }
 
