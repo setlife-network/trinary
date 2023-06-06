@@ -6,9 +6,13 @@ import { selectCurrencyInformation } from '../scripts/selectors'
 
 const SendBonusEqualy = (props) => {
 
-    const { project } = props
-
-    const [selectedContributors, setSelectedContributors] = useState([])
+    const {
+        selectedContributors,
+        setSelectedContributors,
+        project,
+        bonusAmount,
+        setBonusAmount
+    } = props
 
     const currencyInformation = project.expected_budget_currency
         ? selectCurrencyInformation({
@@ -24,6 +28,14 @@ const SendBonusEqualy = (props) => {
             return
         }
         setSelectedContributors([...selectedContributors, idx])
+    }
+
+    const handleBonusAmountChange = (amount) => {
+        if (amount.includes('.')) {
+            setBonusAmount(amount.slice(0, amount.indexOf('.')))
+            return
+        }
+        setBonusAmount(amount)
     }
 
     const allContributorsSelected = selectedContributors.length == project.contributors.length
@@ -67,7 +79,7 @@ const SendBonusEqualy = (props) => {
                     outputFormat='string'
                     decimalCharacter={`${currencyInformation['decimal']}`}
                     digitGroupSeparator={`${currencyInformation['thousand']}`}
-                    onChange={(event, value) => console.log(parseInt(value, 10))}
+                    onChange={(event) => handleBonusAmountChange(event.target.value)}
                 />
             </div>
             <div className='mt-10'>
@@ -81,8 +93,9 @@ const SendBonusEqualy = (props) => {
                 >
                     {allContributorsSelected ? 'Select None' : 'Select All'}
                 </button>
-                
-                {renderContributors(project.contributors)}
+                <div className='overflow-scroll h-72'>
+                    {renderContributors(project.contributors)}
+                </div>
             </div> 
         </div>
     )

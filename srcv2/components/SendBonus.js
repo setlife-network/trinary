@@ -1,51 +1,38 @@
 import React, { useState } from 'react'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
-import SendBonusEqualy from './SendBonusEqualy'
-
-const BONUS_SPLIT_TYPES = [
-    {
-        type: 'equaly',
-        name: 'Split Equaly'
-    },
-    {
-        type: 'customize',
-        name: 'Customize'
-    }
-]
+import SendBonusAmount from './SendBonusAmount'
 
 const SendBonus = (props) => {
 
     const { project } = props
 
-    const [selectedBonusSplitType, setSelectedBonusSplitType] = useState(0)
+    const [selectedContributors, setSelectedContributors] = useState([])
+    const [screenIndex, setScreenIndex] = useState(0)
+    const [bonusAmount, setBonusAmount] = useState()
+
+    const screens = [SendBonusAmount]
 
     return (
         <div className='SendBonus lg:px-16'>
-            <p className='font-bold text-xl mb-4'>
-                Enter info below to send a bonus
-            </p>
-            <div className='rounded-full bg-white-light grid grid-cols-2'>
+            {!screenIndex && (
+                <SendBonusAmount
+                    project={project}
+                    selectedContributors={selectedContributors}
+                    setSelectedContributors={setSelectedContributors}
+                    bonusAmount={bonusAmount}
+                    setBonusAmount={setBonusAmount}
+                />
+            )}
+            <div className='grid absolute bottom-10 left-16 right-16 gap-2'>
                 <button
+                    className='bg-setlife rounded-full py-2 w-full text-white'
+                    onClick={() => setScreenIndex(screenIndex + 1)}
                     type='button'
-                    className={`font-bold rounded-full mr-1 ml-2 my-2 py-1 px-2 ${selectedBonusSplitType == 0 ? 'bg-setlife text-white' : 'bg-med-gray'}`}
-                    onClick={() => setSelectedBonusSplitType(0)}
                 >
-                    <p>
-                        {BONUS_SPLIT_TYPES[0].name}
-                    </p>
-                </button>
-                <button
-                    type='button'
-                    className={`bg-med-gray font-bold rounded-full mr-2 ml-1 my-2 py-1 px-2 ${selectedBonusSplitType == 1 ? 'bg-setlife text-white' : 'bg-med-gray'}`}
-                    onClick={() => setSelectedBonusSplitType(1)}
-                >
-                    <p>
-                        {BONUS_SPLIT_TYPES[1].name}
-                    </p>
+                    Continue
                 </button>
             </div>
-            <SendBonusEqualy project={project}/>
         </div>
     )
 }
