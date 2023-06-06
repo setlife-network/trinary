@@ -21,7 +21,7 @@ const SendBonus = (props) => {
     const [selectedBonusSplitType, setSelectedBonusSplitType] = useState(0)
 
     return (
-        <div className='SendBonus'>
+        <div className='SendBonus lg:px-16'>
             <p className='font-bold text-xl mb-4'>
                 Enter info below to send a bonus
             </p>

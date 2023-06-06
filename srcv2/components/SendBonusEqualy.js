@@ -26,15 +26,17 @@ const SendBonusEqualy = (props) => {
         setSelectedContributors([...selectedContributors, idx])
     }
 
+    const allContributorsSelected = selectedContributors.length == project.contributors.length
+
     const renderContributors = (contributors) => {
         return contributors.map((c, idx) => {
             const isSelected = selectedContributors.includes(idx)
             return (
-                <div className='contributor grid grid-cols-8 mb-3'>
+                <div className='contributor mb-3 flex'>
                     <button
                         type='button'
                         onClick={() => selectContributor(idx)}
-                        className={`rounded-full border-solid border-2 border-setlife text-center h-6 w-6 text-sm col-span-1 my-auto ${isSelected ? 'bg-setlife' : 'bg-white'}`}
+                        className={`mr-4 rounded-full border-solid border-2 border-setlife text-center h-6 w-6 text-sm col-span-1 my-auto ${isSelected ? 'bg-setlife' : 'bg-white'}`}
                     >
                         <Icon className='icon fa-solid fa-check text-white text-center w-full h-full m-auto align-middle' fontSize='inherit'/>
                     </button>
@@ -51,6 +53,8 @@ const SendBonusEqualy = (props) => {
         })
     }
 
+    const indicesArray = Array.from({ length: project.contributors.length }, (value, index) => index);
+
     return (
         <div className='SendBonusEqualy'>
             <div className='mt-10'>
@@ -63,13 +67,21 @@ const SendBonusEqualy = (props) => {
                     outputFormat='string'
                     decimalCharacter={`${currencyInformation['decimal']}`}
                     digitGroupSeparator={`${currencyInformation['thousand']}`}
-                    onChange={(event, value) => setPaymentAmount(parseInt(value, 10))}
+                    onChange={(event, value) => console.log(parseInt(value, 10))}
                 />
             </div>
             <div className='mt-10'>
                 <p className='font-bold text-md mb-4'>
                     Active contributors for this project
                 </p>
+                <button
+                    type='button'
+                    onClick={() => setSelectedContributors(allContributorsSelected ? [] : indicesArray)}
+                    className={`rounded-full border-solid border-2 border-med-gray bg-med-gray text-center text-sm my px-4 py-1 mb-4`}
+                >
+                    {allContributorsSelected ? 'Select None' : 'Select All'}
+                </button>
+                
                 {renderContributors(project.contributors)}
             </div> 
         </div>
