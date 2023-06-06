@@ -29,6 +29,7 @@
         "babel-plugin-transform-runtime": "^6.23.0",
         "babel-preset-stage-2": "^6.24.1",
         "bitcoin-address-validation": "^2.2.1",
+        "bitcoin-conversion": "^0.4.0",
         "body-parser": "^1.19.0",
         "concurrently": "^6.2.2",
         "connect-wwwhisper": "^0.1.21",

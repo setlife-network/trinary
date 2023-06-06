@@ -25,7 +25,7 @@ const Overlay = ({
             >
                 <div className={'Overlay fixed inset-5'}>
                     <div
-                        className={`bg-white flex flex-col rounded-lg !py-3 px-6 ${fullScreen ? 'h-full' : position} ${height} ${containerClassName}`}
+                        className={`bg-white flex flex-col rounded-lg !py-3 px-6 overflow-hidden ${fullScreen ? 'h-full' : position} ${height} ${containerClassName}`}
                     >
                         <div className='y-3'>
                             <Icon 

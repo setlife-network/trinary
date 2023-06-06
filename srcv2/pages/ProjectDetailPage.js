@@ -4,10 +4,11 @@ import { useQuery } from '@apollo/client'
 import moment from 'moment'
 import { Icon } from '@material-ui/core'
 
+import AddContributorList from '../components/AddContributorList'
 import CreatePaymentFloatingBadge from '../components/CreatePaymentFloatingBadge'
 import OpenInGithubButton from '../components/OpenInGithubButton'
-import Section from '../components/Section'
 import Overlay from '../components/Overlay'
+import Section from '../components/Section'
 import SendBonus from '../components/SendBonus'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
@@ -20,6 +21,7 @@ const ProjectDetailPage = (props) => {
     const history = useHistory()
 
     const [openBonusesOverlay, setOpenBonusesOverlay] = useState(false)
+    const [openAddContributorOverlay, setOpenAddContributorOverlay] = useState(false)
 
     const {
         data: dataProject,
@@ -44,8 +46,8 @@ const ProjectDetailPage = (props) => {
                     <div className='rounded-full h-14 w-14 bg-light text-4xl text-center'>
                         <Icon className='icon fas fa-user text-gray text-center w-full h-full mt-2.5' fontSize='inherit'/>
                     </div>
-                    <div className='w-full'>
-                        <p className='text-center'>{contributor.name}</p>
+                    <div className='w-18 mt-2'>
+                        <p className='text-center text-ellipsis overflow-hidden word-break'>{contributor.name}</p>
                     </div>
                 </div>
             )
@@ -122,7 +124,7 @@ const ProjectDetailPage = (props) => {
                                 <p>Expected Budget</p>
                             </div>
                             <div>
-                                <p className='text-right font-bold'>{`${project.expected_budget_currency} ${project.expected_budget}`}</p>
+                                <p className='text-right font-bold'>{`${project.expected_budget_currency ?? '$'} ${project.expected_budget}`}</p>
                             </div>
                         </div>
                     }
@@ -131,7 +133,7 @@ const ProjectDetailPage = (props) => {
                             <p>Total paid</p>
                         </div>
                         <div>
-                            <p className='text-right font-bold'>{`${project.expected_budget_currency} ${project.totalPaid ?? 0}`}</p>
+                            <p className='text-right font-bold'>{`${project.expected_budget_currency ?? '$'} ${project.totalPaid ?? 0}`}</p>
                         </div>
                     </div>
                     {project.date && 
@@ -186,6 +188,18 @@ const ProjectDetailPage = (props) => {
                         </p>
                     }
                 </div>
+                <div className='px-12 mt-8'>
+                    <button
+                        type='button'
+                        className='border-2 border-setlife w-full rounded-full py-1'
+                        onClick={() => setOpenAddContributorOverlay(true)}
+                    >
+                        <div className='flex gap-2 m-auto text-center w-fit'>
+                            <p className='text-setlife'>Add new contributor</p>
+                        </div>
+                    </button>
+                </div>
+                
             </Section>
             <Section>
                 <p className='font-bold text-xl mb-2'>
@@ -248,6 +262,15 @@ const ProjectDetailPage = (props) => {
             >
                 <SendBonus
                     project={project}
+                />
+            </Overlay>
+            <Overlay
+                open={openAddContributorOverlay}
+                setOpen={setOpenAddContributorOverlay}
+                fullScreen
+            >
+                <AddContributorList
+                    projectId={projectId}
                 />
             </Overlay>
         </div>

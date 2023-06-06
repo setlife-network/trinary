@@ -109,3 +109,13 @@ export const GET_CONTRIBUTOR_WALLETS = gql`
         }
     }
 `
+
+export const GET_CONTRIBUTORS = gql`
+    query Contributos {
+        getContributors {
+            id
+            name
+            github_handle
+          }
+    }
+`
