@@ -68,6 +68,10 @@ module.exports = gql`
             updateFields: PaymentInput!,
         ): Payment
 
+        convertUSDtoSATS(
+            amount: Float!
+        ): Float!
+
         sendPayment(
             amount: Int!,
             sender: ContributorInput,
