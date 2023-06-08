@@ -5,6 +5,7 @@ const { fn, col, Op } = require('sequelize')
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules')
 const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants');
+const lnd = require('../../handlers/lnd')
 
 module.exports = {
 
@@ -137,6 +138,32 @@ module.exports = {
                 }
             })
             return models.Payment.findByPk(id)
+        },
+        sendPayment: async (root, { amount, sender, contributors }, { models }) => {
+            let totalAmountSent = 0
+            const onChainAddresses = []
+
+            const invoices = await Promise.all(contributors.map(async m => {
+                if (m.invoice_macaroon) {
+                    const invoice = await lnd.addInvoice(m.lnd_host, m.lnd_port, m.invoice_macaroon, amount)
+                    return invoice.payment_request
+                } else {
+                    onChainAddresses.push(m.onchain_address)
+                    return null
+                }
+            }))
+            const lndInvoices = invoices.filter(invoice => invoice !== null)
+
+            const payLndInvoices = async () => lndInvoices.map(async invoice => {
+                const payInvoice = await lnd.sendPayment(sender.lnd_host, sender.lnd_port, sender.invoice_macaroon, invoice)
+                return payInvoice
+            })
+            const lndInvocesResults = await Promise.all(await payLndInvoices())
+
+            console.log(lndInvocesResults)
+            // totalAmountSent += payInvoice.payment_route.total_amt
+
+            return totalAmountSent 
         }
     }
 

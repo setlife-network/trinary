@@ -32,6 +32,15 @@ module.exports = gql`
         date_paid: String
     }
 
+    input ContributorInput {
+        id: Int,
+        name: String,
+        onchain_address: String,
+        invoice_macaroon: String,
+        lnd_host: String,
+        lnd_port: Int
+    }
+
     type Query {
         getPaymentById(id: Int!): Payment
         getPayments: [Payment]
@@ -58,6 +67,12 @@ module.exports = gql`
             id:Int!,
             updateFields: PaymentInput!,
         ): Payment
+
+        sendPayment(
+            amount: Int!,
+            sender: ContributorInput,
+            contributors: [ContributorInput]
+        ): Int
     }
 
 `
