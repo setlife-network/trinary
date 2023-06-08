@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 import { Icon } from '@material-ui/core'
 
@@ -14,6 +14,13 @@ const SendBonusEqualy = (props) => {
         setBonusAmount
     } = props
 
+    const [selectedContributorsIdx, setSelectedContributorsIdx] = useState([])
+
+    useEffect(() => {
+        const contributors = project.contributors.filter((c, idx) => selectedContributorsIdx.includes(idx))
+        setSelectedContributors(contributors)
+    }, [selectedContributorsIdx])
+
     const currencyInformation = project.expected_budget_currency
         ? selectCurrencyInformation({
             currency: project.expected_budget_currency
@@ -21,13 +28,13 @@ const SendBonusEqualy = (props) => {
         : null
 
     const selectContributor = (idx) => {
-        if (selectedContributors.includes(idx)) {
-            setSelectedContributors(
-                selectedContributors.filter(c => c != idx)
+        if (selectedContributorsIdx.includes(idx)) {
+            setSelectedContributorsIdx(
+                selectedContributorsIdx.filter(c => c != idx)
             )
             return
         }
-        setSelectedContributors([...selectedContributors, idx])
+        setSelectedContributorsIdx([...selectedContributorsIdx, idx])
     }
 
     const handleBonusAmountChange = (amount) => {
@@ -38,11 +45,11 @@ const SendBonusEqualy = (props) => {
         setBonusAmount(amount)
     }
 
-    const allContributorsSelected = selectedContributors.length == project.contributors.length
+    const allContributorsSelected = selectedContributorsIdx.length == project.contributors.length
 
     const renderContributors = (contributors) => {
         return contributors.map((c, idx) => {
-            const isSelected = selectedContributors.includes(idx)
+            const isSelected = selectedContributorsIdx.includes(idx)
             return (
                 <div className='contributor mb-3 flex'>
                     <button
@@ -88,7 +95,7 @@ const SendBonusEqualy = (props) => {
                 </p>
                 <button
                     type='button'
-                    onClick={() => setSelectedContributors(allContributorsSelected ? [] : indicesArray)}
+                    onClick={() => setSelectedContributorsIdx(allContributorsSelected ? [] : indicesArray)}
                     className={`rounded-full border-solid border-2 border-med-gray bg-med-gray text-center text-sm my px-4 py-1 mb-4`}
                 >
                     {allContributorsSelected ? 'Select None' : 'Select All'}
