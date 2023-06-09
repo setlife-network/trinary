@@ -10,7 +10,10 @@ import { CONVERT_USD_TO_SATS_AMOUNT } from '../operations/mutations/PaymentMutat
 
 const SendBonus = (props) => {
 
-    const { project } = props
+    const {
+        project,
+        setOpen
+    } = props
 
     const [selectedContributors, setSelectedContributors] = useState([])
     const [screenIndex, setScreenIndex] = useState(0)
@@ -37,6 +40,8 @@ const SendBonus = (props) => {
     }
 
     const disableContinue = !selectedContributors.length || !bonusAmount
+
+    if (screenIndex == 3) { setOpen(false) }
 
     return (
         <div className='SendBonus lg:px-16'>

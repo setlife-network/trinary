@@ -262,6 +262,7 @@ const ProjectDetailPage = (props) => {
             >
                 <SendBonus
                     project={project}
+                    setOpen={setOpenBonusesOverlay}
                 />
             </Overlay>
             <Overlay
