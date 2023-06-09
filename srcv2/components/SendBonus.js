@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/client'
 
 import SendBonusAmount from './SendBonusAmount'
 import SendBonusConfirmation from './SendBonusConfirmation'
+import SendBonusSuccessful from './SendBonusSuccessful'
 
 import { CONVERT_USD_TO_SATS_AMOUNT } from '../operations/mutations/PaymentMutations'
 
@@ -39,7 +40,7 @@ const SendBonus = (props) => {
 
     return (
         <div className='SendBonus lg:px-16'>
-            {!screenIndex ? (
+            {screenIndex == 0 &&
                 <SendBonusAmount
                     project={project}
                     selectedContributors={selectedContributors}
@@ -47,13 +48,20 @@ const SendBonus = (props) => {
                     bonusAmount={bonusAmount}
                     setBonusAmount={setBonusAmount}
                 />
-            ) : (
+            }
+            {screenIndex == 1 &&
                 <SendBonusConfirmation
                     selectedContributors={selectedContributors}
-                    bonusAmount={bonusAmount}
+                    bonusAmount={bonusAmount.replace(',', '')}
                     satsBonusAmount={satsBonusAmount}
                 />
-            )}
+            }
+            {screenIndex == 2 && 
+                <SendBonusSuccessful
+                    bonusAmount={bonusAmount.replace(',', '')}
+                    satsBonusAmount={satsBonusAmount}
+                />
+            }
             <div className='grid absolute bottom-10 left-16 right-16 gap-2'>
                 <button
                     className={`${disableContinue ? 'bg-med-gray' : 'bg-setlife'} rounded-full py-2 w-full text-white`}
