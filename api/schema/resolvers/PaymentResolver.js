@@ -152,30 +152,40 @@ module.exports = {
             }
         },
         sendPayment: async (root, { amount, sender, contributors }, { models }) => {
-            let totalAmountSent = 0
-            const onChainAddresses = []
+            try {
+                let totalAmountSent = 0
+                const onChainAddresses = []
+    
+                const invoices = await Promise.all(contributors.map(async m => {
+                    if (m.invoice_macaroon) {
+                        const invoice = await lnd.addInvoice(m.lnd_host, m.lnd_port, m.invoice_macaroon, amount)
+                        return invoice.payment_request
+                    } else {
+                        onChainAddresses.push(m.onchain_address)
+                        return null
+                    }
+                }))
 
-            const invoices = await Promise.all(contributors.map(async m => {
-                if (m.invoice_macaroon) {
-                    const invoice = await lnd.addInvoice(m.lnd_host, m.lnd_port, m.invoice_macaroon, amount)
-                    return invoice.payment_request
-                } else {
-                    onChainAddresses.push(m.onchain_address)
-                    return null
+                if (invoices) {
+                    const lndInvoices = invoices.filter(invoice => invoice !== null)
+        
+                    const payLndInvoices = async () => lndInvoices.map(async invoice => {
+                        const payInvoice = await lnd.sendPayment(sender.lnd_host, sender.lnd_port, sender.invoice_macaroon, invoice)
+                        totalAmountSent += Number(payInvoice.payment_route.total_amt)
+                        return payInvoice
+                    })
+                    const lndInvocesResults = await Promise.all(await payLndInvoices())
                 }
-            }))
-            const lndInvoices = invoices.filter(invoice => invoice !== null)
 
-            const payLndInvoices = async () => lndInvoices.map(async invoice => {
-                const payInvoice = await lnd.sendPayment(sender.lnd_host, sender.lnd_port, sender.invoice_macaroon, invoice)
-                return payInvoice
-            })
-            const lndInvocesResults = await Promise.all(await payLndInvoices())
-
-            console.log(lndInvocesResults)
-            // totalAmountSent += payInvoice.payment_route.total_amt
-
-            return totalAmountSent 
+                if (onChainAddresses) {
+                    // TODO: onChainAddress transaction
+                    console.log(onChainAddresses)
+                }
+    
+                return totalAmountSent 
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 
