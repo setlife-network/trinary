@@ -9,6 +9,7 @@ import CreatePaymentFloatingBadge from '../components/CreatePaymentFloatingBadge
 import OpenInGithubButton from '../components/OpenInGithubButton'
 import Overlay from '../components/Overlay'
 import Section from '../components/Section'
+import SendBonus from '../components/SendBonus'
 
 import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 
@@ -19,6 +20,7 @@ const ProjectDetailPage = (props) => {
     const { projectId } = useParams()
     const history = useHistory()
 
+    const [openBonusesOverlay, setOpenBonusesOverlay] = useState(false)
     const [openAddContributorOverlay, setOpenAddContributorOverlay] = useState(false)
 
     const {
@@ -37,14 +39,11 @@ const ProjectDetailPage = (props) => {
 
     const project = dataProject.getProjectById
 
-    console.log('project')
-    console.log(project)
-
     const renderContributors = (contributors) => {
         return contributors.map(contributor => {
             return (
-                <div className='contributor'>
-                    <div className='rounded-full h-14 w-14 bg-light text-4xl m-auto'>
+                <div className='contributor w-14'>
+                    <div className='rounded-full h-14 w-14 bg-light text-4xl text-center'>
                         <Icon className='icon fas fa-user text-gray text-center w-full h-full mt-2.5' fontSize='inherit'/>
                     </div>
                     <div className='w-18 mt-2'>
@@ -167,9 +166,20 @@ const ProjectDetailPage = (props) => {
                 <OpenInGithubButton url={project.github_url}/>
             </Section>
             <Section>
-                <p className='font-bold text-xl mb-4'>
-                    Active Contributors
-                </p>
+                <div className='grid grid-rows-1 grid-cols-2'>
+                    <div>
+                        <p className='font-bold text-xl mb-4'>
+                            Active Contributors
+                        </p>
+                    </div>
+                    <button
+                        type='button'
+                        className='border-2 border-setlife text-setlife rounded-full py-1 mb-4 w-fit h-fit px-2 ml-auto'
+                        onClick={() => setOpenBonusesOverlay(true)}
+                    >
+                        Send bonuses
+                    </button>
+                </div>
                 <div className='flex gap-4 overflow-x-scroll'>
                     {renderContributors(project.contributors)}
                     {!project.contributors.length &&
@@ -245,6 +255,16 @@ const ProjectDetailPage = (props) => {
                 </div>
             </Section>
             <CreatePaymentFloatingBadge projectId={projectId} />
+            <Overlay
+                open={openBonusesOverlay}
+                setOpen={setOpenBonusesOverlay}
+                fullScreen
+            >
+                <SendBonus
+                    project={project}
+                    setOpen={setOpenBonusesOverlay}
+                />
+            </Overlay>
             <Overlay
                 open={openAddContributorOverlay}
                 setOpen={setOpenAddContributorOverlay}

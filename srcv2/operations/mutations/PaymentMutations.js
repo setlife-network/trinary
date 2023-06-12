@@ -36,9 +36,15 @@ export const UPDATE_PAYMENT = gql`
 
 export const CREATE_BITCOIN_INVOICE = gql`
     mutation GenerateBitcoinInvoice($paymentId: Int!){
-        generateBitcoinInvoiceFromPayment(paymentId: $paymentId){
+        generateBitcoinInvoiceFromPayment(paymentId: $paymentId) {
             external_uuid
             bitcoinCheckoutUrl
         }
+    }
+`
+
+export const CONVERT_USD_TO_SATS_AMOUNT = gql`
+    mutation ConvertUSDtoSATS($amount: Int!) {
+        convertUSDtoSATS(amount: $amount)
     }
 `

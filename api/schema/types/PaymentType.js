@@ -60,7 +60,7 @@ module.exports = gql`
         ): Payment
 
         convertUSDtoSATS(
-            amount: Float!
+            amount: Int!
         ): Float!
     }
 
