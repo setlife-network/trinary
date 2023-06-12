@@ -33,8 +33,6 @@ module.exports = gql`
     }
 
     input ContributorInput {
-        id: Int,
-        name: String,
         onchain_address: String,
         invoice_macaroon: String,
         lnd_host: String,
