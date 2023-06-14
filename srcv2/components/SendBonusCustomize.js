@@ -1,24 +1,40 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 import { Icon } from '@material-ui/core'
 
 import { selectCurrencyInformation } from '../scripts/selectors'
 
-const SendBonusEqualy = (props) => {
+const SendBonusCustomize = (props) => {
 
     const {
-        selectedContributors,
-        setSelectedContributors,
         project,
-        bonusAmount,
-        setBonusAmount
+        setBonusPayments,
     } = props
 
     const [selectedContributorsIdx, setSelectedContributorsIdx] = useState([])
+    const [localBonusPayments, setLocalBonusPayments] = useState([])
 
     useEffect(() => {
-        const contributors = project.contributors.filter((c, idx) => selectedContributorsIdx.includes(idx))
-        setSelectedContributors(contributors)
+        console.log('localBonusPayments')
+        console.log(localBonusPayments)
+        setBonusPayments(localBonusPayments)
+    }, [localBonusPayments])
+
+    useEffect(() => {
+        const bonuses = localBonusPayments
+        localBonusPayments.map((b, idx) => {
+            if (selectedContributorsIdx.includes(b.idx)) {
+                const activeBonus = b
+                activeBonus.active = 1
+                bonuses.splice(idx, 1)
+                setLocalBonusPayments([...bonuses, activeBonus])
+            } else {
+                const inactiveBonus = b
+                inactiveBonus.active = 0
+                bonuses.splice(idx, 1)
+                setLocalBonusPayments([...bonuses, inactiveBonus])
+            }
+        }) 
     }, [selectedContributorsIdx])
 
     const currencyInformation = project.expected_budget_currency
@@ -27,25 +43,38 @@ const SendBonusEqualy = (props) => {
         }) 
         : null
 
-    const selectContributor = (idx) => {
+    const selectContributor = (contributor, idx) => {
         if (selectedContributorsIdx.includes(idx)) {
             setSelectedContributorsIdx(
                 selectedContributorsIdx.filter(c => c != idx)
             )
-            return
+        } else {
+            setSelectedContributorsIdx([...selectedContributorsIdx, idx])
         }
-        setSelectedContributorsIdx([...selectedContributorsIdx, idx])
     }
 
-    const handleBonusAmountChange = (amount) => {
+    const handleBonusAmountChange = (contributor, amount, idx) => {
         if (amount.includes('.')) {
-            setBonusAmount(amount.slice(0, amount.indexOf('.')))
-            return
+            amount = amount.slice(0, amount.indexOf('.'))
         }
-        setBonusAmount(amount)
+        let bonusIdx = -1
+        localBonusPayments.map((b, idx) => {
+            if (b.contributor.id == contributor.id) {
+                bonusIdx = idx
+            }
+        })
+        const bonuses = localBonusPayments
+        if (bonusIdx != -1) {
+            bonuses.splice(bonusIdx, 1)
+        }
+        const newBonusAmount = {
+            active: 1,
+            amount: amount,
+            idx: idx,
+            contributor: contributor
+        }
+        setLocalBonusPayments([...bonuses, newBonusAmount])
     }
-
-    const allContributorsSelected = selectedContributorsIdx.length == project.contributors.length
 
     const renderContributors = (contributors) => {
         return contributors.map((c, idx) => {
@@ -54,7 +83,7 @@ const SendBonusEqualy = (props) => {
                 <div className='contributor mb-3 flex'>
                     <button
                         type='button'
-                        onClick={() => selectContributor(idx)}
+                        onClick={() => selectContributor(c, idx)}
                         className={`mr-4 rounded-full border-solid border-2 border-setlife text-center h-6 w-6 text-sm col-span-1 my-auto ${isSelected ? 'bg-setlife' : 'bg-white'}`}
                     >
                         <Icon className='icon fa-solid fa-check text-white text-center w-full h-full m-auto align-middle' fontSize='inherit'/>
@@ -67,28 +96,30 @@ const SendBonusEqualy = (props) => {
                             {c.name}
                         </p>
                     </div>
+                    <div className='mt-5 ml-auto'>
+                        <CurrencyTextField
+                            fullWidth
+                            label='Payment amount'
+                            variant='outlined'
+                            currencySymbol={`${currencyInformation['symbol']}`}
+                            minimumValue='0'
+                            outputFormat='string'
+                            decimalCharacter={`${currencyInformation['decimal']}`}
+                            digitGroupSeparator={`${currencyInformation['thousand']}`}
+                            onChange={(event) => handleBonusAmountChange(c, event.target.value, idx)}
+                            disabled={!isSelected}
+                        />
+                    </div>
                 </div>
             )
         })
     }
 
+    const allContributorsSelected = selectedContributorsIdx.length == project.contributors.length
     const indicesArray = Array.from({ length: project.contributors.length }, (value, index) => index);
 
     return (
-        <div className='SendBonusEqualy'>
-            <div className='mt-10'>
-                <CurrencyTextField
-                    fullWidth
-                    label='Payment amount'
-                    variant='outlined'
-                    currencySymbol={`${currencyInformation['symbol']}`}
-                    minimumValue='0'
-                    outputFormat='string'
-                    decimalCharacter={`${currencyInformation['decimal']}`}
-                    digitGroupSeparator={`${currencyInformation['thousand']}`}
-                    onChange={(event) => handleBonusAmountChange(event.target.value)}
-                />
-            </div>
+        <div className='SendBonusCustomize'>
             <div className='mt-10'>
                 <p className='font-bold text-md mb-4'>
                     Active contributors for this project
@@ -100,7 +131,7 @@ const SendBonusEqualy = (props) => {
                 >
                     {allContributorsSelected ? 'Select None' : 'Select All'}
                 </button>
-                <div className='overflow-scroll h-80'>
+                <div className='overflow-scroll h-85'>
                     {renderContributors(project.contributors)}
                 </div>
             </div> 
@@ -108,4 +139,4 @@ const SendBonusEqualy = (props) => {
     )
 }
 
-export default SendBonusEqualy
+export default SendBonusCustomize
