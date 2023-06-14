@@ -6,9 +6,30 @@ import {
 const SendBonusSuccessful = (props) => {
 
     const {
-        bonusAmount,
-        satsBonusAmount,
+        bonusPayments
     } = props
+
+    const renderSenders = () => {
+        return bonusPayments.map(bp => {
+            return (
+                <div className='sendingContributor grid grid-cols-2 mb-4'>
+                    <div>
+                        <p className='font-bold'>
+                            {bp.contributor.name}
+                        </p>
+                    </div>
+                    <div className='grid grid-cols-1 text-right'>
+                        <p className='font-bold'>
+                            {`${Intl.NumberFormat().format(Math.trunc(bp.satsBonusAmount))} SATS`}
+                        </p>
+                        <p className='text-gray'>
+                            {`${Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(Math.trunc(bp.amount))}`}
+                        </p>
+                    </div>
+                </div>
+            )
+        })
+    }
 
     return (
         <div className='SendBonusSuccessful'>
@@ -26,12 +47,9 @@ const SendBonusSuccessful = (props) => {
                 <p className='text-5xl m-auto text-center my-4 mt-8'>
                     <Icon className='fa-solid fa-money-bill-trend-up text-setlife' fontSize='inherit'/>
                 </p>
-                <p className='text-center text-4xl mt-6'>
-                    {`${Intl.NumberFormat().format(Math.trunc(satsBonusAmount))} SATS`}
-                </p> 
-                <p className='text-center text-md text-gray'>
-                    {`~ ${Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(Math.trunc(bonusAmount))}`}
-                </p> 
+                <div className='rounded-lg bg-white-light pt-4 pb-2 px-4 mt-6'>
+                    {renderSenders()}
+                </div>
             </div>
         </div>
     )

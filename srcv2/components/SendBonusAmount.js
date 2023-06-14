@@ -23,10 +23,10 @@ const SendBonusAmount = (props) => {
         bonusAmount,
         setBonusAmount,
         bonusPayments,
-        setBonusPayments
+        setBonusPayments,
+        selectedBonusSplitType,
+        setSelectedBonusSplitType
     } = props
-
-    const [selectedBonusSplitType, setSelectedBonusSplitType] = useState(0)
 
     return (
         <div className='SendBonusAmount'>

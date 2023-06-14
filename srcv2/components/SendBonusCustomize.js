@@ -15,8 +15,6 @@ const SendBonusCustomize = (props) => {
     const [localBonusPayments, setLocalBonusPayments] = useState([])
 
     useEffect(() => {
-        console.log('localBonusPayments')
-        console.log(localBonusPayments)
         setBonusPayments(localBonusPayments)
     }, [localBonusPayments])
 

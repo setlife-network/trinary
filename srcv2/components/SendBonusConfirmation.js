@@ -6,26 +6,25 @@ import {
 const SendBonusConfirmation = (props) => {
 
     const {
-        bonusAmount,
-        satsBonusAmount,
-        selectedContributors
+        bonusPayments,
+        selectedBonusSplitType
     } = props
 
     const renderSenders = () => {
-        return selectedContributors.map(sc => {
+        return bonusPayments.map(bp => {
             return (
                 <div className='sendingContributor grid grid-cols-2 mb-4'>
                     <div>
                         <p className='font-bold'>
-                            {sc.name}
+                            {bp.contributor.name}
                         </p>
                     </div>
                     <div className='grid grid-cols-1 text-right'>
                         <p className='font-bold'>
-                            {`${Intl.NumberFormat().format(Math.trunc(satsBonusAmount))} SATS`}
+                            {`${Intl.NumberFormat().format(Math.trunc(bp.satsBonusAmount))} SATS`}
                         </p>
                         <p className='text-gray'>
-                            {`${Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(Math.trunc(bonusAmount))}`}
+                            {`${Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(Math.trunc(bp.amount))}`}
                         </p>
                     </div>
                 </div>
@@ -44,12 +43,16 @@ const SendBonusConfirmation = (props) => {
             <p className='text-5xl m-auto text-center my-4'>
                 <Icon className='fa-solid fa-money-bill-trend-up text-setlife' fontSize='inherit'/>
             </p>
-            <p className='text-center text-4xl'>
-                {`${Intl.NumberFormat().format(Math.trunc(satsBonusAmount))} SATS`}
-            </p> 
-            <p className='text-center text-md text-gray'>
-                {`~ ${Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(Math.trunc(bonusAmount))}`}
-            </p> 
+            {selectedBonusSplitType == 0 &&
+                <>
+                    <p className='text-center text-4xl'>
+                        {`${Intl.NumberFormat().format(Math.trunc(bonusPayments[0].satsBonusAmount))} SATS`}
+                    </p> 
+                    <p className='text-center text-md text-gray'>
+                        {`~ ${Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(Math.trunc(bonusPayments[0].amount))}`}
+                    </p>
+                </>
+            }
             <p className='font-bold text-md text-gray'>
                 Sending to
             </p>

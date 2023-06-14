@@ -7,10 +7,8 @@ import { selectCurrencyInformation } from '../scripts/selectors'
 const SendBonusEqualy = (props) => {
 
     const {
-        selectedContributors,
         setSelectedContributors,
         project,
-        bonusAmount,
         setBonusAmount
     } = props
 
