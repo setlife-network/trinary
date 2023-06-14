@@ -22,6 +22,7 @@ const ProjectDetailPage = (props) => {
 
     const [openBonusesOverlay, setOpenBonusesOverlay] = useState(false)
     const [openAddContributorOverlay, setOpenAddContributorOverlay] = useState(false)
+    const [screenIndex, setScreenIndex] = useState(0)
 
     const {
         data: dataProject,
@@ -259,10 +260,13 @@ const ProjectDetailPage = (props) => {
                 open={openBonusesOverlay}
                 setOpen={setOpenBonusesOverlay}
                 fullScreen
+                goBackAction={screenIndex == 0 ? false : () => setScreenIndex(screenIndex - 1)}
             >
                 <SendBonus
                     project={project}
                     setOpen={setOpenBonusesOverlay}
+                    screenIndex={screenIndex}
+                    setScreenIndex={setScreenIndex}
                 />
             </Overlay>
             <Overlay

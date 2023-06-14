@@ -12,11 +12,12 @@ const SendBonus = (props) => {
 
     const {
         project,
-        setOpen
+        setOpen,
+        screenIndex,
+        setScreenIndex
     } = props
 
     const [selectedContributors, setSelectedContributors] = useState([])
-    const [screenIndex, setScreenIndex] = useState(0)
     const [bonusAmount, setBonusAmount] = useState(0)
     const [bonusPayments, setBonusPayments] = useState([])
     const [selectedBonusSplitType, setSelectedBonusSplitType] = useState(0)
