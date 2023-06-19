@@ -15,6 +15,8 @@ import { GET_PROJECT } from '../operations/queries/ProjectQueries'
 
 import { getHandle, selectCurrencyInformation } from '../scripts/selectors'
 
+import { sessionUser } from '../reactivities/variables'
+
 const ProjectDetailPage = (props) => {
 
     const { projectId } = useParams()
@@ -172,13 +174,15 @@ const ProjectDetailPage = (props) => {
                             Active Contributors
                         </p>
                     </div>
-                    <button
-                        type='button'
-                        className='border-2 border-setlife text-setlife rounded-full py-1 mb-4 w-fit h-fit px-2 ml-auto'
-                        onClick={() => setOpenBonusesOverlay(true)}
-                    >
-                        Send bonuses
-                    </button>
+                    {sessionUser().wallet && sessionUser().wallet.invoice_macaroon &&
+                        <button
+                            type='button'
+                            className='border-2 border-setlife text-setlife rounded-full py-1 mb-4 w-fit h-fit px-2 ml-auto'
+                            onClick={() => setOpenBonusesOverlay(true)}
+                        >
+                            Send bonuses
+                        </button>
+                    }
                 </div>
                 <div className='flex gap-4 overflow-x-scroll'>
                     {renderContributors(project.contributors)}
