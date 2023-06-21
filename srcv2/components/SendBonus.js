@@ -79,7 +79,10 @@ const SendBonus = (props) => {
 
     const disableContinue = (!selectedContributors.length || !bonusAmount) && bonusPayments.length == 0
 
-    if (screenIndex == 3) { setOpen(false) }
+    if (screenIndex == 3) { 
+        setOpen(false)
+        setScreenIndex(0)
+    }
 
     return (
         <div className='SendBonus lg:px-16'>

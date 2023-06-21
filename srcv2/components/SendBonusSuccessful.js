@@ -73,7 +73,7 @@ const SendBonusSuccessful = (props) => {
                 <div className='rounded-lg bg-white-light pt-4 pb-2 px-4 mt-6'>
                     {renderSuccessfulTransactions(sentBonuses.succeeded)}
                 </div>
-                {sentBonuses.failed.length != 0 &&
+                {(sentBonuses.failed && sentBonuses.failed.length != 0) &&
                     <>
                         <div className='flex mb-4 mt-8 text-xl'>
                             <Icon className='fa-solid fa-circle-exclamation text-red-500 my-auto mr-2' fontSize='inherit'/>

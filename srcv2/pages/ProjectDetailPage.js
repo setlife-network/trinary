@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import moment from 'moment'
@@ -41,6 +41,12 @@ const ProjectDetailPage = (props) => {
     if (errorProject) return (`${errorProject}`)
 
     const project = dataProject.getProjectById
+
+    useEffect(() => {
+        if (!openBonusesOverlay) {
+            setScreenIndex(0)
+        }
+    }, [openBonusesOverlay])
 
     const renderContributors = (contributors) => {
         return contributors.map(contributor => {
