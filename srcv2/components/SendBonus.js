@@ -12,36 +12,81 @@ const SendBonus = (props) => {
 
     const {
         project,
-        setOpen
+        setOpen,
+        screenIndex,
+        setScreenIndex
     } = props
 
     const [selectedContributors, setSelectedContributors] = useState([])
-    const [screenIndex, setScreenIndex] = useState(0)
     const [bonusAmount, setBonusAmount] = useState(0)
-    const [satsBonusAmount, setSatsBonusAmount] = useState()
-
-    const screens = [SendBonusAmount]
-
+    const [bonusPayments, setBonusPayments] = useState([])
+    const [selectedBonusSplitType, setSelectedBonusSplitType] = useState(0)
+    const [sentBonuses, setSentBonuses] = useState(0)
+    
     const buttonText = ['Continue', 'Send bonuses', 'Finish']
 
-    const [fetchSatsAmount, {
-        dataSatsAmount,
-        loadingSatsAmount,
-        errorSatsAmount
-    }] = useMutation(CONVERT_USD_TO_SATS_AMOUNT)
+    const handleSubmitPayments = async (bonusPayments) => {
+        const sentBonusInfo = { succeeded: [], failed: [] }
+        await Promise.all(bonusPayments.map(bp => {
+            try {
+                if (!bp.contributor.wallet) {
+                    throw new Error('User does not have a wallet setup')
+                }
+                if (bp.contributor.wallet.invoice_macaroon != null) {
+                    // TODO: Implement send bonus through advanced setup (wait for response)
+                    sentBonusInfo.succeeded.push(bp)
+                } else if (bp.contributor.wallet.onchain_address != null) {
+                    // TODO: Implement send bonus onchain (wait for response)
+                    sentBonusInfo.succeeded.push(bp)
+                }
+            } catch (error) {
+                console.log('An error ocurred: ' + error)
+                console.log('bp')
+                console.log(bp)
+                sentBonusInfo.failed.push(bp)
+            }
+        }))
+        setSentBonuses(sentBonusInfo)
+    }
+
+    useEffect(() => {
+        const newBonusAmounts = []
+        selectedContributors.map(contributor => {
+            const newBonusAmount = {
+                active: 1,
+                amount: bonusAmount ? bonusAmount.replace(',', '') : 0,
+                contributor: contributor
+            }
+            newBonusAmounts.push(newBonusAmount)
+        })
+        setBonusPayments(newBonusAmounts)
+    }, [bonusAmount, selectedContributors])
+
+    const [fetchSatsAmount] = useMutation(CONVERT_USD_TO_SATS_AMOUNT)
 
     const nextStep = async () => {
         if (screenIndex == 0) {
-            const variables = { amount: parseInt(bonusAmount, 10) }
-            const { data } = await fetchSatsAmount({ variables })
-            setSatsBonusAmount(data.convertUSDtoSATS)
+            if (bonusPayments.length) {
+                await Promise.all(await bonusPayments.map(async bp => {
+                    const variables = { amount: parseInt(bp.amount, 10) }
+                    const { data } = await fetchSatsAmount({ variables })
+                    bp.satsBonusAmount = data.convertUSDtoSATS
+                    return data.convertUSDtoSATS
+                }))
+                setBonusPayments(bonusPayments)
+            }
+        } else if (screenIndex == 1) {
+            await handleSubmitPayments(bonusPayments)
         }
         setScreenIndex(screenIndex + 1)
     }
 
-    const disableContinue = !selectedContributors.length || !bonusAmount
+    const disableContinue = (!selectedContributors.length || !bonusAmount) && bonusPayments.length == 0
 
-    if (screenIndex == 3) { setOpen(false) }
+    if (screenIndex == 3) { 
+        setOpen(false)
+        setScreenIndex(0)
+    }
 
     return (
         <div className='SendBonus lg:px-16'>
@@ -52,19 +97,22 @@ const SendBonus = (props) => {
                     setSelectedContributors={setSelectedContributors}
                     bonusAmount={bonusAmount}
                     setBonusAmount={setBonusAmount}
+                    bonusPayments={bonusPayments}
+                    setBonusPayments={setBonusPayments}
+                    selectedBonusSplitType={selectedBonusSplitType}
+                    setSelectedBonusSplitType={setSelectedBonusSplitType}
                 />
             }
             {screenIndex == 1 &&
                 <SendBonusConfirmation
-                    selectedContributors={selectedContributors}
-                    bonusAmount={bonusAmount.replace(',', '')}
-                    satsBonusAmount={satsBonusAmount}
+                    bonusPayments={bonusPayments}
+                    selectedBonusSplitType={selectedBonusSplitType}
                 />
             }
             {screenIndex == 2 && 
                 <SendBonusSuccessful
-                    bonusAmount={bonusAmount.replace(',', '')}
-                    satsBonusAmount={satsBonusAmount}
+                    bonusPayments={bonusPayments}
+                    sentBonuses={sentBonuses}
                 />
             }
             <div className='grid absolute bottom-10 left-16 right-16 gap-2'>

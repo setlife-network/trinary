@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import SendBonusEqualy from './SendBonusEqualy'
+import SendBonusCustomize from './SendBonusCustomize'
 
 const BONUS_SPLIT_TYPES = [
     {
@@ -20,10 +21,12 @@ const SendBonusAmount = (props) => {
         selectedContributors,
         setSelectedContributors,
         bonusAmount,
-        setBonusAmount
+        setBonusAmount,
+        bonusPayments,
+        setBonusPayments,
+        selectedBonusSplitType,
+        setSelectedBonusSplitType
     } = props
-
-    const [selectedBonusSplitType, setSelectedBonusSplitType] = useState(0)
 
     return (
         <div className='SendBonusAmount'>
@@ -50,13 +53,22 @@ const SendBonusAmount = (props) => {
                     </p>
                 </button>
             </div>
-            <SendBonusEqualy
-                project={project}
-                selectedContributors={selectedContributors}
-                setSelectedContributors={setSelectedContributors}
-                bonusAmount={bonusAmount}
-                setBonusAmount={setBonusAmount}
-            />
+            {selectedBonusSplitType == 0 ? (
+                <SendBonusEqualy
+                    project={project}
+                    selectedContributors={selectedContributors}
+                    setSelectedContributors={setSelectedContributors}
+                    bonusAmount={bonusAmount}
+                    setBonusAmount={setBonusAmount}
+                />
+            ) : (
+                <SendBonusCustomize
+                    project={project}
+                    setBonusAmount={setBonusAmount}
+                    bonusPayments={bonusPayments}
+                    setBonusPayments={setBonusPayments}
+                />
+            )}
         </div>
     )
 }
