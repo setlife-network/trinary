@@ -6,6 +6,7 @@ import {
 import Alert from '@material-ui/lab/Alert'
 import { useMutation } from '@apollo/client'
 import axios from 'axios'
+import { useHistory } from 'react-router-dom'
 
 import Section from './Section'
 import Selector from './Selector'
@@ -28,6 +29,8 @@ const AdvancedWalletSetup = () => {
     const [invalidNode, setInvalidNode] = useState(false)
     const [onboardOverlayOpen, setOnboardOverlayOpen] = useState(false)
     const [onboardingScreenIndex, setOnboardingScreenIndex] = useState(0)
+
+    const history = useHistory()
 
     const [
         updateNode,
@@ -197,6 +200,9 @@ const AdvancedWalletSetup = () => {
                 </div>
                 {renderAdvancedWalletInputs()}
                 <div className='grid absolute bottom-10 left-16 right-16 gap-4'>
+                    <button type='button' onClick={() => history.push('/wallet/setup')}>
+                        Cancel
+                    </button>
                     <button
                         type='button'
                         className={`rounded-full py-2 w-full text-white font-bold ${(disabledButton || loadingNodeData) ? 'bg-light' : 'bg-setlife'}`}
