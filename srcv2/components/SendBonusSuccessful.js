@@ -6,10 +6,33 @@ import {
 const SendBonusSuccessful = (props) => {
 
     const {
-        bonusPayments
+        bonusPayments,
+        sentBonuses
     } = props
 
-    const renderSenders = () => {
+    const renderSuccessfulTransactions = (payments) => {
+        return bonusPayments.map(bp => {
+            return (
+                <div className='sendingContributor grid grid-cols-2 mb-4'>
+                    <div>
+                        <p className='font-bold'>
+                            {bp.contributor.name}
+                        </p>
+                    </div>
+                    <div className='grid grid-cols-1 text-right'>
+                        <p className='font-bold'>
+                            {`${Intl.NumberFormat().format(Math.trunc(bp.satsBonusAmount))} SATS`}
+                        </p>
+                        <p className='text-gray'>
+                            {`${Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(Math.trunc(bp.amount))}`}
+                        </p>
+                    </div>
+                </div>
+            )
+        })
+    }
+
+    const renderFailedTransactions = (payments) => {
         return bonusPayments.map(bp => {
             return (
                 <div className='sendingContributor grid grid-cols-2 mb-4'>
@@ -48,8 +71,22 @@ const SendBonusSuccessful = (props) => {
                     <Icon className='fa-solid fa-money-bill-trend-up text-setlife' fontSize='inherit'/>
                 </p>
                 <div className='rounded-lg bg-white-light pt-4 pb-2 px-4 mt-6'>
-                    {renderSenders()}
+                    {renderSuccessfulTransactions(sentBonuses.succeeded)}
                 </div>
+                {sentBonuses.failed.length != 0 &&
+                    <>
+                        <div className='flex mb-4 mt-8 text-xl'>
+                            <Icon className='fa-solid fa-circle-exclamation text-red-500 my-auto mr-2' fontSize='inherit'/>
+                            <p className='font-bold text-md text-red-500'>
+                                Some transactions failed:
+                            </p>
+                        </div>
+                        <div className='rounded-lg bg-red-100 pt-4 pb-2 px-4 mt-6'>
+                            {renderFailedTransactions(sentBonuses.failed)}
+                        </div>
+                        
+                    </>
+                }
             </div>
         </div>
     )

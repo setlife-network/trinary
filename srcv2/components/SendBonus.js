@@ -21,8 +21,29 @@ const SendBonus = (props) => {
     const [bonusAmount, setBonusAmount] = useState(0)
     const [bonusPayments, setBonusPayments] = useState([])
     const [selectedBonusSplitType, setSelectedBonusSplitType] = useState(0)
+    const [sentBonuses, setSentBonuses] = useState(0)
     
     const buttonText = ['Continue', 'Send bonuses', 'Finish']
+
+    const handleSubmitPayments = async (bonusPayments) => {
+        const sentBonusInfo = { succeeded: [], failed: [] }
+        await Promise.all(bonusPayments.map(bp => {
+            try {
+                if (bp.invoice_macaroon != null) {
+                    // TODO: Implement send bonus through advanced setup (wait for response)
+                } else if (bp.onchain_address != null) {
+                    // TODO: Implement send bonus onchain (wait for response)
+                } else {
+                    throw new Error('User does not have a wallet setup')
+                }
+                sentBonusInfo.succeeded.push(bp)
+            } catch (error) {
+                console.log('An error ocurred: ' + error)
+                sentBonusInfo.failed.push(bp)
+            }
+        }))
+        setSentBonuses(sentBonusInfo)
+    }
 
     useEffect(() => {
         const newBonusAmounts = []
@@ -41,11 +62,6 @@ const SendBonus = (props) => {
 
     const nextStep = async () => {
         if (screenIndex == 0) {
-            if (bonusAmount != 0) {
-                const variables = { amount: parseInt(bonusAmount, 10) }
-                const { data } = await fetchSatsAmount({ variables })
-                setSatsBonusAmount(data.convertUSDtoSATS)
-            }
             if (bonusPayments.length) {
                 await Promise.all(await bonusPayments.map(async bp => {
                     const variables = { amount: parseInt(bp.amount, 10) }
@@ -55,6 +71,8 @@ const SendBonus = (props) => {
                 }))
                 setBonusPayments(bonusPayments)
             }
+        } else if (screenIndex == 1) {
+            await handleSubmitPayments(bonusPayments)
         }
         setScreenIndex(screenIndex + 1)
     }
@@ -87,6 +105,7 @@ const SendBonus = (props) => {
             {screenIndex == 2 && 
                 <SendBonusSuccessful
                     bonusPayments={bonusPayments}
+                    sentBonuses={sentBonuses}
                 />
             }
             <div className='grid absolute bottom-10 left-16 right-16 gap-2'>
