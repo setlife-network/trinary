@@ -36,17 +36,17 @@ const ProjectDetailPage = (props) => {
         }
     })
 
+    useEffect(() => {
+        if (!openBonusesOverlay && !screenIndex) {
+            setScreenIndex(0)
+        }
+    }, [openBonusesOverlay])
+
     if (loadingProject) return ('Loading...')
 
     if (errorProject) return (`${errorProject}`)
 
     const project = dataProject.getProjectById
-
-    useEffect(() => {
-        if (!openBonusesOverlay) {
-            setScreenIndex(0)
-        }
-    }, [openBonusesOverlay])
 
     const renderContributors = (contributors) => {
         return contributors.map(contributor => {

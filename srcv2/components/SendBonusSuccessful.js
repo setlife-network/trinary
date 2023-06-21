@@ -11,7 +11,7 @@ const SendBonusSuccessful = (props) => {
     } = props
 
     const renderSuccessfulTransactions = (payments) => {
-        return bonusPayments.map(bp => {
+        return payments.map(bp => {
             return (
                 <div className='sendingContributor grid grid-cols-2 mb-4'>
                     <div>
@@ -33,7 +33,7 @@ const SendBonusSuccessful = (props) => {
     }
 
     const renderFailedTransactions = (payments) => {
-        return bonusPayments.map(bp => {
+        return payments.map(bp => {
             return (
                 <div className='sendingContributor grid grid-cols-2 mb-4'>
                     <div>
@@ -70,9 +70,11 @@ const SendBonusSuccessful = (props) => {
                 <p className='text-5xl m-auto text-center my-4 mt-8'>
                     <Icon className='fa-solid fa-money-bill-trend-up text-setlife' fontSize='inherit'/>
                 </p>
-                <div className='rounded-lg bg-white-light pt-4 pb-2 px-4 mt-6'>
-                    {renderSuccessfulTransactions(sentBonuses.succeeded)}
-                </div>
+                {(sentBonuses.succeeded && sentBonuses.succeeded.length != 0) &&
+                    <div className='rounded-lg bg-white-light pt-4 pb-2 px-4 mt-6'>
+                        {renderSuccessfulTransactions(sentBonuses.succeeded)}
+                    </div>
+                }
                 {(sentBonuses.failed && sentBonuses.failed.length != 0) &&
                     <>
                         <div className='flex mb-4 mt-8 text-xl'>

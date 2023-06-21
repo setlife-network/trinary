@@ -29,16 +29,20 @@ const SendBonus = (props) => {
         const sentBonusInfo = { succeeded: [], failed: [] }
         await Promise.all(bonusPayments.map(bp => {
             try {
-                if (bp.invoice_macaroon != null) {
-                    // TODO: Implement send bonus through advanced setup (wait for response)
-                } else if (bp.onchain_address != null) {
-                    // TODO: Implement send bonus onchain (wait for response)
-                } else {
+                if (!bp.contributor.wallet) {
                     throw new Error('User does not have a wallet setup')
                 }
-                sentBonusInfo.succeeded.push(bp)
+                if (bp.contributor.wallet.invoice_macaroon != null) {
+                    // TODO: Implement send bonus through advanced setup (wait for response)
+                    sentBonusInfo.succeeded.push(bp)
+                } else if (bp.contributor.wallet.onchain_address != null) {
+                    // TODO: Implement send bonus onchain (wait for response)
+                    sentBonusInfo.succeeded.push(bp)
+                }
             } catch (error) {
                 console.log('An error ocurred: ' + error)
+                console.log('bp')
+                console.log(bp)
                 sentBonusInfo.failed.push(bp)
             }
         }))
