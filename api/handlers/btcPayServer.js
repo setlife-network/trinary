@@ -8,6 +8,7 @@ const crypto = require('crypto')
 const BTCPAYSERVER_API_KEY = BTCPAYSERVER.API_KEY;
 const BTCPAYSERVER_STORE_ID = BTCPAYSERVER.STORE_ID;
 const BTCPAYSERVER_SECRET = BTCPAYSERVER.SECRET;
+const BTCPAYSERVER_WALLET_ID = BTCPAYSERVER.WALLET_ID
 
 let config = {
     headers: {
@@ -75,9 +76,69 @@ const webhookSignatureIsValid = (body, signature) => {
     return false
 }
 
+const getNodeInfo = async () => {
+    const response = await axios.get(
+        `${BTCPAYSERVER_API_ROOT}/server/lightning/BTC/info`, 
+        config
+    )
+
+    return response.data
+}
+
+const getFee = async () => {
+    const response = await axios.get(
+        `${BTCPAYSERVER_API_ROOT}/stores/${BTCPAYSERVER_STORE_ID}/payment-methods/onchain/BTC/wallet/feerate`, 
+        config
+    )
+
+    return response.data
+}
+
+const createOnChainTransaction = async (walletAddress, amount) => {
+    const fee = await getFee()
+    const body = {
+        destinations: [
+            {
+                destination: walletAddress,
+                amount: amount,
+            }
+        ],
+        feerate: fee.feeRate,
+        proceedWithPayjoin: true,
+        proceedWithBroadcast: true,
+        noChange: false,
+        rbf: true,
+        excludeUnconfirmed: false,
+    }
+    const response = await axios.post(
+        `${BTCPAYSERVER_API_ROOT}/stores/${BTCPAYSERVER_STORE_ID}/payment-methods/onchain/BTC/wallet/transactions`,
+        body, 
+        config
+    )
+    
+    return response.data
+}
+
+const payLightningInvoice = async (payment_request) => {
+    const body = {
+        destination: payment_request
+    }
+    const response = await axios.post(
+        `${BTCPAYSERVER_API_ROOT}/lnbank/wallets/${BTCPAYSERVER_WALLET_ID}/send`,
+        body, 
+        config
+    )
+
+    return response.data
+}
+
 module.exports = { 
     createBitcoinInvoice, 
     getAllInvoices, 
     getInvoiceById,
-    webhookSignatureIsValid
+    webhookSignatureIsValid,
+    getNodeInfo,
+    createOnChainTransaction,
+    getFee,
+    payLightningInvoice
 };

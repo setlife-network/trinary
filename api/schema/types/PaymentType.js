@@ -21,6 +21,13 @@ module.exports = gql`
         contributor: Contributor
     }
     
+    type BTCPayment {
+        transactionHash: String
+        paymentRequest: String
+        amount: String
+        status: String
+        error: String
+    }
 
     input PaymentInput {
         amount: Int,
@@ -33,10 +40,8 @@ module.exports = gql`
     }
 
     input ContributorInput {
-        onchain_address: String,
-        invoice_macaroon: String,
-        lnd_host: String,
-        lnd_port: Int
+        id: Int,
+        amount: Int
     }
 
     type Query {
@@ -71,10 +76,8 @@ module.exports = gql`
         ): Float!
 
         sendPayment(
-            amount: Int!,
-            sender: ContributorInput,
             contributors: [ContributorInput]
-        ): Int
+        ): [BTCPayment]
     }
 
 `
