@@ -105,16 +105,6 @@ const AdvancedWalletSetup = () => {
         }
     }
 
-    const handleInputChange = (value, setValue, regex) => {
-        if (regex) {
-            if (regex.test(value)) {
-                setValue(value)
-            }
-        } else {
-            setValue(value)
-        }
-    }
-
     const renderAdvancedWalletInputs = () => {
         return inputOptions.map(r => {
             return (
@@ -123,7 +113,6 @@ const AdvancedWalletSetup = () => {
                         type='text'
                         placeholder={r.label}
                         value={r.value}
-                        onChange={(e) => handleInputChange(e.target.value, r.setValue, r.regex)}
                         className='
                             mt-5
                             form-control

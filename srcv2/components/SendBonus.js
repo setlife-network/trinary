@@ -81,7 +81,11 @@ const SendBonus = (props) => {
         setScreenIndex(screenIndex + 1)
     }
 
-    const disableContinue = (!selectedContributors.length || !bonusAmount) && bonusPayments.length == 0
+    const enableContinue = (
+        selectedContributors.length && bonusAmount != 0 && selectedBonusSplitType == 0
+    ) || (
+        !bonusPayments.length == 0 && selectedBonusSplitType == 1
+    )
 
     if (screenIndex == 3) { 
         setOpen(false)
@@ -117,10 +121,10 @@ const SendBonus = (props) => {
             }
             <div className='grid absolute bottom-10 left-16 right-16 gap-2'>
                 <button
-                    className={`${disableContinue ? 'bg-med-gray' : 'bg-setlife'} rounded-full py-2 w-full text-white`}
+                    className={`${!enableContinue ? 'bg-med-gray' : 'bg-setlife'} rounded-full py-2 w-full text-white`}
                     onClick={() => nextStep()}
                     type='button'
-                    disabled={disableContinue}
+                    disabled={!enableContinue}
                 >
                     {`${buttonText[screenIndex]}`}
                 </button>
