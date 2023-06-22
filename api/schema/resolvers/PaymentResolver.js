@@ -189,10 +189,7 @@ module.exports = {
                 const payLndInvoices = async () => lndInvoices.map(async invoice => {
                     return reflect(btcPayServer.payLightningInvoice(invoice))
                         .then(result => {
-                            if (result.status === 'rejected') {
-                                results.push({ error: result.reason.message });
-                            }
-                            return result.status === 'fulfilled' ? result.value : undefined;
+                            return result.status === 'fulfilled' ? result.value : { error: result.reason.message }
                         })
                 })
                 const lndInvocesResults = await Promise.all(await payLndInvoices())
@@ -203,15 +200,24 @@ module.exports = {
                 const payOnChain = async () => onChainAddresses.map(async receiver => {
                     return reflect(btcPayServer.createOnChainTransaction(receiver.address, String(receiver.amount / 100000000)))
                         .then(result => {
-                            if (result.status === 'rejected') {
-                                results.push({ error: result.reason.message });
-                            }
-                            return result.status === 'fulfilled' ? result.value : undefined;
+                            return result.status === 'fulfilled' ? result.value : { error: result.reason.message }
                         })
                 })
                 const onChainResults = await Promise.all(await payOnChain())
                 results.push(...onChainResults)
             }
+
+            results.map(result => {
+                if (result && !result.error) {
+                    models.Payment.create({
+                        amount: result.paymentRequest ? result.amount / 1000 : result.amount,
+                        external_uuid: result.paymentRequest ? result.paymentRequest : result.transactionHash,
+                        date_incurred: moment(result.createdAt ? result.createdAt : result.timestamp).utc().format('YYYY-MM-DD'),
+                        external_uuid_type: 'bitcoin',
+                        currency: 'SATS'
+                    })
+                }
+            })
 
             return results
         }
