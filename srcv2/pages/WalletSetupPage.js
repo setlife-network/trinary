@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import { useQuery } from '@apollo/client'
+import { Icon } from '@material-ui/core'
+import { useHistory } from 'react-router-dom'
 
 import Section from '../components/Section'
 import WalletOption from '../components/WalletOption'
@@ -20,6 +22,8 @@ const WalletSetupPage = () => {
             id: Number(sessionUser().id)
         }
     })
+
+    const history = useHistory()
 
     const renderWalletOptions = () => {
         const contributorWallets = dataContributorWallets.getContributorById.wallet
@@ -45,6 +49,9 @@ const WalletSetupPage = () => {
 
     return (
         <div className='WalletSetupPage bg-med-gray h-full min-h-screen'>
+            <button type='button' className='w-fit mt-4' onClick={() => history.push('/dashboard')}>
+                <Icon className='fas fa-arrow-left px-12 sm:px-24 md:px-48 lg:px-96 pt-2 pb-6'/>
+            </button>
             <Section>
                 <p className='text-3xl font-bold mb-2'>
                     {'Choose one option'}

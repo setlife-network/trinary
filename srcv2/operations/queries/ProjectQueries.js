@@ -24,6 +24,12 @@ export const GET_PROJECT = gql`
                 id
                 name
                 avatar_url
+                wallet {
+                    onchain_address
+                    invoice_macaroon
+                    lnd_host
+                    lnd_port
+                }
             }
             client {
                 id
