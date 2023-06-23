@@ -28,6 +28,7 @@ module.exports = {
     },
     BTCPAYSERVER: {
         API_KEY: process.env.BTCPAYSERVER_API_KEY,
+        API_ROOT: process.env.BTCPAYSERVER_API_ROOT,
         STORE_ID: process.env.BTCPAYSERVER_STORE_ID,
         SECRET: process.env.BTCPAYSERVER_SECRET,
         WALLET_ID: process.env.BTCPAYSERVER_WALLET_ID

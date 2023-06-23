@@ -35,7 +35,4 @@ module.exports = {
         'MXN',
         'EUR'
     ],
-    // BTCPAYSERVER_API_ROOT: 'https://btcpayserver.setlife.tech/api/v1'
-    // TEST API_ROOT
-    BTCPAYSERVER_API_ROOT: 'https://testnet.demo.btcpayserver.org/api/v1'
 }
