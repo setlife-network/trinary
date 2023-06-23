@@ -189,7 +189,8 @@ module.exports = {
                 const payLndInvoices = async () => lndInvoices.map(async invoice => {
                     return reflect(btcPayServer.payLightningInvoice(invoice))
                         .then(result => {
-                            return result.status === 'fulfilled' ? result.value : { error: result.reason.message }
+                            console.log(result)
+                            return result.status === 'fulfilled' ? result.value : { error: result.reason.message, status: result.status }
                         })
                 })
                 const lndInvocesResults = await Promise.all(await payLndInvoices())
@@ -200,7 +201,7 @@ module.exports = {
                 const payOnChain = async () => onChainAddresses.map(async receiver => {
                     return reflect(btcPayServer.createOnChainTransaction(receiver.address, String(receiver.amount / 100000000)))
                         .then(result => {
-                            return result.status === 'fulfilled' ? result.value : { error: result.reason.message }
+                            return result.status === 'fulfilled' ? result.value : { error: result.reason.message, status: result.status }
                         })
                 })
                 const onChainResults = await Promise.all(await payOnChain())
