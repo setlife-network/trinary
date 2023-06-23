@@ -189,7 +189,6 @@ module.exports = {
                 const payLndInvoices = async () => lndInvoices.map(async invoice => {
                     return reflect(btcPayServer.payLightningInvoice(invoice))
                         .then(result => {
-                            console.log(result)
                             return result.status === 'fulfilled' ? result.value : { error: result.reason.message, status: result.status }
                         })
                 })
