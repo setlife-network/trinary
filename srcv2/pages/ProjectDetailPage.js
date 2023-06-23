@@ -181,7 +181,7 @@ const ProjectDetailPage = (props) => {
                             Active Contributors
                         </p>
                     </div>
-                    {sessionUser().wallet && sessionUser().wallet.invoice_macaroon &&
+                    {sessionUser().wallet && sessionUser().wallet.invoice_macaroon && sessionUser().github_handle.split('/')[3] == 'otech47' &&
                         <button
                             type='button'
                             className='border-2 border-setlife text-setlife rounded-full py-1 mb-4 w-fit h-fit px-2 ml-auto'
