@@ -212,7 +212,7 @@ module.exports = {
                     models.Payment.create({
                         amount: result.paymentRequest ? result.amount / 1000 : result.amount,
                         external_uuid: result.paymentRequest ? result.paymentRequest : result.transactionHash,
-                        date_incurred: moment(result.createdAt ? result.createdAt : result.timestamp).utc().format('YYYY-MM-DD'),
+                        date_incurred: moment.unix(result.createdAt ? result.createdAt : result.timestamp).utc().format('YYYY-MM-DD'),
                         external_uuid_type: 'bitcoin',
                         currency: 'SATS'
                     })
