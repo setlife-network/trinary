@@ -21,6 +21,13 @@ module.exports = gql`
         contributor: Contributor
     }
     
+    type BTCPayment {
+        transactionHash: String
+        paymentRequest: String
+        amount: String
+        status: String
+        error: String
+    }
 
     input PaymentInput {
         amount: Int,
@@ -30,6 +37,11 @@ module.exports = gql`
         contributor_id: Int,
         date_incurred: String,
         date_paid: String
+    }
+
+    input ContributorInput {
+        id: Int,
+        amount: Int
     }
 
     type Query {
@@ -62,6 +74,10 @@ module.exports = gql`
         convertUSDtoSATS(
             amount: Int!
         ): Float!
+
+        sendPayment(
+            contributors: [ContributorInput]
+        ): [BTCPayment]
     }
 
 `
