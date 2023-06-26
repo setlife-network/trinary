@@ -22,6 +22,7 @@ module.exports = gql`
     }
     
     type BTCPayment {
+        contributorId: Int,
         transactionHash: String
         paymentRequest: String
         amount: String
