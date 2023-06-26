@@ -48,3 +48,16 @@ export const CONVERT_USD_TO_SATS_AMOUNT = gql`
         convertUSDtoSATS(amount: $amount)
     }
 `
+
+export const SEND_BONUS = gql`
+    mutation SendPayment($contributors: [ContributorInput]){
+        sendPayment(contributors: $contributors) {
+            contributorId,
+            amount,
+            transactionHash,
+            paymentRequest
+            status,
+            error
+        }
+    }
+`

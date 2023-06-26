@@ -173,9 +173,10 @@ module.exports = {
             const invoices = await Promise.all(wallets.map(async (wallet, i) => {
                 if (wallet.dataValues.invoice_macaroon) {
                     const invoice = await lnd.addInvoice(wallet.dataValues.lnd_host, wallet.dataValues.lnd_port, wallet.dataValues.invoice_macaroon, amounts[i])
-                    return invoice.payment_request
+                    return { contributorId: wallet.dataValues.contributor_id, payment_request: invoice.payment_request }
                 } else {
                     onChainAddresses.push({
+                        contributorId: wallet.dataValues.contributor_id,
                         address: wallet.dataValues.onchain_address,
                         amount: amounts[i]
                     })
@@ -187,9 +188,9 @@ module.exports = {
                 const lndInvoices = invoices.filter(invoice => invoice !== null)
     
                 const payLndInvoices = async () => lndInvoices.map(async invoice => {
-                    return reflect(btcPayServer.payLightningInvoice(invoice))
+                    return reflect(btcPayServer.payLightningInvoice(invoice.payment_request))
                         .then(result => {
-                            return result.status === 'fulfilled' ? result.value : { error: result.reason.message, status: result.status }
+                            return result.status === 'fulfilled' ? { contributorId: invoice.contributorId, ...result.value } : { error: result.reason.message, status: result.status }
                         })
                 })
                 const lndInvocesResults = await Promise.all(await payLndInvoices())
@@ -200,7 +201,7 @@ module.exports = {
                 const payOnChain = async () => onChainAddresses.map(async receiver => {
                     return reflect(btcPayServer.createOnChainTransaction(receiver.address, String(receiver.amount / 100000000)))
                         .then(result => {
-                            return result.status === 'fulfilled' ? result.value : { error: result.reason.message, status: result.status }
+                            return result.status === 'fulfilled' ? { contributorId: receiver.contributorId, ...result.value } : { error: result.reason.message, status: result.status }
                         })
                 })
                 const onChainResults = await Promise.all(await payOnChain())
