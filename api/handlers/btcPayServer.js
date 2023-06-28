@@ -119,6 +119,12 @@ const createOnChainTransaction = async (walletAddress, amount) => {
     return response.data
 }
 
+// This function depends on a BTCPAYSERVER_WALLET_ID which is a LNBank
+// wallet set up within the BTCPS dashboard (plugin required) and is meant
+// to serve as a partitioned source wallet so that you don't have to grant
+// full canuseinternallightningnode permissions to this app
+// any payment_request passed to this function will be paid from the funds
+// in that LN Bank Wallet
 const payLightningInvoice = async (payment_request) => {
     const body = {
         destination: payment_request
