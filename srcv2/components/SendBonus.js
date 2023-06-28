@@ -51,8 +51,8 @@ const SendBonus = (props) => {
                 if (bs.error) {
                     throw new Error('Transaction error')
                 } else {
-                    const paymentSucceed = bonusPayments.filter(item => item.contributor.id === bs.contributorId)
-                    sentBonusInfo.succeeded.push(...paymentSucceed)
+                    const paymentSucceeded = bonusPayments.filter(item => item.contributor.id === bs.contributorId)
+                    sentBonusInfo.succeeded.push(...paymentSucceeded)
                 }
             } catch (error) {
                 console.log('An error occurred: ' + error)
