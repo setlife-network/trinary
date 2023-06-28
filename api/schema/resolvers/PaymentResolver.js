@@ -202,6 +202,7 @@ module.exports = {
                                     contributorId: invoice.contributorId, 
                                     ...result.value 
                                 } : { 
+                                    contributorId: invoice.contributorId,
                                     error: result.reason.message, 
                                     status: result.status 
                                 }
@@ -225,6 +226,7 @@ module.exports = {
                                     contributorId: receiver.contributorId, 
                                     ...result.value 
                                 } : { 
+                                    contributorId: receiver.contributorId,
                                     error: result.reason.message, 
                                     status: result.status 
                                 }
