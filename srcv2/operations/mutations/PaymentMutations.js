@@ -50,7 +50,7 @@ export const CONVERT_USD_TO_SATS_AMOUNT = gql`
 `
 
 export const SEND_BONUS = gql`
-    mutation SendPayment($contributors: [ContributorInput]){
+    mutation SendPayment($contributors: [ContributorBonus]){
         sendPayment(contributors: $contributors) {
             contributorId,
             amount,

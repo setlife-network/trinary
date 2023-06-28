@@ -34,7 +34,7 @@ const SendBonus = (props) => {
                     throw new Error('User does not have a wallet setup')
                 }
                 if (bp.contributor.wallet.invoice_macaroon != null || bp.contributor.wallet.onchain_address != null) {
-                    contributorsWithWallets.push({ id: bp.contributor.id, amount: Math.round(bp.satsBonusAmount) })
+                    contributorsWithWallets.push({ contributor_id: bp.contributor.id, amount_to_pay: Math.round(bp.satsBonusAmount) })
                 }
             } catch (error) {
                 console.log('An error occurred: ' + error)
@@ -51,8 +51,8 @@ const SendBonus = (props) => {
                 if (bs.error) {
                     throw new Error('Transaction error')
                 } else {
-                    const paymentSucced = bonusPayments.filter(item => item.contributor.id === bs.contributorId)
-                    sentBonusInfo.succeeded.push(...paymentSucced)
+                    const paymentSucceed = bonusPayments.filter(item => item.contributor.id === bs.contributorId)
+                    sentBonusInfo.succeeded.push(...paymentSucceed)
                 }
             } catch (error) {
                 console.log('An error occurred: ' + error)
