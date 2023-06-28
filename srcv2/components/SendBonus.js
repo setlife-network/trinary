@@ -40,9 +40,7 @@ const SendBonus = (props) => {
                     sentBonusInfo.succeeded.push(bp)
                 }
             } catch (error) {
-                console.log('An error ocurred: ' + error)
-                console.log('bp')
-                console.log(bp)
+                console.log('An error occurred: ' + error)
                 sentBonusInfo.failed.push(bp)
             }
         }))
@@ -115,7 +113,6 @@ const SendBonus = (props) => {
             }
             {screenIndex == 2 && 
                 <SendBonusSuccessful
-                    bonusPayments={bonusPayments}
                     sentBonuses={sentBonuses}
                 />
             }

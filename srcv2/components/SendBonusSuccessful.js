@@ -6,7 +6,6 @@ import {
 const SendBonusSuccessful = (props) => {
 
     const {
-        bonusPayments,
         sentBonuses
     } = props
 
