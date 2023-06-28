@@ -156,60 +156,69 @@ module.exports = {
             const results = []
             const onChainAddresses = []
 
-            const contributorIds = contributors.map(c => c.contributor_id)
-            const amounts = contributors.map(c => c.amount_to_pay)
-
             const reflect = promise => promise.then(
                 value => ({ status: 'fulfilled', value }),
                 error => ({ status: 'rejected', reason: error })
             )
-            
-            const wallets = await models.Wallet.findAll({
-                where: {
-                    contributor_id: contributorIds
-                }
-            })
 
-            const invoices = await Promise.all(wallets.map(async (wallet, i) => {
-                if (wallet.dataValues.invoice_macaroon) {
-                    const invoice = await lnd.addInvoice(wallet.dataValues.lnd_host, wallet.dataValues.lnd_port, wallet.dataValues.invoice_macaroon, amounts[i])
-                    return { 
-                        contributorId: wallet.dataValues.contributor_id, 
-                        payment_request: invoice.payment_request 
+            const invoices = await contributors.reduce(async (previousPromise, contributor) => {
+                const acc = await previousPromise
+                const wallet = await models.Wallet.findOne({
+                    where: {
+                        contributor_id: contributor.contributor_id
                     }
+                })
+
+                if (wallet.dataValues.invoice_macaroon) {
+                    const invoice = await lnd.addInvoice(
+                        wallet.dataValues.lnd_host, 
+                        wallet.dataValues.lnd_port, 
+                        wallet.dataValues.invoice_macaroon, 
+                        contributor.amount_to_pay
+                    )
+                    acc.push({
+                        contributorId: contributor.contributor_id, 
+                        payment_request: invoice.payment_request 
+                    })
                 } else {
                     onChainAddresses.push({
-                        contributorId: wallet.dataValues.contributor_id,
+                        contributorId: contributor.contributor_id,
                         address: wallet.dataValues.onchain_address,
-                        amount: amounts[i]
+                        amount: contributor.amount_to_pay
                     })
-                    return null
                 }
-            }))
+
+                return acc
+            }, Promise.resolve([]))
 
             if (invoices) {
                 const lndInvoices = invoices.filter(invoice => invoice !== null)
     
-                const payLndInvoices = async () => lndInvoices.map(async invoice => {
+                const payLndInvoices = async invoice => {
                     return reflect(btcPayServer.payLightningInvoice(invoice.payment_request))
                         .then(result => {
                             return result.status === 'fulfilled' 
                                 ? { 
                                     contributorId: invoice.contributorId, 
-                                    ...result.value } 
-                                : { 
+                                    ...result.value 
+                                } : { 
                                     error: result.reason.message, 
                                     status: result.status 
                                 }
                         })
-                })
-                const lndInvocesResults = await Promise.all(await payLndInvoices())
-                results.push(...lndInvocesResults)
+                }
+                const lndInvoicesResults = await Promise.all(lndInvoices.map(payLndInvoices))
+                results.push(...lndInvoicesResults)
             }
 
             if (onChainAddresses) {
-                const payOnChain = async () => onChainAddresses.map(async receiver => {
-                    return reflect(btcPayServer.createOnChainTransaction(receiver.address, String(receiver.amount / 100000000)))
+                const payOnChain = async receiver => {
+                    return reflect(
+                        btcPayServer.createOnChainTransaction(
+                            receiver.address, 
+                            String(receiver.amount / 100000000)
+                        )
+                    )
                         .then(result => {
                             return result.status === 'fulfilled' 
                                 ? { 
@@ -220,8 +229,8 @@ module.exports = {
                                     status: result.status 
                                 }
                         })
-                })
-                const onChainResults = await Promise.all(await payOnChain())
+                }
+                const onChainResults = await Promise.all(onChainAddresses.map(payOnChain))
                 results.push(...onChainResults)
             }
 
@@ -230,8 +239,8 @@ module.exports = {
                     models.Payment.create({
                         amount: result.paymentRequest ? result.amount / 1000 : result.amount,
                         external_uuid: result.paymentRequest ? result.paymentRequest : result.transactionHash,
-                        date_incurred: moment.unix(result.createdAt ? result.createdAt : result.timestamp).utc().format('YYYY-MM-DD'),
-                        external_uuid_type: 'bitcoin',
+                        date_incurred: moment.unix(result.createdAt ? result.createdAt : result.timestamp).format('YYYY-MM-DD, h:mm:ss a'),
+                        external_uuid_type: result.paymentRequest ? 'bitcoin:lightning' : 'bitcoin:onchain',
                         currency: 'SATS'
                     })
                 }
