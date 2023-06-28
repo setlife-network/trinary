@@ -17,6 +17,8 @@ import { getHandle, selectCurrencyInformation } from '../scripts/selectors'
 
 import { sessionUser } from '../reactivities/variables'
 
+import { TEMP_AUTHORIZED_SUPERUSER_ID } from '../constants'
+
 const ProjectDetailPage = (props) => {
 
     const { projectId } = useParams()
@@ -181,7 +183,7 @@ const ProjectDetailPage = (props) => {
                             Active Contributors
                         </p>
                     </div>
-                    {sessionUser().wallet && sessionUser().wallet.invoice_macaroon && sessionUser().github_handle.split('/')[3] == 'otech47' &&
+                    {sessionUser().id === TEMP_AUTHORIZED_SUPERUSER_ID &&
                         <button
                             type='button'
                             className='border-2 border-setlife text-setlife rounded-full py-1 mb-4 w-fit h-fit px-2 ml-auto'
