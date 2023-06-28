@@ -19,11 +19,10 @@ const SendBonusEqualy = (props) => {
         setSelectedContributors(contributors)
     }, [selectedContributorsIdx])
 
-    const currencyInformation = project.expected_budget_currency
-        ? selectCurrencyInformation({
-            currency: project.expected_budget_currency
+    const currencyInformation = 
+        selectCurrencyInformation({
+            currency: 'USD'
         }) 
-        : null
 
     const selectContributor = (idx) => {
         if (selectedContributorsIdx.includes(idx)) {

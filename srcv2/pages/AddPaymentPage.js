@@ -52,11 +52,12 @@ const AddPaymentPage = () => {
 
     const disabledPayment = !paymentAmount || !paymentIncurred
 
-    const currencyInformation = project.expected_budget_currency
-        ? selectCurrencyInformation({
+    const currencyInformation = 
+        selectCurrencyInformation({
             currency: project.expected_budget_currency
-        }) 
-        : null
+                ? project.expected_budget_currency
+                : 'USD' 
+        })
 
     const handleCreatePayment = async () => {
         if (disabledPayment) return
