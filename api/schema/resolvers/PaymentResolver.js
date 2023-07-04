@@ -242,6 +242,7 @@ module.exports = {
                         amount: result.paymentRequest ? result.amount / 1000 : result.amount,
                         external_uuid: result.paymentRequest ? result.paymentRequest : result.transactionHash,
                         date_incurred: moment.unix(result.createdAt ? result.createdAt : result.timestamp).format('YYYY-MM-DD, h:mm:ss a'),
+                        date_paid: moment().format('YYYY-MM-DD, h:mm:ss a'),
                         external_uuid_type: result.paymentRequest ? 'bitcoin:lightning' : 'bitcoin:onchain',
                         currency: 'SATS'
                     })
