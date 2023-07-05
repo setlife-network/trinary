@@ -153,7 +153,7 @@ module.exports = {
             }
         },
         sendPayment: async (root, { contributors }, { cookies, models }) => {
-            if (cookies.userSession === TEMP_AUTHORIZED_SUPERUSER_ID) {
+            if (cookies.userSession == TEMP_AUTHORIZED_SUPERUSER_ID) {
                 const results = []
                 const onChainAddresses = []
 
