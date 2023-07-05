@@ -5,7 +5,7 @@ const bitcoinConversion = require('bitcoin-conversion')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules')
-const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants')
+const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES, TEMP_AUTHORIZED_SUPERUSER_ID } = require('../../config/constants')
 const lnd = require('../../handlers/lnd')
 const btcPayServer = require('../../handlers/btcPayServer')
 
@@ -152,74 +152,78 @@ module.exports = {
                 throw new Error('Failed to convert USD to SATS: ', error);
             }
         },
-        sendPayment: async (root, { contributors }, { models }) => {
-            const results = []
-            const onChainAddresses = []
-
-            const contributorIds = contributors.map(c => c.id)
-            const amounts = contributors.map(c => c.amount)
-
-            const reflect = promise => promise.then(
-                value => ({ status: 'fulfilled', value }),
-                error => ({ status: 'rejected', reason: error })
-            )
-            
-            const wallets = await models.Wallet.findAll({
-                where: {
-                    contributor_id: contributorIds
-                }
-            })
-
-            const invoices = await Promise.all(wallets.map(async (wallet, i) => {
-                if (wallet.dataValues.invoice_macaroon) {
-                    const invoice = await lnd.addInvoice(wallet.dataValues.lnd_host, wallet.dataValues.lnd_port, wallet.dataValues.invoice_macaroon, amounts[i])
-                    return invoice.payment_request
-                } else {
-                    onChainAddresses.push({
-                        address: wallet.dataValues.onchain_address,
-                        amount: amounts[i]
-                    })
-                    return null
-                }
-            }))
-
-            if (invoices) {
-                const lndInvoices = invoices.filter(invoice => invoice !== null)
+        sendPayment: async (root, { contributors }, { cookies, models }) => {
+            if (cookies.userSession === TEMP_AUTHORIZED_SUPERUSER_ID) {
+                const results = []
+                const onChainAddresses = []
     
-                const payLndInvoices = async () => lndInvoices.map(async invoice => {
-                    return reflect(btcPayServer.payLightningInvoice(invoice))
-                        .then(result => {
-                            return result.status === 'fulfilled' ? result.value : { error: result.reason.message, status: result.status }
-                        })
+                const contributorIds = contributors.map(c => c.id)
+                const amounts = contributors.map(c => c.amount)
+    
+                const reflect = promise => promise.then(
+                    value => ({ status: 'fulfilled', value }),
+                    error => ({ status: 'rejected', reason: error })
+                )
+                
+                const wallets = await models.Wallet.findAll({
+                    where: {
+                        contributor_id: contributorIds
+                    }
                 })
-                const lndInvocesResults = await Promise.all(await payLndInvoices())
-                results.push(...lndInvocesResults)
-            }
-
-            if (onChainAddresses) {
-                const payOnChain = async () => onChainAddresses.map(async receiver => {
-                    return reflect(btcPayServer.createOnChainTransaction(receiver.address, String(receiver.amount / 100000000)))
-                        .then(result => {
-                            return result.status === 'fulfilled' ? result.value : { error: result.reason.message, status: result.status }
+    
+                const invoices = await Promise.all(wallets.map(async (wallet, i) => {
+                    if (wallet.dataValues.invoice_macaroon) {
+                        const invoice = await lnd.addInvoice(wallet.dataValues.lnd_host, wallet.dataValues.lnd_port, wallet.dataValues.invoice_macaroon, amounts[i])
+                        return invoice.payment_request
+                    } else {
+                        onChainAddresses.push({
+                            address: wallet.dataValues.onchain_address,
+                            amount: amounts[i]
                         })
-                })
-                const onChainResults = await Promise.all(await payOnChain())
-                results.push(...onChainResults)
-            }
-
-            results.map(result => {
-                if (result && !result.error) {
-                    models.Payment.create({
-                        amount: result.paymentRequest ? result.amount / 1000 : result.amount,
-                        external_uuid: result.paymentRequest ? result.paymentRequest : result.transactionHash,
-                        date_incurred: moment.unix(result.createdAt ? result.createdAt : result.timestamp).utc().format('YYYY-MM-DD'),
-                        external_uuid_type: 'bitcoin',
-                        currency: 'SATS'
+                        return null
+                    }
+                }))
+    
+                if (invoices) {
+                    const lndInvoices = invoices.filter(invoice => invoice !== null)
+        
+                    const payLndInvoices = async () => lndInvoices.map(async invoice => {
+                        return reflect(btcPayServer.payLightningInvoice(invoice))
+                            .then(result => {
+                                return result.status === 'fulfilled' ? result.value : { error: result.reason.message, status: result.status }
+                            })
                     })
+                    const lndInvocesResults = await Promise.all(await payLndInvoices())
+                    results.push(...lndInvocesResults)
                 }
-            })
+    
+                if (onChainAddresses) {
+                    const payOnChain = async () => onChainAddresses.map(async receiver => {
+                        return reflect(btcPayServer.createOnChainTransaction(receiver.address, String(receiver.amount / 100000000)))
+                            .then(result => {
+                                return result.status === 'fulfilled' ? result.value : { error: result.reason.message, status: result.status }
+                            })
+                    })
+                    const onChainResults = await Promise.all(await payOnChain())
+                    results.push(...onChainResults)
+                }
+    
+                results.map(result => {
+                    if (result && !result.error) {
+                        models.Payment.create({
+                            amount: result.paymentRequest ? result.amount / 1000 : result.amount,
+                            external_uuid: result.paymentRequest ? result.paymentRequest : result.transactionHash,
+                            date_incurred: moment.unix(result.createdAt ? result.createdAt : result.timestamp).utc().format('YYYY-MM-DD'),
+                            external_uuid_type: 'bitcoin',
+                            currency: 'SATS'
+                        })
+                    }
+                })
+                return results
+            } else {
+                throw new Error('Unathorized user')
+            }
 
-            return results
         }
     }
 
