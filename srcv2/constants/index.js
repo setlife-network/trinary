@@ -1,4 +1,5 @@
 export const API_ROOT = process.env.REACT_APP_API_URL
+export const TEMP_AUTHORIZED_SUPERUSER_ID = process.env.TEMP_AUTHORIZED_SUPERUSER_ID
 export const IS_PRODUCTION = process.env.NODE_ENV == 'production' ? true : false
 export const GITHUB_LOGO_URL = 'https://project-trinary.s3.us-east-1.amazonaws.com/images/github-icon.png'
 export const GITHUB_ALT_LOGO_URL = 'https://setlife-solutions.s3.us-east-1.amazonaws.com/images/github-alt-logo.png'

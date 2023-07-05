@@ -5,7 +5,7 @@ const bitcoinConversion = require('bitcoin-conversion')
 
 const { validateDatesFormat } = require('../helpers/inputValidation')
 const apiModules = require('../../modules')
-const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES } = require('../../config/constants')
+const { DEFAULT_STRIPE_CURRENCY, STRIPE_SUPPORTED_CURRENCIES, TEMP_AUTHORIZED_SUPERUSER_ID } = require('../../config/constants')
 const lnd = require('../../handlers/lnd')
 const btcPayServer = require('../../handlers/btcPayServer')
 
@@ -152,103 +152,107 @@ module.exports = {
                 throw new Error('Failed to convert USD to SATS: ', error);
             }
         },
-        sendPayment: async (root, { contributors }, { models }) => {
-            const results = []
-            const onChainAddresses = []
+        sendPayment: async (root, { contributors }, { cookies, models }) => {
+            if (cookies.userSession === TEMP_AUTHORIZED_SUPERUSER_ID) {
+              const results = []
+              const onChainAddresses = []
 
-            const reflect = promise => promise.then(
-                value => ({ status: 'fulfilled', value }),
-                error => ({ status: 'rejected', reason: error })
-            )
+              const reflect = promise => promise.then(
+                  value => ({ status: 'fulfilled', value }),
+                  error => ({ status: 'rejected', reason: error })
+              )
 
-            const invoices = await contributors.reduce(async (previousPromise, contributor) => {
-                const acc = await previousPromise
-                const wallet = await models.Wallet.findOne({
-                    where: {
-                        contributor_id: contributor.contributor_id
-                    }
-                })
+              const invoices = await contributors.reduce(async (previousPromise, contributor) => {
+                  const acc = await previousPromise
+                  const wallet = await models.Wallet.findOne({
+                      where: {
+                          contributor_id: contributor.contributor_id
+                      }
+                  })
 
-                if (wallet.dataValues.invoice_macaroon) {
-                    const invoice = await lnd.addInvoice(
-                        wallet.dataValues.lnd_host, 
-                        wallet.dataValues.lnd_port, 
-                        wallet.dataValues.invoice_macaroon, 
-                        contributor.amount_to_pay
-                    )
-                    acc.push({
-                        contributorId: contributor.contributor_id, 
-                        payment_request: invoice.payment_request 
-                    })
-                } else {
-                    onChainAddresses.push({
-                        contributorId: contributor.contributor_id,
-                        address: wallet.dataValues.onchain_address,
-                        amount: contributor.amount_to_pay
-                    })
-                }
+                  if (wallet.dataValues.invoice_macaroon) {
+                      const invoice = await lnd.addInvoice(
+                          wallet.dataValues.lnd_host, 
+                          wallet.dataValues.lnd_port, 
+                          wallet.dataValues.invoice_macaroon, 
+                          contributor.amount_to_pay
+                      )
+                      acc.push({
+                          contributorId: contributor.contributor_id, 
+                          payment_request: invoice.payment_request 
+                      })
+                  } else {
+                      onChainAddresses.push({
+                          contributorId: contributor.contributor_id,
+                          address: wallet.dataValues.onchain_address,
+                          amount: contributor.amount_to_pay
+                      })
+                  }
 
-                return acc
-            }, Promise.resolve([]))
+                  return acc
+              }, Promise.resolve([]))
 
-            if (invoices) {
-                const lndInvoices = invoices.filter(invoice => invoice !== null)
-    
-                const payLndInvoices = async invoice => {
-                    return reflect(btcPayServer.payLightningInvoice(invoice.payment_request))
-                        .then(result => {
-                            return result.status === 'fulfilled' 
-                                ? { 
-                                    contributorId: invoice.contributorId, 
-                                    ...result.value 
-                                } : { 
-                                    contributorId: invoice.contributorId,
-                                    error: result.reason.message, 
-                                    status: result.status 
-                                }
-                        })
-                }
-                const lndInvoicesResults = await Promise.all(lndInvoices.map(payLndInvoices))
-                results.push(...lndInvoicesResults)
+              if (invoices) {
+                  const lndInvoices = invoices.filter(invoice => invoice !== null)
+
+                  const payLndInvoices = async invoice => {
+                      return reflect(btcPayServer.payLightningInvoice(invoice.payment_request))
+                          .then(result => {
+                              return result.status === 'fulfilled' 
+                                  ? { 
+                                      contributorId: invoice.contributorId, 
+                                      ...result.value 
+                                  } : { 
+                                      contributorId: invoice.contributorId,
+                                      error: result.reason.message, 
+                                      status: result.status 
+                                  }
+                          })
+                  }
+                  const lndInvoicesResults = await Promise.all(lndInvoices.map(payLndInvoices))
+                  results.push(...lndInvoicesResults)
+              }
+
+              if (onChainAddresses) {
+                  const payOnChain = async receiver => {
+                      return reflect(
+                          btcPayServer.createOnChainTransaction(
+                              receiver.address, 
+                              String(receiver.amount / 100000000)
+                          )
+                      )
+                          .then(result => {
+                              return result.status === 'fulfilled' 
+                                  ? { 
+                                      contributorId: receiver.contributorId, 
+                                      ...result.value 
+                                  } : { 
+                                      contributorId: receiver.contributorId,
+                                      error: result.reason.message, 
+                                      status: result.status 
+                                  }
+                          })
+                  }
+                  const onChainResults = await Promise.all(onChainAddresses.map(payOnChain))
+                  results.push(...onChainResults)
+              }
+
+              results.map(result => {
+                  if (result && !result.error) {
+                      models.Payment.create({
+                          amount: result.paymentRequest ? result.amount / 1000 : result.amount,
+                          external_uuid: result.paymentRequest ? result.paymentRequest : result.transactionHash,
+                          date_incurred: moment.unix(result.createdAt ? result.createdAt : result.timestamp).format('YYYY-MM-DD, h:mm:ss a'),
+                          external_uuid_type: result.paymentRequest ? 'bitcoin:lightning' : 'bitcoin:onchain',
+                          currency: 'SATS'
+                      })
+                  }
+              })
+
+              return results
+            } else {
+                throw new Error('Unathorized user')
             }
-
-            if (onChainAddresses) {
-                const payOnChain = async receiver => {
-                    return reflect(
-                        btcPayServer.createOnChainTransaction(
-                            receiver.address, 
-                            String(receiver.amount / 100000000)
-                        )
-                    )
-                        .then(result => {
-                            return result.status === 'fulfilled' 
-                                ? { 
-                                    contributorId: receiver.contributorId, 
-                                    ...result.value 
-                                } : { 
-                                    contributorId: receiver.contributorId,
-                                    error: result.reason.message, 
-                                    status: result.status 
-                                }
-                        })
-                }
-                const onChainResults = await Promise.all(onChainAddresses.map(payOnChain))
-                results.push(...onChainResults)
-            }
-
-            results.map(result => {
-                if (result && !result.error) {
-                    models.Payment.create({
-                        amount: result.paymentRequest ? result.amount / 1000 : result.amount,
-                        external_uuid: result.paymentRequest ? result.paymentRequest : result.transactionHash,
-                        date_incurred: moment.unix(result.createdAt ? result.createdAt : result.timestamp).format('YYYY-MM-DD, h:mm:ss a'),
-                        external_uuid_type: result.paymentRequest ? 'bitcoin:lightning' : 'bitcoin:onchain',
-                        currency: 'SATS'
-                    })
-                }
-            })
-
-            return results
         }
     }
 

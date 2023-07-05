@@ -60,13 +60,11 @@ const AdvancedWalletSetup = () => {
         {
             label: 'Rest Host',
             value: host,
-            regex: /^([0-9\.]*)$/,
             setValue: setHost
         },
         {
             label: 'Rest Port',
             value: port,
-            regex: /^([0-9]{0,4})$/,
             setValue: setPort
         },
         {
@@ -116,6 +114,7 @@ const AdvancedWalletSetup = () => {
                         type='text'
                         placeholder={r.label}
                         value={r.value}
+                        onChange={(e) => { r.setValue(e.target.value) }}
                         className='
                             mt-5
                             form-control
