@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    min-height: 100vh;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+// Globals
+@import './colors.module.scss';
+
+//Pages
+@import './AddPaymentPage.scss';
+@import './LandingPage.scss';
+@import './LoginPage.scss';
+@import './ProjectDetailPage.scss';
+@import './WalletSimpleSetupPage.scss';
+
+//Components
+@import './AllocationsList.scss';
+@import './AllocationTile.scss';
+@import './CreatePaymentFloatingBadge.scss';
+@import './Overlay.scss'

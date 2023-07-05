@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 module.exports = {
+    TEMP_AUTHORIZED_SUPERUSER_ID: process.env.REACT_APP_TEMP_AUTHORIZED_SUPERUSER_ID,
     GITHUB_OAUTH_URL: 'https://github.com/login/oauth/access_token',
     INVOICELY_CSV_PATH: `${process.env.INVOICELY_CSV_PATH}`,
     SITE_ROOT: process.env.NODE_ENV == 'production'
@@ -35,5 +36,4 @@ module.exports = {
         'MXN',
         'EUR'
     ],
-    BTCPAYSERVER_API_ROOT: 'https://btcpayserver.setlife.tech/api/v1'
 }

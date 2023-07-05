@@ -14,10 +14,12 @@ module.exports = gql`
         allocations: [Allocation]
         permissions: [Permission]
         timeEntries: [TimeEntry]
+        projects: [Project]
         rates: [Rate]
         "The following attributes are calculated and aren't on the database"
         totalPaid: Int!
         paidByCurrency: [TotalAllocatedByCurrency]
+        wallet: Wallet
     }
 
     input CreateContributorInput {
@@ -60,6 +62,7 @@ module.exports = gql`
         id: Int
         name: String
         githubUrl: String
+        private: Boolean
     }
 
     type TotalAllocatedByCurrency {

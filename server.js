@@ -7,6 +7,7 @@ const cookieSession = require('cookie-session') //store the user session key
 const cookieParser = require('cookie-parser') //transform cooki session into object with key name
 const moment = require('moment') //momentjs libreary for expitation cookie date
 const { findIndex } = require('lodash')
+const axios = require('axios')
 
 const schema = require('./api/schema')
 const db = require('./api/models');
@@ -29,16 +30,23 @@ if (isProduction) {
 }
 
 // Serve static assets
-app.use(express.static(__dirname + '/build'));
+app.use('/', express.static(__dirname + '/build'));
+app.use('/build-v1', express.static(__dirname + '/build-v1'));
 
 app.get('*', function(req, res, next) {
     if (req.path.indexOf('/api/') != -1) {
         //route to the next middleware function
         return next()
     }
-    fs.readFile(__dirname + '/build/index.html', 'utf8', function (err, text) {
-        res.send(text);
-    });
+    if (req.path.indexOf('/build-v1') != -1) {
+        fs.readFile(__dirname + '/build-v1/index.html', 'utf8', function (err, text) {
+            res.send(text);
+        });
+    } else {
+        fs.readFile(__dirname + '/build/index.html', 'utf8', function (err, text) {
+            res.send(text);
+        });
+    }
 })
 
 const whitelist = [
@@ -47,11 +55,15 @@ const whitelist = [
     'http://localhost:4000',
     'http://localhost:6001',
     'http://localhost:6002',
+    'http://localhost:6003',
     'http://github.com/',
     'https://github.com/',
     'https://project-trinary.herokuapp.com/',
     'https://trinary.setlife.tech',
-    'https://trinary-staging.herokuapp.com'
+    'https://trinary-v2.setlife.tech',
+    'https://trinary-staging.herokuapp.com',
+    'https://trinary-staging.setlife.tech',
+    'trinary-staging.setlife.tech'
 ];
 const corsOptions = {
     origin: function(origin, callback) {
@@ -104,6 +116,7 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
             //if the user is already in th db but 1st time loggin in store the github access token
             if (!contributorInfo.contributor) {
                 contributorInfo.contributor = await apiModules.authentication.createContributor({ ...contributorInfo.githubContributor })
+                contributorInfo.newUser = true
             } else if (
                 !contributorInfo.contributor['github_access_token'] ||
                 contributorInfo.contributor['github_access_token'] != githubAccessToken
@@ -129,9 +142,13 @@ app.get('/api/oauth-redirect', (req, res) => { //redirects to the url configured
             apiModules.authentication.grantProjectPermissions({
                 contributor: contributorInfo.contributor.dataValues
             })
+            return contributorInfo
         })
-        .then(() => {
-            res.redirect(SITE_ROOT)
+        .then((contributorInfo) => {
+            if (contributorInfo.newUser) {
+                return res.redirect(`${SITE_ROOT}/${process.env.OAUTH_REDIRECT_NEW_USERS}`)
+            }
+            res.redirect(`${SITE_ROOT}/${process.env.OAUTH_REDIRECT_EXISTING_USERS}`)
         })
         .catch(err => {
             console.log('An error ocurred ' + err);
@@ -225,6 +242,23 @@ app.post('/api/webhooks/customer/delete', async (req, res) => {
         res.sendStatus(200)
     } catch (err) {
         console.log(`An error ocurred: ${err}`)
+    }
+})
+
+app.post('/api/connect', async (req, res) => {
+    const { host, port, macaroon } = req.body
+    const options = {
+        // Work-around for self-signed certificates.
+        httpsAgent: new (require('https').Agent)({ rejectUnauthorized: false }),
+        headers: {
+            'Grpc-Metadata-macaroon': macaroon,
+        },
+    }
+    try {
+        const response = await axios.get(`https://${host}:${port}/v1/getinfo`, options)
+        return res.json(response.data)
+    } catch (error) {
+        return res.json(error.code)
     }
 })
 

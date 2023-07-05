@@ -10,12 +10,13 @@ export const CREATE_BITCOIN_INVOICE = gql`
 `
 
 export const CREATE_PAYMENT = gql`
-    mutation CreatePayment($client_id: Int!, $amount: Int!, $date_incurred: String!, $date_paid: String) {
+    mutation CreatePayment($client_id: Int!, $amount: Int!, $date_incurred: String!, $date_paid: String, $currency: String) {
         createPayment(createFields: {
             amount: $amount
             client_id: $client_id
             date_incurred: $date_incurred
             date_paid: $date_paid
+            currency: $currency
         }){
             id
             amount

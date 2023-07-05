@@ -37,7 +37,8 @@ export const GET_PROJECT = gql`
             date
             end_date
             totalPaid
-            expected_budget_timeframe
+            expected_budget_timeframe,
+            expected_budget_currency,
             client {
                 id
                 name
@@ -201,7 +202,7 @@ export const GET_PROJECT_PAYMENTS_SUMMARY = gql`
             id
             totalAllocated
             totalAllocatedConfirmed: totalAllocated(confirmedOnly: true)
-            totalPaid
+            totalPaid(allocationsOnly: true)
             totalIncurredPayments
         }
     }

@@ -42,6 +42,17 @@ module.exports = {
                 }
             })
         },
+        projects: (contributor, args, { models }) => {
+            return models.Project.findAll({
+                include: {
+                    model: models.Permission,
+                    required: true,
+                    where: {
+                        contributor_id: contributor.id
+                    }
+                }
+            })
+        },
         timeEntries: (contributor, args, { models }) => {
             return models.TimeEntry.findAll({
                 where: {
@@ -67,6 +78,13 @@ module.exports = {
         },
         rates: (contributor, args, { models }) => {
             return models.Rate.findAll({
+                where: {
+                    contributor_id: contributor.id
+                }
+            })
+        },
+        wallet: async (contributor, args, { cookies, models }) => {
+            return models.Wallet.findOne({
                 where: {
                     contributor_id: contributor.id
                 }

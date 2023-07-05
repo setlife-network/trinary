@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import {
     Box,
@@ -36,6 +36,7 @@ const ContributorAllocations = (props) => {
     const [selectedSort, setSelectedSort] = useState()
     const [allocatedAllocations, setAllocatedAllocations] = useState([])
     const [proposedAllocations, setProposedAllocations] = useState([])
+    const [contributor, setContributor] = useState()
 
     const {
         data: dataContributorAllocations,
@@ -55,6 +56,18 @@ const ContributorAllocations = (props) => {
             id: Number(contributorId)
         }
     })
+
+    useEffect(() => {
+        if (dataContributorAllocations && dataContributor) {
+            const { getContributorById: contributorAllocations } = dataContributorAllocations
+            const { getContributorById: contributorData } = dataContributor
+            const allocated = filter(contributorAllocations.allocations, 'payment')
+            const proposed = filter(contributorAllocations.allocations, { payment: null })
+            setAllocatedAllocations(allocated)
+            setProposedAllocations(proposed)
+            setContributor(contributorData)
+        }
+    }, [dataContributorAllocations, dataContributor])
 
     const sortAllocations = ({ typeName, allocated, proposed, sortingType, sortingOrder }) => {
         if (typeName == 'Clear') {
@@ -173,14 +186,6 @@ const ContributorAllocations = (props) => {
 
     if (loadingContributorAllocations || loadingContributor) return <LoadingProgress/>
     if (errorContributorAllocations || errorContributor) return 'Error!'
-
-    const { getContributorById: contributorAllocations } = dataContributorAllocations
-    const { getContributorById: contributor } = dataContributor
-
-    if (!allocatedAllocations.length || !proposedAllocations.length) {
-        setAllocatedAllocations([...filter(contributorAllocations.allocations, 'payment')])
-        setProposedAllocations([...filter(contributorAllocations.allocations, { 'payment': null })])
-    }
 
     const handleSortButton = (event) => {
         setanchorEl(event.currentTarget)

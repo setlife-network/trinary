@@ -158,7 +158,8 @@ const AllocationAddForm = (props) => {
                     payment_id: allocation.payment_id,
                     project_id: Number(selectedProject.id),
                     contributor_id: Number(selectedContributor.id),
-                    rate_id: allocationRate.id
+                    rate_id: allocationRate.id,
+                    status: 'active'
                 }
             })
             if (loadingNewAllocation) return ''

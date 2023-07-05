@@ -67,7 +67,8 @@ const AddPaymentForm = (props) => {
                 amount: paymentAmount,
                 client_id: Number(clientId),
                 date_incurred: dateIncurred,
-                date_paid: datePaid
+                date_paid: datePaid,
+                currency: currencyInformation.name
             }
             const newPayment = await createPayment({ variables })
             if (loadingNewPayment) return <LoadingProgress/>

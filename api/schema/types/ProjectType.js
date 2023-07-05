@@ -4,22 +4,26 @@ module.exports = gql`
 
     type Project {
         id: Int!
-        expected_budget: Int!
+        expected_budget: Int
         is_active: Boolean!
+        is_public: Boolean
         name: String!
         github_url: String!
         toggl_url: String
-        date: String!
+        date: String
         date_last_synced: String
         client_id: Int!
         end_date: String
         toggl_id: String
         expected_budget_timeframe: String
+        expected_budget_currency: String
         allocations(contributorId: Int): [Allocation]
         allocatedPayments: [Payment]
+        payments: [Payment]
         averageHourlyPaid(fromDate: String, toDate: String): Int
         averageIssueCost(fromDate: String, toDate: String): AverageIssueCost
         client: Client
+        admin: Contributor
         contributors: [Contributor]
         githubContributors: [Contributor]
         issuesOpened(fromDate: String, toDate: String): Int
@@ -73,7 +77,8 @@ module.exports = gql`
         "The total paid from the client"
         totalPaid(
             fromDate: String,
-            toDate: String
+            toDate: String,
+            allocationsOnly: Boolean
         ): Int
         totalIncurredPayments: Int # The total incurred not paid from the client
     }
@@ -90,13 +95,14 @@ module.exports = gql`
     }
 
     input CreateProjectInput {
-        expected_budget: Int!
-        is_active: Boolean!
+        expected_budget: Int
+        is_active: Boolean
+        is_public: Boolean
         name: String!
         github_url: String!
         toggl_url: String
-        client_id: Int!
-        date: String!
+        client_id: Int
+        date: String
         end_date: String
         expected_budget_timeframe: String
     }
@@ -113,6 +119,7 @@ module.exports = gql`
         end_date: String
         date_last_synced:String
         expected_budget_timeframe: String
+        expected_budget_currency: String
     }
 
     type Query {

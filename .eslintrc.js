@@ -89,6 +89,7 @@ module.exports = {
         'react/no-danger': ['off'],
         'react/no-did-update-set-state': ['off'],
         'react/no-unescaped-entities': ['off'],
+        "react/no-unknown-property": ['off'],
         'react/no-did-mount-set-state': ['off'],
         'react/prop-types': 'off',
         'react/prefer-stateless-function': 'off',
