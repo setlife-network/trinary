@@ -28,6 +28,8 @@ const ProjectDetailPage = (props) => {
     const [openAddContributorOverlay, setOpenAddContributorOverlay] = useState(false)
     const [screenIndex, setScreenIndex] = useState(0)
 
+    const isSuperUser = process.env.REACT_APP_TEMP_AUTHORIZED_SUPERUSER_ID
+
     const {
         data: dataProject,
         loading: loadingProject,
@@ -183,7 +185,7 @@ const ProjectDetailPage = (props) => {
                             Active Contributors
                         </p>
                     </div>
-                    {sessionUser().id === TEMP_AUTHORIZED_SUPERUSER_ID &&
+                    {sessionUser().id == isSuperUser &&
                         <button
                             type='button'
                             className='border-2 border-setlife text-setlife rounded-full py-1 mb-4 w-fit h-fit px-2 ml-auto'
