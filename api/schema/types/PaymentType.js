@@ -22,6 +22,7 @@ module.exports = gql`
     }
     
     type BTCPayment {
+        contributorId: Int,
         transactionHash: String
         paymentRequest: String
         amount: String
@@ -39,9 +40,9 @@ module.exports = gql`
         date_paid: String
     }
 
-    input ContributorInput {
-        id: Int,
-        amount: Int
+    input ContributorBonus {
+        contributor_id: Int,
+        amount_to_pay: Int
     }
 
     type Query {
@@ -76,7 +77,7 @@ module.exports = gql`
         ): Float!
 
         sendPayment(
-            contributors: [ContributorInput]
+            contributors: [ContributorBonus]
         ): [BTCPayment]
     }
 

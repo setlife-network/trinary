@@ -6,7 +6,7 @@ import SendBonusAmount from './SendBonusAmount'
 import SendBonusConfirmation from './SendBonusConfirmation'
 import SendBonusSuccessful from './SendBonusSuccessful'
 
-import { CONVERT_USD_TO_SATS_AMOUNT } from '../operations/mutations/PaymentMutations'
+import { CONVERT_USD_TO_SATS_AMOUNT, SEND_BONUS } from '../operations/mutations/PaymentMutations'
 
 const SendBonus = (props) => {
 
@@ -27,23 +27,39 @@ const SendBonus = (props) => {
 
     const handleSubmitPayments = async (bonusPayments) => {
         const sentBonusInfo = { succeeded: [], failed: [] }
+        const contributorsWithWallets = []
         await Promise.all(bonusPayments.map(bp => {
             try {
                 if (!bp.contributor.wallet) {
                     throw new Error('User does not have a wallet setup')
                 }
-                if (bp.contributor.wallet.invoice_macaroon != null) {
-                    // TODO: Implement send bonus through advanced setup (wait for response)
-                    sentBonusInfo.succeeded.push(bp)
-                } else if (bp.contributor.wallet.onchain_address != null) {
-                    // TODO: Implement send bonus onchain (wait for response)
-                    sentBonusInfo.succeeded.push(bp)
+                if (bp.contributor.wallet.invoice_macaroon != null || bp.contributor.wallet.onchain_address != null) {
+                    contributorsWithWallets.push({ contributor_id: bp.contributor.id, amount_to_pay: Math.round(bp.satsBonusAmount) })
                 }
             } catch (error) {
                 console.log('An error occurred: ' + error)
                 sentBonusInfo.failed.push(bp)
             }
         }))
+        const bonusSent = await sendBonus({
+            variables: {
+                contributors: contributorsWithWallets
+            }
+        })
+        bonusSent.data.sendPayment.map(bs => {
+            try {
+                if (bs.error) {
+                    throw new Error('Transaction error')
+                } else {
+                    const paymentSucceeded = bonusPayments.filter(item => item.contributor.id === bs.contributorId)
+                    sentBonusInfo.succeeded.push(...paymentSucceeded)
+                }
+            } catch (error) {
+                console.log('An error occurred: ' + error)
+                const paymentFailed = bonusPayments.filter(item => item.contributor.id === bs.contributorId)
+                sentBonusInfo.failed.push(...paymentFailed)
+            }
+        })
         setSentBonuses(sentBonusInfo)
     }
 
@@ -61,6 +77,11 @@ const SendBonus = (props) => {
     }, [bonusAmount, selectedContributors])
 
     const [fetchSatsAmount] = useMutation(CONVERT_USD_TO_SATS_AMOUNT)
+    const [sendBonus, {
+        data: dataSendBonus,
+        loading: loadingSendBonus,
+        error: errorSendBonus
+    }] = useMutation(SEND_BONUS)
 
     const nextStep = async () => {
         if (screenIndex == 0) {
@@ -118,10 +139,10 @@ const SendBonus = (props) => {
             }
             <div className='grid absolute bottom-10 left-16 right-16 gap-2'>
                 <button
-                    className={`${!enableContinue ? 'bg-med-gray' : 'bg-setlife'} rounded-full py-2 w-full text-white`}
+                    className={`${!enableContinue || loadingSendBonus ? 'bg-med-gray' : 'bg-setlife'} rounded-full py-2 w-full text-white`}
                     onClick={() => nextStep()}
                     type='button'
-                    disabled={!enableContinue}
+                    disabled={!enableContinue || loadingSendBonus}
                 >
                     {`${buttonText[screenIndex]}`}
                 </button>
