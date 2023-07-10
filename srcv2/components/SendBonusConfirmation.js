@@ -7,7 +7,8 @@ const SendBonusConfirmation = (props) => {
 
     const {
         bonusPayments,
-        selectedBonusSplitType
+        selectedBonusSplitType,
+        selectedCurrency
     } = props
 
     const renderSenders = () => {
@@ -21,11 +22,16 @@ const SendBonusConfirmation = (props) => {
                     </div>
                     <div className='grid grid-cols-1 text-right'>
                         <p className='font-bold'>
-                            {`${Intl.NumberFormat().format(Math.trunc(bp.satsBonusAmount))} SATS`}
+                            {selectedCurrency == 's '
+                                ? `${Intl.NumberFormat().format(Math.trunc(bp.amount))} SATS`
+                                : `${Intl.NumberFormat().format(Math.trunc(bp.satsBonusAmount))} SATS`
+                            }
                         </p>
-                        <p className='text-gray'>
-                            {`${Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(Math.trunc(bp.amount))}`}
-                        </p>
+                        {selectedCurrency != 's ' &&
+                            <p className='text-gray'>
+                                {`${Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(Math.trunc(bp.amount))}`}
+                            </p>
+                        }
                     </div>
                 </div>
             )
@@ -46,11 +52,16 @@ const SendBonusConfirmation = (props) => {
             {selectedBonusSplitType == 0 &&
                 <>
                     <p className='text-center text-4xl'>
-                        {`${Intl.NumberFormat().format(Math.trunc(bonusPayments[0].satsBonusAmount))} SATS`}
+                        {selectedCurrency == 's '
+                            ? `${Intl.NumberFormat().format(Math.trunc(bonusPayments[0].amount))} SATS`
+                            : `${Intl.NumberFormat().format(Math.trunc(bonusPayments[0].satsBonusAmount))} SATS`
+                        }
                     </p> 
-                    <p className='text-center text-md text-gray'>
-                        {`~ ${Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(Math.trunc(bonusPayments[0].amount))}`}
-                    </p>
+                    {selectedCurrency != 's ' &&
+                        <p className='text-center text-md text-gray'>
+                            {`~ ${Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(Math.trunc(bonusPayments[0].amount))}`}
+                        </p>
+                    }
                 </>
             }
             <p className='font-bold text-md text-gray'>

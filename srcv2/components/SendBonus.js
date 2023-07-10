@@ -22,6 +22,7 @@ const SendBonus = (props) => {
     const [bonusPayments, setBonusPayments] = useState([])
     const [selectedBonusSplitType, setSelectedBonusSplitType] = useState(0)
     const [sentBonuses, setSentBonuses] = useState(0)
+    const [selectedCurrency, setSelectedCurrency] = useState('s ')
     
     const buttonText = ['Continue', 'Send bonuses', 'Finish']
 
@@ -34,7 +35,7 @@ const SendBonus = (props) => {
                     throw new Error('User does not have a wallet setup')
                 }
                 if (bp.contributor.wallet.invoice_macaroon != null || bp.contributor.wallet.onchain_address != null) {
-                    contributorsWithWallets.push({ contributor_id: bp.contributor.id, amount_to_pay: Math.round(bp.satsBonusAmount) })
+                    contributorsWithWallets.push({ contributor_id: bp.contributor.id, amount_to_pay: Math.round(selectedCurrency == 's ' ? bp.amount : bp.satsBonusAmount) })
                 }
             } catch (error) {
                 console.log('An error occurred: ' + error)
@@ -124,17 +125,21 @@ const SendBonus = (props) => {
                     setBonusPayments={setBonusPayments}
                     selectedBonusSplitType={selectedBonusSplitType}
                     setSelectedBonusSplitType={setSelectedBonusSplitType}
+                    selectedCurrency={selectedCurrency}
+                    setSelectedCurrency={setSelectedCurrency}
                 />
             }
             {screenIndex == 1 &&
                 <SendBonusConfirmation
                     bonusPayments={bonusPayments}
                     selectedBonusSplitType={selectedBonusSplitType}
+                    selectedCurrency={selectedCurrency}
                 />
             }
             {screenIndex == 2 && 
                 <SendBonusSuccessful
                     sentBonuses={sentBonuses}
+                    selectedCurrency={selectedCurrency}
                 />
             }
             <div className='grid absolute bottom-10 left-16 right-16 gap-2'>
