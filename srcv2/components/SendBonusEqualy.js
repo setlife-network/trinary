@@ -9,20 +9,23 @@ const SendBonusEqualy = (props) => {
     const {
         setSelectedContributors,
         project,
-        setBonusAmount
+        setBonusAmount,
+        selectedCurrency,
+        setSelectedCurrency
     } = props
 
     const [selectedContributorsIdx, setSelectedContributorsIdx] = useState([])
+
+    const currencyInformation = selectCurrencyInformation({
+        currency: project.expected_budget_currency
+            ? project.expected_budget_currency
+            : 'SATS'
+    })
 
     useEffect(() => {
         const contributors = project.contributors.filter((c, idx) => selectedContributorsIdx.includes(idx))
         setSelectedContributors(contributors)
     }, [selectedContributorsIdx])
-
-    const currencyInformation = 
-        selectCurrencyInformation({
-            currency: 'USD'
-        }) 
 
     const selectContributor = (idx) => {
         if (selectedContributorsIdx.includes(idx)) {
@@ -73,18 +76,31 @@ const SendBonusEqualy = (props) => {
 
     return (
         <div className='SendBonusEqualy'>
-            <div className='mt-10'>
+            <div className='flex mt-10 items-center'>
                 <CurrencyTextField
                     fullWidth
                     label='Payment amount'
                     variant='outlined'
-                    currencySymbol={`${currencyInformation['symbol']}`}
+                    currencySymbol={`${selectedCurrency}`}
                     minimumValue='0'
                     outputFormat='string'
                     decimalCharacter={`${currencyInformation['decimal']}`}
                     digitGroupSeparator={`${currencyInformation['thousand']}`}
                     onChange={(event) => handleBonusAmountChange(event.target.value)}
                 />
+                <button 
+                    className='ml-3 bg-setlife text-black rounded-full p-2 flex items-center justify-center'
+                    type='button'
+                    onClick={() => setSelectedCurrency(selectedCurrency == 's '
+                        ? currencyInformation.symbol
+                        : 's ')
+                    }
+                >
+                    {selectedCurrency == currencyInformation.symbol
+                        ? <img className='w-7' src='https://project-trinary.s3.amazonaws.com/images/Satoshi+regular+black+2.png' alt='satoshi' />
+                        : <p className='w-6'>{currencyInformation.symbol}</p>
+                    } 
+                </button>
             </div>
             <div className='mt-10'>
                 <p className='font-bold text-md mb-4'>

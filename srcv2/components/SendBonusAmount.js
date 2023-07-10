@@ -25,7 +25,9 @@ const SendBonusAmount = (props) => {
         bonusPayments,
         setBonusPayments,
         selectedBonusSplitType,
-        setSelectedBonusSplitType
+        setSelectedBonusSplitType,
+        selectedCurrency,
+        setSelectedCurrency
     } = props
 
     return (
@@ -60,6 +62,8 @@ const SendBonusAmount = (props) => {
                     setSelectedContributors={setSelectedContributors}
                     bonusAmount={bonusAmount}
                     setBonusAmount={setBonusAmount}
+                    selectedCurrency={selectedCurrency}
+                    setSelectedCurrency={setSelectedCurrency}
                 />
             ) : (
                 <SendBonusCustomize
